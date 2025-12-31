@@ -13,9 +13,14 @@ interface WindowFrameProps {
 
 const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick }) => {
   const t = useTranslations('WindowFrame');
+  const [isMaximized, setIsMaximized] = React.useState(false);
+
+  const toggleMaximize = () => {
+    setIsMaximized(!isMaximized);
+  };
 
   return (
-    <div className={styles.window} style={{ width, height }}>
+    <div className={`${styles.window} ${isMaximized ? styles.maximized : ''}`} style={isMaximized ? {} : { width, height }}>
       <div className={styles.titleBar}>
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
@@ -25,7 +30,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
         <div className={styles.controls}>
           {/* Visual only buttons */}
           <button className={`${styles.controlBtn} ${styles.help}`} onClick={onHelpClick}>?</button>
-          <button className={`${styles.controlBtn} ${styles.maximize}`}>□</button>
+          <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
           <button className={`${styles.controlBtn} ${styles.close}`}>X</button>
         </div>
       </div>
