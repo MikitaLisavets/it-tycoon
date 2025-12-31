@@ -1,0 +1,45 @@
+.button {
+    background: linear-gradient(to bottom, #fff 0%, #ECE9D8 100%);
+    /* Placeholder for standard button */
+    /* XP buttons are actually quite complex SVG-like gradients usually, but a CSS approximation: */
+    background-color: #f0f0f0;
+    border: 1px solid #003c74;
+    border-radius: 3px;
+    color: #000;
+    padding: 4px 12px;
+    font-family: var(--font-tahoma);
+    font-size: 11px;
+    cursor: pointer;
+    min-width: 80px;
+    text-align: center;
+    /* Hover state often has an orange inner border or similar */
+}
+
+/* 
+  The screenshot actually shows "Start Menu" style buttons on the right? 
+  Blue buttons with white text. Let's make a variant for those.
+*/
+
+.primary {
+    background: linear-gradient(to bottom, #3963C9 0%, #2045B6 100%);
+    /* Blue gradient */
+    border: 1px solid #00138C;
+    color: white;
+    font-weight: bold;
+    padding: 8px 10px;
+    text-align: left;
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.primary:hover {
+    filter: brightness(1.1);
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+.primary:active {
+    background: linear-gradient(to bottom, #2045B6 0%, #3963C9 100%);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.4);
+}

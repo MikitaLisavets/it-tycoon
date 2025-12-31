@@ -1,0 +1,24 @@
+.fieldset {
+    border: 1px solid #ACA899;
+    /* XP Border Dark */
+    border-radius: 3px;
+    padding: 5px 8px;
+    margin-bottom: 8px;
+    position: relative;
+    background-color: transparent;
+    /* Assuming parent background */
+}
+
+.legend {
+    font-size: 11px;
+    color: #0046D5;
+    /* Similar blue to title bar text or just dark blue */
+    padding: 0 3px;
+    margin-left: 5px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}

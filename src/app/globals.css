@@ -1,27 +1,16 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Windows XP Colors */
+  --xp-blue-title: #0054E3;
+  --xp-blue-gradient-start: #0058E6;
+  --xp-blue-gradient-end: #3A6EA5;
+  --xp-bg: #ECE9D8;
+  --xp-border-light: #FFFFFF;
+  --xp-border-dark: #ACA899;
+  --xp-text: #000000;
+  --xp-title-text: #FFFFFF;
+  --xp-btn-bg: #F0F4FA; /* Slight blue tint typical of XP/Standard */
+  
+  --font-tahoma: 'Tahoma', 'Verdana', sans-serif;
 }
 
 * {
@@ -30,13 +19,19 @@ body {
   margin: 0;
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-tahoma);
+  background-color: #536F96; /* Classic XP Desktop Blue */
+  background-image: linear-gradient(to bottom, #7496EA 0%, #536F96 100%); /* Bliss-like generic gradient */
+  min-height: 100vh;
+  color: var(--xp-text);
+  font-size: 11px; /* XP UI often used small fonts */
+}
+
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
