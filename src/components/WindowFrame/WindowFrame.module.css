@@ -57,6 +57,12 @@
     opacity: 0.8;
 }
 
+.help {
+    background: radial-gradient(circle at center, #fff 0%, #2b50d6 100%);
+    opacity: 0.8;
+    font-weight: bold;
+}
+
 .maximize {
     background: radial-gradient(circle at center, #fff 0%, #2b50d6 100%);
     opacity: 0.8;

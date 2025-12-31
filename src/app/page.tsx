@@ -1,13 +1,19 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import WindowFrame from "@/components/WindowFrame/WindowFrame";
 import Panel from "@/components/Panel/Panel";
 import XPButton from "@/components/XPButton/XPButton";
+import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
 
 export default function Home() {
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
+
   return (
     <div className={styles.container}>
-      <WindowFrame title="Me and My Computer" width="650px">
+      <WindowFrame title="Me and My Computer" width="650px" onHelpClick={() => setIsHelpOpen(true)}>
 
         {/* Date/Time Header */}
         <div className={styles.topBar}>
@@ -103,6 +109,7 @@ export default function Home() {
         </div>
 
       </WindowFrame>
+      <OnboardingModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </div>
   );
 }
