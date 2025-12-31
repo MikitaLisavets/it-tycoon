@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './WindowFrame.module.css';
 
 interface WindowFrameProps {
@@ -11,6 +12,8 @@ interface WindowFrameProps {
 }
 
 const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick }) => {
+  const t = useTranslations('WindowFrame');
+
   return (
     <div className={styles.window} style={{ width, height }}>
       <div className={styles.titleBar}>
@@ -27,8 +30,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
         </div>
       </div>
       <div className={styles.menuBar}>
-        <span className={styles.menuItem}>File</span>
-        <span className={styles.menuItem}>Help</span>
+        <span className={styles.menuItem}>{t('file')}</span>
+        <span className={styles.menuItem}>{t('help')}</span>
       </div>
       <div className={styles.content}>
         {children}

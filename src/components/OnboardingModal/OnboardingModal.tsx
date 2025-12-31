@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './OnboardingModal.module.css';
 import XPButton from '../XPButton/XPButton';
 
@@ -8,35 +9,36 @@ interface OnboardingModalProps {
 }
 
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
+    const t = useTranslations('Onboarding');
+
     if (!isOpen) return null;
 
     return (
         <div className={styles.overlay}>
             <div className={styles.modalContent}>
                 <div className={styles.header}>
-                    <span>How to Play</span>
+                    <span>{t('title')}</span>
                     <button className={styles.closeBtn} onClick={onClose}>X</button>
                 </div>
                 <div className={styles.body}>
                     <p style={{ marginBottom: '10px' }}>
-                        <strong>Welcome to IT Tycoon!</strong>
+                        <strong>{t('welcome')}</strong>
                     </p>
                     <p style={{ marginBottom: '10px' }}>
-                        Start your journey from a newbie to an IT mogul.
-                        Manage your money, status, and happiness.
+                        {t('intro')}
                     </p>
                     <ul style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                        <li><strong>Work:</strong> Earn money but lose energy.</li>
-                        <li><strong>Hack:</strong> High risk, high reward.</li>
-                        <li><strong>Learn:</strong> Improve your skills to get better jobs.</li>
-                        <li><strong>Shop:</strong> Buy better equipment and furniture.</li>
+                        <li><strong>{t('work_title')}</strong> {t('work_desc')}</li>
+                        <li><strong>{t('hack_title')}</strong> {t('hack_desc')}</li>
+                        <li><strong>{t('learn_title')}</strong> {t('learn_desc')}</li>
+                        <li><strong>{t('shop_title')}</strong> {t('shop_desc')}</li>
                     </ul>
                     <p>
-                        Good luck!
+                        {t('good_luck')}
                     </p>
                 </div>
                 <div className={styles.footer}>
-                    <XPButton onClick={onClose}>OK</XPButton>
+                    <XPButton onClick={onClose}>{t('ok')}</XPButton>
                 </div>
             </div>
         </div>
