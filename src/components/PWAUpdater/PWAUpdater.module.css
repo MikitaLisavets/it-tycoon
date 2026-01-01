@@ -8,14 +8,16 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    /* Only the window itself should be clickable */
+    background-color: var(--xp-overlay-bg);
+    width: 100vw;
+    height: 100vh;
 }
 
 .window {
     background-color: var(--xp-bg);
-    border: 1px solid #00138C;
+    border: var(--xp-window-border);
     border-radius: 3px 3px 0 0;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--xp-window-shadow);
     display: flex;
     flex-direction: column;
     font-family: var(--font-tahoma);
@@ -25,7 +27,7 @@
 }
 
 .titleBar {
-    background: linear-gradient(to bottom, var(--xp-blue-gradient-start) 0%, var(--xp-blue-gradient-end) 100%);
+    background: var(--xp-title-grad);
     padding: 3px 5px;
     display: flex;
     justify-content: space-between;
@@ -51,7 +53,7 @@
     height: 21px;
     border: 1px solid #fff;
     border-radius: 3px;
-    background: radial-gradient(circle at center, #ff9e9e 0%, #e04040 100%);
+    background: var(--xp-close-grad);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,13 +67,13 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    background-color: #ECE9D8;
+    background-color: var(--xp-bg);
 }
 
 .message {
     margin: 0;
     font-size: 13px;
-    color: black;
+    color: var(--xp-text);
 }
 
 .actions {
@@ -84,7 +86,7 @@
     padding: 2px 15px;
     border: 1px solid #003C74;
     border-radius: 3px;
-    background: linear-gradient(to bottom, #FAFBFF 0%, #CCD3E6 50%, #BCC5E0 51%, #D6DFF7 100%);
+    background: var(--xp-btn-grad);
     box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 2px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     font-size: 12px;
@@ -92,10 +94,10 @@
 }
 
 .xpButton:hover {
-    background: linear-gradient(to bottom, #FFFFFF 0%, #D6DFF7 50%, #C4D0F0 51%, #E1E9FF 100%);
+    background: var(--xp-btn-hover-grad);
 }
 
 .xpButton:active {
-    background: linear-gradient(to bottom, #D6DFF7 0%, #BCC5E0 100%);
+    background: var(--xp-btn-active-grad);
     box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3);
 }

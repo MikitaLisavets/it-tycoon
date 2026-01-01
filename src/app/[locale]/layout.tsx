@@ -45,7 +45,7 @@ export default async function LocaleLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <NextIntlClientProvider messages={messages}>
           {children}
-          <PWAUpdater />
+          {/* <PWAUpdater /> */}
         </NextIntlClientProvider>
       </body>
     </html>
