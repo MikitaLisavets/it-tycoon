@@ -97,5 +97,11 @@
         "message": "A new version of IT Tycoon is available. Would you like to update now?",
         "update": "Update",
         "later": "Later"
+    },
+    "ResetModal": {
+        "confirm_title": "Game Reset",
+        "confirm_message": "Are you sure you want to reset the game? All progress will be lost.",
+        "yes": "Yes",
+        "no": "No"
     }
 }

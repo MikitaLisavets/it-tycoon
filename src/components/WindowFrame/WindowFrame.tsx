@@ -9,9 +9,10 @@ interface WindowFrameProps {
   height?: string;
   icon?: string; // Optional icon url or component
   onHelpClick?: () => void;
+  onCloseClick?: () => void;
 }
 
-const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick }) => {
+const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick, onCloseClick }) => {
   const t = useTranslations('WindowFrame');
   const [isMaximized, setIsMaximized] = React.useState(false);
 
@@ -31,7 +32,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
           {/* Visual only buttons */}
           <button className={`${styles.controlBtn} ${styles.help}`} onClick={onHelpClick}>?</button>
           <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
-          <button className={`${styles.controlBtn} ${styles.close}`}>X</button>
+          <button className={`${styles.controlBtn} ${styles.close}`} onClick={onCloseClick}>X</button>
         </div>
       </div>
       <div className={styles.menuBar}>

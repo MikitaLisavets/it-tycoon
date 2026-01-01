@@ -9,14 +9,28 @@ import Panel from "@/components/Panel/Panel";
 import XPButton from "@/components/XPButton/XPButton";
 import Taskbar from "@/components/Taskbar/Taskbar";
 import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
+import ResetModal from "@/components/ResetModal/ResetModal";
+
 export default function Home() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isResetOpen, setIsResetOpen] = useState(false);
   const t = useTranslations('Game');
+
+  const handleReset = () => {
+    // Current reset logic: just reload the page.
+    // In the future, this might involve clearing localStorage.
+    window.location.reload();
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.desktopArea}>
-        <WindowFrame title={t('me_and_my_computer')} width="650px" onHelpClick={() => setIsHelpOpen(true)}>
+        <WindowFrame
+          title={t('me_and_my_computer')}
+          width="650px"
+          onHelpClick={() => setIsHelpOpen(true)}
+          onCloseClick={() => setIsResetOpen(true)}
+        >
           {/* ... existing window content ... */}
 
 
@@ -112,6 +126,11 @@ export default function Home() {
       </div>
       <Taskbar date="13/1/26" time="7:00" />
       <OnboardingModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+      <ResetModal
+        isOpen={isResetOpen}
+        onConfirm={handleReset}
+        onCancel={() => setIsResetOpen(false)}
+      />
     </div>
   );
 }
