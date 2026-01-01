@@ -91,5 +91,11 @@
             "ragged": "Ragged",
             "no_car": "No car"
         }
+    },
+    "PWAUpdate": {
+        "title": "System Update",
+        "message": "A new version of IT Tycoon is available. Would you like to update now?",
+        "update": "Update",
+        "later": "Later"
     }
 }
