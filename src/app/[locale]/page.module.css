@@ -1,9 +1,18 @@
 .container {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.desktopArea {
+  flex: 1;
+  position: relative;
+  padding: 10px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+  width: 100%;
 }
 
 .topBar {

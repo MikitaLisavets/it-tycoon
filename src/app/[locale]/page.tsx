@@ -14,8 +14,8 @@ export default function Home() {
   const t = useTranslations('Game');
 
   return (
-    <div className={styles.container} style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-      <div style={{ flex: 1, position: 'relative', padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div className={styles.container}>
+      <div className={styles.desktopArea}>
         <WindowFrame title={t('me_and_my_computer')} width="650px" onHelpClick={() => setIsHelpOpen(true)}>
           {/* ... existing window content ... */}
 
