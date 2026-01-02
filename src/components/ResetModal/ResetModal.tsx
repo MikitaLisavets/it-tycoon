@@ -25,7 +25,7 @@ const ResetModal: React.FC<ResetModalProps> = ({ isOpen, onConfirm, onCancel }) 
                 <div className={styles.content}>
                     <div className={styles.body}>
                         <div className={styles.icon}>
-                            <img src="https://win98icons.alexmeub.com/icons/png/msg_warning-0.png" alt="Warning" width={32} height={32} />
+                            <img src="/icons/warning.png" alt="Warning" width={32} height={32} />
                         </div>
                         <div className={styles.message}>
                             {t('confirm_message')}

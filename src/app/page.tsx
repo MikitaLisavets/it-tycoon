@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from 'next-intl';
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -24,9 +24,25 @@ export default function Home() {
     const { state, updateState, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
     const [activeWindow, setActiveWindow] = useState<string | null>(null);
+    const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
+
+    // Auto-onboarding for first time visit
+    useEffect(() => {
+        if (isInitialized && !state.hasSeenOnboarding && !hasTriggeredOnboarding) {
+            setIsHelpOpen(true);
+            setHasTriggeredOnboarding(true);
+        }
+    }, [isInitialized, state.hasSeenOnboarding, hasTriggeredOnboarding]);
+
+    const handleCloseOnboarding = () => {
+        setIsHelpOpen(false);
+        if (!state.hasSeenOnboarding) {
+            updateState({ hasSeenOnboarding: true });
+        }
+    };
 
     const handleReset = () => {
         resetState();
@@ -168,7 +184,7 @@ export default function Home() {
                 date={formatDate(state.date.day, state.date.month, state.date.year)}
                 time={formatTime(state.date.hour, state.date.minute)}
             />
-            <OnboardingModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
+            <OnboardingModal isOpen={isHelpOpen} onClose={handleCloseOnboarding} />
             <ResetModal
                 isOpen={isResetOpen}
                 onConfirm={handleReset}

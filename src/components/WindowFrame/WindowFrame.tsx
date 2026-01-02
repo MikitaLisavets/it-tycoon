@@ -196,7 +196,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
       >
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
-          <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" alt="" width={16} height={16} />
+          <img src="/icons/computer.png" alt="" width={16} height={16} />
           {title}
         </div>
         <div className={styles.controls}>
