@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
+import { useGameState } from '@/hooks/useGameState';
 import styles from './WindowFrame.module.css';
 
 interface WindowFrameProps {
@@ -14,6 +15,7 @@ interface WindowFrameProps {
 
 const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick, onCloseClick }) => {
   const t = useTranslations('WindowFrame');
+  const { state, updateState } = useGameState();
   const [isMaximized, setIsMaximized] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -146,6 +148,41 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
     };
   }, [isFileMenuOpen]);
 
+  const handleSaveGame = () => {
+    try {
+      const stateString = JSON.stringify(state);
+      const encodedState = btoa(stateString);
+      navigator.clipboard.writeText(encodedState).then(() => {
+        alert(t('save_success'));
+      });
+    } catch (e) {
+      console.error('Failed to save game:', e);
+    }
+    setIsFileMenuOpen(false);
+  };
+
+  const handleLoadGame = () => {
+    const code = window.prompt(t('load_prompt'));
+    if (code) {
+      try {
+        const decodedString = atob(code);
+        const parsedState = JSON.parse(decodedString);
+
+        // Basic validation
+        if (parsedState && typeof parsedState === 'object' && 'version' in parsedState) {
+          updateState(parsedState);
+          alert(t('load_success'));
+        } else {
+          alert(t('load_invalid'));
+        }
+      } catch (e) {
+        console.error('Failed to load game:', e);
+        alert(t('load_error'));
+      }
+    }
+    setIsFileMenuOpen(false);
+  };
+
   return (
     <div
       ref={windowRef}
@@ -182,6 +219,12 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
           </span>
           {isFileMenuOpen && (
             <div className={styles.dropdown}>
+              <div className={styles.dropdownItem} onClick={handleSaveGame}>
+                {t('save')}
+              </div>
+              <div className={styles.dropdownItem} onClick={handleLoadGame}>
+                {t('load')}
+              </div>
               <div
                 className={styles.dropdownItem}
                 onClick={() => {
@@ -189,7 +232,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
                   if (onCloseClick) onCloseClick();
                 }}
               >
-                Reset Game
+                {t('reset')}
               </div>
             </div>
           )}

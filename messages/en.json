@@ -1,7 +1,15 @@
 {
     "WindowFrame": {
         "file": "File",
-        "help": "Help"
+        "help": "Help",
+        "save": "Save Game",
+        "load": "Load Game",
+        "reset": "Reset Game",
+        "save_success": "Game state copied to clipboard!",
+        "load_prompt": "Paste your save code here:",
+        "load_success": "Game loaded successfully!",
+        "load_invalid": "Invalid save code!",
+        "load_error": "Error loading game state."
     },
     "Onboarding": {
         "title": "How to Play",

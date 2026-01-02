@@ -1,7 +1,15 @@
 {
     "WindowFrame": {
         "file": "Datei",
-        "help": "Hilfe"
+        "help": "Hilfe",
+        "save": "Spiel speichern",
+        "load": "Spiel laden",
+        "reset": "Spiel zurücksetzen",
+        "save_success": "Spielstand in die Zwischenablage kopiert!",
+        "load_prompt": "Füge deinen Speicher-Code hier ein:",
+        "load_success": "Spiel erfolgreich geladen!",
+        "load_invalid": "Ungültiger Speicher-Code!",
+        "load_error": "Fehler beim Laden des Spielstands."
     },
     "Onboarding": {
         "title": "Spielanleitung",
