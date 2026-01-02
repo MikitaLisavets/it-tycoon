@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { GYM_ACTIVITIES } from '../../lib/game/constants';
+import { GYM_ACTIVITIES } from '../../lib/game/constants/index';
 import styles from './GymWindow.module.css';
 
 interface GymWindowProps {

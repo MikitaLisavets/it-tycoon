@@ -16,7 +16,7 @@ import EntertainmentWindow from "@/components/EntertainmentWindow/EntertainmentW
 import GymWindow from "@/components/GymWindow/GymWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import { useGameState } from "@/hooks/useGameState";
-import { STAT_ICONS } from "@/lib/game/constants";
+import { STAT_ICONS } from "@/lib/game/constants/index";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);

@@ -123,3 +123,35 @@ export const INITIAL_STATE: GameState = {
     },
     gameOver: false,
 };
+
+export interface Job {
+    id?: string;
+    title: string;
+    type: 'manual' | 'passive';
+    income: number;
+    cost?: number; // health/mood cost per work action
+}
+
+export interface FoodItem {
+    id: string;
+    name: string;
+    cost: number;
+    health: number;
+}
+
+export interface FunItem {
+    id: string;
+    name: string;
+    cost: number;
+    mood: number;
+}
+
+export interface GymActivity {
+    id: string;
+    name: string;
+    cost: number;
+    stamina: number;
+    health?: number;
+    mood?: number;
+}
+

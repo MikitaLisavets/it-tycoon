@@ -2,7 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { GameState, INITIAL_STATE } from '../lib/game/types';
-import { GAME_CONSTANTS, JOBS } from '../lib/game/constants';
+import { GAME_CONSTANTS, JOBS } from '../lib/game/constants/index';
 
 const STORAGE_KEY = 'it-tycoon-state';
 

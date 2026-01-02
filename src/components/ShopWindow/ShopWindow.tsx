@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { FOOD_ITEMS } from '../../lib/game/constants';
+import { FOOD_ITEMS } from '../../lib/game/constants/index';
 import styles from './ShopWindow.module.css';
 
 interface ShopWindowProps {

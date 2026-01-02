@@ -3,7 +3,8 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { JOBS } from '../../lib/game/constants';
+import { JOBS } from '../../lib/game/constants/index';
+import styles from './JobWindow.module.css';
 
 interface JobWindowProps {
     isOpen: boolean;
@@ -34,8 +35,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
 
     return (
         <WindowFrame title={t('title')} onCloseClick={onClose} width="400px">
-            <div style={{ padding: '10px' }}>
-                <div style={{ marginBottom: '20px' }}>
+            <div className={styles.container}>
+                <div className={styles.currentJobSection}>
                     <h3>{t('current_job', { job: currentJob?.title || state.job })}</h3>
                     <p>{t('type', { type: t(currentJob?.type) })}</p>
                     <p>{currentJob?.type === 'manual'
@@ -50,12 +51,12 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
                     </XPButton>
                 )}
 
-                <hr style={{ margin: '15px 0' }} />
+                <hr className={styles.divider} />
 
-                <h4>{t('available_jobs')}</h4>
+                <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
                 {/* Check list if we want to show job listing to switch jobs */}
                 {Object.entries(JOBS).map(([key, job]) => (
-                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                    <div key={key} className={styles.jobItem}>
                         <span>{job.title} ({t(job.type)})</span>
                         {/* Logic to switch status/job? Usually requires requirements */}
                         {key !== state.job && (

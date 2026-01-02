@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { FUN_ITEMS } from '../../lib/game/constants';
+import { FUN_ITEMS } from '../../lib/game/constants/index';
 import styles from './EntertainmentWindow.module.css';
 
 interface EntertainmentWindowProps {
