@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import styles from './Taskbar.module.css';
 
@@ -11,6 +12,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const [isLangOpen, setIsLangOpen] = React.useState(false);
     const trayRef = React.useRef<HTMLDivElement>(null);
     const { state, updateState } = useGameState();
+    const t = useTranslations('Taskbar');
 
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -32,10 +34,13 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
 
     return (
         <div className={styles.taskbar}>
-            <button className={styles.startButton}>
-                start
+            <button
+                className={styles.startButton}
+                onClick={() => window.open('https://ko-fi.com/mikiapps', '_blank')}
+            >
+                {t('donate')} ❤️
             </button>
-            <div className={styles.divider} />
+            {/* <div className={styles.divider} /> */}
 
             {/* Window List Area - Can be populated dynamically later */}
 

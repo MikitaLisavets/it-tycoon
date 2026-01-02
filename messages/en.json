@@ -103,5 +103,9 @@
         "confirm_message": "Are you sure you want to reset the game? All progress will be lost.",
         "yes": "Yes",
         "no": "No"
+    },
+    "Taskbar": {
+        "donate": "Donate",
+        "start": "Start"
     }
 }

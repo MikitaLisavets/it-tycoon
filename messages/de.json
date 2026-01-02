@@ -103,5 +103,9 @@
         "confirm_message": "Bist du sicher? Alle Fortschritte gehen verloren.",
         "yes": "Ja",
         "no": "Nein"
+    },
+    "Taskbar": {
+        "donate": "Spenden",
+        "start": "Start"
     }
 }
