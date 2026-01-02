@@ -153,7 +153,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
       </div>
       <div className={styles.menuBar}>
         <span className={styles.menuItem}>{t('file')}</span>
-        <span className={styles.menuItem}>{t('help')}</span>
+        <span className={styles.menuItem} onClick={onHelpClick}>{t('help')}</span>
       </div>
       <div className={styles.content}>
         {children}
