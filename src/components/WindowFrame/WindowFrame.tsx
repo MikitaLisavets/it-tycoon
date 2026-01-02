@@ -15,6 +15,7 @@ interface WindowFrameProps {
 const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick, onCloseClick }) => {
   const t = useTranslations('WindowFrame');
   const [isMaximized, setIsMaximized] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   // Dragging state
   const [position, setPosition] = React.useState<{ x: number; y: number } | null>(null);
@@ -22,18 +23,43 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
   const dragStartRef = React.useRef<{ x: number; y: number } | null>(null);
   const windowRef = React.useRef<HTMLDivElement>(null);
 
-  // Center on mount
+  // Center on mount and handle resize
   React.useEffect(() => {
-    if (windowRef.current) {
-      const { offsetWidth, offsetHeight } = windowRef.current;
-      const initialX = (window.innerWidth - offsetWidth) / 2;
-      const initialY = (window.innerHeight - 28 - offsetHeight) / 2; // 28px taskbar
-      setPosition({ x: Math.max(0, initialX), y: Math.max(0, initialY) });
-    }
-  }, []); // Run once on mount
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+
+      if (windowRef.current) {
+        const { offsetWidth, offsetHeight } = windowRef.current;
+        const maxX = window.innerWidth - offsetWidth;
+        const maxY = window.innerHeight - 28 - offsetHeight; // 28px taskbar
+
+        setPosition(prev => {
+          if (!prev) {
+            // Initial center
+            const initialX = (window.innerWidth - offsetWidth) / 2;
+            const initialY = (window.innerHeight - 28 - offsetHeight) / 2;
+            return { x: Math.max(0, initialX), y: Math.max(0, initialY) };
+          } else {
+            // Adjust if out of bounds
+            return {
+              x: Math.max(0, Math.min(prev.x, maxX)),
+              y: Math.max(0, Math.min(prev.y, maxY))
+            };
+          }
+        });
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (isMaximized || !position) return;
+    if (isMaximized || isMobile || !position) return;
 
     // Only drag with left mouse button
     if (e.button !== 0) return;
@@ -82,10 +108,12 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
   }, [isDragging]);
 
   const toggleMaximize = () => {
-    setIsMaximized(!isMaximized);
+    if (!isMobile) {
+      setIsMaximized(!isMaximized);
+    }
   };
 
-  const windowStyle: React.CSSProperties = isMaximized
+  const windowStyle: React.CSSProperties = (isMaximized || isMobile)
     ? {}
     : {
       width,
@@ -101,13 +129,13 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
   return (
     <div
       ref={windowRef}
-      className={`${styles.window} ${isMaximized ? styles.maximized : ''}`}
+      className={`${styles.window} ${(isMaximized || isMobile) ? styles.maximized : ''}`}
       style={windowStyle}
     >
       <div
         className={styles.titleBar}
         onMouseDown={handleMouseDown}
-        style={{ cursor: isMaximized ? 'default' : 'move' }}
+        style={{ cursor: (isMaximized || isMobile) ? 'default' : 'move' }}
       >
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
@@ -117,7 +145,9 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
         <div className={styles.controls}>
           {/* Visual only buttons */}
           <button className={`${styles.controlBtn} ${styles.help}`} onClick={onHelpClick}>?</button>
-          <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
+          {!isMobile && (
+            <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
+          )}
           <button className={`${styles.controlBtn} ${styles.close}`} onClick={onCloseClick}>X</button>
         </div>
       </div>
