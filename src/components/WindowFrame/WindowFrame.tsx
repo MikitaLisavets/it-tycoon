@@ -16,13 +16,99 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
   const t = useTranslations('WindowFrame');
   const [isMaximized, setIsMaximized] = React.useState(false);
 
+  // Dragging state
+  const [position, setPosition] = React.useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const dragStartRef = React.useRef<{ x: number; y: number } | null>(null);
+  const windowRef = React.useRef<HTMLDivElement>(null);
+
+  // Center on mount
+  React.useEffect(() => {
+    if (windowRef.current) {
+      const { offsetWidth, offsetHeight } = windowRef.current;
+      const initialX = (window.innerWidth - offsetWidth) / 2;
+      const initialY = (window.innerHeight - 28 - offsetHeight) / 2; // 28px taskbar
+      setPosition({ x: Math.max(0, initialX), y: Math.max(0, initialY) });
+    }
+  }, []); // Run once on mount
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMaximized || !position) return;
+
+    // Only drag with left mouse button
+    if (e.button !== 0) return;
+
+    e.preventDefault(); // Prevent text selection
+    setIsDragging(true);
+    dragStartRef.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    };
+  };
+
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging || !dragStartRef.current || !windowRef.current) return;
+
+      const newX = e.clientX - dragStartRef.current.x;
+      const newY = e.clientY - dragStartRef.current.y;
+
+      // Boundary checks
+      const windowWidth = windowRef.current.offsetWidth;
+      const windowHeight = windowRef.current.offsetHeight;
+      const maxX = window.innerWidth - windowWidth;
+      const maxY = window.innerHeight - 28 - windowHeight; // 28px is taskbar height
+
+      setPosition({
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+      dragStartRef.current = null;
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
+
   const toggleMaximize = () => {
     setIsMaximized(!isMaximized);
   };
 
+  const windowStyle: React.CSSProperties = isMaximized
+    ? {}
+    : {
+      width,
+      height,
+      position: 'absolute',
+      left: position ? `${position.x}px` : '50%', // Fallback to center before measurement
+      top: position ? `${position.y}px` : '50%',
+      transform: position ? 'none' : 'translate(-50%, -50%)', // Center transform fallback
+      zIndex: isDragging ? 100 : 10,
+      boxShadow: isDragging ? '4px 4px 10px rgba(0,0,0,0.5)' : undefined
+    };
+
   return (
-    <div className={`${styles.window} ${isMaximized ? styles.maximized : ''}`} style={isMaximized ? {} : { width, height }}>
-      <div className={styles.titleBar}>
+    <div
+      ref={windowRef}
+      className={`${styles.window} ${isMaximized ? styles.maximized : ''}`}
+      style={windowStyle}
+    >
+      <div
+        className={styles.titleBar}
+        onMouseDown={handleMouseDown}
+        style={{ cursor: isMaximized ? 'default' : 'move' }}
+      >
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
           <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" alt="" width={16} height={16} />
