@@ -10,9 +10,10 @@ import styles from './ShopWindow.module.css';
 interface ShopWindowProps {
     isOpen: boolean;
     onClose: () => void;
+    onReset?: () => void;
 }
 
-const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose }) => {
+const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Shop');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
@@ -30,7 +31,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose }) => {
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div style={{ padding: '10px' }}>
                     <h3>{t('food')}</h3>
                     {FOOD_ITEMS.map((item) => (

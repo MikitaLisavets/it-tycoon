@@ -10,9 +10,10 @@ import styles from './EntertainmentWindow.module.css';
 interface EntertainmentWindowProps {
     isOpen: boolean;
     onClose: () => void;
+    onReset?: () => void;
 }
 
-const EntertainmentWindow: React.FC<EntertainmentWindowProps> = ({ isOpen, onClose }) => {
+const EntertainmentWindow: React.FC<EntertainmentWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Entertainment');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
@@ -30,7 +31,7 @@ const EntertainmentWindow: React.FC<EntertainmentWindowProps> = ({ isOpen, onClo
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div style={{ padding: '10px' }}>
                     <h3>{t('activities')}</h3>
                     {FUN_ITEMS.map((item) => (

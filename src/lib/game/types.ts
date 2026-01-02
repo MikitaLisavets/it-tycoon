@@ -13,7 +13,6 @@ export interface GameState {
     education: EducationLevel;
     english: string;
     volume: number;
-    hasSeenOnboarding: boolean;
 
     // Computer Hardware
     computer: {
@@ -79,7 +78,6 @@ export const INITIAL_STATE: GameState = {
     education: "none",
     english: "none",
     volume: 50,
-    hasSeenOnboarding: false,
 
     computer: {
         monitor: "none",

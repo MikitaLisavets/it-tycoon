@@ -31,17 +31,18 @@ export default function Home() {
 
     // Auto-onboarding for first time visit
     useEffect(() => {
-        if (isInitialized && !state.hasSeenOnboarding && !hasTriggeredOnboarding) {
-            setIsHelpOpen(true);
+        if (isInitialized && !hasTriggeredOnboarding) {
+            const hasSeen = localStorage.getItem('it-tycoon-onboarding-seen');
+            if (!hasSeen) {
+                setIsHelpOpen(true);
+            }
             setHasTriggeredOnboarding(true);
         }
-    }, [isInitialized, state.hasSeenOnboarding, hasTriggeredOnboarding]);
+    }, [isInitialized, hasTriggeredOnboarding]);
 
     const handleCloseOnboarding = () => {
         setIsHelpOpen(false);
-        if (!state.hasSeenOnboarding) {
-            updateState({ hasSeenOnboarding: true });
-        }
+        localStorage.setItem('it-tycoon-onboarding-seen', 'true');
     };
 
     const handleReset = () => {
@@ -63,6 +64,7 @@ export default function Home() {
                     width="800px"
                     onHelpClick={() => setIsHelpOpen(true)}
                     onCloseClick={() => setIsResetOpen(true)}
+                    onResetClick={() => setIsResetOpen(true)}
                 >
                     <div className={styles.mainContent}>
                         {/* XP Sidebar (Left) */}
@@ -175,10 +177,10 @@ export default function Home() {
                 </WindowFrame>
 
                 {/* Inner windows rendered outside main window for full-page movement */}
-                <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} />
-                <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} />
-                <EntertainmentWindow isOpen={activeWindow === 'entertainment'} onClose={() => setActiveWindow(null)} />
-                <GymWindow isOpen={activeWindow === 'gym'} onClose={() => setActiveWindow(null)} />
+                <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
+                <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
+                <EntertainmentWindow isOpen={activeWindow === 'entertainment'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
+                <GymWindow isOpen={activeWindow === 'gym'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
             </div>
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}

@@ -11,6 +11,7 @@ import styles from './JobWindow.module.css';
 interface JobWindowProps {
     isOpen: boolean;
     onClose: () => void;
+    onReset?: () => void;
 }
 
 interface MoneyPopup {
@@ -18,7 +19,7 @@ interface MoneyPopup {
     amount: number;
 }
 
-const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
+const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Job');
     const gt = useTranslations('Game');
@@ -126,7 +127,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div className={styles.container}>
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>

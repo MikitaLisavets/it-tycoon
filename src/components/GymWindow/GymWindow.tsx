@@ -10,9 +10,10 @@ import styles from './GymWindow.module.css';
 interface GymWindowProps {
     isOpen: boolean;
     onClose: () => void;
+    onReset?: () => void;
 }
 
-const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose }) => {
+const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Gym');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
@@ -38,7 +39,7 @@ const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose }) => {
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="450px">
+            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="450px">
                 <div style={{ padding: '10px' }}>
                     <div style={{ marginBottom: '15px', padding: '8px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
                         <strong>{t('current_stamina')}: {Math.floor(state.stamina)}</strong>

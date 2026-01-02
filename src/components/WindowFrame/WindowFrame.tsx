@@ -11,9 +11,10 @@ interface WindowFrameProps {
   icon?: string; // Optional icon url or component
   onHelpClick?: () => void;
   onCloseClick?: () => void;
+  onResetClick?: () => void;
 }
 
-const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick, onCloseClick }) => {
+const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100%', height = 'auto', onHelpClick, onCloseClick, onResetClick }) => {
   const t = useTranslations('WindowFrame');
   const { state, updateState } = useGameState();
   const [isMaximized, setIsMaximized] = React.useState(false);
@@ -229,7 +230,11 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
                 className={styles.dropdownItem}
                 onClick={() => {
                   setIsFileMenuOpen(false);
-                  if (onCloseClick) onCloseClick();
+                  if (onResetClick) {
+                    onResetClick();
+                  } else if (onCloseClick) {
+                    onCloseClick();
+                  }
                 }}
               >
                 {t('reset')}
