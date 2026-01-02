@@ -1,0 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #008080;
+    /* Teal background */
+    overflow: hidden;
+}
+
+.desktopArea {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 28px);
+    /* Minus taskbar height */
+}
+
+/* Window Content Layout */
+.mainContent {
+    display: flex;
+    gap: 10px;
+    height: 100%;
+}
+
+.leftCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.centerCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rightCol {
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.infoBox {
+    margin-top: auto;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Stat Row */
+.statRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.statLabel {
+    color: #000;
+}
+
+.statValue {
+    color: #000;
+    font-weight: bold;
+}

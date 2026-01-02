@@ -1,11 +1,20 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { GameState, INITIAL_STATE } from '../lib/game/types';
 
 const STORAGE_KEY = 'it-tycoon-state';
 
-export function useGameState() {
+interface GameStateContextType {
+    state: GameState;
+    updateState: (updates: Partial<GameState>) => void;
+    resetState: () => void;
+    isInitialized: boolean;
+}
+
+const GameStateContext = createContext<GameStateContextType | null>(null);
+
+function useGameStateInternal() {
     const [state, setState] = useState<GameState>(INITIAL_STATE);
     const [isInitialized, setIsInitialized] = useState(false);
 
@@ -22,7 +31,8 @@ export function useGameState() {
                     setState(INITIAL_STATE);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_STATE));
                 } else {
-                    setState(parsed);
+                    // Ensure new fields like locale are present even if version matches
+                    setState({ ...INITIAL_STATE, ...parsed });
                 }
             } catch (error) {
                 console.error('Failed to parse saved state:', error);
@@ -54,4 +64,22 @@ export function useGameState() {
         resetState,
         isInitialized,
     };
+}
+
+export function GameStateProvider({ children }: { children: ReactNode }) {
+    const gameState = useGameStateInternal();
+
+    return (
+        <GameStateContext.Provider value={gameState} >
+            {children}
+        </GameStateContext.Provider>
+    );
+}
+
+export function useGameState() {
+    const context = useContext(GameStateContext);
+    if (!context) {
+        throw new Error('useGameState must be used within a GameStateProvider');
+    }
+    return context;
 }

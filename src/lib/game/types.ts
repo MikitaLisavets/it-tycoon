@@ -1,5 +1,6 @@
 export interface GameState {
     version: number;
+    locale: 'en' | 'de';
     // Personal Status
     money: number;
     status: string;
@@ -56,6 +57,7 @@ export interface GameState {
 
 export const INITIAL_STATE: GameState = {
     version: 1,
+    locale: 'en',
     money: 122,
     status: "newbie",
     job: "loader",
