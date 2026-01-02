@@ -10,17 +10,31 @@ import XPButton from "@/components/XPButton/XPButton";
 import Taskbar from "@/components/Taskbar/Taskbar";
 import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
 import ResetModal from "@/components/ResetModal/ResetModal";
+import { useGameState } from "@/hooks/useGameState";
 
 export default function Home() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
+  const { state, updateState, resetState, isInitialized } = useGameState();
   const t = useTranslations('Game');
 
   const handleReset = () => {
-    // Current reset logic: just reload the page.
-    // In the future, this might involve clearing localStorage.
-    window.location.reload();
+    resetState();
+    setIsResetOpen(false);
+    // Force a full reload to ensure all components reset correctly
+    window.location.href = window.location.origin + window.location.pathname;
   };
+
+  const handleWork = () => {
+    updateState({
+      money: state.money + 10,
+      satiety: state.satiety - 2,
+    });
+  };
+
+  if (!isInitialized) {
+    return null; // or a loading screen
+  }
 
   return (
     <div className={styles.container}>
@@ -31,34 +45,31 @@ export default function Home() {
           onHelpClick={() => setIsHelpOpen(true)}
           onCloseClick={() => setIsResetOpen(true)}
         >
-          {/* ... existing window content ... */}
-
-
           <div className={styles.mainContent}>
             {/* Left Column */}
             <div className={styles.leftCol}>
               <Panel label={t('panels.personal_status')}>
-                <StatRow label={t('money')} value="122" />
-                <StatRow label={t('status')} value={t('values.newbie')} />
-                <StatRow label={t('job')} value={t('values.loader')} />
-                <StatRow label={t('mood')} value="3" />
-                <StatRow label={t('satiety')} value="-11" />
-                <StatRow label={t('education')} value={t('values.basic')} />
-                <StatRow label={t('english')} value={t('values.none')} />
+                <StatRow label={t('money')} value={state.money.toString()} />
+                <StatRow label={t('status')} value={t(`values.${state.status}`)} />
+                <StatRow label={t('job')} value={t(`values.${state.job}`)} />
+                <StatRow label={t('mood')} value={state.mood.toString()} />
+                <StatRow label={t('satiety')} value={state.satiety.toString()} />
+                <StatRow label={t('education')} value={t(`values.${state.education}`)} />
+                <StatRow label={t('english')} value={t(`values.${state.english}`)} />
               </Panel>
 
               <Panel label={t('panels.computer')}>
-                <StatRow label={t('monitor')} value={t('values.none')} />
-                <StatRow label={t('printer')} value={t('values.none')} />
-                <StatRow label={t('scanner')} value={t('values.none')} />
-                <StatRow label={t('modem')} value={t('values.none')} />
+                <StatRow label={t('monitor')} value={t(`values.${state.computer.monitor}`)} />
+                <StatRow label={t('printer')} value={t(`values.${state.computer.printer}`)} />
+                <StatRow label={t('scanner')} value={t(`values.${state.computer.scanner}`)} />
+                <StatRow label={t('modem')} value={t(`values.${state.computer.modem}`)} />
                 <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
-                <StatRow label={t('cpu')} value={t('values.intel_486')} />
-                <StatRow label={t('hdd')} value={t('values.none')} />
-                <StatRow label={t('cd_rom')} value={t('values.none')} />
-                <StatRow label={t('ram')} value={t('values.none')} />
-                <StatRow label={t('sound')} value={t('values.none')} />
-                <StatRow label={t('video')} value={t('values.none')} />
+                <StatRow label={t('cpu')} value={t(`values.${state.computer.cpu}`)} />
+                <StatRow label={t('hdd')} value={t(`values.${state.computer.hdd}`)} />
+                <StatRow label={t('cd_rom')} value={t(`values.${state.computer.cd_rom}`)} />
+                <StatRow label={t('ram')} value={t(`values.${state.computer.ram}`)} />
+                <StatRow label={t('sound')} value={t(`values.${state.computer.sound}`)} />
+                <StatRow label={t('video')} value={t(`values.${state.computer.video}`)} />
               </Panel>
 
               <div className={styles.infoBox}>
@@ -71,36 +82,36 @@ export default function Home() {
             {/* Center Column */}
             <div className={styles.centerCol}>
               <Panel label={t('panels.my_life')}>
-                <StatRow label={t('rooms')} value="2" />
-                <StatRow label={t('furniture')} value={t('values.used')} />
-                <StatRow label={t('kitchen')} value={t('values.small')} />
-                <StatRow label={t('bathroom')} value={t('values.bucket')} />
-                <StatRow label={t('clothes')} value={t('values.ragged')} />
-                <StatRow label={t('car')} value={t('values.no_car')} />
+                <StatRow label={t('rooms')} value={state.life.rooms.toString()} />
+                <StatRow label={t('furniture')} value={t(`values.${state.life.furniture}`)} />
+                <StatRow label={t('kitchen')} value={t(`values.${state.life.kitchen}`)} />
+                <StatRow label={t('bathroom')} value={t(`values.${state.life.bathroom}`)} />
+                <StatRow label={t('clothes')} value={t(`values.${state.life.clothes}`)} />
+                <StatRow label={t('car')} value={t(`values.${state.life.car}`)} />
               </Panel>
 
               <Panel label={t('panels.programs')}>
-                <StatRow label={t('system')} value={t('values.none')} />
-                <StatRow label={t('office')} value={t('values.none')} />
-                <StatRow label={t('graphics')} value={t('values.none')} />
-                <StatRow label={t('antivirus')} value={t('values.none')} />
+                <StatRow label={t('system')} value={t(`values.${state.programs.system}`)} />
+                <StatRow label={t('office')} value={t(`values.${state.programs.office}`)} />
+                <StatRow label={t('graphics')} value={t(`values.${state.programs.graphics}`)} />
+                <StatRow label={t('antivirus')} value={t(`values.${state.programs.antivirus}`)} />
               </Panel>
 
               <Panel label={t('panels.internet')}>
-                <StatRow label={t('access')} value={t('values.none')} />
+                <StatRow label={t('access')} value={t(`values.${state.internet.access}`)} />
               </Panel>
 
               <Panel label={t('panels.job')}>
-                <StatRow label={t('values.loader')} value={`${t('salary')} 10`} />
+                <StatRow label={t(`values.${state.job}`)} value={`${t('salary')} 10`} />
               </Panel>
 
               <Panel label={t('panels.education')}>
                 <div>{t('school')}</div>
-                <StatRow label={t('not_studying')} value={`${t('cost')} 0`} />
+                <StatRow label={t(state.educationState.school)} value={`${t('cost')} 0`} />
                 <div>{t('english')}</div>
-                <StatRow label={t('not_studying')} value={`${t('cost')} 0`} />
+                <StatRow label={t(state.educationState.english)} value={`${t('cost')} 0`} />
                 <div>{t('courses')}</div>
-                <StatRow label={t('not_studying')} value={`${t('cost')} 0`} />
+                <StatRow label={t(state.educationState.courses)} value={`${t('cost')} 0`} />
               </Panel>
             </div>
 
@@ -111,7 +122,7 @@ export default function Home() {
               <XPButton variant="primary">{t('buttons.entertainment')}</XPButton>
               <XPButton variant="primary">{t('buttons.hobby')}</XPButton>
               <XPButton variant="primary">{t('buttons.education')}</XPButton>
-              <XPButton variant="primary">{t('buttons.job')}</XPButton>
+              <XPButton variant="primary" onClick={handleWork}>{t('buttons.job')}</XPButton>
               <XPButton variant="primary">{t('buttons.bank')}</XPButton>
               <br />
               <XPButton variant="primary">{t('buttons.computer')}</XPButton>
