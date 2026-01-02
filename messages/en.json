@@ -64,6 +64,11 @@
             "job": "Job",
             "education": "Education"
         },
+        "groups": {
+            "lifestyle": "Lifestyle",
+            "system": "System",
+            "services": "Services"
+        },
         "buttons": {
             "apartment": "Apartment",
             "shop": "Shop",
