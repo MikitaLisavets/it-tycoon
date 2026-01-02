@@ -5,6 +5,7 @@ import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS } from '../../lib/game/constants/index';
+import { JobId } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
 interface JobWindowProps {
@@ -33,7 +34,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
 
     const handleWork = () => {
         // Manual work
-        if (currentJob.type === 'manual') {
+        if (currentJob && currentJob.type === 'manual') {
             const energyCost = currentJob.cost?.health || 0;
             if (state.health >= energyCost && state.mood >= 1) {
                 updateState({
@@ -45,9 +46,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
         }
     };
 
-    const checkRequirements = (jobId: string) => {
+    const checkRequirements = (jobId: JobId) => {
         const job = JOBS[jobId];
-        if (!job.requirements) return true;
+        if (!job || !job.requirements) return true;
 
         const reqs = job.requirements;
 
@@ -63,15 +64,15 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
         return true;
     };
 
-    const handleApply = (jobId: string) => {
+    const handleApply = (jobId: JobId) => {
         if (checkRequirements(jobId)) {
             updateState({ job: jobId });
         }
     };
 
-    const renderRequirements = (jobId: string) => {
+    const renderRequirements = (jobId: JobId) => {
         const job = JOBS[jobId];
-        if (!job.requirements) return null;
+        if (!job || !job.requirements) return null;
 
         const reqs = job.requirements;
         const requirementsList = [];
@@ -97,11 +98,13 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
             <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div className={styles.container}>
                     <div className={styles.currentJobSection}>
-                        <h3>{t('current_job', { job: currentJob?.title || state.job })}</h3>
-                        <p>{t('type', { type: t(currentJob?.type) })}</p>
+                        <h3>{t('current_job', { job: gt(`values.${state.job}`) })}</h3>
+                        {currentJob && <p>{t('type', { type: t(currentJob.type) })}</p>}
                         <p>{currentJob?.type === 'manual'
-                            ? t('income_manual', { income: currentJob?.income })
-                            : t('income_passive', { income: currentJob?.income })}
+                            ? t('income_manual', { income: currentJob.income })
+                            : currentJob?.type === 'passive'
+                                ? t('income_passive', { income: currentJob.income })
+                                : ''}
                         </p>
                     </div>
 
@@ -116,18 +119,19 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
                     <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
                     <div className={styles.jobList}>
                         {Object.entries(JOBS).map(([key, job]) => {
-                            const isCurrent = key === state.job;
-                            const canApply = checkRequirements(key);
+                            const jobId = key as JobId;
+                            const isCurrent = jobId === state.job;
+                            const canApply = checkRequirements(jobId);
 
                             return (
-                                <div key={key} className={styles.jobItem}>
+                                <div key={jobId} className={styles.jobItem}>
                                     <div className={styles.jobInfo}>
                                         <span className={styles.jobTitle}>{job.title} ({t(job.type)})</span>
-                                        {!isCurrent && renderRequirements(key)}
+                                        {!isCurrent && renderRequirements(jobId)}
                                     </div>
                                     {!isCurrent && (
                                         <XPButton
-                                            onClick={() => handleApply(key)}
+                                            onClick={() => handleApply(jobId)}
                                             disabled={!canApply}
                                         >
                                             {t('apply')}

@@ -21,6 +21,18 @@
     box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+.button:disabled {
+    background: #F5F4EA;
+    border-color: #D6D2C2;
+    color: #ADA998;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.button:disabled:hover {
+    background: #F5F4EA;
+}
+
 .primary {
     background: linear-gradient(to bottom, #3963C9 0%, #2045B6 100%);
     border: 1px solid #00138C;
@@ -42,4 +54,14 @@
 .primary:active {
     background: linear-gradient(to bottom, #2045B6 0%, #3963C9 100%);
     box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.primary:disabled {
+    filter: grayscale(1) opacity(0.5);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.primary:disabled:hover {
+    filter: grayscale(1) opacity(0.5);
 }

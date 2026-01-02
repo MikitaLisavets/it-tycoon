@@ -1,8 +1,8 @@
-import { Job } from '../types';
+import { Job, JobId } from '../types';
 
-export const JOBS: Record<string, Job> = {
-    begging: {
-        title: 'Begging',
+export const JOBS: Partial<Record<JobId, Job>> = {
+    beggar: {
+        title: 'Beggar',
         type: 'manual',
         income: 1,
         cost: { mood: 1 }

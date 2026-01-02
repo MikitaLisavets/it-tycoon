@@ -1,11 +1,12 @@
 export type EducationLevel = 'none' | 'school' | 'college' | 'university';
+export type JobId = 'none' | 'beggar' | 'loader' | 'salesman' | 'dev' | 'hacker' | 'ceo' | 'investor';
 
 export interface GameState {
     version: number;
     locale: 'en' | 'de';
     // Personal Status
     money: number;
-    job: string;
+    job: JobId;
     mood: number;
     health: number;
     stamina: number;
@@ -68,8 +69,8 @@ export interface GameState {
 export const INITIAL_STATE: GameState = {
     version: 1,
     locale: 'en',
-    money: 200,
-    job: "loader",
+    money: 100,
+    job: "none",
     mood: 50,
     health: 50,
     stamina: 30,
