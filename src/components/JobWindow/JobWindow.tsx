@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
+import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS } from '../../lib/game/constants/index';
 import styles from './JobWindow.module.css';
@@ -15,6 +16,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Job');
     const gt = useTranslations('Game');
+    const [isHelpOpen, setIsHelpOpen] = React.useState(false);
 
     if (!isOpen) return null;
 
@@ -91,51 +93,59 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
     };
 
     return (
-        <WindowFrame title={t('title')} onCloseClick={onClose} width="400px">
-            <div className={styles.container}>
-                <div className={styles.currentJobSection}>
-                    <h3>{t('current_job', { job: currentJob?.title || state.job })}</h3>
-                    <p>{t('type', { type: t(currentJob?.type) })}</p>
-                    <p>{currentJob?.type === 'manual'
-                        ? t('income_manual', { income: currentJob?.income })
-                        : t('income_passive', { income: currentJob?.income })}
-                    </p>
-                </div>
+        <>
+            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+                <div className={styles.container}>
+                    <div className={styles.currentJobSection}>
+                        <h3>{t('current_job', { job: currentJob?.title || state.job })}</h3>
+                        <p>{t('type', { type: t(currentJob?.type) })}</p>
+                        <p>{currentJob?.type === 'manual'
+                            ? t('income_manual', { income: currentJob?.income })
+                            : t('income_passive', { income: currentJob?.income })}
+                        </p>
+                    </div>
 
-                {currentJob?.type === 'manual' && (
-                    <XPButton onClick={handleWork} disabled={state.health < (currentJob.cost?.health || 0)}>
-                        {t('work_now')}
-                    </XPButton>
-                )}
+                    {currentJob?.type === 'manual' && (
+                        <XPButton onClick={handleWork} disabled={state.health < (currentJob.cost?.health || 0)}>
+                            {t('work_now')}
+                        </XPButton>
+                    )}
 
-                <hr className={styles.divider} />
+                    <hr className={styles.divider} />
 
-                <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
-                <div className={styles.jobList}>
-                    {Object.entries(JOBS).map(([key, job]) => {
-                        const isCurrent = key === state.job;
-                        const canApply = checkRequirements(key);
+                    <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
+                    <div className={styles.jobList}>
+                        {Object.entries(JOBS).map(([key, job]) => {
+                            const isCurrent = key === state.job;
+                            const canApply = checkRequirements(key);
 
-                        return (
-                            <div key={key} className={styles.jobItem}>
-                                <div className={styles.jobInfo}>
-                                    <span className={styles.jobTitle}>{job.title} ({t(job.type)})</span>
-                                    {!isCurrent && renderRequirements(key)}
+                            return (
+                                <div key={key} className={styles.jobItem}>
+                                    <div className={styles.jobInfo}>
+                                        <span className={styles.jobTitle}>{job.title} ({t(job.type)})</span>
+                                        {!isCurrent && renderRequirements(key)}
+                                    </div>
+                                    {!isCurrent && (
+                                        <XPButton
+                                            onClick={() => handleApply(key)}
+                                            disabled={!canApply}
+                                        >
+                                            {t('apply')}
+                                        </XPButton>
+                                    )}
                                 </div>
-                                {!isCurrent && (
-                                    <XPButton
-                                        onClick={() => handleApply(key)}
-                                        disabled={!canApply}
-                                    >
-                                        {t('apply')}
-                                    </XPButton>
-                                )}
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        </WindowFrame>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('title')}
+                content={t('help_content')}
+            />
+        </>
     );
 };
 

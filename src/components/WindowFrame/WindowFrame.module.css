@@ -63,6 +63,7 @@
 .close {
     background: var(--xp-close-grad);
     border-color: #fff;
+    color: #000;
 }
 
 .content {

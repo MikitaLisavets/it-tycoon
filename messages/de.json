@@ -118,7 +118,8 @@
         "food": "Essen",
         "buy": "Kaufen",
         "cost": "{{amount}} €",
-        "health": "Gesundheit"
+        "health": "Gesundheit",
+        "help_content": "Hier kannst du Lebensmittel und andere Artikel kaufen, um deine Gesundheit zu verbessern. Jeder Artikel hat unterschiedliche Kosten und Vorteile für deine Gesundheit."
     },
     "Job": {
         "title": "Arbeitsvermittlung",
@@ -132,7 +133,8 @@
         "manual": "Manuell",
         "passive": "Passiv",
         "requirements": "Anforderungen",
-        "computer_tier": "Computer: Stufe"
+        "computer_tier": "Computer: Stufe",
+        "help_content": "In der Arbeitsvermittlung kannst du Arbeit finden. Manuelle Jobs erfordern Klicken, um Geld zu verdienen, während passive Jobs ein stündliches Einkommen bieten. Die meisten Jobs haben Anforderungen wie Bildung, Ausdauer oder Computer-Stufen."
     },
     "Entertainment": {
         "title": "Unterhaltung",
@@ -140,7 +142,8 @@
         "do": "Machen",
         "cost": "{{amount}} €",
         "free": "Kostenlos",
-        "mood": "Laune"
+        "mood": "Laune",
+        "help_content": "Halte deine Laune hoch, indem du an verschiedenen Aktivitäten teilnimmst. Eine höhere Laune ist oft für bestimmte Aktionen erforderlich und hilft, ein Game Over zu verhindern."
     },
     "GameOver": {
         "title": "Game Over",
@@ -155,6 +158,7 @@
         "do": "Trainieren",
         "cost": "{{amount}} €",
         "stamina": "Ausdauer",
-        "mood": "Laune"
+        "mood": "Laune",
+        "help_content": "Trainiere im Fitnessstudio, um deine maximale Ausdauer zu erhöhen. Das Training kostet Geld und kann deine Gesundheit leicht verringern, aber einige Aktivitäten wie Yoga verbessern auch deine Stimmung."
     }
 }

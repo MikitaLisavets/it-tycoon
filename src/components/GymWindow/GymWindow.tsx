@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
+import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { GYM_ACTIVITIES } from '../../lib/game/constants/index';
 import styles from './GymWindow.module.css';
@@ -14,6 +15,7 @@ interface GymWindowProps {
 const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Gym');
+    const [isHelpOpen, setIsHelpOpen] = React.useState(false);
 
     if (!isOpen) return null;
 
@@ -35,33 +37,41 @@ const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose }) => {
     };
 
     return (
-        <WindowFrame title={t('title')} onCloseClick={onClose} width="450px">
-            <div style={{ padding: '10px' }}>
-                <div style={{ marginBottom: '15px', padding: '8px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
-                    <strong>{t('current_stamina')}: {Math.floor(state.stamina)}</strong>
-                </div>
-
-                <h3>{t('activities')}</h3>
-                {GYM_ACTIVITIES.map((activity) => (
-                    <div key={activity.id} className={styles.itemRow}>
-                        <div className={styles.itemInfo}>
-                            <span className={styles.itemName}>{activity.name}</span>
-                            <span className={styles.itemCost}>
-                                {t('cost', { amount: activity.cost })}
-                                {' (+' + activity.stamina + ' ' + t('stamina') + ')'}
-                                {activity.mood && (' (+' + activity.mood + ' ' + t('mood') + ')')}
-                            </span>
-                        </div>
-                        <XPButton
-                            onClick={() => handleActivity(activity)}
-                            disabled={state.money < activity.cost}
-                        >
-                            {t('do')}
-                        </XPButton>
+        <>
+            <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="450px">
+                <div style={{ padding: '10px' }}>
+                    <div style={{ marginBottom: '15px', padding: '8px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
+                        <strong>{t('current_stamina')}: {Math.floor(state.stamina)}</strong>
                     </div>
-                ))}
-            </div>
-        </WindowFrame>
+
+                    <h3>{t('activities')}</h3>
+                    {GYM_ACTIVITIES.map((activity) => (
+                        <div key={activity.id} className={styles.itemRow}>
+                            <div className={styles.itemInfo}>
+                                <span className={styles.itemName}>{activity.name}</span>
+                                <span className={styles.itemCost}>
+                                    {t('cost', { amount: activity.cost })}
+                                    {' (+' + activity.stamina + ' ' + t('stamina') + ')'}
+                                    {activity.mood && (' (+' + activity.mood + ' ' + t('mood') + ')')}
+                                </span>
+                            </div>
+                            <XPButton
+                                onClick={() => handleActivity(activity)}
+                                disabled={state.money < activity.cost}
+                            >
+                                {t('do')}
+                            </XPButton>
+                        </div>
+                    ))}
+                </div>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('title')}
+                content={t('help_content')}
+            />
+        </>
     );
 };
 

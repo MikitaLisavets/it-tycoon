@@ -19,6 +19,7 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason
             <div className={styles.modalContent}>
                 <div className={styles.header}>
                     <span>{t('title')}</span>
+                    <button className={styles.closeBtn} onClick={onRestart}>X</button>
                 </div>
                 <div className={styles.body}>
                     <h2 style={{ color: '#d00', marginBottom: '20px' }}>{t('game_over')}</h2>

@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .modalContent {
@@ -16,7 +16,7 @@
     border: var(--xp-window-border);
     border-radius: 3px;
     box-shadow: var(--xp-window-shadow);
-    width: 400px;
+    width: 350px;
     max-width: 90%;
     display: flex;
     flex-direction: column;
@@ -31,6 +31,8 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--xp-blue-title);
+    font-family: var(--font-tahoma);
+    font-size: 11px;
 }
 
 .closeBtn {

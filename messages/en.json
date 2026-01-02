@@ -118,7 +118,8 @@
         "food": "Food",
         "buy": "Buy",
         "cost": "${{amount}}",
-        "health": "health"
+        "health": "health",
+        "help_content": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit."
     },
     "Job": {
         "title": "Job Center",
@@ -132,7 +133,8 @@
         "manual": "Manual",
         "passive": "Passive",
         "requirements": "Requirements",
-        "computer_tier": "Computer: Tier"
+        "computer_tier": "Computer: Tier",
+        "help_content": "The Job Center is where you can find work. Manual jobs require clicking to earn money, while passive jobs provide hourly income. Most jobs have requirements like education, stamina, or computer tiers."
     },
     "Entertainment": {
         "title": "Entertainment",
@@ -140,7 +142,8 @@
         "do": "Do",
         "cost": "${{amount}}",
         "free": "Free",
-        "mood": "mood"
+        "mood": "mood",
+        "help_content": "Keep your mood high by participating in various activities. Higher mood is often required for certain actions and helps prevent game over."
     },
     "GameOver": {
         "title": "Game Over",
