@@ -185,3 +185,34 @@
     font-size: 10px;
     font-weight: bold;
 }
+
+.windowButton {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to bottom, #5084E9 0%, #3065D1 100%);
+    border: 1px solid #1042AF;
+    border-radius: 2px;
+    padding: 2px 8px;
+    margin: 0 2px;
+    height: 24px;
+    color: white;
+    font-size: 11px;
+    cursor: pointer;
+    box-shadow: inset 1px 1px 1px rgba(255, 240, 255, 0.2);
+}
+
+.windowButton:hover {
+    background: linear-gradient(to bottom, #6B9AFA 0%, #4A7BF0 100%);
+}
+
+.windowIcon {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+.windowTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

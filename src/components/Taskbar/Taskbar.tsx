@@ -52,6 +52,14 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
 
             <div className={styles.divider} />
 
+            <button
+                className={styles.windowButton}
+                onClick={() => window.open('https://mikiapps.com', '_blank')}
+            >
+                <img src="icons/world.png" alt="" className={styles.windowIcon} />
+                <span className={styles.windowTitle}>Explore more apps at MikiApps</span>
+            </button>
+
             <div className={styles.langSwitcher} ref={langRef}>
                 {isLangOpen && (
                     <div className={styles.langDropdown}>
