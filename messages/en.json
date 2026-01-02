@@ -147,6 +147,8 @@
         "passive": "Passive",
         "requirements": "Requirements",
         "computer_tier": "Computer: Tier",
+        "error_low_mood": "Mood too low!",
+        "error_low_health": "Health too low!",
         "help_content": "The Job Center is where you can find work. Manual jobs require clicking to earn money, while passive jobs provide hourly income. Most jobs have requirements like education, stamina, or computer tiers."
     },
     "Entertainment": {

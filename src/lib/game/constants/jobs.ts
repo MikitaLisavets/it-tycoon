@@ -11,7 +11,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         title: 'Loader',
         type: 'manual',
         income: 5,
-        cost: { health: 2 },
+        cost: { health: 2, mood: 1 },
         requirements: { stamina: 70 }
     },
     salesman: {

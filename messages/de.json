@@ -147,6 +147,8 @@
         "passive": "Passiv",
         "requirements": "Anforderungen",
         "computer_tier": "Computer: Stufe",
+        "error_low_mood": "Laune zu niedrig!",
+        "error_low_health": "Gesundheit zu niedrig!",
         "help_content": "In der Arbeitsvermittlung kannst du Arbeit finden. Manuelle Jobs erfordern Klicken, um Geld zu verdienen, während passive Jobs ein stündliches Einkommen bieten. Die meisten Jobs haben Anforderungen wie Bildung, Ausdauer oder Computer-Stufen."
     },
     "Entertainment": {

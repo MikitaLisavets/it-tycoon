@@ -113,8 +113,8 @@ function useGameStateInternal() {
     };
 
     const resetState = () => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_STATE));
         setState(INITIAL_STATE);
-        localStorage.removeItem(STORAGE_KEY);
     };
 
     return {

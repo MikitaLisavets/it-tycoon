@@ -31,8 +31,8 @@ export default function Home() {
     const handleReset = () => {
         resetState();
         setIsResetOpen(false);
-        // Force a full reload to ensure all components reset correctly
-        window.location.href = window.location.origin + window.location.pathname;
+        setActiveWindow(null);
+        setIsHelpOpen(false);
     };
 
     if (!isInitialized) {

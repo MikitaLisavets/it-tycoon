@@ -4,7 +4,7 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
-import { JOBS, HARDWARE_TIERS } from '../../lib/game/constants/index';
+import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
 import { JobId } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
@@ -54,8 +54,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
 
     const handleWork = () => {
         if (currentJob && currentJob.type === 'manual') {
-            const energyCost = currentJob.cost?.health || 0;
-            if (state.health >= energyCost && state.mood >= 1) {
+            const healthCost = currentJob.cost?.health || 0;
+            const moodCost = currentJob.cost?.mood || 0;
+            const staminaCost = currentJob.cost?.stamina || 0;
+
+            if (state.health >= healthCost && (moodCost === 0 || state.mood >= moodCost) && state.stamina >= staminaCost) {
                 // Play sound
                 if (audioRef.current) {
                     audioRef.current.currentTime = 0;
@@ -74,8 +77,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
 
                 updateState({
                     money: state.money + currentJob.income,
-                    health: state.health - energyCost,
-                    mood: state.mood - 1,
+                    health: state.health - healthCost,
+                    mood: state.mood - moodCost,
+                    stamina: state.stamina - staminaCost,
                 });
             }
         }
@@ -124,33 +128,52 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
         <>
             <WindowFrame title={t('title')} onCloseClick={onClose} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div className={styles.container}>
-                    <div className={styles.currentJobSection}>
-                        <h3>{t('current_job', { job: currentJob?.title || gt(`values.${state.job}` as any) })}</h3>
-                        {currentJob && <p>{t('type', { type: t(currentJob.type) })}</p>}
-                        <p>{currentJob?.type === 'manual'
-                            ? t('income_manual', { income: currentJob.income })
-                            : currentJob?.type === 'passive'
-                                ? t('income_passive', { income: currentJob.income })
-                                : ''}
-                        </p>
-                    </div>
-
-                    {currentJob?.type === 'manual' && (
-                        <div className={styles.workContainer}>
-                            {moneyPopups.map(popup => (
-                                <div key={popup.id} className={styles.floatingMoney}>
-                                    +${popup.amount}
+                    <div className={styles.currentJobWrapper}>
+                        <div className={styles.currentJobSection}>
+                            <h3>{t('current_job', { job: currentJob?.title || gt(`values.${state.job}` as any) })}</h3>
+                            {currentJob && <p>{t('type', { type: t(currentJob.type) })}</p>}
+                            <p>{currentJob?.type === 'manual'
+                                ? t('income_manual', { income: currentJob.income })
+                                : currentJob?.type === 'passive'
+                                    ? t('income_passive', { income: currentJob.income })
+                                    : ''}
+                            </p>
+                            {currentJob?.cost && (
+                                <div className={styles.costs}>
+                                    <span>{gt('cost')} </span>
+                                    {currentJob.cost.health && <span className={`${styles.costItem} ${styles.costHealth}`}>{STAT_ICONS.HEALTH.icon} -{currentJob.cost.health} {gt('health').replace(':', '')}</span>}
+                                    {currentJob.cost.mood && <span className={`${styles.costItem} ${styles.costMood}`}>{STAT_ICONS.MOOD.icon} -{currentJob.cost.mood} {gt('mood').replace(':', '')}</span>}
+                                    {currentJob.cost.stamina && <span className={`${styles.costItem} ${styles.costStamina}`}>{STAT_ICONS.STAMINA.icon} -{currentJob.cost.stamina} {gt('stamina').replace(':', '')}</span>}
                                 </div>
-                            ))}
-                            <XPButton
-                                onClick={handleWork}
-                                disabled={state.health < (currentJob.cost?.health || 0)}
-                                className={`${styles.workButton} ${isAnimating ? styles.workButtonAnimating : ''}`}
-                            >
-                                {t('work_now')}
-                            </XPButton>
+                            )}
                         </div>
-                    )}
+
+                        {currentJob?.type === 'manual' && (
+                            <div className={styles.workContainer}>
+                                {moneyPopups.map(popup => (
+                                    <div key={popup.id} className={styles.floatingMoney}>
+                                        +${popup.amount}
+                                    </div>
+                                ))}
+                                <XPButton
+                                    onClick={handleWork}
+                                    disabled={state.health < (currentJob.cost?.health || 0) || (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) || state.stamina < (currentJob.cost?.stamina || 0)}
+                                    className={`${styles.workButton} ${isAnimating ? styles.workButtonAnimating : ''}`}
+                                >
+                                    {t('work_now')}
+                                </XPButton>
+                                {(state.health < (currentJob.cost?.health || 0) || (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) || state.stamina < (currentJob.cost?.stamina || 0)) && (
+                                    <div className={styles.workError}>
+                                        {state.health < (currentJob.cost?.health || 0)
+                                            ? t('error_low_health')
+                                            : state.stamina < (currentJob.cost?.stamina || 0)
+                                                ? gt('stamina').replace(':', '') + ' low!'
+                                                : t('error_low_mood')}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     <hr className={styles.divider} />
 
