@@ -3,10 +3,10 @@ export interface GameState {
     locale: 'en' | 'de';
     // Personal Status
     money: number;
-    status: string;
     job: string;
     mood: number;
-    satiety: number;
+    health: number;
+    stamina: number;
     education: string;
     english: string;
 
@@ -67,10 +67,10 @@ export const INITIAL_STATE: GameState = {
     version: 1,
     locale: 'en',
     money: 200,
-    status: "newbie",
     job: "loader",
     mood: 50,
-    satiety: 50,
+    health: 50,
+    stamina: 30,
     education: "basic",
     english: "none",
 

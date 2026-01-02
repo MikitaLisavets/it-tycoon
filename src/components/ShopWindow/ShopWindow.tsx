@@ -21,8 +21,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose }) => {
         if (state.money >= item.cost) {
             updateState({
                 money: state.money - item.cost,
-                satiety: Math.min(100, state.satiety + item.satiety),
-                // Buying food might restore mood too?
+                health: Math.min(100, state.health + item.health),
             });
         }
     };
@@ -35,7 +34,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose }) => {
                     <div key={item.id} className={styles.itemRow}>
                         <div className={styles.itemInfo}>
                             <span className={styles.itemName}>{item.name}</span>
-                            <span className={styles.itemCost}>{t('cost', { amount: item.cost })} (+{item.satiety} {t('satiety')})</span>
+                            <span className={styles.itemCost}>{t('cost', { amount: item.cost })} (+{item.health} {t('health')})</span>
                         </div>
                         <XPButton
                             onClick={() => handleBuy(item)}

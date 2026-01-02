@@ -77,8 +77,9 @@ function useGameStateInternal() {
                 }
 
                 // Decay Needs
-                next.satiety = Math.max(-100, next.satiety - GAME_CONSTANTS.DECAY_RATES.SATIETY_PER_TICK);
+                next.health = Math.max(-100, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
                 next.mood = Math.max(-100, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+                next.stamina = Math.max(0, next.stamina - GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK);
 
                 // Passive Income
                 if (hoursPassed > 0) {
@@ -89,7 +90,7 @@ function useGameStateInternal() {
                 }
 
                 // Check Game Over
-                if (next.satiety <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
                     next.gameOver = true;
                 }
 

@@ -23,10 +23,10 @@
         "date": "Date",
         "time": "Time",
         "money": "Money:",
-        "status": "Status:",
         "job": "Job:",
         "mood": "Mood:",
-        "satiety": "Satiety:",
+        "health": "Health:",
+        "stamina": "Stamina:",
         "education": "Education:",
         "english": "English:",
         "monitor": "Monitor:",
@@ -116,7 +116,7 @@
         "food": "Food",
         "buy": "Buy",
         "cost": "${{amount}}",
-        "satiety": "satiety"
+        "health": "health"
     },
     "Job": {
         "title": "Job Center",
@@ -143,5 +143,14 @@
         "game_over": "GAME OVER",
         "message": "You lost! Better manage your resources next time.",
         "restart": "Restart Game"
+    },
+    "Gym": {
+        "title": "Fitness Center",
+        "activities": "Training Activities",
+        "current_stamina": "Stamina",
+        "do": "Train",
+        "cost": "${{amount}}",
+        "stamina": "stamina",
+        "mood": "mood"
     }
 }

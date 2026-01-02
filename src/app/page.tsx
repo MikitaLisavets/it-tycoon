@@ -13,8 +13,10 @@ import ResetModal from "@/components/ResetModal/ResetModal";
 import ShopWindow from "@/components/ShopWindow/ShopWindow";
 import JobWindow from "@/components/JobWindow/JobWindow";
 import EntertainmentWindow from "@/components/EntertainmentWindow/EntertainmentWindow";
+import GymWindow from "@/components/GymWindow/GymWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import { useGameState } from "@/hooks/useGameState";
+import { STAT_ICONS } from "@/lib/game/constants";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -58,7 +60,7 @@ export default function Home() {
                                     <XPButton variant="primary" onClick={() => setActiveWindow('job')}>{t('buttons.job')}</XPButton>
                                     <XPButton variant="primary">{t('buttons.apartment')}</XPButton>
                                     <XPButton variant="primary" onClick={() => setActiveWindow('entertainment')}>{t('buttons.entertainment')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.hobby')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('gym')}>{t('buttons.hobby')}</XPButton>
                                     <XPButton variant="primary">{t('buttons.education')}</XPButton>
                                 </div>
                             </div>
@@ -93,10 +95,10 @@ export default function Home() {
                             {/* Top Summary Bar */}
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
-                                    <StatRow label={t('money')} value={Math.floor(state.money).toString()} />
-                                    <StatRow label={t('status')} value={t(`values.${state.status}`)} />
-                                    <StatRow label={t('mood')} value={Math.floor(state.mood).toString()} />
-                                    <StatRow label={t('satiety')} value={Math.floor(state.satiety).toString()} />
+                                    <StatRow label={t('money')} value={Math.floor(state.money).toString()} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
+                                    <StatRow label={t('mood')} value={Math.floor(state.mood).toString()} icon={STAT_ICONS.MOOD.icon} iconColor={STAT_ICONS.MOOD.color} />
+                                    <StatRow label={t('health')} value={Math.floor(state.health).toString()} icon={STAT_ICONS.HEALTH.icon} iconColor={STAT_ICONS.HEALTH.color} />
+                                    <StatRow label={t('stamina')} value={Math.floor(state.stamina).toString()} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
                                 </div>
                             </div>
 
@@ -160,6 +162,7 @@ export default function Home() {
                 <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} />
                 <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} />
                 <EntertainmentWindow isOpen={activeWindow === 'entertainment'} onClose={() => setActiveWindow(null)} />
+                <GymWindow isOpen={activeWindow === 'gym'} onClose={() => setActiveWindow(null)} />
             </div>
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}
@@ -179,10 +182,13 @@ export default function Home() {
     );
 }
 
-function StatRow({ label, value }: { label: string; value: string }) {
+function StatRow({ label, value, icon, iconColor }: { label: string; value: string; icon?: string; iconColor?: string }) {
     return (
         <div className={styles.statRow}>
-            <span className={styles.statLabel}>{label}</span>
+            <span className={styles.statLabel}>
+                {icon && <span className={styles.statIcon} style={{ color: iconColor }}>{icon} </span>}
+                {label}
+            </span>
             <span className={styles.statValue}>{value}</span>
         </div>
     );

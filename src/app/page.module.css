@@ -148,6 +148,12 @@
     font-weight: bold;
 }
 
+.statIcon {
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 2px;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .mainContent {
