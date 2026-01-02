@@ -32,9 +32,14 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             audioRef.current = new Audio('/sfx/coin.mp3');
-            audioRef.current.volume = 0.3;
         }
     }, []);
+
+    React.useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = (state.volume / 100) * 0.3;
+        }
+    }, [state.volume]);
 
     if (!isOpen) return null;
 

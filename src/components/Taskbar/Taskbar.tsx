@@ -10,7 +10,9 @@ interface TaskbarProps {
 
 const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const [isLangOpen, setIsLangOpen] = React.useState(false);
+    const [isVolumeOpen, setIsVolumeOpen] = React.useState(false);
     const langRef = React.useRef<HTMLDivElement>(null);
+    const volumeRef = React.useRef<HTMLDivElement>(null);
     const { state, updateState } = useGameState();
     const t = useTranslations('Taskbar');
 
@@ -18,9 +20,13 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
             const inLang = langRef.current && langRef.current.contains(target);
+            const inVolume = volumeRef.current && volumeRef.current.contains(target);
 
             if (!inLang) {
                 setIsLangOpen(false);
+            }
+            if (!inVolume) {
+                setIsVolumeOpen(false);
             }
         };
 
@@ -73,6 +79,28 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
             </div>
 
             <div className={styles.tray}>
+                <div className={styles.volumeControl} ref={volumeRef}>
+                    {isVolumeOpen && (
+                        <div className={styles.volumeDropdown}>
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={state.volume}
+                                onChange={(e) => updateState({ volume: parseInt(e.target.value) })}
+                                className={styles.volumeSlider}
+                            />
+                            <div className={styles.volumeLabel}>{state.volume}%</div>
+                        </div>
+                    )}
+                    <button
+                        onClick={() => setIsVolumeOpen(!isVolumeOpen)}
+                        className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''}`}
+                        title="Volume"
+                    >
+                        🔊
+                    </button>
+                </div>
                 <div className={styles.time}>
                     <span>{time}</span>
                     <span>{date}</span>

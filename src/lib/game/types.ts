@@ -12,6 +12,7 @@ export interface GameState {
     stamina: number;
     education: EducationLevel;
     english: string;
+    volume: number;
 
     // Computer Hardware
     computer: {
@@ -76,6 +77,7 @@ export const INITIAL_STATE: GameState = {
     stamina: 30,
     education: "none",
     english: "none",
+    volume: 50,
 
     computer: {
         monitor: "none",
