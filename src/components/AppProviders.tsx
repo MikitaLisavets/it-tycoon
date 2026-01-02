@@ -1,12 +1,11 @@
 "use client";
 
-import { GameStateProvider, useGameState } from "@/hooks/useGameState"; // Ensure import path is correct
+import { GameStateProvider, useGameState } from "@/hooks/useGameState";
 import { NextIntlClientProvider } from "next-intl";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useMemo } from "react";
 import enMessages from "../../messages/en.json";
-import deMessages from "../../messages/de.json"; // Assuming de.json exists or will be handled. Since only en exists currently, I might need to handle this.
+import deMessages from "../../messages/de.json";
 
-// Simple message loader (for now importing directly)
 const messagesMap: Record<string, any> = {
     en: enMessages,
     de: deMessages,
@@ -14,23 +13,21 @@ const messagesMap: Record<string, any> = {
 
 function LanguageProvider({ children }: { children: ReactNode }) {
     const { state, isInitialized } = useGameState();
-    const [messages, setMessages] = useState(enMessages);
 
-    useEffect(() => {
-        if (state.locale && messagesMap[state.locale]) {
-            setMessages(messagesMap[state.locale]);
-        }
+    const messages = useMemo(() => {
+        return messagesMap[state.locale] || enMessages;
     }, [state.locale]);
 
-    // Prevent flash of wrong content or hydration mismatch if needed
-    // But for now, since we default to 'en', it might be fine.
-    // However, if saved state is 'de', we might want to wait for init.
     if (!isInitialized) {
-        return null; // or a loading spinner
+        return null;
     }
 
     return (
-        <NextIntlClientProvider locale={state.locale} messages={messages}>
+        <NextIntlClientProvider
+            key={state.locale}
+            locale={state.locale}
+            messages={messages}
+        >
             {children}
         </NextIntlClientProvider>
     );

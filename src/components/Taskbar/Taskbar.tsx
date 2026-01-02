@@ -10,13 +10,16 @@ interface TaskbarProps {
 
 const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const [isLangOpen, setIsLangOpen] = React.useState(false);
-    const trayRef = React.useRef<HTMLDivElement>(null);
+    const langRef = React.useRef<HTMLDivElement>(null);
     const { state, updateState } = useGameState();
     const t = useTranslations('Taskbar');
 
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (trayRef.current && !trayRef.current.contains(event.target as Node)) {
+            const target = event.target as Node;
+            const inLang = langRef.current && langRef.current.contains(target);
+
+            if (!inLang) {
                 setIsLangOpen(false);
             }
         };
@@ -43,67 +46,18 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
 
             <div className={styles.divider} />
 
-            <div style={{ position: 'relative', justifySelf: 'flex-end' }}>
+            <div className={styles.langSwitcher} ref={langRef}>
                 {isLangOpen && (
-                    <div style={{
-                        position: 'absolute',
-                        bottom: '28px',
-                        right: '0',
-                        backgroundColor: '#c0c0c0',
-                        border: '2px solid #dfdfdf',
-                        borderRightColor: '#000000',
-                        borderBottomColor: '#000000',
-                        borderLeftColor: '#ffffff',
-                        borderTopColor: '#ffffff',
-                        padding: '2px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100px',
-                        zIndex: 1000
-                    }}>
+                    <div className={styles.langDropdown}>
                         <button
                             onClick={() => changeLanguage('en')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                textAlign: 'left',
-                                padding: '4px 8px',
-                                cursor: 'pointer',
-                                fontFamily: 'inherit',
-                                fontSize: '12px',
-                                width: '100%',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#000080';
-                                e.currentTarget.style.color = '#ffffff';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                                e.currentTarget.style.color = '#000000';
-                            }}
+                            className={styles.langOption}
                         >
                             English
                         </button>
                         <button
                             onClick={() => changeLanguage('de')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                textAlign: 'left',
-                                padding: '4px 8px',
-                                cursor: 'pointer',
-                                fontFamily: 'inherit',
-                                fontSize: '12px',
-                                width: '100%',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#000080';
-                                e.currentTarget.style.color = '#ffffff';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                                e.currentTarget.style.color = '#000000';
-                            }}
+                            className={styles.langOption}
                         >
                             Deutsch
                         </button>
@@ -112,24 +66,14 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 <button
                     onClick={() => setIsLangOpen(!isLangOpen)}
                     title="Switch Language"
-                    style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: 'white',
-                        cursor: 'pointer',
-                        marginRight: '8px',
-                        fontSize: '12px',
-                        textTransform: 'uppercase',
-                        padding: '2px 5px',
-                        boxShadow: isLangOpen ? 'inset 1px 1px #000, inset -1px -1px #fff' : 'none'
-                    }}
+                    className={`${styles.langButton} ${isLangOpen ? styles.langButtonActive : ''}`}
                 >
                     {state.locale}
                 </button>
             </div>
 
-            <div className={styles.tray} ref={trayRef}>
-                <div className={styles.time} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '11px', lineHeight: '1.1' }}>
+            <div className={styles.tray}>
+                <div className={styles.time}>
                     <span>{time}</span>
                     <span>{date}</span>
                 </div>

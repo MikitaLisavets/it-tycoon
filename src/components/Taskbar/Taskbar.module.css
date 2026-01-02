@@ -1,4 +1,5 @@
 .taskbar {
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -8,7 +9,6 @@
     display: flex;
     align-items: center;
     padding: 0;
-    z-index: 9999;
     font-family: var(--font-tahoma), sans-serif;
     user-select: none;
 }
@@ -49,18 +49,79 @@
 }
 
 .tray {
-    margin-left: auto;
     background-color: #0B77E9;
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 10px 0 5px;
     border-left: 1px solid #1042AF;
     box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.2);
     color: white;
     font-size: 11px;
 }
 
+.langSwitcher {
+    margin-left: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.langButton {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-tahoma), sans-serif;
+}
+
+.langButtonActive {
+    box-shadow: inset 1px 1px #000, inset -1px -1px #ffffff;
+}
+
+.langDropdown {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+    background-color: #c0c0c0;
+    border: 2px solid #dfdfdf;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+    border-left-color: #ffffff;
+    border-top-color: #ffffff;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    z-index: 1000;
+}
+
+.langOption {
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    width: 100%;
+    color: #000;
+}
+
+.langOption:hover {
+    background: #000080;
+    color: #ffffff;
+}
+
 .time {
     margin-left: 5px;
+    display: flex;
+    flex-direction: column;
 }
