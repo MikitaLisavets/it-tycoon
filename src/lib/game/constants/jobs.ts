@@ -31,7 +31,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         title: 'Hacker',
         type: 'passive',
         income: 100,
-        requirements: { education: 'college', computerTier: 1 }
+        requirements: { education: 'college', computerTier: 2 }
     },
     ceo: {
         title: 'CEO',

@@ -4,7 +4,6 @@ export type JobId = 'none' | 'beggar' | 'loader' | 'salesman' | 'dev' | 'hacker'
 export interface GameState {
     version: number;
     locale: 'en' | 'de';
-    // Personal Status
     money: number;
     job: JobId;
     mood: number;

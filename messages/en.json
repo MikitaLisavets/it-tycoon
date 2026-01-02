@@ -32,7 +32,7 @@
         "time": "Time",
         "money": "Money:",
         "job": "Job:",
-        "mood": "Mood:",
+        "mood": "Happiness:",
         "health": "Health:",
         "stamina": "Stamina:",
         "education": "Education:",
@@ -147,7 +147,7 @@
         "passive": "Passive",
         "requirements": "Requirements",
         "computer_tier": "Computer: Tier",
-        "error_low_mood": "Mood too low!",
+        "error_low_mood": "Happiness too low!",
         "error_low_health": "Health too low!",
         "help_content": "The Job Center is where you can find work. Manual jobs require clicking to earn money, while passive jobs provide hourly income. Most jobs have requirements like education, stamina, or computer tiers."
     },
@@ -157,8 +157,8 @@
         "do": "Do",
         "cost": "${amount}",
         "free": "Free",
-        "mood": "mood",
-        "help_content": "Keep your mood high by participating in various activities. Higher mood is often required for certain actions and helps prevent game over."
+        "mood": "Happiness",
+        "help_content": "Keep your happiness high by participating in various activities. Higher mood is often required for certain actions and helps prevent game over."
     },
     "GameOver": {
         "title": "Game Over",
@@ -173,6 +173,6 @@
         "do": "Train",
         "cost": "${amount}",
         "stamina": "stamina",
-        "mood": "mood"
+        "mood": "Happiness"
     }
 }
