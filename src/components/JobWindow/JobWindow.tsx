@@ -22,7 +22,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
     const handleWork = () => {
         // Manual work
         if (currentJob.type === 'manual') {
-            const energyCost = currentJob.cost || 5;
+            const energyCost = currentJob.cost?.health || 0;
             if (state.health >= energyCost && state.mood >= 1) {
                 updateState({
                     money: state.money + currentJob.income,
@@ -46,7 +46,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 {currentJob?.type === 'manual' && (
-                    <XPButton onClick={handleWork} disabled={state.health < (currentJob.cost || 5)}>
+                    <XPButton onClick={handleWork} disabled={state.health < (currentJob.cost?.health || 0)}>
                         {t('work_now')}
                     </XPButton>
                 )}

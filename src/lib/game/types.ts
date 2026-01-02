@@ -125,11 +125,10 @@ export const INITIAL_STATE: GameState = {
 };
 
 export interface Job {
-    id?: string;
     title: string;
     type: 'manual' | 'passive';
     income: number;
-    cost?: number; // health/mood cost per work action
+    cost?: { health?: number; mood?: number; stamina?: number };
 }
 
 export interface FoodItem {
