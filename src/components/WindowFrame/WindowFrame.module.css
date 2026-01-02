@@ -102,3 +102,27 @@
     z-index: 10;
     box-shadow: none;
 }
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ACA899;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    min-width: 150px;
+    padding: 2px 0;
+}
+
+.dropdownItem {
+    padding: 3px 20px 3px 20px;
+    cursor: default;
+    font-size: 13px;
+    color: #000;
+}
+
+.dropdownItem:hover {
+    background-color: #316AC5;
+    color: white;
+}

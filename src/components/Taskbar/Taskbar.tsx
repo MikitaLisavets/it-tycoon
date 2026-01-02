@@ -40,7 +40,6 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
             >
                 {t('donate')} ❤️
             </button>
-            {/* <div className={styles.divider} /> */}
 
             {/* Window List Area - Can be populated dynamically later */}
 
@@ -127,6 +126,8 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 >
                     {state.locale}
                 </button>
+
+                <div className={styles.divider} />
                 <div className={styles.time} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '11px', lineHeight: '1.1' }}>
                     <span>{time}</span>
                     <span>{date}</span>

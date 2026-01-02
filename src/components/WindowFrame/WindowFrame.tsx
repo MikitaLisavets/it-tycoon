@@ -126,6 +126,26 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
       boxShadow: isDragging ? '4px 4px 10px rgba(0,0,0,0.5)' : undefined
     };
 
+  // Dropdown state
+  const [isFileMenuOpen, setIsFileMenuOpen] = React.useState(false);
+  const fileMenuRef = React.useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fileMenuRef.current && !fileMenuRef.current.contains(event.target as Node)) {
+        setIsFileMenuOpen(false);
+      }
+    };
+
+    if (isFileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFileMenuOpen]);
+
   return (
     <div
       ref={windowRef}
@@ -152,7 +172,28 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ title, children, width = '100
         </div>
       </div>
       <div className={styles.menuBar}>
-        <span className={styles.menuItem}>{t('file')}</span>
+        <div style={{ position: 'relative' }} ref={fileMenuRef}>
+          <span
+            className={styles.menuItem}
+            onClick={() => setIsFileMenuOpen(!isFileMenuOpen)}
+            style={{ backgroundColor: isFileMenuOpen ? '#316AC5' : undefined, color: isFileMenuOpen ? 'white' : undefined }}
+          >
+            {t('file')}
+          </span>
+          {isFileMenuOpen && (
+            <div className={styles.dropdown}>
+              <div
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setIsFileMenuOpen(false);
+                  if (onCloseClick) onCloseClick();
+                }}
+              >
+                Reset Game
+              </div>
+            </div>
+          )}
+        </div>
         <span className={styles.menuItem} onClick={onHelpClick}>{t('help')}</span>
       </div>
       <div className={styles.content}>
