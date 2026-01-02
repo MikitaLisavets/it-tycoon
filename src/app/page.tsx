@@ -71,12 +71,6 @@ export default function Home() {
                                 <StatRow label={t('sound')} value={t(`values.${state.computer.sound}`)} />
                                 <StatRow label={t('video')} value={t(`values.${state.computer.video}`)} />
                             </Panel>
-
-                            <div className={styles.infoBox}>
-                                {t('welcome_msg')}
-                                <br />
-                                {t('programmer_msg')}
-                            </div>
                         </div>
 
                         {/* Center Column */}
