@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { GameState, INITIAL_STATE } from '../lib/game/types';
+import { GAME_CONSTANTS, JOBS } from '../lib/game/constants';
 
 const STORAGE_KEY = 'it-tycoon-state';
 
@@ -41,6 +42,63 @@ function useGameStateInternal() {
         }
         setIsInitialized(true);
     }, []);
+
+    // Game Loop
+    useEffect(() => {
+        if (!isInitialized || state.gameOver) return;
+
+        const interval = setInterval(() => {
+            setState((prev) => {
+                const next = { ...prev };
+                next.date = { ...prev.date };
+
+                // Update Time
+                next.date.minute += GAME_CONSTANTS.GAME_MINUTES_PER_TICK;
+                let hoursPassed = 0;
+
+                if (next.date.minute >= 60) {
+                    hoursPassed = Math.floor(next.date.minute / 60);
+                    next.date.hour += hoursPassed;
+                    next.date.minute %= 60;
+                }
+
+                if (next.date.hour >= 24) {
+                    next.date.day += Math.floor(next.date.hour / 24);
+                    next.date.hour %= 24;
+
+                    if (next.date.day > 30) {
+                        next.date.day = 1;
+                        next.date.month += 1;
+                        if (next.date.month > 12) {
+                            next.date.month = 1;
+                            next.date.year += 1;
+                        }
+                    }
+                }
+
+                // Decay Needs
+                next.satiety = Math.max(-100, next.satiety - GAME_CONSTANTS.DECAY_RATES.SATIETY_PER_TICK);
+                next.mood = Math.max(-100, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+
+                // Passive Income
+                if (hoursPassed > 0) {
+                    const currentJob = JOBS[prev.job];
+                    if (currentJob && currentJob.type === 'passive') {
+                        next.money += currentJob.income * hoursPassed;
+                    }
+                }
+
+                // Check Game Over
+                if (next.satiety <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                    next.gameOver = true;
+                }
+
+                return next;
+            });
+        }, GAME_CONSTANTS.TICK_RATE_MS);
+
+        return () => clearInterval(interval);
+    }, [isInitialized, state.gameOver]);
 
     // Save to localStorage on change
     useEffect(() => {

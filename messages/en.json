@@ -110,5 +110,38 @@
     "Taskbar": {
         "donate": "Donate",
         "start": "Start"
+    },
+    "Shop": {
+        "title": "Supermarket",
+        "food": "Food",
+        "buy": "Buy",
+        "cost": "${{amount}}",
+        "satiety": "satiety"
+    },
+    "Job": {
+        "title": "Job Center",
+        "current_job": "Current Job: {{job}}",
+        "type": "Type: {{type}}",
+        "income_manual": "Income: ${{income}} (per click)",
+        "income_passive": "Income: ${{income}} / hour",
+        "work_now": "Work Now",
+        "available_jobs": "Available Jobs",
+        "apply": "Apply",
+        "manual": "Manual",
+        "passive": "Passive"
+    },
+    "Entertainment": {
+        "title": "Entertainment",
+        "activities": "Activities",
+        "do": "Do",
+        "cost": "${{amount}}",
+        "free": "Free",
+        "mood": "mood"
+    },
+    "GameOver": {
+        "title": "Game Over",
+        "game_over": "GAME OVER",
+        "message": "You lost! Better manage your resources next time.",
+        "restart": "Restart Game"
     }
 }

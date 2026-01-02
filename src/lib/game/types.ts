@@ -52,17 +52,25 @@ export interface GameState {
         school: string;
         english: string;
         courses: string;
+    },
+    date: {
+        day: number;
+        month: number;
+        year: number;
+        hour: number;
+        minute: number;
     };
+    gameOver: boolean;
 }
 
 export const INITIAL_STATE: GameState = {
     version: 1,
     locale: 'en',
-    money: 122,
+    money: 200,
     status: "newbie",
     job: "loader",
-    mood: 3,
-    satiety: -11,
+    mood: 50,
+    satiety: 50,
     education: "basic",
     english: "none",
 
@@ -104,4 +112,14 @@ export const INITIAL_STATE: GameState = {
         english: "not_studying",
         courses: "not_studying",
     },
+
+    // Time
+    date: {
+        day: 1,
+        month: 1,
+        year: 2000,
+        hour: 9,
+        minute: 0,
+    },
+    gameOver: false,
 };

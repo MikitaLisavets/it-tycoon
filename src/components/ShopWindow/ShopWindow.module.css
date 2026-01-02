@@ -1,0 +1,25 @@
+.itemRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.itemName {
+    font-weight: bold;
+}
+
+.itemCost {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.buyBtn {
+    min-width: 60px;
+}

@@ -10,6 +10,10 @@ import XPButton from "@/components/XPButton/XPButton";
 import Taskbar from "@/components/Taskbar/Taskbar";
 import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
 import ResetModal from "@/components/ResetModal/ResetModal";
+import ShopWindow from "@/components/ShopWindow/ShopWindow";
+import JobWindow from "@/components/JobWindow/JobWindow";
+import EntertainmentWindow from "@/components/EntertainmentWindow/EntertainmentWindow";
+import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import { useGameState } from "@/hooks/useGameState";
 
 export default function Home() {
@@ -17,19 +21,16 @@ export default function Home() {
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, updateState, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
+    const [activeWindow, setActiveWindow] = useState<string | null>(null);
+
+    const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
+    const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
 
     const handleReset = () => {
         resetState();
         setIsResetOpen(false);
         // Force a full reload to ensure all components reset correctly
         window.location.href = window.location.origin + window.location.pathname;
-    };
-
-    const handleWork = () => {
-        updateState({
-            money: state.money + 10,
-            satiety: state.satiety - 2,
-        });
     };
 
     if (!isInitialized) {
@@ -54,9 +55,9 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.lifestyle')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={handleWork}>{t('buttons.job')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('job')}>{t('buttons.job')}</XPButton>
                                     <XPButton variant="primary">{t('buttons.apartment')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.entertainment')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('entertainment')}>{t('buttons.entertainment')}</XPButton>
                                     <XPButton variant="primary">{t('buttons.hobby')}</XPButton>
                                     <XPButton variant="primary">{t('buttons.education')}</XPButton>
                                 </div>
@@ -82,7 +83,7 @@ export default function Home() {
                                 </div>
                                 <div className={styles.taskContent}>
                                     <XPButton variant="primary">{t('buttons.bank')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.shop')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('shop')}>{t('buttons.shop')}</XPButton>
                                 </div>
                             </div>
                         </div>
@@ -92,17 +93,17 @@ export default function Home() {
                             {/* Top Summary Bar */}
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
-                                    <StatRow label={t('money')} value={state.money.toString()} />
+                                    <StatRow label={t('money')} value={Math.floor(state.money).toString()} />
                                     <StatRow label={t('status')} value={t(`values.${state.status}`)} />
-                                    <StatRow label={t('mood')} value={state.mood.toString()} />
-                                    <StatRow label={t('satiety')} value={state.satiety.toString()} />
+                                    <StatRow label={t('mood')} value={Math.floor(state.mood).toString()} />
+                                    <StatRow label={t('satiety')} value={Math.floor(state.satiety).toString()} />
                                 </div>
                             </div>
 
                             {/* Main Info Grid */}
                             <div className={styles.panelGrid}>
                                 <Panel label={t('panels.personal_status')}>
-                                    <StatRow label={t('job')} value={t(`values.${state.job}`)} />
+                                    <StatRow label={t('job')} value={t(`values.${state.job}`) /* Should use mapped job title eventually */} />
                                     <StatRow label={t('education')} value={t(`values.${state.education}`)} />
                                     <StatRow label={t('english')} value={t(`values.${state.english}`)} />
                                 </Panel>
@@ -154,13 +155,25 @@ export default function Home() {
                     </div>
 
                 </WindowFrame>
+
+                {/* Inner windows rendered outside main window for full-page movement */}
+                <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} />
+                <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} />
+                <EntertainmentWindow isOpen={activeWindow === 'entertainment'} onClose={() => setActiveWindow(null)} />
             </div>
-            <Taskbar date="13/1/26" time="7:00" />
+            <Taskbar
+                date={formatDate(state.date.day, state.date.month, state.date.year)}
+                time={formatTime(state.date.hour, state.date.minute)}
+            />
             <OnboardingModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
             <ResetModal
                 isOpen={isResetOpen}
                 onConfirm={handleReset}
                 onCancel={() => setIsResetOpen(false)}
+            />
+            <GameOverModal
+                isOpen={state.gameOver}
+                onRestart={handleReset}
             />
         </div>
     );
