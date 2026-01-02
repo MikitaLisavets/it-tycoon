@@ -1,3 +1,5 @@
+export type EducationLevel = 'none' | 'school' | 'college' | 'university';
+
 export interface GameState {
     version: number;
     locale: 'en' | 'de';
@@ -7,7 +9,7 @@ export interface GameState {
     mood: number;
     health: number;
     stamina: number;
-    education: string;
+    education: EducationLevel;
     english: string;
 
     // Computer Hardware
@@ -71,7 +73,7 @@ export const INITIAL_STATE: GameState = {
     mood: 50,
     health: 50,
     stamina: 30,
-    education: "basic",
+    education: "none",
     english: "none",
 
     computer: {
@@ -124,11 +126,21 @@ export const INITIAL_STATE: GameState = {
     gameOver: false,
 };
 
+export interface JobRequirements {
+    education?: EducationLevel;
+    courses?: string[];
+    computerTier?: number;
+    money?: number;
+    health?: number;
+    stamina?: number;
+}
+
 export interface Job {
     title: string;
     type: 'manual' | 'passive';
     income: number;
     cost?: { health?: number; mood?: number; stamina?: number };
+    requirements?: JobRequirements;
 }
 
 export interface FoodItem {

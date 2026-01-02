@@ -85,7 +85,9 @@
         "values": {
             "newbie": "Neuling",
             "loader": "Lader",
-            "basic": "Grundlegend",
+            "school": "Schule",
+            "college": "Kolleg",
+            "university": "Universität",
             "none": "Keine",
             "intel_486": "Intel 486",
             "used": "Gebraucht",
@@ -110,5 +112,49 @@
     "Taskbar": {
         "donate": "Spenden",
         "start": "Start"
+    },
+    "Shop": {
+        "title": "Supermarkt",
+        "food": "Essen",
+        "buy": "Kaufen",
+        "cost": "{{amount}} €",
+        "health": "Gesundheit"
+    },
+    "Job": {
+        "title": "Arbeitsvermittlung",
+        "current_job": "Aktueller Job: {{job}}",
+        "type": "Typ: {{type}}",
+        "income_manual": "Einkommen: {{income}} € (pro Klick)",
+        "income_passive": "Einkommen: {{income}} € / Stunde",
+        "work_now": "Jetzt arbeiten",
+        "available_jobs": "Verfügbare Jobs",
+        "apply": "Bewerben",
+        "manual": "Manuell",
+        "passive": "Passiv",
+        "requirements": "Anforderungen",
+        "computer_tier": "Computer: Stufe"
+    },
+    "Entertainment": {
+        "title": "Unterhaltung",
+        "activities": "Aktivitäten",
+        "do": "Machen",
+        "cost": "{{amount}} €",
+        "free": "Kostenlos",
+        "mood": "Laune"
+    },
+    "GameOver": {
+        "title": "Game Over",
+        "game_over": "GAME OVER",
+        "message": "Du hast verloren! Verwalte deine Ressourcen nächstes Mal besser.",
+        "restart": "Spiel neu starten"
+    },
+    "Gym": {
+        "title": "Fitnessstudio",
+        "activities": "Training",
+        "current_stamina": "Ausdauer",
+        "do": "Trainieren",
+        "cost": "{{amount}} €",
+        "stamina": "Ausdauer",
+        "mood": "Laune"
     }
 }

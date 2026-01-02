@@ -85,7 +85,9 @@
         "values": {
             "newbie": "Newbie",
             "loader": "Loader",
-            "basic": "Basic",
+            "school": "School",
+            "college": "College",
+            "university": "University",
             "none": "None",
             "intel_486": "Intel 486",
             "used": "Used",
@@ -128,7 +130,9 @@
         "available_jobs": "Available Jobs",
         "apply": "Apply",
         "manual": "Manual",
-        "passive": "Passive"
+        "passive": "Passive",
+        "requirements": "Requirements",
+        "computer_tier": "Computer: Tier"
     },
     "Entertainment": {
         "title": "Entertainment",

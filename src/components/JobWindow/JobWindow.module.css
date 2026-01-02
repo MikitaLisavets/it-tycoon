@@ -12,11 +12,43 @@
     border-top: 1px solid #ACA899;
 }
 
+.jobList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .jobItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    padding: 8px;
+    border: 1px solid #ACA899;
+    background: #fdfdfd;
+}
+
+.jobInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.jobTitle {
+    font-weight: bold;
+}
+
+.requirements {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.reqTitle {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.reqList {
+    font-style: italic;
 }
 
 .availableTitle {

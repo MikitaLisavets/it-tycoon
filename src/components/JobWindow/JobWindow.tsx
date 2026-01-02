@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { JOBS } from '../../lib/game/constants/index';
+import { JOBS, HARDWARE_TIERS } from '../../lib/game/constants/index';
 import styles from './JobWindow.module.css';
 
 interface JobWindowProps {
@@ -14,10 +14,20 @@ interface JobWindowProps {
 const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Job');
+    const gt = useTranslations('Game');
 
     if (!isOpen) return null;
 
     const currentJob = JOBS[state.job];
+
+    const calculateComputerTier = () => {
+        const components = Object.values(state.computer);
+        if (components.length === 0) return 0;
+
+        // The overall tier is the minimum tier of any component
+        const tiers = components.map(comp => HARDWARE_TIERS[comp] || 0);
+        return Math.min(...tiers);
+    };
 
     const handleWork = () => {
         // Manual work
@@ -31,6 +41,53 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
                 });
             }
         }
+    };
+
+    const checkRequirements = (jobId: string) => {
+        const job = JOBS[jobId];
+        if (!job.requirements) return true;
+
+        const reqs = job.requirements;
+
+        if (reqs.money && state.money < reqs.money) return false;
+        if (reqs.health && state.health < reqs.health) return false;
+        if (reqs.stamina && state.stamina < reqs.stamina) return false;
+        if (reqs.education && state.education !== reqs.education) return false;
+
+        if (reqs.computerTier !== undefined) {
+            if (calculateComputerTier() < reqs.computerTier) return false;
+        }
+
+        return true;
+    };
+
+    const handleApply = (jobId: string) => {
+        if (checkRequirements(jobId)) {
+            updateState({ job: jobId });
+        }
+    };
+
+    const renderRequirements = (jobId: string) => {
+        const job = JOBS[jobId];
+        if (!job.requirements) return null;
+
+        const reqs = job.requirements;
+        const requirementsList = [];
+
+        if (reqs.education) requirementsList.push(`${gt('education')}: ${gt(`values.${reqs.education}`)}`);
+        if (reqs.money) requirementsList.push(`${gt('money')} ${reqs.money}`);
+        if (reqs.health) requirementsList.push(`${gt('health')} ${reqs.health}`);
+        if (reqs.stamina) requirementsList.push(`${gt('stamina')} ${reqs.stamina}`);
+        if (reqs.computerTier !== undefined) requirementsList.push(`${t('computer_tier')} ${reqs.computerTier}`);
+
+        if (requirementsList.length === 0) return null;
+
+        return (
+            <div className={styles.requirements}>
+                <span className={styles.reqTitle}>{t('requirements')}:</span>
+                <span className={styles.reqList}>{requirementsList.join(', ')}</span>
+            </div>
+        );
     };
 
     return (
@@ -54,16 +111,29 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose }) => {
                 <hr className={styles.divider} />
 
                 <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
-                {/* Check list if we want to show job listing to switch jobs */}
-                {Object.entries(JOBS).map(([key, job]) => (
-                    <div key={key} className={styles.jobItem}>
-                        <span>{job.title} ({t(job.type)})</span>
-                        {/* Logic to switch status/job? Usually requires requirements */}
-                        {key !== state.job && (
-                            <XPButton disabled={true}>{t('apply')}</XPButton>
-                        )}
-                    </div>
-                ))}
+                <div className={styles.jobList}>
+                    {Object.entries(JOBS).map(([key, job]) => {
+                        const isCurrent = key === state.job;
+                        const canApply = checkRequirements(key);
+
+                        return (
+                            <div key={key} className={styles.jobItem}>
+                                <div className={styles.jobInfo}>
+                                    <span className={styles.jobTitle}>{job.title} ({t(job.type)})</span>
+                                    {!isCurrent && renderRequirements(key)}
+                                </div>
+                                {!isCurrent && (
+                                    <XPButton
+                                        onClick={() => handleApply(key)}
+                                        disabled={!canApply}
+                                    >
+                                        {t('apply')}
+                                    </XPButton>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </WindowFrame>
     );
