@@ -12,7 +12,6 @@
     flex: 1;
     position: relative;
     width: 100%;
-    height: calc(100vh - 28px);
     /* Minus taskbar height */
 }
 
