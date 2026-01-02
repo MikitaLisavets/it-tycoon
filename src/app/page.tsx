@@ -43,7 +43,7 @@ export default function Home() {
         <div className={styles.container}>
             <div className={styles.desktopArea}>
                 <WindowFrame
-                    title={t('me_and_my_computer')}
+                    title={t('window_title')}
                     width="800px"
                     onHelpClick={() => setIsHelpOpen(true)}
                     onCloseClick={() => setIsResetOpen(true)}

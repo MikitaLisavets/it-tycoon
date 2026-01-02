@@ -19,7 +19,7 @@
         "ok": "OK"
     },
     "Game": {
-        "me_and_my_computer": "Me and My Computer",
+        "window_title": "My Computer",
         "date": "Date",
         "time": "Time",
         "money": "Money:",
