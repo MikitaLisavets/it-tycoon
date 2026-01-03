@@ -150,6 +150,10 @@
         "requirements": "Requirements",
         "previous_job": "Previous Job",
         "computer_tier": "Computer: Tier",
+        "level": "Level",
+        "experience": "Experience",
+        "exp_short": "Exp",
+        "max_level": "MAX",
         "error_low_mood": "Happiness too low!",
         "error_low_health": "Health too low!",
         "help_content": "The Job Center is where you can find work. Manual jobs require clicking to earn money, while passive jobs provide hourly income. Most jobs have requirements like education, stamina, or computer tiers."

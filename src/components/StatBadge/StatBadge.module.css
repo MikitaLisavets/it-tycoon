@@ -1,0 +1,16 @@
+.statBadge {
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.icon {
+    font-size: 1.1em;
+}
+
+.label {
+    font-size: 0.9em;
+    font-weight: normal;
+}

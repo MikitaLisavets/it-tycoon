@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
+import StatBadge from '../StatBadge/StatBadge';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
 import { JobId, Job } from '../../lib/game/types';
@@ -26,6 +27,14 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
+
+    // ... (rest of the component logic remains same)
+
+    // (Skipping to render section for brevity in this replace call, but ensuring full component structure is maintained in actual implementation)
+    // I will only replace the relevant section to avoid huge diffs if possible, 
+    // but the instruction says "replace content" so I'll be careful.
+    // Actually I'll use target content to be precise.
+
 
     // Use a ref for the audio to avoid reloading on every render
     const audioRef = React.useRef<HTMLAudioElement | null>(null);
@@ -53,6 +62,15 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
         return Math.min(...tiers);
     };
 
+    const jobLevel = state.jobLevels[state.job] || 0;
+    const jobExp = state.jobExp[state.job] || 0;
+    const expToNext = (jobLevel + 1) * 10;
+    const isMaxLevel = jobLevel >= 10;
+
+    const baseIncome = currentJob?.income || 0;
+    const bonusIncome = Math.floor(baseIncome * (jobLevel * 0.1));
+    const totalIncome = baseIncome + bonusIncome;
+
     const handleWork = () => {
         if (currentJob && currentJob.id !== 'none') {
             const healthCost = currentJob.cost?.health || 0;
@@ -71,16 +89,27 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                 setTimeout(() => setIsAnimating(false), 150);
 
                 const popupId = Date.now();
-                setMoneyPopups(prev => [...prev, { id: popupId, amount: currentJob.income }]);
+                setMoneyPopups(prev => [...prev, { id: popupId, amount: totalIncome }]);
                 setTimeout(() => {
                     setMoneyPopups(prev => prev.filter(p => p.id !== popupId));
                 }, 800);
 
+                // Exp and Level logic
+                let newExp = jobExp + 1;
+                let newLevel = jobLevel;
+
+                if (!isMaxLevel && newExp >= expToNext) {
+                    newExp = 0;
+                    newLevel = Math.min(10, jobLevel + 1);
+                }
+
                 updateState({
-                    money: state.money + currentJob.income,
+                    money: state.money + totalIncome,
                     health: state.health - healthCost,
                     mood: state.mood - moodCost,
                     stamina: state.stamina - staminaCost,
+                    jobExp: { ...state.jobExp, [state.job]: isMaxLevel ? jobExp : newExp },
+                    jobLevels: { ...state.jobLevels, [state.job]: newLevel }
                 });
             }
         }
@@ -152,15 +181,37 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                 <div className={styles.container}>
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>
-                            <h3>{t('current_job', { job: gt(`values.${state.job}`) })}</h3>
-                            <p>{currentJob?.income ? t('income_manual', { income: currentJob.income }) : ''}</p>
+                            <h3>
+                                {t('current_job', { job: gt(`values.${state.job}`) })}
+                                {state.job !== 'none' && <span className={styles.levelBadge}>{t('level')} {jobLevel}</span>}
+                            </h3>
+                            {state.job !== 'none' && (
+                                <>
+                                    <p>
+                                        {t('income_manual', { income: totalIncome })}
+                                        {jobLevel > 0 && <span className={styles.bonusText}>(+{bonusIncome})</span>}
+                                    </p>
+                                    <div className={styles.expContainer}>
+                                        <div className={styles.expInfo}>
+                                            <span>{t('experience')}</span>
+                                            <span>{isMaxLevel ? t('max_level') : `${jobExp}/${expToNext}`}</span>
+                                        </div>
+                                        <div className={styles.expBar}>
+                                            <div
+                                                className={styles.expBarFill}
+                                                style={{ width: isMaxLevel ? '100%' : `${(jobExp / expToNext) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
                             {currentJob?.cost && (
                                 <div className={styles.costs}>
                                     <span>{gt('cost')} </span>
-                                    {currentJob.cost.health && <span className={styles.costItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} -{currentJob.cost.health} {gt('health').replace(':', '')}</span>}
-                                    {currentJob.cost.mood && <span className={styles.costItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} -{currentJob.cost.mood} {gt('mood').replace(':', '')}</span>}
-                                    {currentJob.cost.stamina && <span className={styles.costItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} -{currentJob.cost.stamina} {gt('stamina').replace(':', '')}</span>}
+                                    {currentJob.cost.health && <StatBadge stat="HEALTH" value={currentJob.cost.health} prefix="-" label={gt('health').replace(':', '')} />}
+                                    {currentJob.cost.mood && <StatBadge stat="MOOD" value={currentJob.cost.mood} prefix="-" label={gt('mood').replace(':', '')} />}
+                                    {currentJob.cost.stamina && <StatBadge stat="STAMINA" value={currentJob.cost.stamina} prefix="-" label={gt('stamina').replace(':', '')} />}
                                 </div>
                             )}
                         </div>

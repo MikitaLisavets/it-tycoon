@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
+import StatBadge from '../StatBadge/StatBadge';
 import { useGameState } from '../../hooks/useGameState';
 import { REST_ACTIVITIES, RestActivity, FUN_ITEMS, GYM_ACTIVITIES, STAT_ICONS } from '../../lib/game/constants/index';
 import styles from './ActivitiesWindow.module.css';
@@ -144,10 +145,10 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     {costs && (
                         <div className={styles.costs}>
                             <span>{gt('cost')} </span>
-                            {costs.money > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.MONEY.color }}>{STAT_ICONS.MONEY.icon} -{costs.money} {t('money')}</span>}
-                            {costs.health > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} -{costs.health} {t('health')}</span>}
-                            {costs.mood > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} -{costs.mood} {t('mood')}</span>}
-                            {costs.stamina > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} -{costs.stamina} {t('stamina')}</span>}
+                            {costs.money > 0 && <StatBadge stat="MONEY" value={costs.money} prefix="-" label={t('money')} />}
+                            {costs.health > 0 && <StatBadge stat="HEALTH" value={costs.health} prefix="-" label={t('health')} />}
+                            {costs.mood > 0 && <StatBadge stat="MOOD" value={costs.mood} prefix="-" label={t('mood')} />}
+                            {costs.stamina > 0 && <StatBadge stat="STAMINA" value={costs.stamina} prefix="-" label={t('stamina')} />}
                             {Object.values(costs).every(v => v === 0) && <span>{t('Entertainment.free')}</span>}
                         </div>
                     )}
@@ -156,13 +157,13 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                         <div className={styles.effects}>
                             <span>{gt('effects')}: </span>
                             {effects.stamina === 'full' ? (
-                                <span className={styles.effectItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} {t('Rest.effect_full')}</span>
+                                <StatBadge stat="STAMINA" value={t('Rest.effect_full')} />
                             ) : effects.stamina > 0 ? (
-                                <span className={styles.effectItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} +{effects.stamina} {gt('stamina').replace(':', '')}</span>
+                                <StatBadge stat="STAMINA" value={effects.stamina} prefix="+" label={gt('stamina').replace(':', '')} />
                             ) : null}
-                            {effects.mood > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} +{effects.mood} {gt('mood').replace(':', '')}</span>}
-                            {effects.health > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} +{effects.health} {gt('health').replace(':', '')}</span>}
-                            {effects.money > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.MONEY.color }}>{STAT_ICONS.MONEY.icon} +{effects.money} {gt('money').replace(':', '')}</span>}
+                            {effects.mood > 0 && <StatBadge stat="MOOD" value={effects.mood} prefix="+" label={gt('mood').replace(':', '')} />}
+                            {effects.health > 0 && <StatBadge stat="HEALTH" value={effects.health} prefix="+" label={gt('health').replace(':', '')} />}
+                            {effects.money > 0 && <StatBadge stat="MONEY" value={effects.money} prefix="+" label={gt('money').replace(':', '')} />}
                         </div>
                     )}
                     {duration && <span>{STAT_ICONS.TIME.icon} {duration}</span>}

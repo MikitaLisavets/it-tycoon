@@ -45,9 +45,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
-    border: 1px solid #ACA899;
-    background: #fdfdfd;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.jobItem:last-child {
+    border-bottom: none;
 }
 
 .jobInfo {
@@ -152,4 +155,50 @@
     font-weight: bold;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
+}
+
+.levelBadge {
+    display: inline-block;
+    background: #008000;
+    color: white;
+    padding: 2px 6px;
+    font-size: 0.75em;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.expContainer {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.expInfo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75em;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.expBar {
+    height: 6px;
+    background: #ECE9D8;
+    border: 1px solid #ACA899;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.expBarFill {
+    height: 100%;
+    background: linear-gradient(to bottom, #76FF76, #00B300);
+    transition: width 0.3s ease;
+}
+
+.bonusText {
+    font-size: 0.8em;
+    color: #008000;
+    font-weight: bold;
+    margin-left: 4px;
 }

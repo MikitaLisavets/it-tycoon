@@ -120,6 +120,7 @@ export default function Home() {
                                 <div className={styles.taskContent}>
                                     <XPButton variant="primary" onClick={() => setActiveWindow('job')}>{t('buttons.job')}</XPButton>
                                     <XPButton variant="primary" onClick={() => setActiveWindow('activities')}>{t('buttons.activities')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('shop')}>{t('buttons.shop')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.education')}</XPButton>
                                 </div>
                             </div>
@@ -144,7 +145,6 @@ export default function Home() {
                                 </div>
                                 <div className={styles.taskContent}>
                                     <XPButton variant="primary" disabled>{t('buttons.bank')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('shop')}>{t('buttons.shop')}</XPButton>
                                 </div>
                             </div>
                         </div>

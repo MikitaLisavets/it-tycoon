@@ -61,6 +61,8 @@ export interface GameState {
         english: string;
         courses: string;
     },
+    jobLevels: Record<string, number>; // jobId -> level (0-10)
+    jobExp: Record<string, number>;    // jobId -> exp
     cooldowns: {
         rest: Record<string, number>; // activityId -> timestamp
     };
@@ -127,6 +129,24 @@ export const INITIAL_STATE: GameState = {
         english: "not_studying",
         courses: "not_studying",
     },
+    jobLevels: {
+        beggar: 0,
+        courier: 0,
+        office_worker: 0,
+        junior_dev: 0,
+        senior_dev: 0,
+        startup_founder: 0,
+        it_investor: 0,
+    },
+    jobExp: {
+        beggar: 0,
+        courier: 0,
+        office_worker: 0,
+        junior_dev: 0,
+        senior_dev: 0,
+        startup_founder: 0,
+        it_investor: 0,
+    },
 
     cooldowns: {
         rest: {},
@@ -162,6 +182,7 @@ export interface FoodItem {
     name: string;
     cost: number;
     health: number;
+    stamina?: number;
 }
 
 export interface FunItem {
