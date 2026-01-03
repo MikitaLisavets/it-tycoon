@@ -5,7 +5,7 @@ import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
-import { JobId } from '../../lib/game/types';
+import { JobId, Job } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
 interface JobWindowProps {
@@ -54,12 +54,12 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     };
 
     const handleWork = () => {
-        if (currentJob && currentJob.type === 'manual') {
+        if (currentJob && currentJob.id !== 'none') {
             const healthCost = currentJob.cost?.health || 0;
             const moodCost = currentJob.cost?.mood || 0;
             const staminaCost = currentJob.cost?.stamina || 0;
 
-            if (state.health >= healthCost && (moodCost === 0 || state.mood >= moodCost) && state.stamina >= staminaCost) {
+            if (state.health >= healthCost && (state.mood >= moodCost) && state.stamina >= staminaCost) {
                 // Play sound
                 if (audioRef.current) {
                     audioRef.current.currentTime = 0;
@@ -90,13 +90,29 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
         const job = JOBS[jobId];
         if (!job || !job.requirements) return true;
         const reqs = job.requirements;
-        if (reqs.money && state.money < reqs.money) return false;
-        if (reqs.health && state.health < reqs.health) return false;
-        if (reqs.stamina && state.stamina < reqs.stamina) return false;
-        if (reqs.education && state.education !== reqs.education) return false;
+
+        if (reqs.education && state.education !== reqs.education) {
+            // Check if user has higher education than required? 
+            // For now assume strict match or hierarchical check if needed. 
+            // Usually if I have University I can do College jobs.
+            // But let's stick to strict match first or improve logic.
+            // Actually 'none' < 'school' < 'college' < 'university'.
+            const levels = ['none', 'school', 'college', 'university'];
+            if (levels.indexOf(state.education) < levels.indexOf(reqs.education)) return false;
+        }
+
         if (reqs.computerTier !== undefined) {
             if (calculateComputerTier() < reqs.computerTier) return false;
         }
+
+        if (reqs.previousJob && state.job !== reqs.previousJob) {
+            return false;
+        }
+
+        if (reqs.mood && state.mood < reqs.mood) {
+            return false;
+        }
+
         return true;
     };
 
@@ -111,16 +127,21 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
         if (!job || !job.requirements) return null;
         const reqs = job.requirements;
         const requirementsList = [];
-        if (reqs.education) requirementsList.push(`${gt('education')}: ${gt(`values.${reqs.education}`)}`);
-        if (reqs.money) requirementsList.push(`${gt('money')} ${reqs.money}`);
-        if (reqs.health) requirementsList.push(`${gt('health')} ${reqs.health}`);
-        if (reqs.stamina) requirementsList.push(`${gt('stamina')} ${reqs.stamina}`);
+
+        if (reqs.education) requirementsList.push(`${gt('education')} ${gt(`values.${reqs.education}`)}`);
         if (reqs.computerTier !== undefined) requirementsList.push(`${t('computer_tier')} ${reqs.computerTier}`);
+        if (reqs.previousJob) requirementsList.push(`${t('previous_job')}: ${gt(`values.${reqs.previousJob}`)}`);
+        if (reqs.mood) requirementsList.push(`${gt('mood')} ${reqs.mood}`);
+
         if (requirementsList.length === 0) return null;
         return (
             <div className={styles.requirements}>
                 <span className={styles.reqTitle}>{t('requirements')}:</span>
-                <span className={styles.reqList}>{requirementsList.join(', ')}</span>
+                <ul className={styles.reqList}>
+                    {requirementsList.map((req, index) => (
+                        <li key={index}>{req}</li>
+                    ))}
+                </ul>
             </div>
         );
     };
@@ -131,25 +152,20 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                 <div className={styles.container}>
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>
-                            <h3>{t('current_job', { job: currentJob?.title || gt(`values.${state.job}` as any) })}</h3>
-                            {currentJob && <p>{t('type', { type: t(currentJob.type) })}</p>}
-                            <p>{currentJob?.type === 'manual'
-                                ? t('income_manual', { income: currentJob.income })
-                                : currentJob?.type === 'passive'
-                                    ? t('income_passive', { income: currentJob.income })
-                                    : ''}
-                            </p>
+                            <h3>{t('current_job', { job: gt(`values.${state.job}`) })}</h3>
+                            <p>{currentJob?.income ? t('income_manual', { income: currentJob.income }) : ''}</p>
+
                             {currentJob?.cost && (
                                 <div className={styles.costs}>
                                     <span>{gt('cost')} </span>
-                                    {currentJob.cost.health && <span className={`${styles.costItem} ${styles.costHealth}`}>{STAT_ICONS.HEALTH.icon} -{currentJob.cost.health} {gt('health').replace(':', '')}</span>}
-                                    {currentJob.cost.mood && <span className={`${styles.costItem} ${styles.costMood}`}>{STAT_ICONS.MOOD.icon} -{currentJob.cost.mood} {gt('mood').replace(':', '')}</span>}
-                                    {currentJob.cost.stamina && <span className={`${styles.costItem} ${styles.costStamina}`}>{STAT_ICONS.STAMINA.icon} -{currentJob.cost.stamina} {gt('stamina').replace(':', '')}</span>}
+                                    {currentJob.cost.health && <span className={styles.costItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} -{currentJob.cost.health} {gt('health').replace(':', '')}</span>}
+                                    {currentJob.cost.mood && <span className={styles.costItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} -{currentJob.cost.mood} {gt('mood').replace(':', '')}</span>}
+                                    {currentJob.cost.stamina && <span className={styles.costItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} -{currentJob.cost.stamina} {gt('stamina').replace(':', '')}</span>}
                                 </div>
                             )}
                         </div>
 
-                        {currentJob?.type === 'manual' && (
+                        {currentJob && currentJob.id !== 'none' && (
                             <div className={styles.workContainer}>
                                 {moneyPopups.map(popup => (
                                     <div key={popup.id} className={styles.floatingMoney}>
@@ -158,20 +174,26 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                                 ))}
                                 <XPButton
                                     onClick={handleWork}
-                                    disabled={state.health < (currentJob.cost?.health || 0) || (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) || state.stamina < (currentJob.cost?.stamina || 0)}
+                                    disabled={
+                                        (currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
+                                        (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
+                                        (currentJob.cost?.stamina ? state.stamina < currentJob.cost.stamina : false)
+                                    }
                                     className={`${styles.workButton} ${isAnimating ? styles.workButtonAnimating : ''}`}
                                 >
                                     {t('work_now')}
                                 </XPButton>
-                                {(state.health < (currentJob.cost?.health || 0) || (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) || state.stamina < (currentJob.cost?.stamina || 0)) && (
-                                    <div className={styles.workError}>
-                                        {state.health < (currentJob.cost?.health || 0)
-                                            ? t('error_low_health')
-                                            : state.stamina < (currentJob.cost?.stamina || 0)
-                                                ? gt('stamina').replace(':', '') + ' low!'
-                                                : t('error_low_mood')}
-                                    </div>
-                                )}
+                                {((currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
+                                    (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
+                                    (currentJob.cost?.stamina ? state.stamina < currentJob.cost.stamina : false)) && (
+                                        <div className={styles.workError}>
+                                            {currentJob.cost?.health && state.health < currentJob.cost.health
+                                                ? t('error_low_health')
+                                                : currentJob.cost?.stamina && state.stamina < currentJob.cost.stamina
+                                                    ? gt('stamina').replace(':', '') + ' low!'
+                                                    : t('error_low_mood')}
+                                        </div>
+                                    )}
                             </div>
                         )}
                     </div>
@@ -181,7 +203,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                     <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
                     <div className={styles.jobList}>
                         {Object.entries(JOBS)
-                            .filter(([key]) => key !== state.job) // Filter out current job
+                            .filter(([key]) => key !== 'none') // Filter out current job and 'none'
                             .map(([key, job]) => {
                                 const jobId = key as JobId;
                                 const canApply = checkRequirements(jobId);
@@ -189,15 +211,20 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                                 return (
                                     <div key={jobId} className={styles.jobItem}>
                                         <div className={styles.jobInfo}>
-                                            <span className={styles.jobTitle}>{job.title} ({t(job.type)})</span>
+                                            <span className={styles.jobTitle}>{gt(`values.${job.id}`)}</span>
+                                            <span className={styles.jobIncome}>${job.income}</span>
                                             {renderRequirements(jobId)}
                                         </div>
-                                        <XPButton
-                                            onClick={() => handleApply(jobId)}
-                                            disabled={!canApply}
-                                        >
-                                            {t('apply')}
-                                        </XPButton>
+                                        {key !== state.job ? (
+                                            <XPButton
+                                                onClick={() => handleApply(jobId)}
+                                                disabled={!canApply}
+                                            >
+                                                {t('apply')}
+                                            </XPButton>
+                                        ) : (
+                                            <p>{t('current_job', { job: gt(`values.${state.job}`) })}</p>
+                                        )}
                                     </div>
                                 );
                             })}

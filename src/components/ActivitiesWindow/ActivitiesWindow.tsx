@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import { useGameState } from '../../hooks/useGameState';
-import { REST_ACTIVITIES, RestActivity, FUN_ITEMS, GYM_ACTIVITIES } from '../../lib/game/constants/index';
+import { REST_ACTIVITIES, RestActivity, FUN_ITEMS, GYM_ACTIVITIES, STAT_ICONS } from '../../lib/game/constants/index';
 import styles from './ActivitiesWindow.module.css';
 
 interface ActivitiesWindowProps {
@@ -17,6 +17,7 @@ type Tab = 'rest' | 'entertainment' | 'gym';
 const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations();
+    const gt = useTranslations('Game');
     const [activeRest, setActiveRest] = useState<{ id: string; startTime: number; duration: number } | null>(null);
     const [progress, setProgress] = useState(0);
     const [activeTab, setActiveTab] = useState<Tab>('rest');
@@ -127,7 +128,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
     // Unified Row Component
     const ActivityRow = ({
         name,
-        cost,
+        costs,
         effects,
         duration,
         actionLabel,
@@ -140,13 +141,31 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
             <div className={styles.info}>
                 <span className={styles.name}>{name}</span>
                 <div className={styles.details}>
-                    <span className={styles.cost}>
-                        {cost}
-                    </span>
-                    <span className={styles.effect}>
-                        {effects}
-                    </span>
-                    {duration && <span> • {duration}</span>}
+                    {costs && (
+                        <div className={styles.costs}>
+                            <span>{gt('cost')} </span>
+                            {costs.money > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.MONEY.color }}>{STAT_ICONS.MONEY.icon} -{costs.money} {t('money')}</span>}
+                            {costs.health > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} -{costs.health} {t('health')}</span>}
+                            {costs.mood > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} -{costs.mood} {t('mood')}</span>}
+                            {costs.stamina > 0 && <span className={styles.costItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} -{costs.stamina} {t('stamina')}</span>}
+                            {Object.values(costs).every(v => v === 0) && <span>{t('Entertainment.free')}</span>}
+                        </div>
+                    )}
+
+                    {effects && (
+                        <div className={styles.effects}>
+                            <span>{gt('effects')}: </span>
+                            {effects.stamina === 'full' ? (
+                                <span className={styles.effectItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} {t('Rest.effect_full')}</span>
+                            ) : effects.stamina > 0 ? (
+                                <span className={styles.effectItem} style={{ color: STAT_ICONS.STAMINA.color }}>{STAT_ICONS.STAMINA.icon} +{effects.stamina} {gt('stamina').replace(':', '')}</span>
+                            ) : null}
+                            {effects.mood > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.MOOD.color }}>{STAT_ICONS.MOOD.icon} +{effects.mood} {gt('mood').replace(':', '')}</span>}
+                            {effects.health > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.HEALTH.color }}>{STAT_ICONS.HEALTH.icon} +{effects.health} {gt('health').replace(':', '')}</span>}
+                            {effects.money > 0 && <span className={styles.effectItem} style={{ color: STAT_ICONS.MONEY.color }}>{STAT_ICONS.MONEY.icon} +{effects.money} {gt('money').replace(':', '')}</span>}
+                        </div>
+                    )}
+                    {duration && <span>{STAT_ICONS.TIME.icon} {duration}</span>}
                 </div>
             </div>
             <div className={styles.actionArea}>
@@ -202,11 +221,6 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                             const costMoney = activity.cost?.money || 0;
                             const costHealth = activity.cost?.health || 0;
 
-                            const costText = [];
-                            if (costMoney > 0) costText.push(t('Rest.cost_money', { money: costMoney }));
-                            if (costHealth > 0) costText.push(t('Rest.cost_health', { health: costHealth }));
-                            if (costText.length === 0) costText.push('Free');
-
                             const effectText = activity.stamina === 'full'
                                 ? t('Rest.effect_full')
                                 : t('Rest.effect_stamina', { amount: activity.stamina });
@@ -218,8 +232,8 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                 <ActivityRow
                                     key={activity.id}
                                     name={t(`Rest.${activity.name}`)}
-                                    cost={costText.join(' ')}
-                                    effects={effectText}
+                                    costs={{ money: costMoney, health: costHealth }}
+                                    effects={{ stamina: activity.stamina }}
                                     duration={t('Rest.duration', { seconds: activity.duration })}
                                     actionLabel={t('Rest.start')}
                                     onAction={() => startRest(activity)}
@@ -238,8 +252,8 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                             <ActivityRow
                                 key={item.id}
                                 name={item.name}
-                                cost={item.cost > 0 ? t('Entertainment.cost', { amount: item.cost }) : t('Entertainment.free')}
-                                effects={`+${item.mood} ${t('Entertainment.mood')}`}
+                                costs={{ money: item.cost }}
+                                effects={{ mood: item.mood }}
                                 actionLabel={t('Entertainment.do')}
                                 onAction={() => handleFun(item)}
                                 disabled={state.money < item.cost}
@@ -259,8 +273,8 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                 <ActivityRow
                                     key={activity.id}
                                     name={activity.name}
-                                    cost={t('Gym.cost', { amount: activity.cost })}
-                                    effects={effects.join(', ')}
+                                    costs={{ money: activity.cost }}
+                                    effects={{ stamina: activity.stamina, mood: activity.mood }}
                                     actionLabel={t('Gym.do')}
                                     onAction={() => handleGym(activity)}
                                     disabled={state.money < activity.cost}

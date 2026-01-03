@@ -1,5 +1,7 @@
 .container {
     padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .currentJobWrapper {
@@ -25,18 +27,6 @@
 
 .costItem {
     font-weight: bold;
-}
-
-.costHealth {
-    color: #e74c3c;
-}
-
-.costMood {
-    color: #f39c12;
-}
-
-.costStamina {
-    color: #3498db;
 }
 
 .divider {
@@ -82,6 +72,8 @@
 
 .reqList {
     font-style: italic;
+    margin: 5px 0 0 0;
+    padding-left: 20px;
 }
 
 .availableTitle {

@@ -1,5 +1,7 @@
-export type EducationLevel = 'none' | 'school' | 'college' | 'university';
-export type JobId = 'none' | 'beggar' | 'loader' | 'salesman' | 'dev' | 'hacker' | 'ceo' | 'investor';
+export type EducationId = 'none' | 'school' | 'college' | 'university';
+export type JobId = 'none' | 'beggar' | 'courier' | 'office_worker' | 'junior_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
+
+
 
 export interface GameState {
     version: number;
@@ -12,7 +14,7 @@ export interface GameState {
     maxHealth: number;
     stamina: number;
     maxStamina: number;
-    education: EducationLevel;
+    education: EducationId;
     english: string;
     volume: number;
 
@@ -142,17 +144,14 @@ export const INITIAL_STATE: GameState = {
 };
 
 export interface JobRequirements {
-    education?: EducationLevel;
-    courses?: string[];
+    education?: EducationId;
     computerTier?: number;
-    money?: number;
-    health?: number;
-    stamina?: number;
+    previousJob?: JobId;
+    mood?: number;
 }
 
 export interface Job {
-    title: string;
-    type: 'manual' | 'passive';
+    id: JobId;
     income: number;
     cost?: { health?: number; mood?: number; stamina?: number };
     requirements?: JobRequirements;

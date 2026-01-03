@@ -91,3 +91,34 @@
     padding-bottom: 4px;
     margin-bottom: 5px;
 }
+
+.costs {
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.costItem {
+    font-weight: bold;
+}
+
+.effects {
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.effectItem {
+    font-weight: bold;
+}
+
+.effect {
+    /* For backward compatibility or simple text */
+    color: #388e3c;
+}

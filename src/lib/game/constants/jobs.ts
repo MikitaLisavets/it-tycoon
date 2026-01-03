@@ -1,48 +1,74 @@
 import { Job, JobId } from '../types';
 
 export const JOBS: Partial<Record<JobId, Job>> = {
+    none: {
+        id: 'none',
+        income: 0
+    },
     beggar: {
-        title: 'Beggar',
-        type: 'manual',
+        id: 'beggar',
         income: 1,
-        cost: { mood: 1 }
+        cost: { mood: 1, stamina: 1 }
     },
-    loader: {
-        title: 'Loader',
-        type: 'manual',
-        income: 5,
-        cost: { health: 2, mood: 1 },
-        requirements: { stamina: 70 }
+    courier: {
+        id: 'courier',
+        income: 3,
+        cost: { health: 1, stamina: 2 },
+        requirements: {
+            mood: 30
+        }
     },
-    salesman: {
-        title: 'Salesman',
-        type: 'manual',
-        income: 10,
-        cost: { mood: 3 },
-        requirements: { education: 'school' }
+    office_worker: {
+        id: 'office_worker',
+        income: 8,
+        cost: { mood: 1, stamina: 3 },
+        requirements: {
+            education: 'school',
+            mood: 40
+        }
     },
-    dev: {
-        title: 'Developer',
-        type: 'passive',
-        income: 50,
-        requirements: { education: 'college', computerTier: 1 }
+    junior_dev: {
+        id: 'junior_dev',
+        income: 15,
+        cost: { mood: 1, stamina: 3 },
+        requirements: {
+            education: "college",
+            computerTier: 1,
+            previousJob: "office_worker",
+            mood: 45
+        }
     },
-    hacker: {
-        title: 'Hacker',
-        type: 'passive',
+    senior_dev: {
+        id: 'senior_dev',
+        income: 40,
+        cost: { stamina: 4, mood: 2 },
+        requirements: {
+            education: "university",
+            computerTier: 2,
+            previousJob: "junior_dev",
+            mood: 60
+        }
+    },
+    startup_founder: {
+        id: 'startup_founder',
+        income: 80,
+        cost: { stamina: 5, mood: 3, health: 1 },
+        requirements: {
+            education: "university",
+            computerTier: 3,
+            previousJob: "senior_dev",
+            mood: 70
+        }
+    },
+    it_investor: {
+        id: 'it_investor',
         income: 100,
-        requirements: { education: 'college', computerTier: 2 }
-    },
-    ceo: {
-        title: 'CEO',
-        type: 'passive',
-        income: 300,
-        requirements: { education: 'university', stamina: 80 }
-    },
-    investor: {
-        title: 'Investor',
-        type: 'passive',
-        income: 500,
-        requirements: { education: 'university', money: 100000, computerTier: 2 }
+        cost: { stamina: 8, mood: 5, health: 2 },
+        requirements: {
+            education: "university",
+            computerTier: 4,
+            previousJob: "startup_founder",
+            mood: 80
+        }
     }
 };
