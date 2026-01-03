@@ -33,7 +33,14 @@ function useGameStateInternal() {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_STATE));
                 } else {
                     // Ensure new fields like locale are present even if version matches
-                    setState({ ...INITIAL_STATE, ...parsed });
+                    const mergedState = { ...INITIAL_STATE, ...parsed };
+
+                    // Migration for Max Stats if missing
+                    if (!parsed.maxMood) mergedState.maxMood = 100;
+                    if (!parsed.maxHealth) mergedState.maxHealth = 100;
+                    if (!parsed.maxStamina) mergedState.maxStamina = 100;
+
+                    setState(mergedState);
                 }
             } catch (error) {
                 console.error('Failed to parse saved state:', error);
@@ -77,9 +84,12 @@ function useGameStateInternal() {
                 }
 
                 // Decay Needs
-                next.health = Math.max(-100, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
-                next.mood = Math.max(-100, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
-                next.stamina = Math.max(0, next.stamina - GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK);
+                next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
+                next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+
+                // Stamina Regen (Clamp to Max)
+                const maxStamina = next.maxStamina || 100; // Fallback
+                next.stamina = Math.min(maxStamina, Math.max(0, next.stamina + GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK));
 
                 // Passive Income
                 if (hoursPassed > 0) {

@@ -7,8 +7,11 @@ export interface GameState {
     money: number;
     job: JobId;
     mood: number;
+    maxMood: number;
     health: number;
+    maxHealth: number;
     stamina: number;
+    maxStamina: number;
     education: EducationLevel;
     english: string;
     volume: number;
@@ -72,8 +75,11 @@ export const INITIAL_STATE: GameState = {
     money: 100,
     job: "none",
     mood: 50,
+    maxMood: 100,
     health: 50,
+    maxHealth: 100,
     stamina: 30,
+    maxStamina: 100,
     education: "none",
     english: "none",
     volume: 50,
@@ -122,7 +128,7 @@ export const INITIAL_STATE: GameState = {
         day: 1,
         month: 1,
         year: 2000,
-        hour: 9,
+        hour: 0,
         minute: 0,
     },
     gameOver: false,

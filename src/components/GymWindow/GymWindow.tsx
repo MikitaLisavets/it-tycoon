@@ -21,21 +21,20 @@ const GymWindow: React.FC<GymWindowProps> = ({ isOpen, onClose, onReset }) => {
     if (!isOpen) return null;
 
     const handleActivity = (activity: typeof GYM_ACTIVITIES[0]) => {
-        if (state.money >= activity.cost) {
-            const updates: any = {
-                money: state.money - activity.cost,
-                stamina: Math.min(100, state.stamina + activity.stamina),
-                health: Math.max(-100, state.health + (activity.health || 0)),
-            };
+        const updates: any = {
+            money: state.money - activity.cost,
+            stamina: Math.min(state.maxStamina, state.stamina + activity.stamina),
+            health: Math.max(0, Math.min(state.maxHealth, state.health + (activity.health || 0))),
+        };
 
-            // Some activities also improve mood (like yoga)
-            if (activity.mood) {
-                updates.mood = Math.min(100, state.mood + activity.mood);
-            }
-
-            updateState(updates);
+        // Some activities also improve mood (like yoga)
+        if (activity.mood) {
+            updates.mood = Math.min(state.maxMood, state.mood + activity.mood);
         }
-    };
+
+        updateState(updates);
+    }
+
 
     return (
         <>

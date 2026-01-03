@@ -174,5 +174,11 @@
         "cost": "${amount}",
         "stamina": "stamina",
         "mood": "Happiness"
+    },
+    "Notifications": {
+        "low_health_title": "Critical Health!",
+        "low_health": "Your health is dangerously low. Visit the Supermarket!",
+        "low_mood_title": "Depression Imminent!",
+        "low_mood": "You are very unhappy. Do something fun!"
     }
 }

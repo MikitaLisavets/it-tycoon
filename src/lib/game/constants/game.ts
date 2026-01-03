@@ -3,9 +3,10 @@ export const GAME_CONSTANTS = {
     GAME_MINUTES_PER_TICK: 30,
     DAY_LENGTH_MINUTES: 24 * 60, // 1440
     DECAY_RATES: {
-        HEALTH_PER_TICK: 0, //0.3,   // Slower decay
-        MOOD_PER_TICK: 0, //0.2,     // Slower decay
-        STAMINA_PER_TICK: 0, //0.05, // Much slower decay
+        HEALTH_PER_TICK: 0.1,   // Slower decay
+        MOOD_PER_TICK: 0.1,     // Slower decay
+        STAMINA_PER_TICK: 0.5, // +1 every 2 seconds (0.5 per tick)
     },
-    GAME_OVER_THRESHOLD: -50, // Less harsh
+    GAME_OVER_THRESHOLD: 0, // Game over at 0
+    CRITICAL_THRESHOLD: 10, // Warning/Red text threshold
 };

@@ -1,0 +1,55 @@
+.container {
+    position: fixed;
+    bottom: 40px;
+    /* Above taskbar */
+    right: 10px;
+    width: 250px;
+    background-color: #FFFFE1;
+    /* XP Tooltip Yellow */
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    font-family: 'Tahoma', sans-serif;
+    font-size: 11px;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.title {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.closeButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    color: #666;
+}
+
+.closeButton:hover {
+    color: #000;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

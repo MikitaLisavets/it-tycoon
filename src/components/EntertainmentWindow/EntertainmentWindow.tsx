@@ -24,7 +24,7 @@ const EntertainmentWindow: React.FC<EntertainmentWindowProps> = ({ isOpen, onClo
         if (state.money >= item.cost) {
             updateState({
                 money: state.money - item.cost,
-                mood: Math.min(100, state.mood + item.mood),
+                mood: Math.min(state.maxMood, state.mood + item.mood),
             });
         }
     };

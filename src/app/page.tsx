@@ -15,19 +15,63 @@ import JobWindow from "@/components/JobWindow/JobWindow";
 import EntertainmentWindow from "@/components/EntertainmentWindow/EntertainmentWindow";
 import GymWindow from "@/components/GymWindow/GymWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
+import Notification from "@/components/Notification/Notification";
 import { useGameState } from "@/hooks/useGameState";
-import { STAT_ICONS } from "@/lib/game/constants/index";
+import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, updateState, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
+    const tNotification = useTranslations('Notifications');
     const [activeWindow, setActiveWindow] = useState<string | null>(null);
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
+    const [notification, setNotification] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number } | null>(null);
+    const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
+    const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
+
+    // Notification Queue Processor
+    useEffect(() => {
+        if (!notification && notificationQueue.length > 0) {
+            const next = notificationQueue[0];
+            setNotification(next);
+            setNotificationQueue(prev => prev.slice(1));
+        }
+    }, [notification, notificationQueue]);
+
+    // Notification Logic (Generator)
+    useEffect(() => {
+        if (!isInitialized) return;
+
+        const now = Date.now();
+        const COOLDOWN = 60000; // 1 minute cooldown for same warning
+
+        // Check Health
+        if (state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
+            setNotificationQueue(prev => [...prev, {
+                id: now,
+                title: tNotification('low_health_title'),
+                message: tNotification('low_health'),
+                type: 'warning'
+            }]);
+            setLastWarnings(prev => ({ ...prev, health: now }));
+        }
+
+        // Check Mood
+        if (state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
+            setNotificationQueue(prev => [...prev, {
+                id: now + 1, // Ensure distinct ID if same tick
+                title: tNotification('low_mood_title'),
+                message: tNotification('low_mood'),
+                type: 'warning'
+            }]);
+            setLastWarnings(prev => ({ ...prev, mood: now }));
+        }
+    }, [state.health, state.mood, isInitialized, lastWarnings, t]);
 
     // Auto-onboarding for first time visit
     useEffect(() => {
@@ -114,9 +158,21 @@ export default function Home() {
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
                                     <StatRow label={t('money')} value={Math.floor(state.money).toString()} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
-                                    <StatRow label={t('mood')} value={Math.floor(state.mood).toString()} icon={STAT_ICONS.MOOD.icon} iconColor={STAT_ICONS.MOOD.color} />
-                                    <StatRow label={t('health')} value={Math.floor(state.health).toString()} icon={STAT_ICONS.HEALTH.icon} iconColor={STAT_ICONS.HEALTH.color} />
-                                    <StatRow label={t('stamina')} value={Math.floor(state.stamina).toString()} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
+                                    <StatRow
+                                        label={t('mood')}
+                                        value={`${Math.floor(state.mood)}/${state.maxMood}`}
+                                        icon={STAT_ICONS.MOOD.icon}
+                                        iconColor={STAT_ICONS.MOOD.color}
+                                        isCritical={state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD}
+                                    />
+                                    <StatRow
+                                        label={t('health')}
+                                        value={`${Math.floor(state.health)}/${state.maxHealth}`}
+                                        icon={STAT_ICONS.HEALTH.icon}
+                                        iconColor={STAT_ICONS.HEALTH.color}
+                                        isCritical={state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD}
+                                    />
+                                    <StatRow label={t('stamina')} value={`${Math.floor(state.stamina)}/${state.maxStamina}`} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
                                 </div>
                             </div>
 
@@ -196,13 +252,22 @@ export default function Home() {
                 isOpen={state.gameOver}
                 onRestart={handleReset}
             />
+            {notification && (
+                <Notification
+                    key={notification.id}
+                    title={notification.title}
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification(null)}
+                />
+            )}
         </div>
     );
 }
 
-function StatRow({ label, value, icon, iconColor }: { label: string; value: string; icon?: string; iconColor?: string }) {
+function StatRow({ label, value, icon, iconColor, isCritical }: { label: string; value: string; icon?: string; iconColor?: string; isCritical?: boolean }) {
     return (
-        <div className={styles.statRow}>
+        <div className={`${styles.statRow} ${isCritical ? styles.critical : ''}`}>
             <span className={styles.statLabel}>
                 {icon && <span className={styles.statIcon} style={{ color: iconColor }}>{icon} </span>}
                 {label}

@@ -153,6 +153,11 @@
     margin-right: 2px;
 }
 
+.critical .statLabel,
+.critical .statValue {
+    color: red !important;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .mainContent {

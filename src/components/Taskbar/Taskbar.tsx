@@ -47,7 +47,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 className={styles.startButton}
                 onClick={() => window.open('https://ko-fi.com/mikiapps', '_blank')}
             >
-                {t('donate')} ❤️
+                {t('donate')}{' '}❤️
             </button>
 
             <div className={styles.divider} />
@@ -57,7 +57,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 onClick={() => window.open('https://mikiapps.com', '_blank')}
             >
                 <img src="icons/world.png" alt="" className={styles.windowIcon} />
-                <span className={styles.windowTitle}>Explore more apps at MikiApps</span>
+                <span className={styles.windowTitle}>MikiApps.com</span>
             </button>
 
             <div className={styles.langSwitcher} ref={langRef}>
