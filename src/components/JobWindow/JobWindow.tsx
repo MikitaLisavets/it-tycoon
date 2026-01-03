@@ -6,6 +6,7 @@ import HelpModal from '../HelpModal/HelpModal';
 import StatBadge from '../StatBadge/StatBadge';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
+import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
 import { JobId, Job } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
@@ -68,8 +69,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     const isMaxLevel = jobLevel >= 10;
 
     const baseIncome = currentJob?.income || 0;
-    const bonusIncome = Math.floor(baseIncome * (jobLevel * 0.1));
-    const totalIncome = baseIncome + bonusIncome;
+    const bonusIncome = calculateLevelBonus(baseIncome, jobLevel);
+    const totalIncome = calculateLevelIncome(baseIncome, jobLevel);
 
     const handleWork = () => {
         if (currentJob && currentJob.id !== 'none') {
@@ -121,11 +122,6 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
         const reqs = job.requirements;
 
         if (reqs.education && state.education !== reqs.education) {
-            // Check if user has higher education than required? 
-            // For now assume strict match or hierarchical check if needed. 
-            // Usually if I have University I can do College jobs.
-            // But let's stick to strict match first or improve logic.
-            // Actually 'none' < 'school' < 'college' < 'university'.
             const levels = ['none', 'school', 'college', 'university'];
             if (levels.indexOf(state.education) < levels.indexOf(reqs.education)) return false;
         }
@@ -134,8 +130,10 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
             if (calculateComputerTier() < reqs.computerTier) return false;
         }
 
-        if (reqs.previousJob && state.job !== reqs.previousJob) {
-            return false;
+        if (reqs.previousJob) {
+            if (state.job !== reqs.previousJob) return false;
+            // CHECK FOR LEVEL 10
+            if ((state.jobLevels[reqs.previousJob] || 0) < 10) return false;
         }
 
         if (reqs.mood && state.mood < reqs.mood) {
@@ -159,7 +157,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
 
         if (reqs.education) requirementsList.push(`${gt('education')} ${gt(`values.${reqs.education}`)}`);
         if (reqs.computerTier !== undefined) requirementsList.push(`${t('computer_tier')} ${reqs.computerTier}`);
-        if (reqs.previousJob) requirementsList.push(`${t('previous_job')}: ${gt(`values.${reqs.previousJob}`)}`);
+        if (reqs.previousJob) {
+            requirementsList.push(t('previous_job_max_level', { job: gt(`values.${reqs.previousJob}`) }));
+        }
         if (reqs.mood) requirementsList.push(`${gt('mood')} ${reqs.mood}`);
 
         if (requirementsList.length === 0) return null;
@@ -188,8 +188,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                             {state.job !== 'none' && (
                                 <>
                                     <p>
-                                        {t('income_manual', { income: totalIncome })}
-                                        {jobLevel > 0 && <span className={styles.bonusText}>(+{bonusIncome})</span>}
+                                        {t('income_manual', { income: totalIncome.toFixed(2) })}
+                                        {jobLevel > 0 && <span className={styles.bonusText}>(+{bonusIncome.toFixed(2)})</span>}
                                     </p>
                                     <div className={styles.expContainer}>
                                         <div className={styles.expInfo}>
@@ -220,7 +220,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                             <div className={styles.workContainer}>
                                 {moneyPopups.map(popup => (
                                     <div key={popup.id} className={styles.floatingMoney}>
-                                        +${popup.amount}
+                                        +${popup.amount.toFixed(2)}
                                     </div>
                                 ))}
                                 <XPButton
@@ -254,16 +254,26 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                     <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
                     <div className={styles.jobList}>
                         {Object.entries(JOBS)
-                            .filter(([key]) => key !== 'none') // Filter out current job and 'none'
+                            .filter(([key]) => key !== 'none')
                             .map(([key, job]) => {
                                 const jobId = key as JobId;
                                 const canApply = checkRequirements(jobId);
+
+                                // Calculate income at current level for this job
+                                const currentJobLevel = state.jobLevels[jobId] || 0;
+                                const baseJobIncome = job.income;
+                                const totalJobIncome = calculateLevelIncome(baseJobIncome, currentJobLevel);
 
                                 return (
                                     <div key={jobId} className={styles.jobItem}>
                                         <div className={styles.jobInfo}>
                                             <span className={styles.jobTitle}>{gt(`values.${job.id}`)}</span>
-                                            <span className={styles.jobIncome}>${job.income}</span>
+                                            <span className={styles.jobIncome}>
+                                                ${totalJobIncome.toFixed(2)}
+                                                {currentJobLevel > 0 && (
+                                                    <span className={styles.bonusText}> (Lv.{currentJobLevel})</span>
+                                                )}
+                                            </span>
                                             {renderRequirements(jobId)}
                                         </div>
                                         {key !== state.job ? (

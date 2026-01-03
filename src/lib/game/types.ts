@@ -1,5 +1,5 @@
 export type EducationId = 'none' | 'school' | 'college' | 'university';
-export type JobId = 'none' | 'beggar' | 'courier' | 'office_worker' | 'junior_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
+export type JobId = 'none' | 'warehouse_worker' | 'courier' | 'office_worker' | 'junior_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
 
 
 
@@ -130,7 +130,7 @@ export const INITIAL_STATE: GameState = {
         courses: "not_studying",
     },
     jobLevels: {
-        beggar: 0,
+        warehouse_worker: 0,
         courier: 0,
         office_worker: 0,
         junior_dev: 0,
@@ -139,7 +139,7 @@ export const INITIAL_STATE: GameState = {
         it_investor: 0,
     },
     jobExp: {
-        beggar: 0,
+        warehouse_worker: 0,
         courier: 0,
         office_worker: 0,
         junior_dev: 0,

@@ -17,6 +17,7 @@ import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import Notification from "@/components/Notification/Notification";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
+import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -154,7 +155,7 @@ export default function Home() {
                             {/* Top Summary Bar */}
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
-                                    <StatRow label={t('money')} value={Math.floor(state.money).toString()} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
+                                    <StatRow label={t('money')} value={formatNumberWithSuffix(state.money)} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
                                     <StatRow
                                         label={t('mood')}
                                         value={`${Math.floor(state.mood)}/${state.maxMood}`}

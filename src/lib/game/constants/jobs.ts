@@ -5,8 +5,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         id: 'none',
         income: 0
     },
-    beggar: {
-        id: 'beggar',
+    warehouse_worker: {
+        id: 'warehouse_worker',
         income: 1,
         cost: { mood: 1, stamina: 1 }
     },
@@ -15,6 +15,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         income: 3,
         cost: { health: 1, stamina: 2 },
         requirements: {
+            previousJob: "warehouse_worker",
             mood: 30
         }
     },
@@ -23,6 +24,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         income: 8,
         cost: { mood: 1, stamina: 3 },
         requirements: {
+            previousJob: "courier",
             education: 'school',
             mood: 40
         }

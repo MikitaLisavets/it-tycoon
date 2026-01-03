@@ -94,7 +94,7 @@
         },
         "values": {
             "none": "None",
-            "beggar": "Beggar",
+            "warehouse_worker": "Warehouse Worker",
             "courier": "Courier",
             "office_worker": "Office Worker",
             "junior_dev": "Junior Developer",
@@ -149,6 +149,7 @@
         "passive": "Passive",
         "requirements": "Requirements",
         "previous_job": "Previous Job",
+        "previous_job_max_level": "Max Level of {job}",
         "computer_tier": "Computer: Tier",
         "level": "Level",
         "experience": "Experience",
