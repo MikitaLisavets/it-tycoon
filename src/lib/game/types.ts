@@ -59,6 +59,9 @@ export interface GameState {
         english: string;
         courses: string;
     },
+    cooldowns: {
+        rest: Record<string, number>; // activityId -> timestamp
+    };
     date: {
         day: number;
         month: number;
@@ -121,6 +124,10 @@ export const INITIAL_STATE: GameState = {
         school: "not_studying",
         english: "not_studying",
         courses: "not_studying",
+    },
+
+    cooldowns: {
+        rest: {},
     },
 
     // Time

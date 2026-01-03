@@ -8,6 +8,7 @@ export const FOOD_ITEMS: FoodItem[] = [
 
 export const FUN_ITEMS: FunItem[] = [
     { id: 'walk', name: 'Walk in park', cost: 0, mood: 5 },
+    { id: 'tv', name: 'Watch TV', cost: 0, mood: 14 },
     { id: 'cinema', name: 'Cinema', cost: 20, mood: 25 },
     { id: 'concert', name: 'Concert', cost: 100, mood: 80 },
 ];

@@ -12,8 +12,7 @@ import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
 import ResetModal from "@/components/ResetModal/ResetModal";
 import ShopWindow from "@/components/ShopWindow/ShopWindow";
 import JobWindow from "@/components/JobWindow/JobWindow";
-import EntertainmentWindow from "@/components/EntertainmentWindow/EntertainmentWindow";
-import GymWindow from "@/components/GymWindow/GymWindow";
+import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import Notification from "@/components/Notification/Notification";
 import { useGameState } from "@/hooks/useGameState";
@@ -120,10 +119,8 @@ export default function Home() {
                                 </div>
                                 <div className={styles.taskContent}>
                                     <XPButton variant="primary" onClick={() => setActiveWindow('job')}>{t('buttons.job')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.apartment')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('entertainment')}>{t('buttons.entertainment')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('gym')}>{t('buttons.hobby')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.education')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => setActiveWindow('activities')}>{t('buttons.activities')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.education')}</XPButton>
                                 </div>
                             </div>
 
@@ -133,10 +130,10 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.system')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary">{t('buttons.computer')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.programs')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.internet')}</XPButton>
-                                    <XPButton variant="primary">{t('buttons.hacking')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.computer')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.programs')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.internet')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton>
                                 </div>
                             </div>
 
@@ -146,7 +143,7 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.services')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary">{t('buttons.bank')}</XPButton>
+                                    <XPButton variant="primary" disabled>{t('buttons.bank')}</XPButton>
                                     <XPButton variant="primary" onClick={() => setActiveWindow('shop')}>{t('buttons.shop')}</XPButton>
                                 </div>
                             </div>
@@ -235,8 +232,7 @@ export default function Home() {
                 {/* Inner windows rendered outside main window for full-page movement */}
                 <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
                 <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
-                <EntertainmentWindow isOpen={activeWindow === 'entertainment'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
-                <GymWindow isOpen={activeWindow === 'gym'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
+                <ActivitiesWindow isOpen={activeWindow === 'activities'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
             </div>
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}

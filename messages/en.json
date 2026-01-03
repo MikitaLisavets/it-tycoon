@@ -88,7 +88,9 @@
             "computer": "Computer",
             "programs": "Programs",
             "internet": "Internet",
-            "hacking": "Hacking"
+            "hacking": "Hacking",
+            "rest": "Rest",
+            "activities": "Activities"
         },
         "values": {
             "none": "None",
@@ -180,5 +182,28 @@
         "low_health": "Your health is dangerously low. Visit the Supermarket!",
         "low_mood_title": "Depression Imminent!",
         "low_mood": "You are very unhappy. Do something fun!"
+    },
+    "Rest": {
+        "title": "Rest & Relax",
+        "short_break": "Short Break",
+        "energy_drink": "Energy Drink",
+        "sleep": "Sleep",
+        "start": "Start",
+        "in_progress": "Resting...",
+        "cooldown": "Cooldown: {time}s",
+        "cost_money": "${money}",
+        "cost_health": "{health} Health",
+        "effect_stamina": "+{amount} Stamina",
+        "effect_full": "Full Stamina",
+        "duration": "Duration: {seconds}s",
+        "help_content": "Recover your stamina by resting. Some methods are fast but costly, while others are slow but free. Watch out for cooldowns!"
+    },
+    "Activities": {
+        "title": "Activities",
+        "tabs": {
+            "rest": "Rest",
+            "entertainment": "Fun",
+            "gym": "Hobby"
+        }
     }
 }
