@@ -7,9 +7,8 @@ import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
 import styles from './CheatSystem.module.css';
 
 const CHEATS = {
-    mood: 'mood',
-    health: 'health'
-} as const;
+    PAINKILLER: 'PAINKILLER',
+};
 
 const CheatSystem: React.FC = () => {
     const [notification, setNotification] = useState<{ message: string; visible: boolean; exiting: boolean; active: boolean }>({
@@ -31,11 +30,11 @@ const CheatSystem: React.FC = () => {
             // Only letter keys
             if (e.key.length !== 1 || !/[a-z]/i.test(e.key)) return;
 
-            inputBuffer.current += e.key.toLowerCase();
+            inputBuffer.current += e.key;
 
-            // Limit buffer size (keep last 10 chars)
-            if (inputBuffer.current.length > 10) {
-                inputBuffer.current = inputBuffer.current.slice(-10);
+            // Limit buffer size (keep last 15 chars)
+            if (inputBuffer.current.length > 15) {
+                inputBuffer.current = inputBuffer.current.slice(-15);
             }
 
             // Check for cheats
@@ -86,7 +85,7 @@ const CheatSystem: React.FC = () => {
 
     return (
         <>
-            <GameAudio ref={audioRef} src="/sfx/coin.mp3" />
+            <GameAudio ref={audioRef} src="/sfx/cheat.mp3" />
             {notification.visible && (
                 <div className={`${styles.notification} ${notification.exiting ? styles.exit : ''}`}>
                     <div className={styles.titleBar}>
@@ -96,7 +95,7 @@ const CheatSystem: React.FC = () => {
                     </div>
                     <div className={styles.content}>
                         <div className={styles.icon}>
-                            {notification.active ? '🚀' : '🛡️'}
+                            {notification.active ? '✅' : '❌'}
                         </div>
                         <div className={styles.message}>
                             {notification.message}

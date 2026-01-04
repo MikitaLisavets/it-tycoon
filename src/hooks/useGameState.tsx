@@ -89,14 +89,8 @@ function useGameStateInternal() {
                     }
                 }
 
-                // Decay Needs
-                if (!cheatManager.isCheatActive('health')) {
-                    next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
-                }
-
-                if (!cheatManager.isCheatActive('mood')) {
-                    next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
-                }
+                next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
+                next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
 
                 // Stamina Regen (Clamp to Max)
                 const maxStamina = next.maxStamina || 100; // Fallback
@@ -113,6 +107,11 @@ function useGameStateInternal() {
                 // Check Game Over
                 if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
                     next.gameOver = true;
+                }
+
+                if (cheatManager.isCheatActive('PAINKILLER')) {
+                    next.health = next.maxHealth;
+                    next.mood = next.maxMood;
                 }
 
                 return next;

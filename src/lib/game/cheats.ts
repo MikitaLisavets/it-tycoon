@@ -1,10 +1,8 @@
-type CheatType = 'health' | 'mood';
-
 class CheatManager {
-    private activeCheats: Set<CheatType> = new Set();
-    private listeners: ((cheat: CheatType, active: boolean) => void)[] = [];
+    private activeCheats: Set<string> = new Set();
+    private listeners: ((cheat: string, active: boolean) => void)[] = [];
 
-    toggleCheat(cheat: CheatType): boolean {
+    toggleCheat(cheat: string): boolean {
         const isActive = this.activeCheats.has(cheat);
         if (isActive) {
             this.activeCheats.delete(cheat);
@@ -17,18 +15,18 @@ class CheatManager {
         return nowActive;
     }
 
-    isCheatActive(cheat: CheatType): boolean {
+    isCheatActive(cheat: string): boolean {
         return this.activeCheats.has(cheat);
     }
 
-    onToggle(listener: (cheat: CheatType, active: boolean) => void) {
+    onToggle(listener: (cheat: string, active: boolean) => void) {
         this.listeners.push(listener);
         return () => {
             this.listeners = this.listeners.filter(l => l !== listener);
         };
     }
 
-    private notify(cheat: CheatType, active: boolean) {
+    private notify(cheat: string, active: boolean) {
         this.listeners.forEach(l => l(cheat, active));
     }
 }
