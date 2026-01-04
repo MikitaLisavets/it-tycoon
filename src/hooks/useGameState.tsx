@@ -96,14 +96,6 @@ function useGameStateInternal() {
                 const maxStamina = next.maxStamina || 100; // Fallback
                 next.stamina = Math.min(maxStamina, Math.max(0, next.stamina + GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK));
 
-                // Passive Income
-                if (hoursPassed > 0) {
-                    const currentJob = JOBS[prev.job];
-                    if (currentJob && currentJob.type === 'passive') {
-                        next.money += currentJob.income * hoursPassed;
-                    }
-                }
-
                 // Check Game Over
                 if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
                     next.gameOver = true;

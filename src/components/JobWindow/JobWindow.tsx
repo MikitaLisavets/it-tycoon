@@ -171,7 +171,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                             {state.job !== 'none' && (
                                 <>
                                     <p>
-                                        {t('income_manual', { income: totalIncome.toFixed(2) })}
+                                        {t('income', { income: totalIncome.toFixed(2) })}
                                         {jobLevel > 0 && <span className={styles.bonusText}>(+{bonusIncome.toFixed(2)})</span>}
                                     </p>
                                     <div className={styles.expContainer}>

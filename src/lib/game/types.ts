@@ -171,7 +171,6 @@ export interface JobRequirements {
 export interface Job {
     id: JobId;
     income: number;
-    type?: 'active' | 'passive';
     cost?: { health?: number; mood?: number; stamina?: number };
     requirements?: JobRequirements;
 }
