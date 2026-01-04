@@ -4,6 +4,7 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import StatBadge from '../StatBadge/StatBadge';
+import ListOption from '../ListOption/ListOption';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
 import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
@@ -28,14 +29,6 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
-
-    // ... (rest of the component logic remains same)
-
-    // (Skipping to render section for brevity in this replace call, but ensuring full component structure is maintained in actual implementation)
-    // I will only replace the relevant section to avoid huge diffs if possible, 
-    // but the instruction says "replace content" so I'll be careful.
-    // Actually I'll use target content to be precise.
-
 
     // Use a ref for the audio to avoid reloading on every render
     const audioRef = React.useRef<HTMLAudioElement | null>(null);
@@ -265,28 +258,27 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                                 const totalJobIncome = calculateLevelIncome(baseJobIncome, currentJobLevel);
 
                                 return (
-                                    <div key={jobId} className={styles.jobItem}>
-                                        <div className={styles.jobInfo}>
-                                            <span className={styles.jobTitle}>{gt(`values.${job.id}`)}</span>
+                                    <ListOption
+                                        key={jobId}
+                                        title={gt(`values.${job.id}`)}
+                                        subtitle={
                                             <span className={styles.jobIncome}>
                                                 ${totalJobIncome.toFixed(2)}
                                                 {currentJobLevel > 0 && (
                                                     <span className={styles.bonusText}> (Lv.{currentJobLevel})</span>
                                                 )}
                                             </span>
-                                            {renderRequirements(jobId)}
-                                        </div>
-                                        {key !== state.job ? (
-                                            <XPButton
-                                                onClick={() => handleApply(jobId)}
-                                                disabled={!canApply}
-                                            >
-                                                {t('apply')}
-                                            </XPButton>
-                                        ) : (
-                                            <p>{t('current_job', { job: gt(`values.${state.job}`) })}</p>
-                                        )}
-                                    </div>
+                                        }
+                                        extra={renderRequirements(jobId)}
+                                        actionLabel={key !== state.job ? t('apply') : undefined}
+                                        onAction={key !== state.job ? () => handleApply(jobId) : undefined}
+                                        actionDisabled={!canApply}
+                                        actionContent={
+                                            key === state.job && (
+                                                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.9em' }}>{t('current_job', { job: '' }).replace(':', '')}</p>
+                                            )
+                                        }
+                                    />
                                 );
                             })}
                     </div>

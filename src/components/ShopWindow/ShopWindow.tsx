@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
-import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import StatBadge from '../StatBadge/StatBadge';
+import ListOption from '../ListOption/ListOption';
 import { useGameState } from '../../hooks/useGameState';
 import { FOOD_ITEMS, STAT_ICONS } from '../../lib/game/constants/index';
 import styles from './ShopWindow.module.css';
@@ -35,14 +35,15 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset }) => 
     return (
         <>
             <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
-                <div style={{ padding: '10px' }}>
-                    <h3 style={{ marginBottom: '10px' }}>{t('food')}</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ padding: '0 10px' }}>
+                    <h3 style={{ margin: '10px 0' }}>{t('food')}</h3>
+                    <div className={styles.itemList}>
                         {FOOD_ITEMS.map((item) => (
-                            <div key={item.id} className={styles.itemRow}>
-                                <div className={styles.itemInfo}>
-                                    <span className={styles.itemName}>{item.name}</span>
-                                    <div style={{ fontSize: '0.85em', color: '#666', marginTop: '2px', display: 'flex', gap: '8px' }}>
+                            <ListOption
+                                key={item.id}
+                                title={item.name}
+                                subtitle={
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                                         <span style={{ fontWeight: 'bold' }}>{t('cost', { amount: item.cost })}</span>
                                         <div style={{ display: 'flex', gap: '6px' }}>
                                             {item.health !== 0 && (
@@ -61,14 +62,11 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset }) => 
                                             )}
                                         </div>
                                     </div>
-                                </div>
-                                <XPButton
-                                    onClick={() => handleBuy(item)}
-                                    disabled={state.money < item.cost}
-                                >
-                                    {t('buy')}
-                                </XPButton>
-                            </div>
+                                }
+                                actionLabel={t('buy')}
+                                onAction={() => handleBuy(item)}
+                                actionDisabled={state.money < item.cost}
+                            />
                         ))}
                     </div>
                 </div>

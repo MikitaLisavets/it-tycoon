@@ -81,11 +81,11 @@ export const INITIAL_STATE: GameState = {
     locale: 'en',
     money: 100,
     job: "none",
-    mood: 50,
+    mood: 51,
     maxMood: 100,
-    health: 50,
+    health: 51,
     maxHealth: 100,
-    stamina: 30,
+    stamina: 29,
     maxStamina: 100,
     education: "none",
     english: "none",
@@ -173,6 +173,7 @@ export interface JobRequirements {
 export interface Job {
     id: JobId;
     income: number;
+    type?: 'active' | 'passive';
     cost?: { health?: number; mood?: number; stamina?: number };
     requirements?: JobRequirements;
 }
