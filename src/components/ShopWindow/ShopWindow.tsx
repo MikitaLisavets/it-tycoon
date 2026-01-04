@@ -5,8 +5,8 @@ import HelpModal from '../HelpModal/HelpModal';
 import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
 import { useGameState } from '../../hooks/useGameState';
-import { FOOD_ITEMS, STAT_ICONS } from '../../lib/game/constants/index';
 import styles from './ShopWindow.module.css';
+import { FOOD_ITEMS } from '@/lib/game/constants/supermarket';
 
 interface ShopWindowProps {
     isOpen: boolean;

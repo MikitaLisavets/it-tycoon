@@ -91,8 +91,7 @@ const CheatSystem: React.FC = () => {
                 <div className={`${styles.notification} ${notification.exiting ? styles.exit : ''}`}>
                     <div className={styles.titleBar}>
                         <div className={styles.title}>
-                            <span>🌟</span>
-                            <span>System achievement</span>
+                            <span>System notification</span>
                         </div>
                     </div>
                     <div className={styles.content}>

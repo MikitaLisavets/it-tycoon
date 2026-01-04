@@ -1,22 +1,20 @@
-import { FoodItem, FunItem, GymActivity } from '../types';
+import { ActionableItem } from '../types';
 
-export const FOOD_ITEMS: FoodItem[] = [
-    { id: 'snack', name: 'Snack', cost: 5, health: 10 },
-    { id: 'fastfood', name: 'Fast Food', cost: 15, health: 30 },
-    { id: 'restaurant', name: 'Restaurant', cost: 50, health: 80 },
-    { id: 'energy_drink', name: 'Energy Drink', cost: 5, health: -5, stamina: 10 },
+export const REST_ACTIVITIES: ActionableItem[] = [
+    { id: 'short_break', duration: 10, cooldown: 60, effect: { stamina: 20 } },
+    { id: 'sleep', duration: 20, cooldown: 5 * 60, effect: { stamina: 'full' } },
 ];
 
-export const FUN_ITEMS: FunItem[] = [
-    { id: 'walk', name: 'Walk in park', cost: 0, mood: 5 },
-    { id: 'tv', name: 'Watch TV', cost: 0, mood: 14 },
-    { id: 'cinema', name: 'Cinema', cost: 20, mood: 25 },
-    { id: 'concert', name: 'Concert', cost: 100, mood: 80 },
+export const FUN_ITEMS: ActionableItem[] = [
+    { id: 'walk', effect: { mood: 5 }, duration: 10 },
+    { id: 'tv', effect: { mood: 15 }, duration: 20 },
+    { id: 'cinema', cost: { money: 20 }, effect: { mood: 25 }, duration: 40 },
+    { id: 'concert', cost: { money: 100 }, effect: { mood: 80 }, duration: 60 },
 ];
 
-export const GYM_ACTIVITIES: GymActivity[] = [
-    { id: 'cardio', name: 'Cardio Training', cost: 10, stamina: 5, health: -3 },
-    { id: 'weights', name: 'Weight Training', cost: 15, stamina: 10, health: -5 },
-    { id: 'yoga', name: 'Yoga Class', cost: 20, stamina: 8, mood: 10, health: -2 },
-    { id: 'personal_trainer', name: 'Personal Trainer', cost: 50, stamina: 20, health: -8 },
+export const GYM_ACTIVITIES: ActionableItem[] = [
+    { id: 'cardio', cost: { money: 10, stamina: 5 }, effect: { mood: 5, health: 3 } },
+    { id: 'weights', cost: { money: 15, stamina: 10 }, effect: { mood: 5, health: 5 } },
+    { id: 'yoga', cost: { money: 20, stamina: 8 }, effect: { mood: 10, health: 10 } },
+    { id: 'personal_trainer', cost: { money: 50, stamina: 20 }, effect: { mood: 10, health: 8 } },
 ];

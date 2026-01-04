@@ -1,8 +1,6 @@
 export type EducationId = 'none' | 'school' | 'college' | 'university';
 export type JobId = 'none' | 'warehouse_worker' | 'courier' | 'office_worker' | 'junior_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
 
-
-
 export interface GameState {
     version: number;
     locale: 'en' | 'de';
@@ -176,6 +174,28 @@ export interface Job {
     type?: 'active' | 'passive';
     cost?: { health?: number; mood?: number; stamina?: number };
     requirements?: JobRequirements;
+}
+
+export interface Cost {
+    money?: number;
+    health?: number;
+    mood?: number;
+    stamina?: number;
+}
+
+export interface Effect {
+    money?: number;
+    health?: number | 'full';
+    mood?: number | 'full';
+    stamina?: number | 'full';
+}
+
+export interface ActionableItem {
+    id: string;
+    duration?: number;
+    cost?: Cost;
+    cooldown?: number;
+    effect?: Effect;
 }
 
 export interface FoodItem {
