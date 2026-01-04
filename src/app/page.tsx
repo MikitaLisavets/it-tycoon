@@ -14,6 +14,7 @@ import ShopWindow from "@/components/ShopWindow/ShopWindow";
 import JobWindow from "@/components/JobWindow/JobWindow";
 import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
+import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
@@ -30,6 +31,8 @@ export default function Home() {
     const [notification, setNotification] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number } | null>(null);
     const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
     const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
+    const [isBooting, setIsBooting] = useState(true);
+    const [hasBooted, setHasBooted] = useState(false);
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
@@ -90,11 +93,27 @@ export default function Home() {
     };
 
     const handleReset = () => {
-        resetState();
+        setIsBooting(true);
         setIsResetOpen(false);
         setActiveWindow(null);
         setIsHelpOpen(false);
     };
+
+    const handleBootComplete = () => {
+        if (!hasBooted) {
+            setHasBooted(true);
+        } else {
+            resetState();
+        }
+        setIsBooting(false);
+    };
+
+    // Show boot screen on initial load
+    useEffect(() => {
+        if (isInitialized && !hasBooted) {
+            setIsBooting(true);
+        }
+    }, [isInitialized, hasBooted]);
 
     if (!isInitialized) {
         return null; // or a loading screen
@@ -258,6 +277,7 @@ export default function Home() {
                     onClose={() => setNotification(null)}
                 />
             )}
+            <BootScreen isBooting={isBooting} onBootComplete={handleBootComplete} />
         </div>
     );
 }

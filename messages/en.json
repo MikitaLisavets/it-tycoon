@@ -231,5 +231,16 @@
             "entertainment": "Fun",
             "gym": "Hobby"
         }
+    },
+    "BootScreen": {
+        "title": "IT Tycoon",
+        "subtitle": "Professional Edition",
+        "message1": "Initializing IT Tycoon...",
+        "message2": "Loading game systems...",
+        "message3": "Checking virtual resources...",
+        "message4": "Preparing workspace...",
+        "message5": "Starting game environment...",
+        "message6": "Welcome",
+        "copyright": "© 2000 IT Tycoon Corporation. All rights reserved."
     }
 }

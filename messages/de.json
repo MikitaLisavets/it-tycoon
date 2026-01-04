@@ -200,5 +200,16 @@
         "stamina": "Ausdauer",
         "mood": "Laune",
         "help_content": "Trainiere im Fitnessstudio, um deine maximale Ausdauer zu erhöhen. Das Training kostet Geld und kann deine Gesundheit leicht verringern, aber einige Aktivitäten wie Yoga verbessern auch deine Stimmung."
+    },
+    "BootScreen": {
+        "title": "IT Tycoon",
+        "subtitle": "Professional Edition",
+        "message1": "IT Tycoon wird initialisiert...",
+        "message2": "Spielsysteme werden geladen...",
+        "message3": "Virtuelle Ressourcen werden überprüft...",
+        "message4": "Arbeitsbereich wird vorbereitet...",
+        "message5": "Spielumgebung wird gestartet...",
+        "message6": "Willkommen",
+        "copyright": "© 2000 IT Tycoon Corporation. Alle Rechte vorbehalten."
     }
 }
