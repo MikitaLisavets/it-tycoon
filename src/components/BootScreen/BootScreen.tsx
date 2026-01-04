@@ -37,7 +37,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
                 }
                 return prev + 2;
             });
-        }, 50);
+        }, 15);
 
         // Message cycling
         const messageInterval = setInterval(() => {
@@ -48,12 +48,11 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
                 }
                 return prev + 1;
             });
-        }, 800);
+        }, 150);
 
-        // Complete boot after animation
         const bootTimeout = setTimeout(() => {
             onBootComplete();
-        }, 3000);
+        }, 1000);
 
         return () => {
             clearInterval(progressInterval);

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from 'next-intl';
-import Image from "next/image";
 import styles from "./page.module.css";
 import WindowFrame from "@/components/WindowFrame/WindowFrame";
 import Panel from "@/components/Panel/Panel";
@@ -23,7 +22,7 @@ import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
-    const { state, updateState, resetState, isInitialized } = useGameState();
+    const { state, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
     const tNotification = useTranslations('Notifications');
     const [activeWindow, setActiveWindow] = useState<string | null>(null);
@@ -32,8 +31,6 @@ export default function Home() {
     const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
     const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
     const [isBooting, setIsBooting] = useState(true);
-    const [hasBooted, setHasBooted] = useState(false);
-
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
 
@@ -97,23 +94,12 @@ export default function Home() {
         setIsResetOpen(false);
         setActiveWindow(null);
         setIsHelpOpen(false);
+        resetState();
     };
 
     const handleBootComplete = () => {
-        if (!hasBooted) {
-            setHasBooted(true);
-        } else {
-            resetState();
-        }
         setIsBooting(false);
     };
-
-    // Show boot screen on initial load
-    useEffect(() => {
-        if (isInitialized && !hasBooted) {
-            setIsBooting(true);
-        }
-    }, [isInitialized, hasBooted]);
 
     if (!isInitialized) {
         return null; // or a loading screen
