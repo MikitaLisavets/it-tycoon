@@ -1,0 +1,93 @@
+.notification {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    width: 250px;
+    background-color: var(--xp-bg);
+    border: var(--xp-window-border);
+    border-radius: 3px 3px 0 0;
+    box-shadow: var(--xp-window-shadow);
+    z-index: 10000;
+    font-family: var(--font-tahoma);
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+    pointer-events: none;
+}
+
+.titleBar {
+    background: var(--xp-title-grad);
+    height: 24px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #00138C;
+}
+
+.title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+    text-shadow: 1px 1px #0f306d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.content {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #fff;
+    margin: 1px;
+    border: 1px solid #716F64;
+}
+
+.icon {
+    font-size: 24px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.message {
+    color: #000;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.active {
+    font-weight: bold;
+    color: #0054E3;
+}
+
+.deactive {
+    font-weight: bold;
+    color: #CC0000;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(110%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(110%);
+        opacity: 0;
+    }
+}
+
+.exit {
+    animation: fadeOut 0.5s ease-in forwards;
+}

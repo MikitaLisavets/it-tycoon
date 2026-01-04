@@ -3,6 +3,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { GameState, INITIAL_STATE } from '../lib/game/types';
 import { GAME_CONSTANTS, JOBS } from '../lib/game/constants/index';
+import { cheatManager } from '../lib/game/cheats';
 
 const STORAGE_KEY = 'it-tycoon-state';
 
@@ -89,8 +90,13 @@ function useGameStateInternal() {
                 }
 
                 // Decay Needs
-                next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
-                next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+                if (!cheatManager.isCheatActive('health')) {
+                    next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
+                }
+
+                if (!cheatManager.isCheatActive('mood')) {
+                    next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+                }
 
                 // Stamina Regen (Clamp to Max)
                 const maxStamina = next.maxStamina || 100; // Fallback

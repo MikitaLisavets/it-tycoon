@@ -11,6 +11,8 @@ import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/
 import { JobId, Job } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
+import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
+
 interface JobWindowProps {
     isOpen: boolean;
     onClose: () => void;
@@ -30,24 +32,12 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
 
-    // Use a ref for the audio to avoid reloading on every render
-    const audioRef = React.useRef<HTMLAudioElement | null>(null);
-
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            audioRef.current = new Audio('/sfx/coin.mp3');
-        }
-    }, []);
-
-    React.useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = (state.volume / 100) * 0.3;
-        }
-    }, [state.volume]);
+    const audioRef = React.useRef<GameAudioHandle>(null);
 
     if (!isOpen) return null;
 
     const currentJob = JOBS[state.job];
+
 
     const calculateComputerTier = () => {
         const components = Object.values(state.computer);
@@ -74,8 +64,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
             if (state.health >= healthCost && (state.mood >= moodCost) && state.stamina >= staminaCost) {
                 // Play sound
                 if (audioRef.current) {
-                    audioRef.current.currentTime = 0;
-                    audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+                    audioRef.current.play();
                 }
 
                 // Trigger animations
@@ -170,6 +159,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
 
     return (
         <>
+            <GameAudio ref={audioRef} src="/sfx/coin.mp3" baseVolume={0.3} />
             <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
                 <div className={styles.container}>
                     <div className={styles.currentJobWrapper}>

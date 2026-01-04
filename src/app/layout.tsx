@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google"; // Corrected import based on usage in previous file
 import "./globals.css";
 import AppProviders from "@/components/AppProviders";
+import CheatSystem from "@/components/CheatSystem/CheatSystem";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <AppProviders>
                     {children}
+                    <CheatSystem />
                 </AppProviders>
             </body>
         </html>
