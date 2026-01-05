@@ -159,8 +159,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         if (reqs.previousJob) {
             requirementsList.push(t('previous_job_max_level', { job: gt(`values.${reqs.previousJob}`) }));
         }
-        if (reqs.mood) requirementsList.push(`${gt('mood')} ${reqs.mood}`);
-
+        if (reqs.mood) requirementsList.push(<StatBadge stat="MOOD" value={reqs.mood} label={gt('mood')} />);
         if (requirementsList.length === 0) return null;
         return (
             <div className={styles.requirements}>
@@ -278,7 +277,10 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                         title={gt(`values.${job.id}`)}
                                         subtitle={
                                             <span className={styles.jobIncome}>
-                                                ${formatNumberWithSuffix(totalJobIncome)}
+                                                <StatBadge
+                                                    stat="MONEY"
+                                                    value={formatNumberWithSuffix(totalJobIncome)}
+                                                />
                                                 {currentJobLevel > 0 && (
                                                     <span className={`${styles.bonusText} ${getLevelClass(currentJobLevel)}`} style={currentJobLevel > 0 ? { color: 'white', padding: '1px 4px', borderRadius: '2px', fontSize: '0.7em', verticalAlign: 'middle', marginLeft: '4px' } : {}}>
                                                         Lv.{currentJobLevel}
@@ -292,7 +294,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                         actionDisabled={!canApply}
                                         actionContent={
                                             key === state.job && (
-                                                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.9em' }}>{t('current_job', { job: '' }).replace(':', '')}</p>
+                                                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{t('current_job', { job: '' })}</p>
                                             )
                                         }
                                     />
