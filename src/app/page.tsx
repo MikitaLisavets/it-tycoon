@@ -25,7 +25,8 @@ export default function Home() {
     const { state, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
     const tNotification = useTranslations('Notifications');
-    const [activeWindow, setActiveWindow] = useState<string | null>(null);
+    const [openWindows, setOpenWindows] = useState<string[]>([]);
+    const [focusedWindow, setFocusedWindow] = useState<string | null>(null);
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
     const [notification, setNotification] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number } | null>(null);
     const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
@@ -84,15 +85,54 @@ export default function Home() {
         }
     }, [isInitialized, hasTriggeredOnboarding]);
 
+    // Load open windows from localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            try {
+                const saved = localStorage.getItem('open_windows');
+                if (saved) {
+                    setOpenWindows(JSON.parse(saved));
+                }
+            } catch (e) {
+                console.error('Failed to load open windows:', e);
+            }
+        }
+    }, [isInitialized]);
+
+    // Save open windows to localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            localStorage.setItem('open_windows', JSON.stringify(openWindows));
+        }
+    }, [openWindows, isInitialized]);
+
     const handleCloseOnboarding = () => {
         setIsHelpOpen(false);
         localStorage.setItem('it-tycoon-onboarding-seen', 'true');
     };
 
+    const toggleWindow = (id: string) => {
+        setOpenWindows(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(w => w !== id);
+            }
+            return [...prev, id];
+        });
+        setFocusedWindow(id);
+    };
+
+    const closeWindow = (id: string) => {
+        setOpenWindows(prev => prev.filter(w => w !== id));
+        if (focusedWindow === id) {
+            setFocusedWindow(null);
+        }
+    };
+
     const handleReset = () => {
         setIsBooting(true);
         setIsResetOpen(false);
-        setActiveWindow(null);
+        setOpenWindows([]);
+        setFocusedWindow(null);
         setIsHelpOpen(false);
         resetState();
     };
@@ -124,9 +164,9 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.lifestyle')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('job')}>{t('buttons.job')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('activities')}>{t('buttons.activities')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => setActiveWindow('shop')}>{t('buttons.shop')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('job')}>{t('buttons.job')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('activities')}>{t('buttons.activities')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('shop')}>{t('buttons.shop')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.education')}</XPButton>
                                 </div>
                             </div>
@@ -236,9 +276,27 @@ export default function Home() {
                 </WindowFrame>
 
                 {/* Inner windows rendered outside main window for full-page movement */}
-                <ShopWindow isOpen={activeWindow === 'shop'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
-                <JobWindow isOpen={activeWindow === 'job'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
-                <ActivitiesWindow isOpen={activeWindow === 'activities'} onClose={() => setActiveWindow(null)} onReset={() => setIsResetOpen(true)} />
+                <ShopWindow
+                    isOpen={openWindows.includes('shop')}
+                    onClose={() => closeWindow('shop')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'shop'}
+                    onFocus={() => setFocusedWindow('shop')}
+                />
+                <JobWindow
+                    isOpen={openWindows.includes('job')}
+                    onClose={() => closeWindow('job')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'job'}
+                    onFocus={() => setFocusedWindow('job')}
+                />
+                <ActivitiesWindow
+                    isOpen={openWindows.includes('activities')}
+                    onClose={() => closeWindow('activities')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'activities'}
+                    onFocus={() => setFocusedWindow('activities')}
+                />
             </div>
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}
@@ -254,17 +312,19 @@ export default function Home() {
                 isOpen={state.gameOver}
                 onRestart={handleReset}
             />
-            {notification && (
-                <Notification
-                    key={notification.id}
-                    title={notification.title}
-                    message={notification.message}
-                    type={notification.type}
-                    onClose={() => setNotification(null)}
-                />
-            )}
+            {
+                notification && (
+                    <Notification
+                        key={notification.id}
+                        title={notification.title}
+                        message={notification.message}
+                        type={notification.type}
+                        onClose={() => setNotification(null)}
+                    />
+                )
+            }
             <BootScreen isBooting={isBooting} onBootComplete={handleBootComplete} />
-        </div>
+        </div >
     );
 }
 

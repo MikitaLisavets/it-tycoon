@@ -12,9 +12,11 @@ interface ShopWindowProps {
     isOpen: boolean;
     onClose: () => void;
     onReset?: () => void;
+    isFocused?: boolean;
+    onFocus?: () => void;
 }
 
-const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset }) => {
+const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Shop');
     const gt = useTranslations('Game');
@@ -34,7 +36,16 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset }) => 
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+            <WindowFrame
+                id="shop_window"
+                title={t('title')}
+                onCloseClick={onClose}
+                onResetClick={onReset}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="400px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
                 <div style={{ padding: '0 10px' }}>
                     <h3 style={{ margin: '10px 0' }}>{t('food')}</h3>
                     <div className={styles.itemList}>

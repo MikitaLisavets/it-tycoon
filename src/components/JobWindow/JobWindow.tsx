@@ -17,6 +17,8 @@ interface JobWindowProps {
     isOpen: boolean;
     onClose: () => void;
     onReset?: () => void;
+    isFocused?: boolean;
+    onFocus?: () => void;
 }
 
 interface MoneyPopup {
@@ -24,7 +26,7 @@ interface MoneyPopup {
     amount: number;
 }
 
-const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
+const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Job');
     const gt = useTranslations('Game');
@@ -167,7 +169,16 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
     return (
         <>
             <GameAudio ref={audioRef} src="/sfx/coin.mp3" baseVolume={0.3} />
-            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="400px">
+            <WindowFrame
+                id="job_window"
+                title={t('title')}
+                onCloseClick={onClose}
+                onResetClick={onReset}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="480px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
                 <div className={styles.container}>
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>

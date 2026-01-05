@@ -13,11 +13,13 @@ interface ActivitiesWindowProps {
     isOpen: boolean;
     onClose: () => void;
     onReset?: () => void;
+    isFocused?: boolean;
+    onFocus?: () => void;
 }
 
 type Tab = 'rest' | 'entertainment' | 'gym';
 
-const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset }) => {
+const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations();
     const gt = useTranslations('Game');
@@ -197,7 +199,15 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
     if (!isOpen) return null;
 
     return (
-        <WindowFrame title={t('Activities.title')} onCloseClick={onClose} onResetClick={onReset} width="480px">
+        <WindowFrame
+            id="activities_window"
+            title={t('Activities.title')}
+            onCloseClick={onClose}
+            onResetClick={onReset}
+            width="480px"
+            isFocused={isFocused}
+            onFocus={onFocus}
+        >
             <Tabs
                 tabs={tabList}
                 activeTab={activeTab}

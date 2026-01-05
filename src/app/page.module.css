@@ -135,7 +135,8 @@
     align-items: center;
     margin-bottom: 2px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
+    gap: 5px;
 }
 
 .statLabel {
