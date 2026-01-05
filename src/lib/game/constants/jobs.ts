@@ -29,8 +29,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
             mood: 40
         }
     },
-    junior_dev: {
-        id: 'junior_dev',
+    web_dev: {
+        id: 'web_dev',
         income: 15,
         cost: { mood: 1, stamina: 3 },
         requirements: {
@@ -47,7 +47,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         requirements: {
             education: "university",
             computerTier: 2,
-            previousJob: "junior_dev",
+            previousJob: "web_dev",
             mood: 60
         }
     },

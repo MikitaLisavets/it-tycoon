@@ -5,6 +5,7 @@ import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
+import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
 import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
@@ -208,12 +209,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                             )}
 
                             {currentJob?.cost && (
-                                <div className={styles.costs}>
-                                    <span>{gt('cost')} </span>
-                                    {currentJob.cost.health && <StatBadge stat="HEALTH" value={currentJob.cost.health} prefix="-" label={gt('health').replace(':', '')} />}
-                                    {currentJob.cost.mood && <StatBadge stat="MOOD" value={currentJob.cost.mood} prefix="-" label={gt('mood').replace(':', '')} />}
-                                    {currentJob.cost.stamina && <StatBadge stat="STAMINA" value={currentJob.cost.stamina} prefix="-" label={gt('stamina').replace(':', '')} />}
-                                </div>
+                                <StatList
+                                    type="cost"
+                                    data={currentJob.cost}
+                                    title={gt('cost')}
+                                />
                             )}
                         </div>
 

@@ -1,5 +1,5 @@
 export type EducationId = 'none' | 'school' | 'college' | 'university';
-export type JobId = 'none' | 'warehouse_worker' | 'courier' | 'office_worker' | 'junior_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
+export type JobId = 'none' | 'warehouse_worker' | 'courier' | 'office_worker' | 'web_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
 
 export interface GameState {
     version: number;
@@ -131,7 +131,7 @@ export const INITIAL_STATE: GameState = {
         warehouse_worker: 0,
         courier: 0,
         office_worker: 0,
-        junior_dev: 0,
+        web_dev: 0,
         senior_dev: 0,
         startup_founder: 0,
         it_investor: 0,
@@ -140,7 +140,7 @@ export const INITIAL_STATE: GameState = {
         warehouse_worker: 0,
         courier: 0,
         office_worker: 0,
-        junior_dev: 0,
+        web_dev: 0,
         senior_dev: 0,
         startup_founder: 0,
         it_investor: 0,

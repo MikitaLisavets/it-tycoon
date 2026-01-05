@@ -1,0 +1,55 @@
+.statListSection {
+    margin-top: 0;
+}
+
+.label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+    margin-bottom: 5px;
+}
+
+
+.free {
+    color: var(--status-success);
+    font-weight: normal;
+}
+
+.uiList {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+    list-style: none;
+}
+
+.costList li::marker {
+    font-weight: bold;
+}
+
+
+.effectList li::marker {
+    font-weight: bold;
+}
+
+.uiListItem {
+    align-items: center;
+    font-size: 12px;
+    position: relative;
+    padding-left: 8px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background-color: var(--color-text-medium);
+    }
+}
