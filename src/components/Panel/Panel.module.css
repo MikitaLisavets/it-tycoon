@@ -1,5 +1,5 @@
 .fieldset {
-    border: 1px solid #ACA899;
+    border: 1px solid var(--ui-border-dark);
     /* XP Border Dark */
     border-radius: 3px;
     padding: 5px 8px;
@@ -11,7 +11,7 @@
 
 .legend {
     font-size: 11px;
-    color: #0046D5;
+    color: var(--color-text-xp-blue);
     /* Similar blue to title bar text or just dark blue */
     padding: 0 3px;
     margin-left: 5px;

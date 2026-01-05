@@ -4,7 +4,7 @@
     /* Above taskbar */
     right: 10px;
     width: 250px;
-    background-color: #FFFFE1;
+    background-color: var(--ui-bg-tooltip);
     /* XP Tooltip Yellow */
     border: 1px solid #000;
     border-radius: 5px;
@@ -13,7 +13,7 @@
     z-index: 10000;
     font-family: 'Tahoma', sans-serif;
     font-size: 11px;
-    color: #000;
+    color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -35,11 +35,11 @@
     border: none;
     cursor: pointer;
     font-size: 10px;
-    color: #666;
+    color: var(--color-text-muted);
 }
 
 .closeButton:hover {
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 @keyframes slideIn {

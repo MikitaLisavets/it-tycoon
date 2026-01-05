@@ -18,7 +18,7 @@
 
 .costs {
     font-size: 10px;
-    color: #666;
+    color: var(--color-text-muted);
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -32,7 +32,7 @@
 .divider {
     margin: 15px 0;
     border: none;
-    border-top: 1px solid #ACA899;
+    border-top: 1px solid var(--ui-border-dark);
 }
 
 .jobList {
@@ -46,7 +46,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--ui-border-separator);
 }
 
 .jobItem:last-child {
@@ -66,7 +66,7 @@
 
 .requirements {
     font-size: 9px;
-    color: #666;
+    color: var(--color-text-muted);
 }
 
 .reqTitle {
@@ -120,7 +120,7 @@
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    color: #008000;
+    color: var(--color-text-success);
     font-weight: bold;
     font-size: 14px;
     pointer-events: none;
@@ -146,9 +146,9 @@
 }
 
 .workError {
-    background-color: #FFFFE1;
-    border: 1px solid #ACA899;
-    color: #CC0000;
+    background-color: var(--ui-bg-tooltip);
+    border: 1px solid var(--ui-border-dark);
+    color: var(--color-text-error);
     font-size: 11px;
     padding: 3px 10px;
     margin-top: 5px;
@@ -171,17 +171,17 @@
 }
 
 .levelBadge_low {
-    background: #008000;
+    background: var(--color-text-success);
     /* Windows Green */
 }
 
 .levelBadge_mid {
-    background: #0055E5;
+    background: var(--status-info);
     /* Windows Blue */
 }
 
 .levelBadge_high {
-    background: #F39C12;
+    background: var(--status-warning);
     /* XP Orange/Gold */
 }
 
@@ -200,14 +200,14 @@
     display: flex;
     justify-content: space-between;
     font-size: 8px;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 2px;
 }
 
 .expBar {
     height: 6px;
-    background: #ECE9D8;
-    border: 1px solid #ACA899;
+    background: var(--ui-bg-light);
+    border: 1px solid var(--ui-border-dark);
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -221,7 +221,7 @@
 
 .bonusText {
     font-size: 9px;
-    color: #008000;
+    color: var(--color-text-success);
     font-weight: bold;
     margin-left: 4px;
 }

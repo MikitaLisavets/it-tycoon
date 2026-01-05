@@ -26,6 +26,61 @@
   --xp-help-grad: radial-gradient(circle at center, #fff 0%, #2b50d6 100%);
 
   --font-tahoma: 'Tahoma', 'Verdana', sans-serif;
+
+  /* Text Colors */
+  --color-text-primary: #000000;
+  --color-text-secondary: #444444;
+  --color-text-medium: #555555;
+  --color-text-muted: #666666;
+  --color-text-light: #FFFFFF;
+  --color-text-disabled: #ADA998;
+  --color-text-error: #CC0000;
+  --color-text-success: #008000;
+  --color-text-xp-blue: #0046D5;
+  --color-text-xp-blue-dark: #003366;
+
+  /* Status Colors */
+  --status-success: #388e3c;
+  --status-error: #d32f2f;
+  --status-warning: #f57c00;
+  --status-info: #0054E3;
+
+  /* UI Element Colors */
+  --ui-bg-light: #ECE9D8;
+  --ui-bg-lighter: #F5F4EA;
+  --ui-bg-white: #FFFFFF;
+  --ui-bg-gray: #EEEEEE;
+  --ui-bg-tooltip: #FFFFE1;
+  --ui-border-default: #CCCCCC;
+  --ui-border-dark: #ACA899;
+  --ui-border-separator: #DDDDDD;
+
+  /* Taskbar & Legacy XP Colors */
+  --xp-taskbar-blue: #0B77E9;
+  --xp-taskbar-blue-dark: #085adb;
+  --xp-taskbar-blue-border: #1042AF;
+  --xp-taskbar-active: #000080;
+  --xp-legacy-gray: #c0c0c0;
+  --xp-bsod-blue: #0000AA;
+  --xp-window-border-color: #00138C;
+  --xp-btn-border: #003c74;
+  --xp-blue-shadow: #0f306d;
+  --ui-border-xp: #D6D2C2;
+  --ui-border-medium: #888888;
+  --ui-border-darker: #716F64;
+  --ui-bg-dark: #333333;
+  --xp-window-active: #D6DFF7;
+  --xp-menu-active: #316AC5;
+  --xp-desktop-green: #008080;
+  --xp-link-blue: #215DC6;
+
+  /* Specific Gradients */
+  --xp-taskbar-grad: linear-gradient(to bottom, #245EDB 0%, #1941A5 100%);
+  --xp-start-grad: linear-gradient(to bottom, #3C8338 0%, #295F26 100%);
+  --xp-window-btn-grad: linear-gradient(to bottom, #5084E9 0%, #3065D1 100%);
+  --xp-window-btn-hover-grad: linear-gradient(to bottom, #6B9AFA 0%, #4A7BF0 100%);
+  --xp-primary-btn-grad: linear-gradient(to bottom, #3963C9 0%, #2045B6 100%);
+  --xp-bsod-header-grad: linear-gradient(to right, #0054E3, #1084D0);
 }
 
 * {

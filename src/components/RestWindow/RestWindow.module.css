@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--ui-border-separator);
 }
 
 .activityRow:last-child {
@@ -22,17 +22,17 @@
 
 .details {
     font-size: 11px;
-    color: #555;
+    color: var(--color-text-medium);
     margin-top: 2px;
 }
 
 .cost {
-    color: #d32f2f;
+    color: var(--status-error);
     margin-right: 5px;
 }
 
 .effect {
-    color: #388e3c;
+    color: var(--status-success);
 }
 
 .actionArea {
@@ -46,19 +46,19 @@
 .progressBarContainer {
     width: 100%;
     height: 10px;
-    background-color: #eee;
-    border: 1px solid #999;
+    background-color: var(--ui-bg-gray);
+    border: 1px solid var(--ui-border-dark);
     border-radius: 2px;
     overflow: hidden;
 }
 
 .progressBarFill {
     height: 100%;
-    background-color: #4caf50;
+    background-color: var(--status-success);
     transition: width 0.1s linear;
 }
 
 .cooldownText {
     font-size: 10px;
-    color: #f57c00;
+    color: var(--status-warning);
 }

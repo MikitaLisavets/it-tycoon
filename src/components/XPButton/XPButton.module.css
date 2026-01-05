@@ -1,6 +1,6 @@
 .button {
     background: var(--xp-btn-grad);
-    border: 1px solid #003c74;
+    border: 1px solid var(--xp-btn-border);
     border-radius: 3px;
     color: var(--xp-text);
     padding: 4px 12px;
@@ -22,21 +22,21 @@
 }
 
 .button:disabled {
-    background: #F5F4EA;
-    border-color: #D6D2C2;
-    color: #ADA998;
+    background: var(--ui-bg-lighter);
+    border-color: var(--ui-border-xp);
+    color: var(--color-text-disabled);
     cursor: not-allowed;
     box-shadow: none;
 }
 
 .button:disabled:hover {
-    background: #F5F4EA;
+    background: var(--ui-bg-lighter);
 }
 
 .primary {
-    background: linear-gradient(to bottom, #3963C9 0%, #2045B6 100%);
-    border: 1px solid #00138C;
-    color: white;
+    background: var(--xp-primary-btn-grad);
+    border: 1px solid var(--xp-window-border-color);
+    color: var(--color-text-light);
     font-weight: bold;
     padding: 8px 10px;
     text-align: left;

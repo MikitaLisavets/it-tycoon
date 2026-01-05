@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--ui-border-separator);
     margin-bottom: 5px;
 }
 
@@ -19,6 +19,6 @@
 }
 
 .itemCost {
-    color: #666;
     font-size: 10px;
+    color: var(--color-text-muted);
 }

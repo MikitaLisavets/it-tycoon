@@ -2,6 +2,11 @@
 
 ## Styling Guidelines
 
+### Colors
+- **Always use CSS variables from `globals.css` for colors.**
+- Do not use hardcoded hex, rgb, or color names in CSS modules.
+- Use semantic variables (e.g., `--status-success`) rather than describing the color (e.g., `--green`) where possible.
+
 ### Font Sizes
 - **Always use `px` units for `font-size` declarations.**
 - Do not use `em`, `rem`, or other relative units for font sizes unless specifically instructed otherwise.

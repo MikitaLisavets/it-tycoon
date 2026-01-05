@@ -40,7 +40,7 @@
     height: 21px;
     border: 1px solid #fff;
     border-radius: 3px;
-    background-color: #D6DFF7;
+    background-color: var(--xp-window-active);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,8 +62,8 @@
 
 .close {
     background: var(--xp-close-grad);
-    border-color: #fff;
-    color: #000;
+    border-color: var(--ui-bg-white);
+    color: var(--color-text-primary);
 }
 
 .content {
@@ -75,7 +75,7 @@
 }
 
 .menuBar {
-    background-color: #ECE9D8;
+    background-color: var(--ui-bg-light);
     border-bottom: 1px solid #ACA899;
     padding: 2px 5px;
     display: flex;
@@ -87,7 +87,7 @@
 }
 
 .menuItem:hover {
-    background-color: #316AC5;
+    background-color: var(--xp-menu-active);
     color: white;
 }
 
@@ -109,7 +109,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #fff;
+    background-color: var(--ui-bg-white);
     border: 1px solid #ACA899;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
@@ -121,10 +121,10 @@
     padding: 3px 20px 3px 20px;
     cursor: default;
     font-size: 13px;
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 .dropdownItem:hover {
-    background-color: #316AC5;
+    background-color: var(--xp-menu-active);
     color: white;
 }
