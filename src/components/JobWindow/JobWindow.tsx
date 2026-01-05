@@ -36,6 +36,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
 
     const audioRef = React.useRef<GameAudioHandle>(null);
+    const levelUpAudioRef = React.useRef<GameAudioHandle>(null);
 
     if (!isOpen) return null;
 
@@ -87,6 +88,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                 if (!isMaxLevel && newExp >= expToNext) {
                     newExp = 0;
                     newLevel = Math.min(10, jobLevel + 1);
+
+                    // Play level up sound
+                    if (levelUpAudioRef.current) {
+                        levelUpAudioRef.current.play();
+                    }
                 }
 
                 updateState({
@@ -170,6 +176,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     return (
         <>
             <GameAudio ref={audioRef} src="/sfx/coin.mp3" baseVolume={0.3} />
+            <GameAudio ref={levelUpAudioRef} src="/sfx/level-up.mp3" baseVolume={0.5} />
             <WindowFrame
                 id="job_window"
                 title={t('title')}
