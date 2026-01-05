@@ -39,6 +39,12 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   const [position, setPosition] = React.useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
   const dragStartRef = React.useRef<{ x: number; y: number } | null>(null);
+
+  // Resizing state
+  const [size, setSize] = React.useState<{ width: number; height: number } | null>(null);
+  const [isResizing, setIsResizing] = React.useState(false);
+  const resizeStartRef = React.useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+
   const windowRef = React.useRef<HTMLDivElement>(null);
 
   // Center on mount and handle resize
@@ -84,6 +90,20 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
             };
           }
         });
+
+        // Handle size initialization
+        if (id && !size) {
+          try {
+            const sizeKey = `${GAME_CONSTANTS.GAME_NAME}-window-sizes`;
+            const savedSizes = JSON.parse(localStorage.getItem(sizeKey) || '{}');
+            const savedSize = savedSizes[id];
+            if (savedSize && typeof savedSize.width === 'number' && typeof savedSize.height === 'number') {
+              setSize(savedSize);
+            }
+          } catch (e) {
+            console.error('Failed to load window size:', e);
+          }
+        }
       }
     };
 
@@ -96,15 +116,27 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isMaximized || isMobile || !position) return;
-
-    // Only drag with left mouse button
     if (e.button !== 0) return;
-
-    e.preventDefault(); // Prevent text selection
+    e.preventDefault();
     setIsDragging(true);
     dragStartRef.current = {
       x: e.clientX - position.x,
       y: e.clientY - position.y
+    };
+  };
+
+  const handleResizeMouseDown = (e: React.MouseEvent) => {
+    if (isMaximized || isMobile || !windowRef.current) return;
+    if (e.button !== 0) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    resizeStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      w: windowRef.current.offsetWidth,
+      h: windowRef.current.offsetHeight
     };
   };
 
@@ -127,6 +159,18 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       });
     };
 
+    const handleResizeMouseMove = (e: MouseEvent) => {
+      if (!isResizing || !resizeStartRef.current) return;
+
+      const deltaX = e.clientX - resizeStartRef.current.x;
+      const deltaY = e.clientY - resizeStartRef.current.y;
+
+      setSize({
+        width: Math.max(200, resizeStartRef.current.w + deltaX),
+        height: Math.max(150, resizeStartRef.current.h + deltaY)
+      });
+    };
+
     const handleMouseUp = () => {
       setIsDragging(false);
       dragStartRef.current = null;
@@ -144,16 +188,37 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       }
     };
 
+    const handleResizeMouseUp = () => {
+      if (isResizing && id && size) {
+        try {
+          const sizeKey = `${GAME_CONSTANTS.GAME_NAME}-window-sizes`;
+          const savedSizes = JSON.parse(localStorage.getItem(sizeKey) || '{}');
+          savedSizes[id] = size;
+          localStorage.setItem(sizeKey, JSON.stringify(savedSizes));
+        } catch (e) {
+          console.error('Failed to save window size:', e);
+        }
+      }
+      setIsResizing(false);
+      resizeStartRef.current = null;
+    };
+
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+    }
+    if (isResizing) {
+      document.addEventListener('mousemove', handleResizeMouseMove);
+      document.addEventListener('mouseup', handleResizeMouseUp);
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleResizeMouseMove);
+      document.removeEventListener('mouseup', handleResizeMouseUp);
     };
-  }, [isDragging, position, id, title]);
+  }, [isDragging, isResizing, position, size, id, title]);
 
   const toggleMaximize = () => {
     if (!isMobile) {
@@ -164,8 +229,9 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   const windowStyle: React.CSSProperties = (isMaximized || isMobile)
     ? {}
     : {
-      width,
-      height,
+      width: size ? `${size.width}px` : width,
+      height: size ? `${size.height}px` : height,
+      maxHeight: size ? `${size.height}px` : '',
       position: 'absolute',
       left: position ? `${position.x}px` : '50%', // Fallback to center before measurement
       top: position ? `${position.y}px` : '50%',
@@ -293,6 +359,9 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       <div className={styles.content}>
         {children}
       </div>
+      {!isMaximized && !isMobile && (
+        <div className={styles.resizeHandle} onMouseDown={handleResizeMouseDown} />
+      )}
     </div>
   );
 };

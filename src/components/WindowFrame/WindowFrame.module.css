@@ -8,6 +8,8 @@
     font-family: var(--font-tahoma);
     overflow: hidden;
     position: relative;
+    max-height: 700px;
+
 }
 
 .titleBar {
@@ -72,7 +74,6 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    max-height: 700px;
 }
 
 .menuBar {
@@ -128,4 +129,30 @@
 .dropdownItem:hover {
     background-color: var(--xp-menu-active);
     color: white;
+}
+
+.resizeHandle {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+    cursor: nwse-resize;
+    z-index: 1001;
+    background: linear-gradient(135deg,
+            transparent 0%,
+            transparent 30%,
+            var(--color-text-disabled) 30%,
+            var(--color-text-disabled) 40%,
+            transparent 40%,
+            transparent 50%,
+            var(--color-text-disabled) 50%,
+            var(--color-text-disabled) 60%,
+            transparent 60%,
+            transparent 70%,
+            var(--color-text-disabled) 70%,
+            var(--color-text-disabled) 80%,
+            transparent 80%,
+            transparent 100%);
+    background-size: 100% 100%;
 }
