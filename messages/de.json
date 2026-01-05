@@ -132,6 +132,10 @@
         "title": "Supermarkt",
         "food": "Essen",
         "buy": "Kaufen",
+        "snack": "Snack",
+        "fastfood": "Fast Food",
+        "restaurant": "Restaurant",
+        "energy_drink": "Energy-Drink",
         "cost": "{amount} €",
         "health": "Gesundheit",
         "help_content": "Hier kannst du Lebensmittel und andere Artikel kaufen, um deine Gesundheit zu verbessern. Jeder Artikel hat unterschiedliche Kosten und Vorteile für deine Gesundheit."

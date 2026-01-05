@@ -135,6 +135,10 @@
         "title": "Supermarket",
         "food": "Food",
         "buy": "Buy",
+        "snack": "Snack",
+        "fastfood": "Fast Food",
+        "restaurant": "Restaurant",
+        "energy_drink": "Energy Drink",
         "cost": "${amount}",
         "health": "health",
         "help_content": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit."

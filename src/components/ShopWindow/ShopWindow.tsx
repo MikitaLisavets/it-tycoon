@@ -6,9 +6,10 @@ import ListOption from '../ListOption/ListOption';
 import Tabs from '../Tabs/Tabs';
 import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
+import { useActionableItem } from '../../hooks/useActionableItem';
 import styles from './ShopWindow.module.css';
 import { FOOD_ITEMS } from '@/lib/game/constants/supermarket';
-import { FoodItem } from '@/lib/game/types';
+import { ActionableItem } from '@/lib/game/types';
 
 interface ShopWindowProps {
     isOpen: boolean;
@@ -21,48 +22,61 @@ interface ShopWindowProps {
 type Tab = 'food';
 
 const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
-    const { state, updateState } = useGameState();
+    const { state } = useGameState();
     const t = useTranslations('Shop');
     const gt = useTranslations('Game');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('food');
 
+    const {
+        handleAction,
+        getCooldown,
+        canAfford,
+        progress,
+        delayedActivityId,
+        isAnyInProgress
+    } = useActionableItem();
+
     if (!isOpen) return null;
 
-    const handleBuy = (item: FoodItem) => {
-        if (state.money >= item.cost) {
-            updateState({
-                money: state.money - item.cost,
-                health: Math.min(state.maxHealth, Math.max(0, state.health + item.health)),
-                stamina: item.stamina ? Math.min(state.maxStamina, state.stamina + item.stamina) : state.stamina
-            });
-        }
-    };
+    const renderShopList = (items: ActionableItem[]) => {
+        return items.map((item) => {
+            const cooldown = getCooldown(item);
+            const isDelayed = delayedActivityId === item.id;
+            const isBlocked = isAnyInProgress && !isDelayed;
+            const isDisabled = isBlocked || (cooldown > 0) || !canAfford(item);
 
-    const renderShopList = (items: FoodItem[]) => {
-        return items.map((item) => (
-            <ListOption
-                key={item.id}
-                title={item.name}
-                subtitle={
-                    <div className={styles.subtitle}>
-                        <StatList
-                            type="cost"
-                            data={{ money: item.cost }}
-                            title={gt('cost')}
-                        />
-                        <StatList
-                            type="effect"
-                            data={{ health: item.health, stamina: item.stamina }}
-                            title={gt('effects')}
-                        />
-                    </div>
-                }
-                actionLabel={t('buy')}
-                onAction={() => handleBuy(item)}
-                actionDisabled={state.money < item.cost}
-            />
-        ));
+            return (
+                <ListOption
+                    key={item.id}
+                    title={t(item.id)}
+                    subtitle={
+                        <div className={styles.subtitle}>
+                            <StatList
+                                type="cost"
+                                data={item.cost}
+                                title={gt('cost')}
+                            />
+                            <StatList
+                                type="effect"
+                                data={item.effect}
+                                title={gt('effects')}
+                            />
+                        </div>
+                    }
+                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('buy')) : undefined}
+                    onAction={!isDelayed ? () => handleAction(item) : undefined}
+                    actionDisabled={isDisabled}
+                    actionContent={
+                        isDelayed && (
+                            <div className={styles.progressBarContainer}>
+                                <div className={styles.progressBarFill} style={{ width: `${progress}%` }} />
+                            </div>
+                        )
+                    }
+                />
+            );
+        });
     };
 
     const tabList = [

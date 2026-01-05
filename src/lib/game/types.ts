@@ -61,9 +61,7 @@ export interface GameState {
     },
     jobLevels: Record<string, number>; // jobId -> level (0-10)
     jobExp: Record<string, number>;    // jobId -> exp
-    cooldowns: {
-        rest: Record<string, number>; // activityId -> timestamp
-    };
+    cooldowns: Record<string, number>; // activityId -> timestamp
     date: {
         day: number;
         month: number;
@@ -146,9 +144,7 @@ export const INITIAL_STATE: GameState = {
         it_investor: 0,
     },
 
-    cooldowns: {
-        rest: {},
-    },
+    cooldowns: {},
 
     // Time
     date: {
@@ -196,28 +192,3 @@ export interface ActionableItem {
     cooldown?: number;
     effect?: Effect;
 }
-
-export interface FoodItem {
-    id: string;
-    name: string;
-    cost: number;
-    health: number;
-    stamina?: number;
-}
-
-export interface FunItem {
-    id: string;
-    name: string;
-    cost: number;
-    mood: number;
-}
-
-export interface GymActivity {
-    id: string;
-    name: string;
-    cost: number;
-    stamina: number;
-    health?: number;
-    mood?: number;
-}
-

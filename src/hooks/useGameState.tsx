@@ -43,8 +43,11 @@ function useGameStateInternal() {
                     if (!parsed.maxStamina) mergedState.maxStamina = 100;
 
                     // Migration for Cooldowns
-                    if (!parsed.cooldowns) {
-                        mergedState.cooldowns = { rest: {} };
+                    if (parsed.cooldowns && typeof parsed.cooldowns.rest === 'object') {
+                        // Old format: { rest: { ... } }
+                        mergedState.cooldowns = { ...parsed.cooldowns.rest };
+                    } else if (!parsed.cooldowns) {
+                        mergedState.cooldowns = {};
                     }
 
                     setState(mergedState);
