@@ -83,8 +83,12 @@
     font-family: var(--font-tahoma), sans-serif;
 }
 
+.langButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 .langButtonActive {
-    box-shadow: inset 1px 1px var(--color-text-primary), inset -1px -1px var(--ui-bg-white);
+    box-shadow: inset 1px 1px var(--color-text-primary), inset -1px -1px transparent;
 }
 
 .langDropdown {
@@ -92,11 +96,9 @@
     bottom: 30px;
     right: 0;
     background-color: var(--xp-legacy-gray);
-    border: 2px solid #dfdfdf;
-    border-right-color: var(--color-text-primary);
-    border-bottom-color: var(--color-text-primary);
-    border-left-color: var(--ui-bg-white);
-    border-top-color: var(--ui-bg-white);
+    border: 2px solid var(--color-text-xp-light);
+    border-right-color: var(--color-text-xp-dark);
+    border-bottom-color: var(--color-text-xp-dark);
     padding: 2px;
     display: flex;
     flex-direction: column;
@@ -161,9 +163,10 @@
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--ui-bg-light);
-    border: 2px solid var(--ui-border-dark);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    background-color: var(--xp-legacy-gray);
+    border: 2px solid var(--color-text-xp-light);
+    border-right-color: var(--color-text-xp-dark);
+    border-bottom-color: var(--color-text-xp-dark);
     padding: 10px 5px;
     display: flex;
     flex-direction: column;

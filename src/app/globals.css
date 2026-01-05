@@ -38,6 +38,8 @@
   --color-text-success: #008000;
   --color-text-xp-blue: #0046D5;
   --color-text-xp-blue-dark: #003366;
+  --color-text-xp-light: #dfdfdf;
+  --color-text-xp-dark: #000000;
 
   /* Status Colors */
   --status-success: #388e3c;

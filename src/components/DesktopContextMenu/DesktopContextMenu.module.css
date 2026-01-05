@@ -1,7 +1,10 @@
 .contextMenu {
     position: fixed;
-    background-color: #fff;
-    border: 1px solid #ACA899;
+    background-color: var(--xp-legacy-gray);
+    border: 2px solid var(--color-text-xp-light);
+    border-right-color: var(--color-text-xp-dark);
+    border-bottom-color: var(--color-text-xp-dark);
+    ;
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
     padding: 2px;
     z-index: 9999;
@@ -13,11 +16,11 @@
 
 .menuItem {
     padding: 4px 20px 4px 25px;
-    color: #000;
+    color: var(--color-text-primary);
     transition: background-color 0.1s, color 0.1s;
 }
 
 .menuItem:hover {
-    background-color: #316AC5;
-    color: #fff;
+    background: var(--xp-taskbar-active);
+    color: var(--color-text-light);
 }
