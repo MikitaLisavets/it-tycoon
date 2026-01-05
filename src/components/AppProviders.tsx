@@ -5,17 +5,32 @@ import { NextIntlClientProvider } from "next-intl";
 import { ReactNode, useMemo } from "react";
 import enMessages from "../../messages/en.json";
 import deMessages from "../../messages/de.json";
+import enQuizzes from "../../messages/en-quizzes.json";
+import deQuizzes from "../../messages/de-quizzes.json";
+
+// Deep merge helper function
+function deepMerge(target: any, source: any): any {
+    const output = { ...target };
+    for (const key in source) {
+        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+            output[key] = deepMerge(target[key] || {}, source[key]);
+        } else {
+            output[key] = source[key];
+        }
+    }
+    return output;
+}
 
 const messagesMap: Record<string, any> = {
-    en: enMessages,
-    de: deMessages,
+    en: deepMerge(enMessages, enQuizzes),
+    de: deepMerge(deMessages, deQuizzes),
 };
 
 function LanguageProvider({ children }: { children: ReactNode }) {
     const { state, isInitialized } = useGameState();
 
     const messages = useMemo(() => {
-        return messagesMap[state.locale] || enMessages;
+        return messagesMap[state.locale] || messagesMap.en;
     }, [state.locale]);
 
     if (!isInitialized) {

@@ -41,16 +41,16 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, result, onAnswer }) => 
             ) : (
                 <>
                     <div className={styles.question}>
-                        {quiz.question}
+                        {t(quiz.questionKey)}
                     </div>
                     <div className={styles.options}>
-                        {quiz.options.map((option, idx) => (
+                        {quiz.optionKeys.map((optionKey: string, idx: number) => (
                             <button
                                 key={idx}
                                 className={styles.optionBtn}
                                 onClick={() => onAnswer(idx)}
                             >
-                                {option}
+                                {t(optionKey)}
                             </button>
                         ))}
                     </div>
