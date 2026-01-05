@@ -74,12 +74,16 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 4px;
     margin-top: 4px;
 }
 
 .costItem {
     font-weight: bold;
+}
+
+.costTitle {
+    color: #d32f2f;
 }
 
 .effects {
@@ -98,4 +102,9 @@
 .effect {
     /* For backward compatibility or simple text */
     color: #388e3c;
+}
+
+
+.effectTitle {
+    color: #388e3c
 }

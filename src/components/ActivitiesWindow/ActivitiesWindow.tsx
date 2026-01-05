@@ -133,7 +133,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     subtitle={
                         <div className={styles.costs}>
                             <div>
-                                <span>{gt('cost')} </span>
+                                <span className={styles.costTitle}>{gt('cost')} </span>
                                 {activity.cost?.money && <StatBadge stat="MONEY" value={activity.cost.money} prefix="-" label={t('money')} />}
                                 {activity.cost?.health && <StatBadge stat="HEALTH" value={activity.cost.health} prefix="-" label={t('health')} />}
                                 {activity.cost?.stamina && <StatBadge stat="STAMINA" value={activity.cost.stamina} prefix="-" label={t('stamina')} />}
@@ -141,7 +141,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                 {!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood && t('free')}
                             </div>
                             <div>
-                                <span>{gt('effects')}: </span>
+                                <span className={styles.effectTitle}>{gt('effects')}: </span>
 
                                 {activity.effect?.health === 'full' ? (
                                     <StatBadge stat="HEALTH" value={t('Rest.effect_full')} />
@@ -163,7 +163,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     }
                     extra={activity.duration && (
                         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                            <StatBadge stat="TIME" value={activity.duration} prefix="" label={t('Rest.duration')} />
+                            <StatBadge stat="TIME" value={`${activity.duration}s`} prefix="" label={t('Rest.duration')} />
                         </div>
                     )}
                     actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('Rest.start')) : undefined}
