@@ -106,7 +106,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                         className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''}`}
                         title="Volume"
                     >
-                        🔊
+                        {state.volume === 0 ? '🔇' : '🔊'}
                     </button>
                 </div>
                 <div className={styles.time}>
