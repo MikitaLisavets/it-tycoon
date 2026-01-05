@@ -19,7 +19,7 @@
 .uiList {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 8px;
     margin: 0;
     padding: 0;
     padding-left: 0px;
@@ -40,6 +40,8 @@
     font-size: 12px;
     position: relative;
     padding-left: 24px;
+    display: inline-flex;
+    ;
 
     &:before {
         position: absolute;

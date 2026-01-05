@@ -34,7 +34,8 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
         canAfford,
         progress,
         delayedActivityId,
-        isAnyInProgress
+        isAnyInProgress,
+        getDynamicPrice
     } = useActionableItem();
 
     if (!isOpen) return null;
@@ -54,7 +55,10 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                         <div className={styles.subtitle}>
                             <StatList
                                 type="cost"
-                                data={item.cost}
+                                data={{
+                                    ...item.cost,
+                                    money: item.cost?.money ? getDynamicPrice(item.cost.money) : undefined
+                                }}
                                 title={gt('cost')}
                             />
                             <StatList

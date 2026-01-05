@@ -9,6 +9,7 @@ import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
 import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
 import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
+import { formatNumberWithSuffix } from '../../lib/game/utils/number-formatter';
 import { JobId, Job } from '../../lib/game/types';
 import styles from './JobWindow.module.css';
 
@@ -196,8 +197,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                             {state.job !== 'none' && (
                                 <>
                                     <p>
-                                        {t('income', { income: totalIncome.toFixed(2) })}
-                                        {jobLevel > 0 && <span className={styles.bonusText}>(+{bonusIncome.toFixed(2)})</span>}
+                                        {t('income', { income: formatNumberWithSuffix(totalIncome) })}
+                                        {jobLevel > 0 && <span className={styles.bonusText}>(+{formatNumberWithSuffix(bonusIncome)})</span>}
                                     </p>
                                     <div className={styles.expContainer}>
                                         <div className={styles.expInfo}>
@@ -227,7 +228,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                             <div className={styles.workContainer}>
                                 {moneyPopups.map(popup => (
                                     <div key={popup.id} className={styles.floatingMoney}>
-                                        +${popup.amount.toFixed(2)}
+                                        +${formatNumberWithSuffix(popup.amount)}
                                     </div>
                                 ))}
                                 <XPButton
@@ -277,7 +278,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                         title={gt(`values.${job.id}`)}
                                         subtitle={
                                             <span className={styles.jobIncome}>
-                                                ${totalJobIncome.toFixed(2)}
+                                                ${formatNumberWithSuffix(totalJobIncome)}
                                                 {currentJobLevel > 0 && (
                                                     <span className={`${styles.bonusText} ${getLevelClass(currentJobLevel)}`} style={currentJobLevel > 0 ? { color: 'white', padding: '1px 4px', borderRadius: '2px', fontSize: '0.7em', verticalAlign: 'middle', marginLeft: '4px' } : {}}>
                                                         Lv.{currentJobLevel}

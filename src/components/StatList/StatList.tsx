@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import StatBadge from '../StatBadge/StatBadge';
 import { Cost, Effect } from '@/lib/game/types';
 import styles from './StatList.module.css';
+import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
 
 interface StatListProps {
     type: 'cost' | 'effect';
@@ -33,7 +34,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                         <li className={styles.uiListItem}>
                             <StatBadge
                                 stat="MONEY"
-                                value={data.money}
+                                value={typeof data.money === 'number' ? formatNumberWithSuffix(data.money) : data.money}
                                 label={gt('money')}
                             />
                         </li>
@@ -43,7 +44,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.health ? (
                         <li className={styles.uiListItem}>
                             {data.health === 'full' ? (
-                                <StatBadge stat="HEALTH" value={freeLabel || 'Full'} />
+                                <StatBadge stat="HEALTH" value={freeLabel || 'Full'} label={gt('health')} />
                             ) : (
                                 <StatBadge
                                     stat="HEALTH"
@@ -59,7 +60,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.stamina ? (
                         <li className={styles.uiListItem}>
                             {data.stamina === 'full' ? (
-                                <StatBadge stat="STAMINA" value={freeLabel || 'Full'} />
+                                <StatBadge stat="STAMINA" value={freeLabel || 'Full'} label={gt('stamina')} />
                             ) : (
                                 <StatBadge
                                     stat="STAMINA"
@@ -75,7 +76,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.mood ? (
                         <li className={styles.uiListItem}>
                             {data.mood === 'full' ? (
-                                <StatBadge stat="MOOD" value={freeLabel || 'Full'} />
+                                <StatBadge stat="MOOD" value={freeLabel || 'Full'} label={gt('mood')} />
                             ) : (
                                 <StatBadge
                                     stat="MOOD"

@@ -33,7 +33,8 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
         canAfford,
         progress,
         delayedActivityId,
-        isAnyInProgress
+        isAnyInProgress,
+        getDynamicPrice
     } = useActionableItem();
 
     const renderActivityList = (activityList: ActionableItem[], namespace: string) => {
@@ -51,7 +52,10 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                         <div className={styles.subtitle}>
                             <StatList
                                 type="cost"
-                                data={activity.cost}
+                                data={{
+                                    ...activity.cost,
+                                    money: activity.cost?.money ? getDynamicPrice(activity.cost.money) : undefined
+                                }}
                                 title={gt('cost')}
                                 isFree={!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood}
                                 freeLabel={t('free')}
@@ -60,7 +64,6 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                 type="effect"
                                 data={activity.effect}
                                 title={gt('effects')}
-                                freeLabel={t('Rest.effect_full')}
                             />
                         </div>
                     }

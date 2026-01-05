@@ -84,7 +84,6 @@
             "apartment": "Apartment",
             "shop": "Supermarket",
             "entertainment": "Entertainment",
-            "hobby": "Hobby",
             "education": "Education",
             "job": "Job",
             "bank": "Bank",
@@ -232,7 +231,7 @@
         "cost_money": "${money}",
         "cost_health": "{health} Health",
         "effect_stamina": "+{amount} Stamina",
-        "effect_full": "Full Stamina",
+        "effect_full": "Full",
         "duration": "Duration",
         "help_content": "Recover your stamina by resting. Some methods are fast but costly, while others are slow but free. Watch out for cooldowns!"
     },
@@ -240,8 +239,8 @@
         "title": "Activities",
         "tabs": {
             "rest": "Rest",
-            "entertainment": "Fun",
-            "gym": "Hobby"
+            "entertainment": "Entertainment",
+            "gym": "Gym"
         }
     },
     "BootScreen": {

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGameState } from './useGameState';
 import { ActionableItem, GameState } from '../lib/game/types';
+import { calculateDynamicPrice } from '../lib/game/utils/economy';
 
 export function useActionableItem() {
     const { state, updateState } = useGameState();
@@ -13,8 +14,10 @@ export function useActionableItem() {
     const [progress, setProgress] = useState(0);
 
     const completeActivity = useCallback((item: ActionableItem) => {
+        const actualMoneyCost = calculateDynamicPrice(item.cost?.money || 0, state);
+
         const updates: any = {
-            money: state.money - (item.cost?.money || 0),
+            money: state.money - actualMoneyCost,
             health: Math.max(0, state.health - (item.cost?.health || 0)),
             stamina: Math.max(0, state.stamina - (item.cost?.stamina || 0)),
             mood: Math.max(0, state.mood - (item.cost?.mood || 0)),
@@ -75,7 +78,7 @@ export function useActionableItem() {
     }, [state.cooldowns]);
 
     const canAfford = useCallback((item: ActionableItem) => {
-        const costMoney = item.cost?.money || 0;
+        const costMoney = calculateDynamicPrice(item.cost?.money || 0, state);
         const costHealth = item.cost?.health || 0;
         const costStamina = item.cost?.stamina || 0;
         const costMood = item.cost?.mood || 0;
@@ -105,6 +108,7 @@ export function useActionableItem() {
         handleAction,
         getCooldown,
         canAfford,
+        getDynamicPrice: useCallback((basePrice: number) => calculateDynamicPrice(basePrice, state), [state]),
         progress,
         delayedActivityId: delayedActivity?.item.id || null,
         isAnyInProgress: !!delayedActivity
