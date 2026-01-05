@@ -5,6 +5,7 @@ import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
 import Tabs from '../Tabs/Tabs';
 import StatList from '../StatList/StatList';
+import ProgressBar from '../ProgressBar/ProgressBar';
 import { useGameState } from '../../hooks/useGameState';
 import { useActionableItem } from '../../hooks/useActionableItem';
 import { REST_ACTIVITIES, FUN_ITEMS, GYM_ACTIVITIES } from '../../lib/game/constants/index';
@@ -73,9 +74,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     actionContent={
                         <div className={styles.actionContent}>
                             {isDelayed && (
-                                <div className={styles.progressBarContainer}>
-                                    <div className={styles.progressBarFill} style={{ width: `${progress}%` }} />
-                                </div>
+                                <ProgressBar progress={progress} height="12px" />
                             )}
 
                             {activity.duration && (

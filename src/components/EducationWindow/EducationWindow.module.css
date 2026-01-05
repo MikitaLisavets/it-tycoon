@@ -1,0 +1,117 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 10px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.trackCard {
+    border: 2px solid #dfdfdf;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-bottom-color: #808080;
+    border-right-color: #808080;
+    background: #c0c0c0;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.trackHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.trackTitle {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.partList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.partItem {
+    padding: 8px;
+    background: #ececec;
+    border: 1px solid #808080;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.partItem.active {
+    background: #fff;
+    border: 2px solid #000080;
+}
+
+.partItem.completed {
+    background: #d4d0c8;
+    color: #808080;
+}
+
+.partInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.partTitle {
+    font-weight: 500;
+}
+
+.partStatus {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.quizContainer {
+    background: #fff;
+    border: 2px solid #000;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.question {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.optionBtn {
+    text-align: left;
+    padding: 8px 12px;
+    background: #dfdfdf;
+    border: 2px solid #fff;
+    border-right-color: #808080;
+    border-bottom-color: #808080;
+    cursor: pointer;
+}
+
+.optionBtn:hover {
+    background: #fff;
+}
+
+
+.lockedMessage {
+    color: #808080;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.completedBadge {
+    background: #008000;
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    border-radius: 2px;
+}

@@ -92,6 +92,18 @@
             "internet": "Internet",
             "hacking": "Hacken"
         },
+        "Education": {
+            "title": "Bildungszentrum",
+            "completed": "Absolviert",
+            "apply": "Einschreiben",
+            "start_part": "Lernen beginnen",
+            "locked_by": "Erfordert {req} Qualifikation",
+            "rejected_message": "Nicht bestanden! Du bist durch die Prüfung gefallen und wurdest exmatrikuliert. Versuch es beim nächsten Mal besser!",
+            "school": "Schule",
+            "college": "Kolleg",
+            "university": "Universität",
+            "exam_pending": "Prüfung ausstehend! Öffne das Bildungszentrum"
+        },
         "values": {
             "none": "Arbeitslos",
             "warehouse_worker": "Lagerarbeiter",

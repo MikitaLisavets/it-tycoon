@@ -12,12 +12,15 @@ import ResetModal from "@/components/ResetModal/ResetModal";
 import ShopWindow from "@/components/ShopWindow/ShopWindow";
 import JobWindow from "@/components/JobWindow/JobWindow";
 import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
+import EducationWindow from "@/components/EducationWindow/EducationWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
 import DesktopContextMenu from "@/components/DesktopContextMenu/DesktopContextMenu";
+import ProgressBar from "@/components/ProgressBar/ProgressBar";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
+import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 
 export default function Home() {
@@ -221,7 +224,7 @@ export default function Home() {
                                     <XPButton variant="primary" onClick={() => toggleWindow('job')}>{t('buttons.job')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('activities')}>{t('buttons.activities')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('shop')}>{t('buttons.shop')}</XPButton>
-                                    <XPButton variant="primary" disabled>{t('buttons.education')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('education')}>{t('buttons.education')}</XPButton>
                                 </div>
                             </div>
 
@@ -316,12 +319,13 @@ export default function Home() {
                                 </Panel>
 
                                 <Panel label={t('panels.education')}>
-                                    <div>{t('school')}</div>
-                                    <StatRow label={t(state.educationState.school)} value={`${t('cost')} 0`} />
-                                    <div>{t('english')}</div>
-                                    <StatRow label={t(state.educationState.english)} value={`${t('cost')} 0`} />
-                                    <div>{t('courses')}</div>
-                                    <StatRow label={t(state.educationState.courses)} value={`${t('cost')} 0`} />
+                                    <StatRow label={t('Education.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('values.none'))} />
+                                    <StatRow label={t('Education.college')} value={state.educationProgress.completedTracks.includes('college') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'college' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'college')?.parts.length}` : t('values.none'))} />
+                                    <StatRow label={t('Education.university')} value={state.educationProgress.completedTracks.includes('university') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'university' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'university')?.parts.length}` : t('values.none'))} />
+
+                                    {state.educationProgress.status !== 'idle' && (
+                                        <EducationProgressBar onToggle={() => toggleWindow('education')} />
+                                    )}
                                 </Panel>
                             </div>
                         </div>
@@ -350,6 +354,13 @@ export default function Home() {
                     onReset={() => setIsResetOpen(true)}
                     isFocused={focusedWindow === 'activities'}
                     onFocus={() => setFocusedWindow('activities')}
+                />
+                <EducationWindow
+                    isOpen={openWindows.includes('education')}
+                    onClose={() => closeWindow('education')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'education'}
+                    onFocus={() => setFocusedWindow('education')}
                 />
             </div>
             <Taskbar
@@ -400,5 +411,44 @@ function StatRow({ label, value, icon, iconColor, isCritical }: { label: string;
             </span>
             <span className={styles.statValue}>{value}</span>
         </div>
+    );
+}
+
+function EducationProgressBar({ onToggle }: { onToggle: () => void }) {
+    const { state } = useGameState();
+    const t = useTranslations('Game');
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const { status, activeTrackId, currentPartIndex, startTime } = state.educationProgress;
+
+        if (status === 'studying' && activeTrackId && startTime) {
+            const track = EDUCATION_TRACKS.find(t => t.id === activeTrackId);
+            if (!track) return;
+            const part = track.parts[currentPartIndex];
+            const durationMs = part.duration * 1000;
+
+            const interval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const percent = Math.min(100, (elapsed / durationMs) * 100);
+                setProgress(percent);
+            }, 100);
+
+            return () => clearInterval(interval);
+        }
+    }, [state.educationProgress]);
+
+    if (state.educationProgress.status === 'quiz') {
+        return (
+            <div className={styles.examPending} onClick={onToggle}>
+                {t('Education.exam_pending')}
+            </div>
+        );
+    }
+
+    if (state.educationProgress.status !== 'studying') return null;
+
+    return (
+        <ProgressBar progress={progress} height="12px" text={`${Math.floor(progress)}%`} />
     );
 }

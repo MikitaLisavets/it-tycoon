@@ -54,11 +54,13 @@ export interface GameState {
     };
 
     // Education Costs/Status
-    educationState: {
-        school: string;
-        english: string;
-        courses: string;
-    },
+    educationProgress: {
+        completedTracks: EducationId[];
+        activeTrackId: EducationId | null;
+        currentPartIndex: number;
+        status: 'idle' | 'studying' | 'quiz';
+        startTime?: number;
+    };
     jobLevels: Record<string, number>; // jobId -> level (0-10)
     jobExp: Record<string, number>;    // jobId -> exp
     cooldowns: Record<string, number>; // activityId -> timestamp
@@ -120,10 +122,11 @@ export const INITIAL_STATE: GameState = {
         access: "none",
     },
 
-    educationState: {
-        school: "not_studying",
-        english: "not_studying",
-        courses: "not_studying",
+    educationProgress: {
+        completedTracks: [],
+        activeTrackId: null,
+        currentPartIndex: 0,
+        status: 'idle',
     },
     jobLevels: {
         warehouse_worker: 0,

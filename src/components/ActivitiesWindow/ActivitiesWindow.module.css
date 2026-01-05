@@ -43,20 +43,6 @@
     width: 120px;
 }
 
-.progressBarContainer {
-    width: 100%;
-    height: 10px;
-    background-color: var(--ui-bg-gray);
-    border: 1px solid var(--ui-border-dark);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.progressBarFill {
-    height: 100%;
-    background-color: var(--status-success);
-    transition: width 0.1s linear;
-}
 
 
 .sectionHeader {

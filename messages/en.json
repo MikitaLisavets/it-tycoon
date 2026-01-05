@@ -81,18 +81,27 @@
             "services": "Services"
         },
         "buttons": {
-            "apartment": "Apartment",
-            "shop": "Supermarket",
-            "entertainment": "Entertainment",
+            "job": "Jobs",
+            "activities": "Activities",
+            "shop": "Shop",
             "education": "Education",
-            "job": "Job",
-            "bank": "Bank",
-            "computer": "Computer",
-            "programs": "Programs",
-            "internet": "Internet",
-            "hacking": "Hacking",
-            "rest": "Rest",
-            "activities": "Activities"
+            "computer": "Computer Upgrade",
+            "programs": "Software Store",
+            "internet": "ISP Services",
+            "hacking": "Terminal",
+            "bank": "Online Banking"
+        },
+        "Education": {
+            "title": "Education Center",
+            "completed": "Graduated",
+            "apply": "Enroll Now",
+            "start_part": "Start Learning",
+            "locked_by": "Requires {req} qualification",
+            "rejected_message": "Fail! You failed the exam and have been expelled from this course. Try harder next time!",
+            "school": "High School",
+            "college": "Technical College",
+            "university": "University",
+            "exam_pending": "Time for the exam! Open Education Center"
         },
         "values": {
             "none": "None",
