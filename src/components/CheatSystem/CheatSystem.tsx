@@ -27,9 +27,6 @@ const CheatSystem: React.FC = () => {
             const target = e.target as HTMLElement;
             if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
 
-            // Only letter keys
-            if (e.key.length !== 1 || !/[a-z]/i.test(e.key)) return;
-
             inputBuffer.current += e.key;
 
             // Limit buffer size (keep last 15 chars)

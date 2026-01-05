@@ -172,7 +172,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>
                             <h3>
-                                {t('current_job', { job: gt(`values.${state.job}`) })}
+                                <span className={styles.jobTitle}>{t('current_job', { job: gt(`values.${state.job}`) })}</span>
                                 {state.job !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('level')} {jobLevel}</span>}
                             </h3>
                             {state.job !== 'none' && (
