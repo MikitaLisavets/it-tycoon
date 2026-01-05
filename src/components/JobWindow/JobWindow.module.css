@@ -1,7 +1,5 @@
 .container {
     padding: 10px;
-    max-height: 400px;
-    overflow-y: auto;
 }
 
 .currentJobWrapper {
