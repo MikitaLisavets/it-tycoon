@@ -11,6 +11,7 @@ import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index
 import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
 import { formatNumberWithSuffix } from '../../lib/game/utils/number-formatter';
 import { JobId, Job } from '../../lib/game/types';
+import ProgressBar from '../ProgressBar/ProgressBar';
 import styles from './JobWindow.module.css';
 
 import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
@@ -142,7 +143,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     };
 
     const getLevelClass = (level: number) => {
-        if (level <= 0) return '';
+        if (level <= 0) return 'levelBadge_0';
         const levelKey = `levelBadge_${Math.min(10, level)}`;
         return styles[levelKey] || '';
     };
@@ -205,12 +206,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                             <span>{t('experience')}</span>
                                             <span>{isMaxLevel ? t('max_level') : `${jobExp}/${expToNext}`}</span>
                                         </div>
-                                        <div className={styles.expBar}>
-                                            <div
-                                                className={styles.expBarFill}
-                                                style={{ width: isMaxLevel ? '100%' : `${(jobExp / expToNext) * 100}%` }}
-                                            />
-                                        </div>
+                                        <ProgressBar
+                                            progress={isMaxLevel ? 100 : (jobExp / expToNext) * 100}
+                                            height="12px"
+                                            variant="green"
+                                        />
                                     </div>
                                 </>
                             )}

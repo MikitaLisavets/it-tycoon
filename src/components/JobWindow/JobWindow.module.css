@@ -156,6 +156,7 @@
     vertical-align: middle;
     font-weight: bold;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    background: #494f49;
 }
 
 .levelBadge_1 {
@@ -212,20 +213,6 @@
     margin-bottom: 2px;
 }
 
-.expBar {
-    height: 6px;
-    background: var(--ui-bg-light);
-    border: 1px solid var(--ui-border-dark);
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.expBarFill {
-    height: 100%;
-    background: linear-gradient(to bottom, #76FF76, #00B300);
-    transition: width 0.3s ease;
-}
 
 .bonusText {
     font-size: 9px;

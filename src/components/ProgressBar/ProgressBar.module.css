@@ -14,7 +14,11 @@
 .fill {
     height: 100%;
     background: #000080;
-    transition: width 0.1s linear;
+    transition: width 0.3s linear;
+}
+
+.green {
+    background: var(--color-text-success);
 }
 
 .text {
