@@ -124,6 +124,7 @@ export default function Home() {
     }, [isInitialized]);
 
     const handleContextMenu = (e: React.MouseEvent) => {
+        if (e.target !== e.currentTarget) return;
         e.preventDefault();
         setContextMenu({ x: e.clientX, y: e.clientY });
     };
