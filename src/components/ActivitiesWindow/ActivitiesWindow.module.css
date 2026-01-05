@@ -68,43 +68,49 @@
     margin-bottom: 5px;
 }
 
-.costs {
-    font-size: 11px;
-    color: var(--color-text-muted);
+.label {
+    min-width: 50px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+}
+
+.free {
+    color: var(--status-success);
+}
+
+.values {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
     gap: 4px;
-    margin-top: 4px;
 }
 
-.costItem {
-    font-weight: bold;
-}
-
-.costTitle {
-    color: var(--status-error);
-}
-
-.effects {
-    font-size: 10px;
-    color: var(--color-text-muted);
+.subtitle {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 4px;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.effectItem {
-    font-weight: bold;
+.categorySection {
+    margin-top: 0;
 }
 
-.effect {
-    /* For backward compatibility or simple text */
-    color: var(--status-success);
+.categoryLabel {
+    display: block;
+    font-size: 12px;
 }
 
+.uiList {
+    padding: 4px 0 4px 18px;
+    margin: 0;
+}
 
-.effectTitle {
-    color: var(--status-success);
+.uiListItem {
+    align-items: center;
+    font-size: 12px;
+}
+
+.actionContent {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }

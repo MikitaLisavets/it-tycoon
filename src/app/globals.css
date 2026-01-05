@@ -74,6 +74,13 @@
   --xp-desktop-green: #008080;
   --xp-link-blue: #215DC6;
 
+  /* Stat Colors */
+  --stat-money: #388e3c;
+  --stat-mood: #f57c00;
+  --stat-health: #d32f2f;
+  --stat-stamina: #0054E3;
+  --stat-time: #333333;
+
   /* Specific Gradients */
   --xp-taskbar-grad: linear-gradient(to bottom, #245EDB 0%, #1941A5 100%);
   --xp-start-grad: linear-gradient(to bottom, #3C8338 0%, #295F26 100%);

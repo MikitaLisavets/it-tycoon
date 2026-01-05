@@ -219,7 +219,7 @@
         "cost_health": "{health} Health",
         "effect_stamina": "+{amount} Stamina",
         "effect_full": "Full Stamina",
-        "duration": "Duration: {seconds}s",
+        "duration": "Duration",
         "help_content": "Recover your stamina by resting. Some methods are fast but costly, while others are slow but free. Watch out for cooldowns!"
     },
     "Activities": {
