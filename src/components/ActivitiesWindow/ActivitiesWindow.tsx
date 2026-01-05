@@ -117,7 +117,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
         return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
     };
 
-    const renderActivityList = (activityList: ActionableItem[]) => {
+    const renderActivityList = (activityList: ActionableItem[], namespace: string) => {
         return activityList.map(activity => {
             const cooldown = getActivityCooldown(activity);
             const isDelayed = delayedActivity?.id === activity.id;
@@ -132,7 +132,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
             return (
                 <ListOption
                     key={activity.id}
-                    title={t(`Rest.${activity.id}`)}
+                    title={t(`${namespace}.${activity.id}`)}
                     subtitle={
                         <div className={styles.subtitle}>
                             <StatList
@@ -201,19 +201,19 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
 
                 {activeTab === 'rest' && (
                     <>
-                        {renderActivityList(REST_ACTIVITIES)}
+                        {renderActivityList(REST_ACTIVITIES, 'Rest')}
                     </>
                 )}
 
                 {activeTab === 'entertainment' && (
                     <>
-                        {renderActivityList(FUN_ITEMS)}
+                        {renderActivityList(FUN_ITEMS, 'Entertainment')}
                     </>
                 )}
 
                 {activeTab === 'gym' && (
                     <>
-                        {renderActivityList(GYM_ACTIVITIES)}
+                        {renderActivityList(GYM_ACTIVITIES, 'Gym')}
                     </>
                 )}
 

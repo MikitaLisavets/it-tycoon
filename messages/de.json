@@ -12,6 +12,7 @@
         "load_invalid": "Ungültiger Speicher-Code!",
         "load_error": "Fehler beim Laden des Spielstands."
     },
+    "free": "Kostenlos",
     "Onboarding": {
         "title": "Spielanleitung",
         "welcome": "Willkommen bei IT Tycoon!",
@@ -164,6 +165,10 @@
         "cost": "{amount} €",
         "free": "Kostenlos",
         "mood": "Laune",
+        "walk": "Spazieren gehen",
+        "tv": "Fernsehen",
+        "cinema": "Kino besuchen",
+        "concert": "Konzert besuchen",
         "help_content": "Halte deine Laune hoch, indem du an verschiedenen Aktivitäten teilnimmst. Eine höhere Laune ist oft für bestimmte Aktionen erforderlich und hilft, ein Game Over zu verhindern."
     },
     "GameOver": {
@@ -200,7 +205,40 @@
         "cost": "{amount} €",
         "stamina": "Ausdauer",
         "mood": "Laune",
+        "cardio": "Cardio-Training",
+        "weights": "Gewichtheben",
+        "yoga": "Yoga-Sitzung",
+        "personal_trainer": "Personal Trainer",
         "help_content": "Trainiere im Fitnessstudio, um deine maximale Ausdauer zu erhöhen. Das Training kostet Geld und kann deine Gesundheit leicht verringern, aber einige Aktivitäten wie Yoga verbessern auch deine Stimmung."
+    },
+    "Notifications": {
+        "low_health_title": "Kritische Gesundheit!",
+        "low_health": "Deine Gesundheit ist gefährlich niedrig. Besuche den Supermarkt!",
+        "low_mood_title": "Depression droht!",
+        "low_mood": "Du bist sehr unglücklich. Tu etwas Lustiges!"
+    },
+    "Rest": {
+        "title": "Ruhe & Entspannung",
+        "short_break": "Kurze Pause",
+        "energy_drink": "Energy-Drink",
+        "sleep": "Schlafen",
+        "start": "Start",
+        "in_progress": "Ruhen...",
+        "cooldown": "Abklingzeit: {time}s",
+        "cost_money": "{money} €",
+        "cost_health": "{health} Gesundheit",
+        "effect_stamina": "+{amount} Ausdauer",
+        "effect_full": "Volle Ausdauer",
+        "duration": "Dauer",
+        "help_content": "Erhole deine Ausdauer durch Ausruhen. Einige Methoden sind schnell, aber kostspielig, während andere langsam, aber kostenlos sind. Achte auf die Abklingzeiten!"
+    },
+    "Activities": {
+        "title": "Aktivitäten",
+        "tabs": {
+            "rest": "Ruhe",
+            "entertainment": "Spaß",
+            "gym": "Hobby"
+        }
     },
     "BootScreen": {
         "title": "IT Tycoon",

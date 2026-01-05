@@ -12,6 +12,7 @@
         "load_invalid": "Invalid save code!",
         "load_error": "Error loading game state."
     },
+    "free": "Free",
     "Onboarding": {
         "title": "How to Play",
         "welcome": "Welcome to IT Tycoon!",
@@ -165,6 +166,10 @@
         "cost": "${amount}",
         "free": "Free",
         "mood": "Happiness",
+        "walk": "Take a Walk",
+        "tv": "Watch TV",
+        "cinema": "Go to Cinema",
+        "concert": "Go to Concert",
         "help_content": "Keep your happiness high by participating in various activities. Higher mood is often required for certain actions and helps prevent game over."
     },
     "GameOver": {
@@ -200,7 +205,11 @@
         "do": "Train",
         "cost": "${amount}",
         "stamina": "stamina",
-        "mood": "Happiness"
+        "mood": "Happiness",
+        "cardio": "Cardio Training",
+        "weights": "Weight Lifting",
+        "yoga": "Yoga Session",
+        "personal_trainer": "Personal Trainer"
     },
     "Notifications": {
         "low_health_title": "Critical Health!",
