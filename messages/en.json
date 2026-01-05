@@ -2,6 +2,7 @@
     "WindowFrame": {
         "file": "File",
         "help": "Help",
+        "about": "About",
         "save": "Save Game",
         "load": "Load Game",
         "reset": "Reset Game",
@@ -240,5 +241,20 @@
         "message5": "Starting game environment...",
         "message6": "Welcome",
         "copyright": "© 2000 IT Tycoon Corporation. All rights reserved."
+    },
+    "About": {
+        "title": "About IT Tycoon",
+        "p1": "This game was built using",
+        "p2": "simple rules and human logic.",
+        "item1": "No Artificial Intelligence.",
+        "item2": "No Machine Learning.",
+        "item3": "No Blockchain.",
+        "p3": "Inspired by games and digital aesthetics",
+        "p4": "of the early 2000s.",
+        "dev": "Developed by",
+        "more": "More applications:",
+        "donate": "Support development:",
+        "stamp": "AI Free ✓",
+        "ok": "OK"
     }
 }

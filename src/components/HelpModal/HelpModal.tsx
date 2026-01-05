@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './HelpModal.module.css';
+import Modal from '../Modal/Modal';
 import XPButton from '../XPButton/XPButton';
+import styles from './HelpModal.module.css';
 
 interface HelpModalProps {
     isOpen: boolean;
@@ -10,23 +11,15 @@ interface HelpModalProps {
 }
 
 const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, title, content }) => {
-    if (!isOpen) return null;
-
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modalContent}>
-                <div className={styles.header}>
-                    <span>{title} - Help</span>
-                    <button className={styles.closeBtn} onClick={onClose}>X</button>
-                </div>
-                <div className={styles.body}>
-                    <p>{content}</p>
-                </div>
-                <div className={styles.footer}>
-                    <XPButton onClick={onClose}>OK</XPButton>
-                </div>
-            </div>
-        </div>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title={`${title} - Help`}
+            footer={<XPButton onClick={onClose}>OK</XPButton>}
+        >
+            <p>{content}</p>
+        </Modal>
     );
 };
 

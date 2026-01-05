@@ -2,6 +2,7 @@
     "WindowFrame": {
         "file": "Datei",
         "help": "Hilfe",
+        "about": "Über",
         "save": "Spiel speichern",
         "load": "Spiel laden",
         "reset": "Spiel zurücksetzen",
@@ -211,5 +212,20 @@
         "message5": "Spielumgebung wird gestartet...",
         "message6": "Willkommen",
         "copyright": "© 2000 IT Tycoon Corporation. Alle Rechte vorbehalten."
+    },
+    "About": {
+        "title": "Über IT Tycoon",
+        "p1": "Dieses Spiel wurde mit",
+        "p2": "einfachen Regeln und menschlicher Logik entwickelt.",
+        "item1": "Keine Künstliche Intelligenz.",
+        "item2": "Kein Maschinelles Lernen.",
+        "item3": "Keine Blockchain.",
+        "p3": "Inspiriert von Spielen und digitaler Ästhetik",
+        "p4": "der frühen 2000er Jahre.",
+        "dev": "Entwickelt von",
+        "more": "Weitere Anwendungen:",
+        "donate": "Unterstütze die Entwicklung:",
+        "stamp": "KI Frei ✓",
+        "ok": "OK"
     }
 }

@@ -1,0 +1,37 @@
+.body {
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.list {
+    text-align: left;
+    display: inline-block;
+}
+
+.link {
+    color: #0000ee;
+    text-decoration: underline;
+}
+
+.stampContainer {
+    margin: 30px 0 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.stamp {
+    border: 4px double #cc0000;
+    color: #cc0000;
+    padding: 5px 15px;
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    transform: rotate(-12deg);
+    user-select: none;
+    font-family: 'Courier New', Courier, monospace;
+    opacity: 0.7;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}

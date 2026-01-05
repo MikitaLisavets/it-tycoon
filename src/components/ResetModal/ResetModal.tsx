@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import Modal from '../Modal/Modal';
+import XPButton from '../XPButton/XPButton';
 import styles from './ResetModal.module.css';
 
 interface ResetModalProps {
@@ -13,31 +15,28 @@ interface ResetModalProps {
 const ResetModal: React.FC<ResetModalProps> = ({ isOpen, onConfirm, onCancel }) => {
     const t = useTranslations('ResetModal');
 
-    if (!isOpen) return null;
-
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
-                <div className={styles.titleBar}>
-                    <div className={styles.title}>{t('confirm_title')}</div>
-                    <button className={styles.closeBtn} onClick={onCancel}>X</button>
+        <Modal
+            isOpen={isOpen}
+            onClose={onCancel}
+            title={t('confirm_title')}
+            width="350px"
+            footer={
+                <>
+                    <XPButton onClick={onConfirm}>{t('yes')}</XPButton>
+                    <XPButton onClick={onCancel}>{t('no')}</XPButton>
+                </>
+            }
+        >
+            <div className={styles.body}>
+                <div className={styles.icon}>
+                    <img src="/icons/warning.png" alt="Warning" width={32} height={32} />
                 </div>
-                <div className={styles.content}>
-                    <div className={styles.body}>
-                        <div className={styles.icon}>
-                            <img src="/icons/warning.png" alt="Warning" width={32} height={32} />
-                        </div>
-                        <div className={styles.message}>
-                            {t('confirm_message')}
-                        </div>
-                    </div>
-                    <div className={styles.actions}>
-                        <button className={styles.xpButton} onClick={onConfirm}>{t('yes')}</button>
-                        <button className={styles.xpButton} onClick={onCancel}>{t('no')}</button>
-                    </div>
+                <div className={styles.message}>
+                    {t('confirm_message')}
                 </div>
             </div>
-        </div>
+        </Modal>
     );
 };
 

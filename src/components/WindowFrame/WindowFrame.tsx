@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import { GAME_CONSTANTS } from '@/lib/game/constants/index';
+import AboutModal from '../AboutModal/AboutModal';
 import styles from './WindowFrame.module.css';
 
 interface WindowFrameProps {
@@ -44,6 +45,9 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   const [size, setSize] = React.useState<{ width: number; height: number } | null>(null);
   const [isResizing, setIsResizing] = React.useState(false);
   const resizeStartRef = React.useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+
+  // About modal state
+  const [isAboutOpen, setIsAboutOpen] = React.useState(false);
 
   const windowRef = React.useRef<HTMLDivElement>(null);
 
@@ -355,6 +359,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
           )}
         </div>
         <span className={styles.menuItem} onClick={onHelpClick}>{t('help')}</span>
+        <span className={styles.menuItem} onClick={() => setIsAboutOpen(true)}>{t('about')}</span>
       </div>
       <div className={styles.content}>
         {children}
@@ -362,6 +367,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       {!isMaximized && !isMobile && (
         <div className={styles.resizeHandle} onMouseDown={handleResizeMouseDown} />
       )}
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };

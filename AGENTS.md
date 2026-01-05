@@ -23,3 +23,10 @@
 ### Aesthetics
 - Maintain the Windows XP / Retro GUI aesthetic.
 - Use the color tokens defined in `globals.css` (e.g., `--xp-blue-title`, `--xp-bg`, `--xp-text`).
+
+## Internationalization
+
+- **Always use `next-intl` for all user-facing text.**
+- Never hardcode strings in components.
+- When adding new text or UI elements, you MUST add the corresponding translations to all supported locale files in the `messages/` directory (e.g., `en.json`, `de.json`).
+- Use the `useTranslations` hook to retrieve translated strings in your components.
