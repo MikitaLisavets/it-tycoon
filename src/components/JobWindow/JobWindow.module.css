@@ -159,13 +159,35 @@
 
 .levelBadge {
     display: inline-block;
-    background: #008000;
     color: white;
     padding: 2px 6px;
     font-size: 0.75em;
     border-radius: 3px;
     margin: 8px 0;
     vertical-align: middle;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.levelBadge_low {
+    background: #008000;
+    /* Windows Green */
+}
+
+.levelBadge_mid {
+    background: #0055E5;
+    /* Windows Blue */
+}
+
+.levelBadge_high {
+    background: #F39C12;
+    /* XP Orange/Gold */
+}
+
+.levelBadge_max {
+    background: linear-gradient(135deg, #800080 0%, #4B0082 100%);
+    /* Elite Purple */
+    box-shadow: 0 0 5px rgba(128, 0, 128, 0.5);
 }
 
 .expContainer {

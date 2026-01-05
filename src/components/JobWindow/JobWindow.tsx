@@ -131,6 +131,13 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
         }
     };
 
+    const getLevelClass = (level: number) => {
+        if (level >= 10) return styles.levelBadge_max;
+        if (level >= 7) return styles.levelBadge_high;
+        if (level >= 4) return styles.levelBadge_mid;
+        return styles.levelBadge_low;
+    };
+
     const renderRequirements = (jobId: JobId) => {
         const job = JOBS[jobId];
         if (!job || !job.requirements) return null;
@@ -166,7 +173,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                         <div className={styles.currentJobSection}>
                             <h3>
                                 {t('current_job', { job: gt(`values.${state.job}`) })}
-                                {state.job !== 'none' && <span className={styles.levelBadge}>{t('level')} {jobLevel}</span>}
+                                {state.job !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('level')} {jobLevel}</span>}
                             </h3>
                             {state.job !== 'none' && (
                                 <>
@@ -255,7 +262,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset }) => {
                                             <span className={styles.jobIncome}>
                                                 ${totalJobIncome.toFixed(2)}
                                                 {currentJobLevel > 0 && (
-                                                    <span className={styles.bonusText}> (Lv.{currentJobLevel})</span>
+                                                    <span className={`${styles.bonusText} ${getLevelClass(currentJobLevel)}`} style={currentJobLevel > 0 ? { color: 'white', padding: '1px 4px', borderRadius: '2px', fontSize: '0.7em', verticalAlign: 'middle', marginLeft: '4px' } : {}}>
+                                                        Lv.{currentJobLevel}
+                                                    </span>
                                                 )}
                                             </span>
                                         }
