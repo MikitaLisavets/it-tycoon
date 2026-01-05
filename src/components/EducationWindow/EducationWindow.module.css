@@ -1,117 +1,298 @@
-.content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.container {
     padding: 10px;
-    height: 100%;
-    overflow-y: auto;
 }
 
-.trackCard {
-    border: 2px solid #dfdfdf;
-    border-top-color: #ffffff;
-    border-left-color: #ffffff;
-    border-bottom-color: #808080;
-    border-right-color: #808080;
-    background: #c0c0c0;
-    padding: 12px;
-    margin-bottom: 12px;
+.trackSection {
+    margin-bottom: 20px;
 }
 
 .trackHeader {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-text-xp-blue-dark);
+    border-bottom: 2px solid var(--color-text-xp-blue-dark);
+    padding-bottom: 4px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.1s;
 }
 
-.trackTitle {
-    font-weight: bold;
-    font-size: 1.1rem;
+.trackHeader:hover {
+    background-color: rgba(0, 50, 150, 0.05);
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chevron {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid var(--color-text-xp-blue-dark);
+    transition: transform 0.2s ease;
+}
+
+.chevron.expanded {
+    transform: rotate(90deg);
+}
+
+.completedBadge {
+    background: var(--status-success);
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    border-radius: 2px;
 }
 
 .partList {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-.partItem {
-    padding: 8px;
-    background: #ececec;
-    border: 1px solid #808080;
+/* Exam Ticket Style */
+.ticketCard {
+    background-color: #fdfaf5;
+    border: 1px solid #d4d0c8;
+    position: relative;
+    margin-bottom: 16px;
+    padding: 0;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.ticketCard::before {
+    /* Left colored strip/stub */
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 6px;
+    background-color: var(--color-text-xp-blue-dark);
+    border-right: 1px dashed #bbb;
+}
+
+.ticketCard.completed {
+    background-color: #f4f4f4;
+    border-color: #ddd;
+}
+
+.ticketCard.completed::before {
+    background-color: var(--status-success);
+}
+
+.ticketCard.active {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    z-index: 1;
+}
+
+.ticketContent {
+    padding: 12px 12px 12px 24px;
+    /* Left padding for stub */
+}
+
+.ticketHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px dashed #d4d0c8;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.partItem.active {
-    background: #fff;
-    border: 2px solid #000080;
+.ticketBody {
+    width: 100%;
 }
 
-.partItem.completed {
-    background: #d4d0c8;
-    color: #808080;
-}
-
-.partInfo {
-    display: flex;
-    flex-direction: column;
-}
-
-.partTitle {
-    font-weight: 500;
-}
-
-.partStatus {
-    font-size: 0.8rem;
-    color: #666;
+.stamp {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%) rotate(-15deg);
+    border: 3px double var(--status-success);
+    color: var(--status-success);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    opacity: 0.2;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
 }
 
 .quizContainer {
     background: #fff;
-    border: 2px solid #000;
-    padding: 20px;
-    margin-top: 10px;
+    border: 1px solid var(--ui-border-dark);
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .question {
     font-weight: bold;
     margin-bottom: 15px;
+    color: var(--color-text-primary);
 }
 
 .options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .optionBtn {
     text-align: left;
     padding: 8px 12px;
-    background: #dfdfdf;
-    border: 2px solid #fff;
-    border-right-color: #808080;
-    border-bottom-color: #808080;
+    background: var(--ui-bg-light);
+    border: 1px solid var(--ui-border-dark);
     cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
 }
 
 .optionBtn:hover {
-    background: #fff;
+    background: var(--xp-btn-bg);
 }
 
+.completedPart {
+    opacity: 0.6;
+    pointer-events: none;
+}
 
 .lockedMessage {
-    color: #808080;
+    color: var(--color-text-muted);
     font-style: italic;
     font-size: 0.9rem;
+    padding: 10px;
+    text-align: center;
 }
 
-.completedBadge {
-    background: #008000;
+.actionContent {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.resultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success {
+    color: var(--status-success);
+}
+
+.failure {
+    color: var(--status-error);
+    animation: shake 0.5s ease-in-out;
+}
+
+.resultIcon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.resultTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.resultMessage {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    margin-bottom: 15px;
+}
+
+.continueBtn {
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: bold;
     color: white;
-    padding: 2px 8px;
-    font-size: 0.8rem;
-    border-radius: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.continueBtn.success {
+    background: var(--status-success);
+    box-shadow: 0 4px 0 #2e7d32;
+}
+
+.continueBtn.failure {
+    background: var(--status-error);
+    box-shadow: 0 4px 0 #c62828;
+}
+
+.continueBtn:hover {
+    filter: brightness(1.1);
+}
+
+.continueBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #2e7d32;
+}
+
+.continueBtn.failure:active {
+    box-shadow: 0 2px 0 #c62828;
 }

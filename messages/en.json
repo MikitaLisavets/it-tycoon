@@ -65,6 +65,7 @@
         "effects": "Effects",
         "school": "School",
         "not_studying": "Not studying",
+        "continue": "Continue",
         "courses": "Courses",
         "panels": {
             "personal_status": "Personal Status",
@@ -101,7 +102,10 @@
             "school": "High School",
             "college": "Technical College",
             "university": "University",
-            "exam_pending": "Time for the exam! Open Education Center"
+            "exam_pending": "Time for the exam! Open Education Center",
+            "completed_message": "Congratulations! You successfully passed the exam.",
+            "rejected_title": "Exam Failed",
+            "class": "Class"
         },
         "values": {
             "none": "None",

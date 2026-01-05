@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import { useGameState } from '../../hooks/useGameState';
-import { EDUCATION_TRACKS, EducationTrack, EducationPart } from '../../lib/game/constants/education';
+import { EDUCATION_TRACKS } from '../../lib/game/constants/education';
 import { EducationId } from '../../lib/game/types';
 import styles from './EducationWindow.module.css';
-import StatBadge from '../StatBadge/StatBadge';
 import { calculateDynamicPrice } from '../../lib/game/utils/economy';
-import ProgressBar from '../ProgressBar/ProgressBar';
+import EducationTrackItem from './components/EducationTrackItem';
 
 interface EducationWindowProps {
     isOpen: boolean;
@@ -21,11 +20,12 @@ interface EducationWindowProps {
 
 const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
-    const t = useTranslations('Game.Education');
-    const gt = useTranslations('Game');
+    const t = useTranslations();
 
     const [progress, setProgress] = useState(0);
-    const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
+    const [expandedTracks, setExpandedTracks] = useState<Set<string>>(new Set());
+    const [quizResult, setQuizResult] = useState<{ type: 'success' | 'failure', onContinue: () => void } | null>(null);
+    const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 
     const {
         completedTracks,
@@ -34,12 +34,17 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
         status
     } = state.educationProgress;
 
-    const handleApply = (trackId: string) => {
+    const handleStartPart = (trackId: string) => {
         const track = EDUCATION_TRACKS.find(t => t.id === trackId);
         if (!track) return;
 
-        const firstPart = track.parts[0];
-        const cost = calculateDynamicPrice(firstPart.cost, state);
+        // Determine which part to start
+        // If it's a new track, we start at 0
+        // If it's the active track, we continue at currentPartIndex
+        const targetPartIndex = (trackId === activeTrackId) ? currentPartIndex : 0;
+
+        const partToStart = track.parts[targetPartIndex];
+        const cost = calculateDynamicPrice(partToStart.cost, state);
 
         if (state.money < cost) return;
 
@@ -48,27 +53,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
             educationProgress: {
                 ...state.educationProgress,
                 activeTrackId: trackId as EducationId,
-                currentPartIndex: 0,
-                status: 'studying',
-                startTime: Date.now()
-            }
-        });
-    };
-
-    const handleStartNextPart = () => {
-        if (!activeTrackId) return;
-        const track = EDUCATION_TRACKS.find(t => t.id === activeTrackId);
-        if (!track) return;
-
-        const nextPart = track.parts[currentPartIndex];
-        const cost = calculateDynamicPrice(nextPart.cost, state);
-
-        if (state.money < cost) return;
-
-        updateState({
-            money: state.money - cost,
-            educationProgress: {
-                ...state.educationProgress,
+                currentPartIndex: targetPartIndex,
                 status: 'studying',
                 startTime: Date.now()
             }
@@ -81,40 +66,55 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
         if (!track) return;
 
         const currentPart = track.parts[currentPartIndex];
+        const currentQuiz = currentPart.quizzes[currentQuizIndex];
 
-        if (answerIndex === currentPart.quiz.answer) {
+        if (answerIndex === currentQuiz.answer) {
             // Correct
-            if (currentPartIndex === track.parts.length - 1) {
-                // Completed whole track
-                updateState({
-                    educationProgress: {
-                        completedTracks: [...completedTracks, activeTrackId],
-                        activeTrackId: null,
-                        currentPartIndex: 0,
-                        status: 'idle'
-                    },
-                    // Also update the legacy education field for backward compatibility
-                    education: activeTrackId
-                });
-            } else {
-                // Next part
-                updateState({
-                    educationProgress: {
-                        ...state.educationProgress,
-                        currentPartIndex: currentPartIndex + 1,
-                        status: 'idle' // Waiting for user to start next part
+            setQuizResult({
+                type: 'success',
+                onContinue: () => {
+                    setQuizResult(null);
+                    setCurrentQuizIndex(0); // Reset for next time
+                    if (currentPartIndex === track.parts.length - 1) {
+                        // Completed whole track
+                        updateState({
+                            educationProgress: {
+                                completedTracks: [...completedTracks, activeTrackId],
+                                activeTrackId: null,
+                                currentPartIndex: 0,
+                                status: 'idle'
+                            },
+                            // Also update the legacy education field for backward compatibility
+                            education: activeTrackId
+                        });
+                    } else {
+                        // Next part
+                        updateState({
+                            educationProgress: {
+                                ...state.educationProgress,
+                                currentPartIndex: currentPartIndex + 1,
+                                status: 'idle' // Waiting for user to start next part
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
+
         } else {
             // Wrong - Rejected
-            alert(t('rejected_message'));
-            updateState({
-                educationProgress: {
-                    ...state.educationProgress,
-                    activeTrackId: null,
-                    currentPartIndex: 0,
-                    status: 'idle'
+            setQuizResult({
+                type: 'failure',
+                onContinue: () => {
+                    setQuizResult(null);
+                    setCurrentQuizIndex(0); // Reset for next time
+                    updateState({
+                        educationProgress: {
+                            ...state.educationProgress,
+                            activeTrackId: null,
+                            currentPartIndex: 0,
+                            status: 'idle'
+                        }
+                    });
                 }
             });
         }
@@ -135,6 +135,12 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
 
                 if (percent >= 100) {
                     clearInterval(interval);
+
+                    // Pick random quiz question when study finishes
+                    const quizCount = part.quizzes.length;
+                    const randomIndex = Math.floor(Math.random() * quizCount);
+                    setCurrentQuizIndex(randomIndex);
+
                     updateState({
                         educationProgress: {
                             ...state.educationProgress,
@@ -151,11 +157,36 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
         }
     }, [status, activeTrackId, currentPartIndex, state.educationProgress.startTime, updateState]);
 
-    const isTrackLocked = (track: EducationTrack) => {
-        if (track.requirements?.education) {
-            return !completedTracks.includes(track.requirements.education as EducationId);
+    useEffect(() => {
+        // Auto-expand active track or first unlocked track if nothing is active
+        if (activeTrackId) {
+            setExpandedTracks(new Set([activeTrackId]));
+        } else {
+            // Find first unlocked AND uncompleted track
+            const firstUnlockedUncompleted = EDUCATION_TRACKS.find(t => {
+                const isCompleted = completedTracks.includes(t.id as EducationId);
+                if (isCompleted) return false;
+
+                if (t.requirements?.education) {
+                    return completedTracks.includes(t.requirements.education as EducationId);
+                }
+                return true;
+            });
+
+            if (firstUnlockedUncompleted) {
+                setExpandedTracks(new Set([firstUnlockedUncompleted.id]));
+            }
         }
-        return false;
+    }, [activeTrackId, completedTracks, isOpen]); // Rerender on open to ensure fresh state
+
+    const toggleTrack = (trackId: string) => {
+        const newExpanded = new Set(expandedTracks);
+        if (newExpanded.has(trackId)) {
+            newExpanded.delete(trackId);
+        } else {
+            newExpanded.add(trackId);
+        }
+        setExpandedTracks(newExpanded);
     };
 
     if (!isOpen) return null;
@@ -163,102 +194,36 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     return (
         <WindowFrame
             id="education_window"
-            title={t('title')}
+            title={t('Game.Education.title')}
             onCloseClick={onClose}
             onResetClick={onReset}
             width="500px"
             isFocused={isFocused}
             onFocus={onFocus}
         >
-            <div className={styles.content}>
+            <div className={styles.container}>
                 {EDUCATION_TRACKS.map(track => {
                     const isCompleted = completedTracks.includes(track.id as EducationId);
-                    const isActive = activeTrackId === track.id;
-                    const isLocked = isTrackLocked(track);
-                    const canAffordTrack = track.parts[0].cost <= state.money;
+                    const isTrackActive = activeTrackId === track.id;
 
                     return (
-                        <div key={track.id} className={styles.trackCard}>
-                            <div className={styles.trackHeader}>
-                                <span className={styles.trackTitle}>{track.title}</span>
-                                {isCompleted && <span className={styles.completedBadge}>{t('completed')}</span>}
-                            </div>
-
-                            {isLocked ? (
-                                <div className={styles.lockedMessage}>
-                                    {t('locked_by', { req: track.requirements?.education || '' })}
-                                </div>
-                            ) : (
-                                <div className={styles.partList}>
-                                    {track.parts.map((part, index) => {
-                                        const isPartCompleted = isCompleted || (isActive && index < currentPartIndex);
-                                        const isPartActive = isActive && index === currentPartIndex;
-
-                                        return (
-                                            <div
-                                                key={part.id}
-                                                className={`${styles.partItem} ${isPartActive ? styles.active : ''} ${isPartCompleted ? styles.completed : ''}`}
-                                            >
-                                                <div className={styles.partInfo}>
-                                                    <span className={styles.partTitle}>{part.title}</span>
-                                                    {!isPartCompleted && (
-                                                        <div style={{ display: 'flex', gap: '8px', fontSize: '0.8rem' }}>
-                                                            <span>{gt('cost')}: ${calculateDynamicPrice(part.cost, state)}</span>
-                                                            <span>{gt('duration')}: {part.duration}s</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                <div className={styles.partActions}>
-                                                    {!isCompleted && !activeTrackId && index === 0 && !isLocked && (
-                                                        <button
-                                                            className={styles.optionBtn}
-                                                            onClick={() => handleApply(track.id)}
-                                                            disabled={state.money < calculateDynamicPrice(part.cost, state)}
-                                                        >
-                                                            {t('apply')}
-                                                        </button>
-                                                    )}
-
-                                                    {isPartActive && status === 'idle' && (
-                                                        <button
-                                                            className={styles.optionBtn}
-                                                            onClick={handleStartNextPart}
-                                                            disabled={state.money < calculateDynamicPrice(part.cost, state)}
-                                                        >
-                                                            {t('start_part')}
-                                                        </button>
-                                                    )}
-
-                                                    {isPartActive && status === 'studying' && (
-                                                        <ProgressBar progress={progress} height="20px" />
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-
-                            {isActive && status === 'quiz' && (
-                                <div className={styles.quizContainer}>
-                                    <div className={styles.question}>
-                                        {track.parts[currentPartIndex].quiz.question}
-                                    </div>
-                                    <div className={styles.options}>
-                                        {track.parts[currentPartIndex].quiz.options.map((option, idx) => (
-                                            <button
-                                                key={idx}
-                                                className={styles.optionBtn}
-                                                onClick={() => handleQuizAnswer(idx)}
-                                            >
-                                                {option}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <EducationTrackItem
+                            key={track.id}
+                            track={track}
+                            isExpanded={expandedTracks.has(track.id)}
+                            isCompleted={isCompleted}
+                            isActive={isTrackActive}
+                            completedTracks={completedTracks}
+                            state={state}
+                            currentPartIndex={currentPartIndex}
+                            status={status}
+                            progress={progress}
+                            currentQuizIndex={currentQuizIndex}
+                            quizResult={quizResult}
+                            onToggle={toggleTrack}
+                            onStart={handleStartPart}
+                            onQuizAnswer={handleQuizAnswer}
+                        />
                     );
                 })}
             </div>

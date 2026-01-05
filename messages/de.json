@@ -64,6 +64,7 @@
         "cost": "Kosten:",
         "school": "Schule",
         "not_studying": "Nicht studierend",
+        "continue": "Weiter",
         "courses": "Kurse",
         "panels": {
             "personal_status": "Persönlicher Status",
@@ -102,7 +103,10 @@
             "school": "Schule",
             "college": "Kolleg",
             "university": "Universität",
-            "exam_pending": "Prüfung ausstehend! Öffne das Bildungszentrum"
+            "exam_pending": "Prüfung ausstehend! Öffne das Bildungszentrum",
+            "completed_message": "Glückwunsch! Du hast die Prüfung bestanden.",
+            "rejected_title": "Prüfung nicht bestanden",
+            "class": "Klasse"
         },
         "values": {
             "none": "Arbeitslos",

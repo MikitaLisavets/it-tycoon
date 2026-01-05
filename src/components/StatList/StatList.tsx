@@ -35,7 +35,6 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             <StatBadge
                                 stat="MONEY"
                                 value={typeof data.money === 'number' ? formatNumberWithSuffix(data.money) : data.money}
-                                label={gt('money')}
                             />
                         </li>
                     ) : null}
