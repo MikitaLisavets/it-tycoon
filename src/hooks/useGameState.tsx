@@ -4,6 +4,7 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { GameState, INITIAL_STATE } from '../lib/game/types';
 import { GAME_CONSTANTS, JOBS } from '../lib/game/constants/index';
 import { cheatManager } from '../lib/game/cheats';
+import { CHEATS } from '@/components/CheatSystem/CheatSystem';
 
 const STORAGE_KEY = 'it-tycoon-state';
 
@@ -101,9 +102,10 @@ function useGameStateInternal() {
                     next.gameOver = true;
                 }
 
-                if (cheatManager.isCheatActive('PAINKILLER')) {
+                if (cheatManager.isCheatActive(CHEATS.G0D)) {
                     next.health = next.maxHealth;
                     next.mood = next.maxMood;
+                    next.stamina = next.maxStamina;
                 }
 
                 return next;

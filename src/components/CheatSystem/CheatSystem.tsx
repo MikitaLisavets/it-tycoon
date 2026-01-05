@@ -6,8 +6,8 @@ import { useGameState } from '../../hooks/useGameState';
 import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
 import styles from './CheatSystem.module.css';
 
-const CHEATS = {
-    PAINKILLER: 'PAINKILLER',
+export const CHEATS = {
+    G0D: 'G0D',
 };
 
 const CheatSystem: React.FC = () => {
