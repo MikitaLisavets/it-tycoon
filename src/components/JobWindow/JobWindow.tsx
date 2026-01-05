@@ -141,10 +141,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     };
 
     const getLevelClass = (level: number) => {
-        if (level >= 10) return styles.levelBadge_max;
-        if (level >= 7) return styles.levelBadge_high;
-        if (level >= 4) return styles.levelBadge_mid;
-        return styles.levelBadge_low;
+        if (level <= 0) return '';
+        const levelKey = `levelBadge_${Math.min(10, level)}`;
+        return styles[levelKey] || '';
     };
 
     const renderRequirements = (jobId: JobId) => {

@@ -158,25 +158,45 @@
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.levelBadge_low {
-    background: var(--color-text-success);
-    /* Windows Green */
+.levelBadge_1 {
+    background: #388e3c;
 }
 
-.levelBadge_mid {
-    background: var(--status-info);
-    /* Windows Blue */
+.levelBadge_2 {
+    background: #689f38;
 }
 
-.levelBadge_high {
-    background: var(--status-warning);
-    /* XP Orange/Gold */
+.levelBadge_3 {
+    background: #00897b;
 }
 
-.levelBadge_max {
+.levelBadge_4 {
+    background: #0054E3;
+}
+
+.levelBadge_5 {
+    background: #3949ab;
+}
+
+.levelBadge_6 {
+    background: #5e35b1;
+}
+
+.levelBadge_7 {
+    background: #f57c00;
+}
+
+.levelBadge_8 {
+    background: #d81b60;
+}
+
+.levelBadge_9 {
+    background: #e53935;
+}
+
+.levelBadge_10 {
     background: linear-gradient(135deg, #800080 0%, #4B0082 100%);
-    /* Elite Purple */
-    box-shadow: 0 0 5px rgba(128, 0, 128, 0.5);
+    box-shadow: 0 0 5px rgba(128, 0, 128, 0.4);
 }
 
 .expContainer {
