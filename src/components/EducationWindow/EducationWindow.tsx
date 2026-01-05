@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import { useGameState } from '../../hooks/useGameState';
@@ -9,6 +9,7 @@ import { EducationId } from '../../lib/game/types';
 import styles from './EducationWindow.module.css';
 import { calculateDynamicPrice } from '../../lib/game/utils/economy';
 import EducationTrackItem from './components/EducationTrackItem';
+import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
 
 interface EducationWindowProps {
     isOpen: boolean;
@@ -26,6 +27,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     const [expandedTracks, setExpandedTracks] = useState<Set<string>>(new Set());
     const [quizResult, setQuizResult] = useState<{ type: 'success' | 'failure', onContinue: () => void } | null>(null);
     const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
+    const levelUpAudioRef = useRef<GameAudioHandle>(null);
 
     const {
         completedTracks,
@@ -69,7 +71,8 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
         const currentQuiz = currentPart.quizzes[currentQuizIndex];
 
         if (answerIndex === currentQuiz.answer) {
-            // Correct
+            // Correct - play level up sound
+            levelUpAudioRef.current?.play();
             setQuizResult({
                 type: 'success',
                 onContinue: () => {
@@ -227,6 +230,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
                     );
                 })}
             </div>
+            <GameAudio ref={levelUpAudioRef} src="/sfx/level-up.mp3" baseVolume={0.5} />
         </WindowFrame>
     );
 };

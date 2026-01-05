@@ -98,6 +98,8 @@
             "completed": "Absolviert",
             "apply": "Einschreiben",
             "start_part": "Lernen beginnen",
+            "in_progress": "Lernen...",
+            "completed_btn": "Abgeschlossen",
             "locked_by": "Erfordert {req} Qualifikation",
             "rejected_message": "Nicht bestanden! Du bist durch die Prüfung gefallen und wurdest exmatrikuliert. Versuch es beim nächsten Mal besser!",
             "school": "Schule",

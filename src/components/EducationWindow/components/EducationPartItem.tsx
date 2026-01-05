@@ -54,10 +54,24 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
     const isPartActive = isTrackActive && index === currentPartIndex;
     const dynamicCost = calculateDynamicPrice(part.cost, state);
 
+    // Check if this part is not yet available:
+    // - If track is NOT active: only the first part (index 0) is available
+    // - If track IS active: only parts at or before currentPartIndex are available
+    const isNotYetAvailable = isTrackActive
+        ? index > currentPartIndex  // Track active: can only click current or earlier parts
+        : index > 0;                 // Track not started: can only click first part
+
     // Actions logic
-    const actionLabel = t('Game.Education.start_part');
+    let actionLabel = t('Game.Education.start_part');
+    if (isPartCompleted) {
+        actionLabel = t('Game.Education.completed_btn');
+    } else if (isPartActive && (status === 'studying' || status === 'quiz')) {
+        actionLabel = t('Game.Education.in_progress');
+    }
+
     const onAction = onStart;
-    const actionDisabled = state.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked;
+    const isLearningInProgress = status === 'studying' || status === 'quiz';
+    const actionDisabled = state.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked || isNotYetAvailable || isLearningInProgress;
 
 
     // Action Content (Progress Bar + Time)
@@ -94,7 +108,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
 
             <div className={styles.ticketContent}>
                 <div className={styles.ticketHeader}>
-                    <span>{t('Game.Education.class').toUpperCase()} {index + 1}0{Math.floor(Math.random() * 10)}</span>
+                    <span>{t('Game.Education.class').toUpperCase()} #{index + 1}0{Math.floor(Math.random() * 10)}</span>
                 </div>
 
                 <div className={styles.ticketBody}>

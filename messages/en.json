@@ -97,6 +97,8 @@
             "completed": "Graduated",
             "apply": "Enroll Now",
             "start_part": "Start Learning",
+            "in_progress": "Learning...",
+            "completed_btn": "Completed",
             "locked_by": "Requires {req} qualification",
             "rejected_message": "Fail! You failed the exam and have been expelled from this course. Try harder next time!",
             "school": "High School",
