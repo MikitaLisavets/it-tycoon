@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
+import Tabs from '../Tabs/Tabs';
 import { useGameState } from '../../hooks/useGameState';
 import { REST_ACTIVITIES, FUN_ITEMS, GYM_ACTIVITIES } from '../../lib/game/constants/index';
 import styles from './ActivitiesWindow.module.css';
@@ -131,30 +132,33 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     title={t(`Rest.${activity.id}`)}
                     subtitle={
                         <div className={styles.costs}>
-                            <span>{gt('cost')} </span>
-                            {activity.cost?.money && <StatBadge stat="MONEY" value={activity.cost.money} prefix="-" label={t('money')} />}
-                            {activity.cost?.health && <StatBadge stat="HEALTH" value={activity.cost.health} prefix="-" label={t('health')} />}
-                            {activity.cost?.stamina && <StatBadge stat="STAMINA" value={activity.cost.stamina} prefix="-" label={t('stamina')} />}
-                            {activity.cost?.mood && <StatBadge stat="MOOD" value={activity.cost.mood} prefix="-" label={t('mood')} />}
+                            <div>
+                                <span>{gt('cost')} </span>
+                                {activity.cost?.money && <StatBadge stat="MONEY" value={activity.cost.money} prefix="-" label={t('money')} />}
+                                {activity.cost?.health && <StatBadge stat="HEALTH" value={activity.cost.health} prefix="-" label={t('health')} />}
+                                {activity.cost?.stamina && <StatBadge stat="STAMINA" value={activity.cost.stamina} prefix="-" label={t('stamina')} />}
+                                {activity.cost?.mood && <StatBadge stat="MOOD" value={activity.cost.mood} prefix="-" label={t('mood')} />}
+                                {!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood && t('free')}
+                            </div>
+                            <div>
+                                <span>{gt('effects')}: </span>
 
-                            <br />
-                            <span>{gt('effects')}: </span>
-
-                            {activity.effect?.health === 'full' ? (
-                                <StatBadge stat="HEALTH" value={t('Rest.effect_full')} />
-                            ) : (typeof activity.effect?.health === 'number' && activity.effect?.health > 0) ? (
-                                <StatBadge stat="HEALTH" value={activity.effect.health} prefix="+" label={gt('health').replace(':', '')} />
-                            ) : null}
-                            {activity.effect?.stamina === 'full' ? (
-                                <StatBadge stat="STAMINA" value={t('Rest.effect_full')} />
-                            ) : (typeof activity.effect?.stamina === 'number' && activity.effect?.stamina > 0) ? (
-                                <StatBadge stat="STAMINA" value={activity.effect.stamina} prefix="+" label={gt('stamina').replace(':', '')} />
-                            ) : null}
-                            {activity.effect?.mood === 'full' ? (
-                                <StatBadge stat="MOOD" value={t('Rest.effect_full')} />
-                            ) : (typeof activity.effect?.mood === 'number' && activity.effect?.mood > 0) ? (
-                                <StatBadge stat="MOOD" value={activity.effect.mood} prefix="+" label={gt('mood').replace(':', '')} />
-                            ) : null}
+                                {activity.effect?.health === 'full' ? (
+                                    <StatBadge stat="HEALTH" value={t('Rest.effect_full')} />
+                                ) : (typeof activity.effect?.health === 'number' && activity.effect?.health > 0) ? (
+                                    <StatBadge stat="HEALTH" value={activity.effect.health} prefix="+" label={gt('health').replace(':', '')} />
+                                ) : null}
+                                {activity.effect?.stamina === 'full' ? (
+                                    <StatBadge stat="STAMINA" value={t('Rest.effect_full')} />
+                                ) : (typeof activity.effect?.stamina === 'number' && activity.effect?.stamina > 0) ? (
+                                    <StatBadge stat="STAMINA" value={activity.effect.stamina} prefix="+" label={gt('stamina').replace(':', '')} />
+                                ) : null}
+                                {activity.effect?.mood === 'full' ? (
+                                    <StatBadge stat="MOOD" value={t('Rest.effect_full')} />
+                                ) : (typeof activity.effect?.mood === 'number' && activity.effect?.mood > 0) ? (
+                                    <StatBadge stat="MOOD" value={activity.effect.mood} prefix="+" label={gt('mood').replace(':', '')} />
+                                ) : null}
+                            </div>
                         </div>
                     }
                     extra={activity.duration && (
@@ -177,30 +181,21 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
         })
     }
 
+    const tabList = [
+        { id: 'rest', label: t('Activities.tabs.rest') },
+        { id: 'entertainment', label: t('Activities.tabs.entertainment') },
+        { id: 'gym', label: t('Activities.tabs.gym') },
+    ] as const;
+
     if (!isOpen) return null;
 
     return (
         <WindowFrame title={t('Activities.title')} onCloseClick={onClose} onResetClick={onReset} width="480px">
-            <div className={styles.tabs}>
-                <button
-                    className={`${styles.tab} ${activeTab === 'rest' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('rest')}
-                >
-                    {t('Activities.tabs.rest')}
-                </button>
-                <button
-                    className={`${styles.tab} ${activeTab === 'entertainment' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('entertainment')}
-                >
-                    {t('Activities.tabs.entertainment')}
-                </button>
-                <button
-                    className={`${styles.tab} ${activeTab === 'gym' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('gym')}
-                >
-                    {t('Activities.tabs.gym')}
-                </button>
-            </div>
+            <Tabs
+                tabs={tabList}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+            />
 
             <div className={styles.content} style={{ padding: '0 10px' }}>
 

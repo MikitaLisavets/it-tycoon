@@ -58,30 +58,6 @@
     transition: width 0.1s linear;
 }
 
-.tabs {
-    display: flex;
-    gap: 5px;
-    padding: 10px 10px 0 10px;
-    border-bottom: 1px solid #999;
-}
-
-.tab {
-    padding: 5px 10px;
-    border: 1px solid #999;
-    border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    background: #e0e0e0;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.tab.active {
-    background: #fff;
-    font-weight: bold;
-    position: relative;
-    top: 1px;
-    border-bottom: 1px solid #fff;
-}
 
 .sectionHeader {
     font-size: 14px;
@@ -93,9 +69,10 @@
 }
 
 .costs {
-    font-size: 0.9em;
+    font-size: 1em;
     color: #666;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 4px;
