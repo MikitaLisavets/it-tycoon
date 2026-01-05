@@ -15,6 +15,7 @@ import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
+import DesktopContextMenu from "@/components/DesktopContextMenu/DesktopContextMenu";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
@@ -32,6 +33,9 @@ export default function Home() {
     const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
     const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
     const [isBooting, setIsBooting] = useState(true);
+    const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+    const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+    const fileInputRef = useState<HTMLInputElement | null>(null);
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
 
@@ -77,7 +81,8 @@ export default function Home() {
     // Auto-onboarding for first time visit
     useEffect(() => {
         if (isInitialized && !hasTriggeredOnboarding) {
-            const hasSeen = localStorage.getItem('it-tycoon-onboarding-seen');
+            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-onboarding-seen`;
+            const hasSeen = localStorage.getItem(storageKey);
             if (!hasSeen) {
                 setIsHelpOpen(true);
             }
@@ -89,7 +94,8 @@ export default function Home() {
     useEffect(() => {
         if (isInitialized) {
             try {
-                const saved = localStorage.getItem('open_windows');
+                const storageKey = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
+                const saved = localStorage.getItem(storageKey);
                 if (saved) {
                     setOpenWindows(JSON.parse(saved));
                 }
@@ -102,13 +108,50 @@ export default function Home() {
     // Save open windows to localStorage
     useEffect(() => {
         if (isInitialized) {
-            localStorage.setItem('open_windows', JSON.stringify(openWindows));
+            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
+            localStorage.setItem(storageKey, JSON.stringify(openWindows));
         }
     }, [openWindows, isInitialized]);
+    // Load background from localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
+            const savedBg = localStorage.getItem(storageKey);
+            if (savedBg) {
+                setBackgroundImage(savedBg);
+            }
+        }
+    }, [isInitialized]);
+
+    const handleContextMenu = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setContextMenu({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setBackgroundImage(base64String);
+                const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
+                localStorage.setItem(storageKey, base64String);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const resetBackground = () => {
+        setBackgroundImage(null);
+        const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
+        localStorage.removeItem(storageKey);
+    };
 
     const handleCloseOnboarding = () => {
         setIsHelpOpen(false);
-        localStorage.setItem('it-tycoon-onboarding-seen', 'true');
+        const storageKey = `${GAME_CONSTANTS.GAME_NAME}-onboarding-seen`;
+        localStorage.setItem(storageKey, 'true');
     };
 
     const toggleWindow = (id: string) => {
@@ -146,8 +189,18 @@ export default function Home() {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.desktopArea}>
+        <div
+            className={styles.container}
+            style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
+        >
+            <div className={styles.desktopArea} onContextMenu={handleContextMenu}>
+                <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="wallpaper-upload"
+                    onChange={handleFileChange}
+                />
                 <WindowFrame
                     title={t('window_title')}
                     width="800px"
@@ -324,6 +377,15 @@ export default function Home() {
                 )
             }
             <BootScreen isBooting={isBooting} onBootComplete={handleBootComplete} />
+            {contextMenu && (
+                <DesktopContextMenu
+                    x={contextMenu.x}
+                    y={contextMenu.y}
+                    onClose={() => setContextMenu(null)}
+                    onChangeWallpaper={() => document.getElementById('wallpaper-upload')?.click()}
+                    onResetWallpaper={resetBackground}
+                />
+            )}
         </div >
     );
 }

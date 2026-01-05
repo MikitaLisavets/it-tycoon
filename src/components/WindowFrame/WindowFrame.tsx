@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
+import { GAME_CONSTANTS } from '@/lib/game/constants/index';
 import styles from './WindowFrame.module.css';
 
 interface WindowFrameProps {
@@ -56,7 +57,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
             // Try to load from localStorage first
             if (id) {
               try {
-                const savedPositions = JSON.parse(localStorage.getItem('window_positions') || '{}');
+                const storageKey = `${GAME_CONSTANTS.GAME_NAME}-window-positions`;
+                const savedPositions = JSON.parse(localStorage.getItem(storageKey) || '{}');
                 const savedPos = savedPositions[id];
 
                 if (savedPos && typeof savedPos.x === 'number' && typeof savedPos.y === 'number') {
@@ -132,9 +134,10 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       // Save position to localStorage
       if (position && id) {
         try {
-          const savedPositions = JSON.parse(localStorage.getItem('window_positions') || '{}');
+          const storageKey = `${GAME_CONSTANTS.GAME_NAME}-window-positions`;
+          const savedPositions = JSON.parse(localStorage.getItem(storageKey) || '{}');
           savedPositions[id] = position;
-          localStorage.setItem('window_positions', JSON.stringify(savedPositions));
+          localStorage.setItem(storageKey, JSON.stringify(savedPositions));
         } catch (e) {
           console.error('Failed to save window position:', e);
         }

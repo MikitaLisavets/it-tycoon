@@ -1,4 +1,5 @@
 export const GAME_CONSTANTS = {
+    GAME_NAME: 'it-tycoon',
     TICK_RATE_MS: 1000,
     GAME_MINUTES_PER_TICK: 30,
     DAY_LENGTH_MINUTES: 24 * 60, // 1440

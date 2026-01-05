@@ -6,7 +6,7 @@ import { GAME_CONSTANTS, JOBS } from '../lib/game/constants/index';
 import { cheatManager } from '../lib/game/cheats';
 import { CHEATS } from '@/components/CheatSystem/CheatSystem';
 
-const STORAGE_KEY = 'it-tycoon-state';
+const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-state`;
 
 interface GameStateContextType {
     state: GameState;
