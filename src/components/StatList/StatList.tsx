@@ -23,7 +23,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
         <div className={styles.statListSection}>
             {title && (
                 <span className={`${styles.label} ${type === 'cost' ? styles.costTitle : styles.effectTitle}`}>
-                    {title} {isFree && !hasValues && freeLabel ? <span className={styles.free}>{freeLabel}</span> : null}
+                    {title}: {isFree && !hasValues && freeLabel ? <span className={styles.free}>{freeLabel}</span> : null}
                 </span>
             )}
             {hasValues && (
@@ -34,7 +34,6 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             <StatBadge
                                 stat="MONEY"
                                 value={data.money}
-                                prefix={type === 'cost' ? '-' : '+'}
                                 label={gt('money')}
                             />
                         </li>
@@ -49,7 +48,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                                 <StatBadge
                                     stat="HEALTH"
                                     value={data.health}
-                                    prefix={type === 'cost' ? '-' : '+'}
+
                                     label={gt('health')}
                                 />
                             )}
@@ -65,7 +64,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                                 <StatBadge
                                     stat="STAMINA"
                                     value={data.stamina}
-                                    prefix={type === 'cost' ? '-' : '+'}
+
                                     label={gt('stamina')}
                                 />
                             )}
@@ -81,7 +80,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                                 <StatBadge
                                     stat="MOOD"
                                     value={data.mood}
-                                    prefix={type === 'cost' ? '-' : '+'}
+
                                     label={gt('mood')}
                                 />
                             )}
