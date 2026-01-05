@@ -26,12 +26,12 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
     const [activeTab, setActiveTab] = useState<Tab>('rest');
 
     // Reset progress when window closes
-    useEffect(() => {
-        if (!isOpen) {
-            setDelayedActivity(null);
-            setProgress(0);
-        }
-    }, [isOpen]);
+    // useEffect(() => {
+    //     if (!isOpen) {
+    //         setDelayedActivity(null);
+    //         setProgress(0);
+    //     }
+    // }, [isOpen]);
 
     // Handle Rest progress tick
     useEffect(() => {
@@ -133,31 +133,33 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     subtitle={
                         <div className={styles.subtitle}>
                             <div className={styles.categorySection}>
-                                <span className={`${styles.categoryLabel} ${styles.costTitle}`}>{gt('cost')} {!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood && <span className={styles.free}>{t('free')}</span>}</span>
-                                <ul className={styles.uiList}>
-                                    {activity.cost?.money && <li className={styles.uiListItem}><StatBadge stat="MONEY" value={activity.cost.money} prefix="-" label={t('money')} /></li>}
-                                    {activity.cost?.health && <li className={styles.uiListItem}><StatBadge stat="HEALTH" value={activity.cost.health} prefix="-" label={t('health')} /></li>}
-                                    {activity.cost?.stamina && <li className={styles.uiListItem}><StatBadge stat="STAMINA" value={activity.cost.stamina} prefix="-" label={t('stamina')} /></li>}
-                                    {activity.cost?.mood && <li className={styles.uiListItem}><StatBadge stat="MOOD" value={activity.cost.mood} prefix="-" label={t('mood')} /></li>}
-                                </ul>
+                                <span className={`${styles.categoryLabel} ${styles.costTitle}`}>{gt('cost')} {!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood ? <span className={styles.free}>{t('free')}</span> : null}</span>
+                                {activity.cost?.money || activity.cost?.health || activity.cost?.stamina || activity.cost?.mood ? (
+                                    <ul className={`${styles.uiList} ${styles.costList}`}>
+                                        {activity.cost?.money && <li className={styles.uiListItem}><StatBadge stat="MONEY" value={activity.cost.money} prefix="-" label={t('money')} /></li>}
+                                        {activity.cost?.health && <li className={styles.uiListItem}><StatBadge stat="HEALTH" value={activity.cost.health} prefix="-" label={t('health')} /></li>}
+                                        {activity.cost?.stamina && <li className={styles.uiListItem}><StatBadge stat="STAMINA" value={activity.cost.stamina} prefix="-" label={t('stamina')} /></li>}
+                                        {activity.cost?.mood && <li className={styles.uiListItem}><StatBadge stat="MOOD" value={activity.cost.mood} prefix="-" label={t('mood')} /></li>}
+                                    </ul>
+                                ) : null}
                             </div>
                             <div className={styles.categorySection}>
                                 <span className={`${styles.categoryLabel} ${styles.effectTitle}`}>{gt('effects')}</span>
-                                <ul className={styles.uiList}>
+                                <ul className={`${styles.uiList} ${styles.effectList}`}>
                                     {activity.effect?.health === 'full' ? (
                                         <li className={styles.uiListItem}><StatBadge stat="HEALTH" value={t('Rest.effect_full')} /></li>
                                     ) : (typeof activity.effect?.health === 'number' && activity.effect?.health > 0) ? (
-                                        <li className={styles.uiListItem}><StatBadge stat="HEALTH" value={activity.effect.health} prefix="+" label={gt('health').replace(':', '')} /></li>
+                                        <li className={styles.uiListItem}><StatBadge stat="HEALTH" value={activity.effect.health} prefix="+" label={gt('health')} /></li>
                                     ) : null}
                                     {activity.effect?.stamina === 'full' ? (
                                         <li className={styles.uiListItem}><StatBadge stat="STAMINA" value={t('Rest.effect_full')} /></li>
                                     ) : (typeof activity.effect?.stamina === 'number' && activity.effect?.stamina > 0) ? (
-                                        <li className={styles.uiListItem}><StatBadge stat="STAMINA" value={activity.effect.stamina} prefix="+" label={gt('stamina').replace(':', '')} /></li>
+                                        <li className={styles.uiListItem}><StatBadge stat="STAMINA" value={activity.effect.stamina} prefix="+" label={gt('stamina')} /></li>
                                     ) : null}
                                     {activity.effect?.mood === 'full' ? (
                                         <li className={styles.uiListItem}><StatBadge stat="MOOD" value={t('Rest.effect_full')} /></li>
                                     ) : (typeof activity.effect?.mood === 'number' && activity.effect?.mood > 0) ? (
-                                        <li className={styles.uiListItem}><StatBadge stat="MOOD" value={activity.effect.mood} prefix="+" label={gt('mood').replace(':', '')} /></li>
+                                        <li className={styles.uiListItem}><StatBadge stat="MOOD" value={activity.effect.mood} prefix="+" label={gt('mood')} /></li>
                                     ) : null}
                                 </ul>
                             </div>

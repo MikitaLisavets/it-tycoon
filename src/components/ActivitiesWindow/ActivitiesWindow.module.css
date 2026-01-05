@@ -100,8 +100,26 @@
 }
 
 .uiList {
-    padding: 4px 0 4px 18px;
+    padding: 4px 0 4px 15px;
     margin: 0;
+}
+
+.costList {
+    list-style-type: none;
+}
+
+.costList li::marker {
+    color: var(--status-success);
+    font-weight: bold;
+}
+
+.effectList {
+    list-style-type: none;
+}
+
+.effectList li::marker {
+    color: var(--status-error);
+    font-weight: bold;
 }
 
 .uiListItem {
