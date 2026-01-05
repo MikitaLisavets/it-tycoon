@@ -1,6 +1,33 @@
 export type EducationId = 'none' | 'school' | 'college' | 'university';
 export type JobId = 'none' | 'warehouse_worker' | 'courier' | 'office_worker' | 'web_dev' | 'senior_dev' | 'startup_founder' | 'it_investor';
 
+// Banking Types
+export interface GameDate {
+    day: number;
+    month: number;
+    year: number;
+    hour: number;
+    minute: number;
+}
+
+export interface CreditRecord {
+    id: string;
+    amount: number;           // Original amount borrowed
+    totalDue: number;         // Amount + interest to repay
+    interestRate: number;     // Percentage (e.g., 10 for 10%)
+    takenAt: GameDate;        // When credit was taken
+    dueDate: GameDate;        // When repayment is due
+    termDays: number;         // Duration in game days
+}
+
+export interface DepositRecord {
+    id: string;
+    amount: number;           // Deposited amount
+    interestRate: number;     // Monthly percentage (e.g., 2 for 2%)
+    startDate: GameDate;      // When deposit was made
+    accumulatedInterest: number; // Total interest earned so far
+}
+
 export interface GameState {
     version: number;
     locale: 'en' | 'de';
@@ -72,6 +99,13 @@ export interface GameState {
         minute: number;
     };
     gameOver: boolean;
+    gameOverReason?: 'health' | 'mood' | 'credit';
+
+    // Banking
+    banking: {
+        credits: CreditRecord[];
+        deposits: DepositRecord[];
+    };
 }
 
 export const INITIAL_STATE: GameState = {
@@ -158,6 +192,13 @@ export const INITIAL_STATE: GameState = {
         minute: 0,
     },
     gameOver: false,
+    gameOverReason: undefined,
+
+    // Banking
+    banking: {
+        credits: [],
+        deposits: [],
+    },
 };
 
 export interface JobRequirements {

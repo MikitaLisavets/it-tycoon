@@ -13,13 +13,14 @@ import ShopWindow from "@/components/ShopWindow/ShopWindow";
 import JobWindow from "@/components/JobWindow/JobWindow";
 import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
 import EducationWindow from "@/components/EducationWindow/EducationWindow";
+import BankWindow from "@/components/BankWindow/BankWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
 import DesktopContextMenu from "@/components/DesktopContextMenu/DesktopContextMenu";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
 import { useGameState } from "@/hooks/useGameState";
-import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
+import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 
@@ -79,7 +80,32 @@ export default function Home() {
             }]);
             setLastWarnings(prev => ({ ...prev, mood: now }));
         }
-    }, [state.health, state.mood, isInitialized, lastWarnings, t]);
+
+        // Check Credits Due Soon
+        if (state.banking && state.banking.credits.length > 0) {
+            const currentDays = state.date.year * 360 + state.date.month * 30 + state.date.day;
+
+            for (const credit of state.banking.credits) {
+                const dueDays = credit.dueDate.year * 360 + credit.dueDate.month * 30 + credit.dueDate.day;
+                const daysLeft = dueDays - currentDays;
+
+                if (daysLeft <= CREDIT_WARNING_DAYS && daysLeft > 0) {
+                    const creditWarningKey = `credit_${credit.id}`;
+                    const lastCreditWarning = (lastWarnings as Record<string, number>)[creditWarningKey] || 0;
+
+                    if (now - lastCreditWarning > COOLDOWN) {
+                        setNotificationQueue(prev => [...prev, {
+                            id: now + 2,
+                            title: tNotification('credit_due_soon_title'),
+                            message: tNotification('credit_due_soon', { days: daysLeft }),
+                            type: 'warning'
+                        }]);
+                        setLastWarnings(prev => ({ ...prev, [creditWarningKey]: now }));
+                    }
+                }
+            }
+        }
+    }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification]);
 
     // Auto-onboarding for first time visit
     useEffect(() => {
@@ -247,7 +273,7 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.services')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" disabled>{t('buttons.bank')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('bank')}>{t('buttons.bank')}</XPButton>
                                 </div>
                             </div>
                         </div>
@@ -362,6 +388,13 @@ export default function Home() {
                     isFocused={focusedWindow === 'education'}
                     onFocus={() => setFocusedWindow('education')}
                 />
+                <BankWindow
+                    isOpen={openWindows.includes('bank')}
+                    onClose={() => closeWindow('bank')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'bank'}
+                    onFocus={() => setFocusedWindow('bank')}
+                />
             </div>
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}
@@ -376,6 +409,7 @@ export default function Home() {
             <GameOverModal
                 isOpen={state.gameOver}
                 onRestart={handleReset}
+                reason={state.gameOverReason}
             />
             {
                 notification && (

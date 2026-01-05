@@ -201,6 +201,9 @@
         "mood_code": "MOOD_CRITICAL_FAILURE",
         "mood_description": "Your mood has deteriorated beyond recovery.",
         "mood_cause": "Lack of entertainment, overwork, or stress",
+        "credit_code": "CREDIT_DEFAULT_BANKRUPTCY",
+        "credit_description": "You have defaulted on your credit payments and are now bankrupt.",
+        "credit_cause": "Failure to repay bank credits before due date",
         "default_code": "CRITICAL_LIFE_FAILURE",
         "default_description": "An unexpected critical failure occurred in your virtual life.",
         "default_cause": "Multiple stat failures or critical threshold breach",
@@ -231,7 +234,11 @@
         "low_health_title": "Critical Health!",
         "low_health": "Your health is dangerously low. Visit the Supermarket!",
         "low_mood_title": "Depression Imminent!",
-        "low_mood": "You are very unhappy. Do something fun!"
+        "low_mood": "You are very unhappy. Do something fun!",
+        "credit_due_soon_title": "Credit Due Soon!",
+        "credit_due_soon": "You have a credit due in {days} days. Visit the Bank to repay!",
+        "credit_overdue_title": "CREDIT OVERDUE!",
+        "credit_overdue": "Your credit payment is overdue! Repay immediately or face bankruptcy!"
     },
     "Rest": {
         "title": "Rest & Relax",
@@ -281,5 +288,37 @@
         "donate": "Support development:",
         "stamp": "AI Free ✓",
         "ok": "OK"
+    },
+    "Bank": {
+        "title": "Online Banking",
+        "balance": "Current Balance",
+        "tabs": {
+            "credits": "Credits",
+            "deposits": "Deposits"
+        },
+        "available_credits": "Available Credit Lines",
+        "term": "Term",
+        "days": "days",
+        "interest": "Interest",
+        "repay": "Repay",
+        "take_credit": "Take Credit",
+        "active_credits": "Your Active Credits",
+        "due": "due",
+        "due_date": "Due",
+        "days_left": "days left",
+        "repay_now": "Repay",
+        "deposit_options": "Deposit Options",
+        "savings": "Savings Account",
+        "term_deposit": "Term Deposit",
+        "min": "Min",
+        "monthly_interest": "Monthly",
+        "amount": "Amount",
+        "deposit": "Deposit",
+        "active_deposits": "Your Deposits",
+        "principal": "Principal",
+        "interest_earned": "Interest",
+        "withdraw": "Withdraw",
+        "no_deposits": "No active deposits",
+        "help_content": "The Online Banking terminal allows you to take credits or make deposits. Credits provide immediate cash but must be repaid with interest before the due date - failure to repay results in game over! Deposits earn interest over time."
     }
 }

@@ -4,3 +4,4 @@ export * from './jobs';
 export * from './education';
 export * from './activities';
 export * from './hardware';
+export * from './banking';

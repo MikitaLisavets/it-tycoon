@@ -33,6 +33,12 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason
                 description: t('mood_description'),
                 cause: t('mood_cause')
             };
+        } else if (reason?.includes('credit') || reason?.includes('Credit')) {
+            return {
+                code: t('credit_code'),
+                description: t('credit_description'),
+                cause: t('credit_cause')
+            };
         } else {
             return {
                 code: t('default_code'),

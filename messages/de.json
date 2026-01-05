@@ -204,6 +204,9 @@
         "mood_code": "KRITISCHER_LAUNE_FEHLER",
         "mood_description": "Ihre Laune hat sich unwiederbringlich verschlechtert.",
         "mood_cause": "Fehlende Unterhaltung, Überarbeitung oder Stress",
+        "credit_code": "KREDIT_AUSFALL_INSOLVENZ",
+        "credit_description": "Sie haben Ihre Kreditrückzahlung versäumt und sind nun insolvent.",
+        "credit_cause": "Versäumnis, Bankkredite vor Fälligkeit zurückzuzahlen",
         "default_code": "KRITISCHER_LEBENS_FEHLER",
         "default_description": "Ein unerwarteter kritischer Fehler ist in Ihrem virtuellen Leben aufgetreten.",
         "default_cause": "Mehrere Statusausfälle oder kritische Schwellenwertüberschreitung",
@@ -235,7 +238,11 @@
         "low_health_title": "Kritische Gesundheit!",
         "low_health": "Deine Gesundheit ist gefährlich niedrig. Besuche den Supermarkt!",
         "low_mood_title": "Depression droht!",
-        "low_mood": "Du bist sehr unglücklich. Tu etwas Lustiges!"
+        "low_mood": "Du bist sehr unglücklich. Tu etwas Lustiges!",
+        "credit_due_soon_title": "Kredit bald fällig!",
+        "credit_due_soon": "Ein Kredit ist in {days} Tagen fällig. Besuche die Bank zur Rückzahlung!",
+        "credit_overdue_title": "KREDIT ÜBERFÄLLIG!",
+        "credit_overdue": "Deine Kreditzahlung ist überfällig! Zahle sofort zurück oder du gehst bankrott!"
     },
     "Rest": {
         "title": "Ruhe & Entspannung",
@@ -285,5 +292,37 @@
         "donate": "Unterstütze die Entwicklung:",
         "stamp": "KI Frei ✓",
         "ok": "OK"
+    },
+    "Bank": {
+        "title": "Online-Banking",
+        "balance": "Aktueller Kontostand",
+        "tabs": {
+            "credits": "Kredite",
+            "deposits": "Einlagen"
+        },
+        "available_credits": "Verfügbare Kreditlinien",
+        "term": "Laufzeit",
+        "days": "Tage",
+        "interest": "Zinsen",
+        "repay": "Rückzahlung",
+        "take_credit": "Kredit aufnehmen",
+        "active_credits": "Aktive Kredite",
+        "due": "fällig",
+        "due_date": "Fällig am",
+        "days_left": "Tage übrig",
+        "repay_now": "Jetzt zahlen",
+        "deposit_options": "Einlagenoptionen",
+        "savings": "Sparkonto",
+        "term_deposit": "Festgeld",
+        "min": "Min",
+        "monthly_interest": "Monatlich",
+        "amount": "Betrag",
+        "deposit": "Einzahlen",
+        "active_deposits": "Deine Einlagen",
+        "principal": "Kapital",
+        "interest_earned": "Zinsen",
+        "withdraw": "Abheben",
+        "no_deposits": "Keine aktiven Einlagen",
+        "help_content": "Das Online-Banking-Terminal ermöglicht dir, Kredite aufzunehmen oder Einlagen zu tätigen. Kredite bieten sofortiges Geld, müssen aber vor dem Fälligkeitsdatum mit Zinsen zurückgezahlt werden - andernfalls ist das Spiel vorbei! Einlagen verdienen im Laufe der Zeit Zinsen."
     }
 }

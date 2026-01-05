@@ -111,6 +111,45 @@ function useGameStateInternal() {
                     next.stamina = next.maxStamina;
                 }
 
+                // Banking: Check credit due dates
+                if (next.banking && next.banking.credits.length > 0) {
+                    const currentDays = next.date.year * 360 + next.date.month * 30 + next.date.day;
+
+                    for (const credit of next.banking.credits) {
+                        const dueDays = credit.dueDate.year * 360 + credit.dueDate.month * 30 + credit.dueDate.day;
+                        if (currentDays > dueDays) {
+                            // Credit overdue - game over!
+                            next.gameOver = true;
+                            next.gameOverReason = 'credit';
+                            break;
+                        }
+                    }
+                }
+
+                // Banking: Calculate deposit interest (on day change)
+                if (next.banking && next.banking.deposits.length > 0 && hoursPassed > 0 && next.date.hour === 0) {
+                    // Monthly interest: each 30 days
+                    const currentDays = next.date.year * 360 + next.date.month * 30 + next.date.day;
+
+                    next.banking = {
+                        ...next.banking,
+                        deposits: next.banking.deposits.map(deposit => {
+                            const startDays = deposit.startDate.year * 360 + deposit.startDate.month * 30 + deposit.startDate.day;
+                            const daysSinceStart = currentDays - startDays;
+
+                            // Calculate interest each 30 days
+                            if (daysSinceStart > 0 && daysSinceStart % 30 === 0) {
+                                const monthlyInterest = deposit.amount * (deposit.interestRate / 100);
+                                return {
+                                    ...deposit,
+                                    accumulatedInterest: deposit.accumulatedInterest + monthlyInterest,
+                                };
+                            }
+                            return deposit;
+                        }),
+                    };
+                }
+
                 return next;
             });
         }, GAME_CONSTANTS.TICK_RATE_MS);
