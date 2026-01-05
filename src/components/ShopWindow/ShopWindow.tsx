@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import HelpModal from '../HelpModal/HelpModal';
-import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
+import Tabs from '../Tabs/Tabs';
+import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
 import styles from './ShopWindow.module.css';
 import { FOOD_ITEMS } from '@/lib/game/constants/supermarket';
+import { FoodItem } from '@/lib/game/types';
 
 interface ShopWindowProps {
     isOpen: boolean;
@@ -16,15 +18,18 @@ interface ShopWindowProps {
     onFocus?: () => void;
 }
 
+type Tab = 'food';
+
 const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations('Shop');
     const gt = useTranslations('Game');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
+    const [activeTab, setActiveTab] = useState<Tab>('food');
 
     if (!isOpen) return null;
 
-    const handleBuy = (item: typeof FOOD_ITEMS[0]) => {
+    const handleBuy = (item: FoodItem) => {
         if (state.money >= item.cost) {
             updateState({
                 money: state.money - item.cost,
@@ -34,6 +39,36 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
         }
     };
 
+    const renderShopList = (items: FoodItem[]) => {
+        return items.map((item) => (
+            <ListOption
+                key={item.id}
+                title={item.name}
+                subtitle={
+                    <div className={styles.subtitle}>
+                        <StatList
+                            type="cost"
+                            data={{ money: item.cost }}
+                            title={gt('cost')}
+                        />
+                        <StatList
+                            type="effect"
+                            data={{ health: item.health, stamina: item.stamina }}
+                            title={gt('effects')}
+                        />
+                    </div>
+                }
+                actionLabel={t('buy')}
+                onAction={() => handleBuy(item)}
+                actionDisabled={state.money < item.cost}
+            />
+        ));
+    };
+
+    const tabList = [
+        { id: 'food', label: t('food') },
+    ] as const;
+
     return (
         <>
             <WindowFrame
@@ -42,44 +77,18 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                 onCloseClick={onClose}
                 onResetClick={onReset}
                 onHelpClick={() => setIsHelpOpen(true)}
-                width="400px"
+                width="480px"
                 isFocused={isFocused}
                 onFocus={onFocus}
             >
-                <div style={{ padding: '0 10px' }}>
-                    <h3 style={{ margin: '10px 0' }}>{t('food')}</h3>
-                    <div className={styles.itemList}>
-                        {FOOD_ITEMS.map((item) => (
-                            <ListOption
-                                key={item.id}
-                                title={item.name}
-                                subtitle={
-                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                        <span style={{ fontWeight: 'bold' }}>{t('cost', { amount: item.cost })}</span>
-                                        <div style={{ display: 'flex', gap: '6px' }}>
-                                            {item.health !== 0 && (
-                                                <StatBadge
-                                                    stat="HEALTH"
-                                                    value={item.health}
-                                                    prefix={item.health > 0 ? '+' : ''}
-                                                />
-                                            )}
-                                            {item.stamina && item.stamina !== 0 && (
-                                                <StatBadge
-                                                    stat="STAMINA"
-                                                    value={item.stamina}
-                                                    prefix={item.stamina > 0 ? '+' : ''}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                }
-                                actionLabel={t('buy')}
-                                onAction={() => handleBuy(item)}
-                                actionDisabled={state.money < item.cost}
-                            />
-                        ))}
-                    </div>
+                <Tabs
+                    tabs={tabList}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
+
+                <div className={styles.content} style={{ padding: '0 10px' }}>
+                    {activeTab === 'food' && renderShopList(FOOD_ITEMS)}
                 </div>
             </WindowFrame>
             <HelpModal

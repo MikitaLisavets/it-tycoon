@@ -1,25 +1,11 @@
-.itemRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid var(--ui-border-separator);
-}
-
-.itemInfo {
+.content {
     display: flex;
     flex-direction: column;
+    padding-bottom: 10px;
 }
 
-.itemName {
-    font-weight: bold;
-}
-
-.itemCost {
-    font-size: 10px;
-    color: var(--color-text-muted);
-}
-
-.buyBtn {
-    min-width: 60px;
+.subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
