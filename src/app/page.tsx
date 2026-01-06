@@ -14,6 +14,7 @@ import JobWindow from "@/components/JobWindow/JobWindow";
 import ActivitiesWindow from "@/components/ActivitiesWindow/ActivitiesWindow";
 import EducationWindow from "@/components/EducationWindow/EducationWindow";
 import BankWindow from "@/components/BankWindow/BankWindow";
+import ComputerWindow from "@/components/ComputerWindow/ComputerWindow";
 import GameOverModal from "@/components/GameOverModal/GameOverModal";
 import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
@@ -22,6 +23,7 @@ import ProgressBar from "@/components/ProgressBar/ProgressBar";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
+import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 
 export default function Home() {
@@ -260,7 +262,7 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('groups.system')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" disabled>{t('buttons.computer')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('buttons.computer')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.programs')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.internet')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton>
@@ -311,6 +313,16 @@ export default function Home() {
                                 </Panel>
 
                                 <Panel label={t('panels.computer')}>
+                                    {(() => {
+                                        const compLevel = calculateComputerLevel(state.computer);
+                                        const levelClass = styles[`levelBadge_${compLevel as 0 | 1 | 2 | 3 | 4 | 5}`] || '';
+                                        return (
+                                            <div style={{ marginBottom: '4px', paddingBottom: '4px', borderBottom: '1px solid #ACA899', fontSize: '11px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <span>{t('Computer.current_computer_level')}:</span>
+                                                <span className={`${styles.levelBadge} ${levelClass}`}>Level {compLevel}</span>
+                                            </div>
+                                        );
+                                    })()}
                                     <StatRow label={t('monitor')} value={t(`values.${state.computer.monitor}`)} />
                                     <StatRow label={t('printer')} value={t(`values.${state.computer.printer}`)} />
                                     <StatRow label={t('scanner')} value={t(`values.${state.computer.scanner}`)} />
@@ -394,6 +406,13 @@ export default function Home() {
                     onReset={() => setIsResetOpen(true)}
                     isFocused={focusedWindow === 'bank'}
                     onFocus={() => setFocusedWindow('bank')}
+                />
+                <ComputerWindow
+                    isOpen={openWindows.includes('computer')}
+                    onClose={() => closeWindow('computer')}
+                    onReset={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'computer'}
+                    onFocus={() => setFocusedWindow('computer')}
                 />
             </div>
             <Taskbar

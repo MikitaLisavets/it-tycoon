@@ -46,14 +46,10 @@ export interface GameState {
     // Computer Hardware
     computer: {
         monitor: string;
-        printer: string;
-        scanner: string;
         modem: string;
         cpu: string;
         hdd: string;
-        cd_rom: string;
         ram: string;
-        sound: string;
         video: string;
     };
 
@@ -124,16 +120,12 @@ export const INITIAL_STATE: GameState = {
     volume: 50,
 
     computer: {
-        monitor: "none",
-        printer: "none",
-        scanner: "none",
-        modem: "none",
-        cpu: "intel_486",
-        hdd: "none",
-        cd_rom: "none",
-        ram: "none",
-        sound: "none",
-        video: "none",
+        monitor: "monitor_mono",
+        modem: "modem_none",
+        cpu: "intel_386",
+        hdd: "40mb_hdd",
+        ram: "1mb_ram",
+        video: "ega_card",
     },
 
     life: {

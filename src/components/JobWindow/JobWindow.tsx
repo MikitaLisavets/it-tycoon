@@ -7,8 +7,9 @@ import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
 import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
-import { JOBS, HARDWARE_TIERS, STAT_ICONS } from '../../lib/game/constants/index';
+import { JOBS, HARDWARE_LEVELS, STAT_ICONS } from '../../lib/game/constants/index';
 import { calculateLevelIncome, calculateLevelBonus } from '../../lib/game/utils/income-scaling';
+import { calculateComputerLevel } from '../../lib/game/utils/hardware';
 import { formatNumberWithSuffix } from '../../lib/game/utils/number-formatter';
 import { JobId, Job } from '../../lib/game/types';
 import ProgressBar from '../ProgressBar/ProgressBar';
@@ -43,12 +44,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     const currentJob = JOBS[state.job];
 
 
-    const calculateComputerTier = () => {
-        const components = Object.values(state.computer);
-        if (components.length === 0) return 0;
-        const tiers = components.map(comp => HARDWARE_TIERS[comp] || 0);
-        return Math.min(...tiers);
-    };
+    const computerLevel = calculateComputerLevel(state.computer);
 
     const jobLevel = state.jobLevels[state.job] || 0;
     const jobExp = state.jobExp[state.job] || 0;
@@ -114,7 +110,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         }
 
         if (reqs.computerTier !== undefined) {
-            if (calculateComputerTier() < reqs.computerTier) return false;
+            if (computerLevel < reqs.computerTier) return false;
         }
 
         if (reqs.previousJob) {
