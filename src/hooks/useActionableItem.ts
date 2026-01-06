@@ -2,52 +2,70 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useGameState } from './useGameState';
-import { useAudio } from './useAudio';
 import { ActionableItem, GameState } from '../lib/game/types';
 import { calculateDynamicPrice } from '../lib/game/utils/economy';
 
 export function useActionableItem() {
     const { state, updateState } = useGameState();
-    const { playCoin } = useAudio();
     const [delayedActivity, setDelayedActivity] = useState<{
         item: ActionableItem;
         startTime: number;
     } | null>(null);
     const [progress, setProgress] = useState(0);
 
-    const completeActivity = useCallback((item: ActionableItem) => {
-        const actualMoneyCost = calculateDynamicPrice(item.cost?.money || 0, state);
-        if (actualMoneyCost > 0) playCoin();
+    const performActivity = useCallback((item: ActionableItem, mode: 'cost' | 'effect' | 'both') => {
+        const updates: any = {};
 
-        const updates: any = {
-            money: state.money - actualMoneyCost,
-            health: Math.max(0, state.health - (item.cost?.health || 0)),
-            stamina: Math.max(0, state.stamina - (item.cost?.stamina || 0)),
-            mood: Math.max(0, state.mood - (item.cost?.mood || 0)),
-            cooldowns: {
+        // Base state to calculate against (will be merged later)
+        const currentMoney = updates.money !== undefined ? updates.money : state.money;
+        const currentHealth = updates.health !== undefined ? updates.health : state.health;
+        const currentStamina = updates.stamina !== undefined ? updates.stamina : state.stamina;
+        const currentMood = updates.mood !== undefined ? updates.mood : state.mood;
+
+        if (mode === 'cost' || mode === 'both') {
+            const actualMoneyCost = calculateDynamicPrice(item.cost?.money || 0, state);
+            updates.money = currentMoney - actualMoneyCost;
+            updates.health = Math.max(0, currentHealth - (item.cost?.health || 0));
+            updates.stamina = Math.max(0, currentStamina - (item.cost?.stamina || 0));
+            updates.mood = Math.max(0, currentMood - (item.cost?.mood || 0));
+        }
+
+        if (mode === 'effect' || mode === 'both') {
+            const baseMoney = updates.money !== undefined ? updates.money : currentMoney;
+            const baseHealth = updates.health !== undefined ? updates.health : currentHealth;
+            const baseStamina = updates.stamina !== undefined ? updates.stamina : currentStamina;
+            const baseMood = updates.mood !== undefined ? updates.mood : currentMood;
+
+            (['health', 'stamina', 'mood', 'money'] as const).forEach((stat) => {
+                const effect = item.effect?.[stat];
+                if (effect !== undefined) {
+                    if (stat === 'money') {
+                        updates.money = baseMoney + (effect as number);
+                    } else {
+                        const maxKey = `max${stat.charAt(0).toUpperCase()}${stat.slice(1)}` as keyof GameState;
+                        const val = stat === 'health' ? baseHealth : stat === 'stamina' ? baseStamina : baseMood;
+                        updates[stat] = effect === 'full'
+                            ? state[maxKey]
+                            : Math.min(state[maxKey] as number, val + (effect as number));
+                    }
+                }
+            });
+
+            // Handle max stat increases if present
+            (['maxHealth', 'maxStamina', 'maxMood'] as const).forEach((maxStat) => {
+                const effect = item.effect?.[maxStat];
+                if (effect !== undefined) {
+                    updates[maxStat] = (state[maxStat] as number) + (effect as number);
+                }
+            });
+
+            updates.cooldowns = {
                 ...state.cooldowns,
                 [item.id]: Date.now()
-            }
-        };
-
-        (['health', 'stamina', 'mood', 'money'] as const).forEach((stat) => {
-            const effect = item.effect?.[stat];
-            if (effect !== undefined) {
-                if (stat === 'money') {
-                    updates.money = (updates.money !== undefined ? updates.money : state.money) + (effect as number);
-                } else {
-                    const maxKey = `max${stat.charAt(0).toUpperCase()}${stat.slice(1)}` as keyof GameState;
-                    const currentValue = updates[stat] !== undefined ? updates[stat] : state[stat];
-                    updates[stat] = effect === 'full'
-                        ? state[maxKey]
-                        : Math.min(state[maxKey] as number, (currentValue as number) + (effect as number));
-                }
-            }
-        });
+            };
+        }
 
         updateState(updates);
-        setDelayedActivity(null);
-        setProgress(0);
     }, [state, updateState]);
 
     useEffect(() => {
@@ -65,13 +83,15 @@ export function useActionableItem() {
             setProgress(percent);
 
             if (percent >= 100) {
-                completeActivity(delayedActivity.item);
+                performActivity(delayedActivity.item, 'effect');
+                setDelayedActivity(null);
+                setProgress(0);
                 clearInterval(interval);
             }
         }, 100);
 
         return () => clearInterval(interval);
-    }, [delayedActivity, completeActivity]);
+    }, [delayedActivity, performActivity]);
 
     const getCooldown = useCallback((item: ActionableItem) => {
         if (!item.cooldown) return 0;
@@ -98,14 +118,15 @@ export function useActionableItem() {
         if (getCooldown(item) > 0) return;
 
         if (item.duration) {
+            performActivity(item, 'cost');
             setDelayedActivity({
                 item: item,
                 startTime: Date.now(),
             });
         } else {
-            completeActivity(item);
+            performActivity(item, 'both');
         }
-    }, [delayedActivity, canAfford, getCooldown, completeActivity]);
+    }, [delayedActivity, canAfford, getCooldown, performActivity]);
 
     return {
         handleAction,
