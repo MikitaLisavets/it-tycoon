@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useAudio } from '@/hooks/useAudio';
 import styles from './GameOverModal.module.css';
 
 interface GameOverModalProps {
@@ -10,6 +11,13 @@ interface GameOverModalProps {
 
 const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason }) => {
     const t = useTranslations('GameOver');
+    const { playError } = useAudio();
+
+    useEffect(() => {
+        if (isOpen) {
+            playError();
+        }
+    }, [isOpen, playError]);
 
     if (!isOpen) return null;
 
