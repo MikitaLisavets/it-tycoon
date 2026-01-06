@@ -426,5 +426,18 @@
             "cd_none": "Keins",
             "cd_2x": "CD-ROM 2x-Laufwerk"
         }
+    },
+    "Winamp": {
+        "title": "Musik-Player",
+        "controls": {
+            "prev": "Vorheriger",
+            "play": "Abspielen",
+            "pause": "Pause",
+            "stop": "Stopp",
+            "next": "Nächster",
+            "shuffle": "Zufall",
+            "repeat": "Wiederholen",
+            "volume": "Lautst."
+        }
     }
 }

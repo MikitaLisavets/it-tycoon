@@ -1,6 +1,7 @@
 import React from 'react';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import WinampPlayer from '../WinampPlayer/WinampPlayer';
+import { useTranslations } from 'next-intl';
 
 interface WinampWindowProps {
     isOpen: boolean;
@@ -12,10 +13,12 @@ interface WinampWindowProps {
 const WinampWindow: React.FC<WinampWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     if (!isOpen) return null;
 
+    const t = useTranslations('Winamp');
+
     return (
         <WindowFrame
             id="winamp"
-            title="Music Player"
+            title={t('title')}
             onCloseClick={onClose}
             width="auto"
             height="auto"

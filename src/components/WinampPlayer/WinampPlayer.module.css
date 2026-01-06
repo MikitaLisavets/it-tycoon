@@ -1,7 +1,9 @@
 .winampContainer {
     background-color: #222;
     color: #0f0;
-    width: 275px;
+    width: 100%;
+    min-width: 280px;
+    /* Ensure content fits */
     padding: 10px;
     font-family: 'Courier New', monospace;
     border: 2px solid #555;
@@ -13,6 +15,8 @@
     flex-direction: column;
     gap: 10px;
     user-select: none;
+    box-sizing: border-box;
+    /* Important for 100% width with padding */
 }
 
 .displayArea {
@@ -63,19 +67,30 @@
     align-items: flex-end;
     gap: 2px;
     height: 100%;
+    flex-grow: 1;
+    /* Fill remaining space */
+    justify-content: flex-end;
+    /* Align bars to right */
+    margin-left: 10px;
+    min-width: 100px;
 }
 
 .bar {
     width: 3px;
     background-color: #0f0;
     opacity: 0.7;
-    transition: height 0.1s;
+    transition: height 0.1s ease-in-out;
+    min-height: 2px;
+    /* Always show a tiny line base */
 }
 
 .controlsArea {
     display: flex;
+    flex-wrap: wrap;
+    /* responsive wrapping */
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .mainControls {
@@ -83,21 +98,49 @@
     gap: 2px;
 }
 
-.mainControls button {
+.controlBtn {
     background: linear-gradient(to bottom, #ccc, #888);
     border: 1px solid #333;
     border-radius: 2px;
     width: 25px;
     height: 18px;
-    font-size: 10px;
+    font-size: 9px;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    color: #000;
 }
 
-.mainControls button:active {
+.controlBtn:active {
     background: #666;
+    border-style: inset;
+}
+
+.secondaryControls {
+    display: flex;
+    gap: 4px;
+}
+
+.smallBtn {
+    background: #444;
+    border: 1px solid #666;
+    color: #aaa;
+    width: 20px;
+    height: 18px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.smallBtn.active {
+    background: #0f0;
+    color: #000;
+    box-shadow: 0 0 5px #0f0;
 }
 
 .volumeControl {
@@ -106,6 +149,9 @@
     gap: 5px;
     font-size: 10px;
     color: #aaa;
+    flex-grow: 1;
+    /* Allow volume to take available space */
+    justify-content: flex-end;
 }
 
 .volumeSlider {
@@ -114,6 +160,9 @@
     appearance: none;
     background: #555;
     outline: none;
+    flex-grow: 1;
+    /* Responsive width */
+    max-width: 100px;
 }
 
 .volumeSlider::-webkit-slider-thumb {

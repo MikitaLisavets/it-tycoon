@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './WinampPlayer.module.css';
 import { parseM3U } from '@/lib/game/utils/m3u-parser';
+import { useTranslations } from 'next-intl';
 
 const WinampPlayer: React.FC = () => {
+    const t = useTranslations('Winamp');
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const [trackName, setTrackName] = useState('2000s Hits Radio');
     const [currentTime, setCurrentTime] = useState('00:00');
+    const [visualizerData, setVisualizerData] = useState<number[]>(new Array(10).fill(0));
 
-    // user requested "Music Player" branding and 1.FM Top 2000s stream
-    // https://strm112.1.fm/top2000_mobile_mp3
+
     const STREAM_URL = 'https://sa46.scastream.com.au/live/7noughties_128.stream/playlist.m3u8';
 
     // State to hold the resolved audio stream URL
@@ -56,6 +58,21 @@ const WinampPlayer: React.FC = () => {
         return () => clearInterval(interval);
     }, [isPlaying]);
 
+    // Visualizer loop
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isPlaying) {
+            interval = setInterval(() => {
+                // Generate random heights for bars
+                setVisualizerData(prev => prev.map(() => Math.random() * 100));
+            }, 100);
+        } else {
+            // Reset to flat line when stopped/paused
+            setVisualizerData(new Array(10).fill(0));
+        }
+        return () => clearInterval(interval);
+    }, [isPlaying]);
+
     const togglePlay = () => {
         if (!audioRef.current) return;
 
@@ -81,9 +98,8 @@ const WinampPlayer: React.FC = () => {
                 <div className={styles.visuals}>
                     <div className={styles.timer}>{currentTime}</div>
                     <div className={styles.oscilloscope}>
-                        {/* Fake visualization bars */}
-                        {[...Array(10)].map((_, i) => (
-                            <div key={i} className={styles.bar} style={{ height: `${Math.random() * 100}%` }}></div>
+                        {visualizerData.map((height, i) => (
+                            <div key={i} className={styles.bar} style={{ height: `${height}%` }}></div>
                         ))}
                     </div>
                 </div>
@@ -92,23 +108,25 @@ const WinampPlayer: React.FC = () => {
             {/* Controls Area */}
             <div className={styles.controlsArea}>
                 <div className={styles.mainControls}>
-                    <button className={styles.prevBtn} title="Prev"></button>
-                    <button className={styles.playBtn} onClick={togglePlay} title={isPlaying ? "Pause" : "Play"}>
+                    <button className={styles.controlBtn} title={t('controls.prev')} disabled>|&lt;</button>
+                    <button className={styles.controlBtn} onClick={togglePlay} title={isPlaying ? t('controls.pause') : t('controls.play')}>
                         {isPlaying ? '||' : '►'}
                     </button>
-                    <button className={styles.pauseBtn} onClick={togglePlay} title="Pause"></button>
-                    <button className={styles.stopBtn} onClick={() => {
+                    <button className={styles.controlBtn} onClick={() => {
                         if (audioRef.current) {
                             audioRef.current.pause();
                             audioRef.current.currentTime = 0;
                             setIsPlaying(false);
                             setCurrentTime('00:00');
                         }
-                    }} title="Stop">■</button>
-                    <button className={styles.nextBtn} title="Next"></button>
+                    }} title={t('controls.stop')}>■</button>
+                    <button className={styles.controlBtn} title={t('controls.next')} disabled>&gt;|</button>
                 </div>
+
+
+
                 <div className={styles.volumeControl}>
-                    <label>Vol</label>
+                    <label>{t('controls.volume')}</label>
                     <input
                         type="range"
                         min="0"
@@ -122,7 +140,7 @@ const WinampPlayer: React.FC = () => {
             </div>
 
             <div className={styles.branding}>
-                Music Player
+                {t('title')}
             </div>
 
             <audio ref={audioRef} src={audioSrc} crossOrigin="anonymous" />

@@ -413,5 +413,18 @@
             "ips_27_4k": "27\" 4K IPS",
             "oled_32_240hz": "32\" OLED 240Hz"
         }
+    },
+    "Winamp": {
+        "title": "Music Player",
+        "controls": {
+            "prev": "Previous",
+            "play": "Play",
+            "pause": "Pause",
+            "stop": "Stop",
+            "next": "Next",
+            "shuffle": "Shuffle",
+            "repeat": "Repeat",
+            "volume": "Vol"
+        }
     }
 }

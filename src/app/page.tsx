@@ -33,6 +33,7 @@ export default function Home() {
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, resetState, isInitialized } = useGameState();
     const t = useTranslations('Game');
+    const tWinamp = useTranslations('Winamp');
     const tNotification = useTranslations('Notifications');
     const [openWindows, setOpenWindows] = useState<string[]>([]);
     const [focusedWindow, setFocusedWindow] = useState<string | null>(null);
@@ -70,7 +71,7 @@ export default function Home() {
     const desktopShortcuts: ShortcutData[] = [
         {
             id: 'winamp',
-            label: 'Music Player',
+            label: tWinamp('title'),
             icon: winampIcon
         }
     ];
