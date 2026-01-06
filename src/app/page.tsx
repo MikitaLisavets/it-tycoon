@@ -367,14 +367,14 @@ export default function Home() {
                                 </Panel>
 
                                 <Panel label={t('panels.computer')}>
-                                    <StatRow label={tComputer('current_computer_level')} value={`Level ${calculateComputerLevel(state.computer)}`} />
-                                    <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
                                     <StatRow label={t('monitor')} value={tComputer(`parts.${state.computer.monitor}`)} />
                                     <StatRow label={t('cpu')} value={tComputer(`parts.${state.computer.cpu}`)} />
                                     <StatRow label={t('hdd')} value={tComputer(`parts.${state.computer.hdd}`)} />
                                     <StatRow label={t('ram')} value={tComputer(`parts.${state.computer.ram}`)} />
                                     <StatRow label={t('video')} value={tComputer(`parts.${state.computer.video}`)} />
                                     <StatRow label={t('modem')} value={tComputer(`parts.${state.computer.modem}`)} />
+                                    <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
+                                    <StatRow label={tComputer('current_computer_level')} value={`Level ${calculateComputerLevel(state.computer)}`} />
                                 </Panel>
 
                                 <Panel label={t('panels.my_life')}>
@@ -398,13 +398,24 @@ export default function Home() {
                                 </Panel>
 
                                 <Panel label={t('panels.education')}>
-                                    <StatRow label={t('Education.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('values.none'))} />
-                                    <StatRow label={t('Education.college')} value={state.educationProgress.completedTracks.includes('college') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'college' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'college')?.parts.length}` : t('values.none'))} />
-                                    <StatRow label={t('Education.university')} value={state.educationProgress.completedTracks.includes('university') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'university' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'university')?.parts.length}` : t('values.none'))} />
-
-                                    {state.educationProgress.status !== 'idle' && (
-                                        <EducationProgressBar onToggle={() => toggleWindow('education')} />
-                                    )}
+                                    <>
+                                        <StatRow label={t('Education.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('values.none'))} />
+                                        {state.educationProgress.activeTrackId === 'school' && state.educationProgress.status !== 'idle' && (
+                                            <EducationProgressBar onToggle={() => toggleWindow('education')} />
+                                        )}
+                                    </>
+                                    <>
+                                        <StatRow label={t('Education.college')} value={state.educationProgress.completedTracks.includes('college') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'college' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'college')?.parts.length}` : t('values.none'))} />
+                                        {state.educationProgress.activeTrackId === 'college' && state.educationProgress.status !== 'idle' && (
+                                            <EducationProgressBar onToggle={() => toggleWindow('education')} />
+                                        )}
+                                    </>
+                                    <>
+                                        <StatRow label={t('Education.university')} value={state.educationProgress.completedTracks.includes('university') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'university' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'university')?.parts.length}` : t('values.none'))} />
+                                        {state.educationProgress.activeTrackId === 'university' && state.educationProgress.status !== 'idle' && (
+                                            <EducationProgressBar onToggle={() => toggleWindow('education')} />
+                                        )}
+                                    </>
                                 </Panel>
                             </div>
                         </div>
