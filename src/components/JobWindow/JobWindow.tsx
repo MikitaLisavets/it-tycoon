@@ -14,7 +14,7 @@ import { JobId, Job } from '../../lib/game/types';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import styles from './JobWindow.module.css';
 
-import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
+import { useAudio } from '../../hooks/useAudio';
 
 interface JobWindowProps {
     isOpen: boolean;
@@ -36,9 +36,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
-
-    const audioRef = React.useRef<GameAudioHandle>(null);
-    const levelUpAudioRef = React.useRef<GameAudioHandle>(null);
+    const { playCoin, playLevelUp } = useAudio();
 
     if (!isOpen) return null;
 
@@ -69,9 +67,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
 
             if (state.health >= healthCost && (state.mood >= moodCost) && state.stamina >= staminaCost) {
                 // Play sound
-                if (audioRef.current) {
-                    audioRef.current.play();
-                }
+                playCoin();
 
                 // Trigger animations
                 setIsAnimating(true);
@@ -92,9 +88,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                     newLevel = Math.min(10, jobLevel + 1);
 
                     // Play level up sound
-                    if (levelUpAudioRef.current) {
-                        levelUpAudioRef.current.play();
-                    }
+                    playLevelUp();
                 }
 
                 updateState({
@@ -175,8 +169,6 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
 
     return (
         <>
-            <GameAudio ref={audioRef} src="/sfx/coin.mp3" baseVolume={0.3} />
-            <GameAudio ref={levelUpAudioRef} src="/sfx/level-up.mp3" baseVolume={0.5} />
             <WindowFrame
                 id="job_window"
                 title={t('title')}
@@ -232,6 +224,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 ))}
                                 <XPButton
                                     onClick={handleWork}
+                                    mute={true}
                                     disabled={
                                         (currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
                                         (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||

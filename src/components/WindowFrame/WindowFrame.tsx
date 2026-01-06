@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
+import { useAudio } from '@/hooks/useAudio';
 import { GAME_CONSTANTS } from '@/lib/game/constants/index';
 import AboutModal from '../AboutModal/AboutModal';
 import styles from './WindowFrame.module.css';
@@ -33,6 +34,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
 }) => {
   const t = useTranslations('WindowFrame');
   const { state, updateState } = useGameState();
+  const { playClick } = useAudio();
   const [isMaximized, setIsMaximized] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -225,6 +227,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   }, [isDragging, isResizing, position, size, id, title]);
 
   const toggleMaximize = () => {
+    playClick();
     if (!isMobile) {
       setIsMaximized(!isMaximized);
     }
@@ -318,33 +321,34 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
         </div>
         <div className={styles.controls}>
           {/* Visual only buttons */}
-          <button className={`${styles.controlBtn} ${styles.help}`} onClick={onHelpClick}>?</button>
+          <button className={`${styles.controlBtn} ${styles.help}`} onClick={() => { playClick(); onHelpClick?.(); }}>?</button>
           {!isMobile && (
             <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
           )}
-          <button className={`${styles.controlBtn} ${styles.close}`} onClick={onCloseClick}>X</button>
+          <button className={`${styles.controlBtn} ${styles.close}`} onClick={() => { playClick(); onCloseClick?.(); }}>X</button>
         </div>
       </div>
       <div className={styles.menuBar}>
         <div style={{ position: 'relative' }} ref={fileMenuRef}>
           <span
             className={styles.menuItem}
-            onClick={() => setIsFileMenuOpen(!isFileMenuOpen)}
+            onClick={() => { playClick(); setIsFileMenuOpen(!isFileMenuOpen); }}
             style={{ backgroundColor: isFileMenuOpen ? '#316AC5' : undefined, color: isFileMenuOpen ? 'white' : undefined }}
           >
             {t('file')}
           </span>
           {isFileMenuOpen && (
             <div className={styles.dropdown}>
-              <div className={styles.dropdownItem} onClick={handleSaveGame}>
+              <div className={styles.dropdownItem} onClick={() => { playClick(); handleSaveGame(); }}>
                 {t('save')}
               </div>
-              <div className={styles.dropdownItem} onClick={handleLoadGame}>
+              <div className={styles.dropdownItem} onClick={() => { playClick(); handleLoadGame(); }}>
                 {t('load')}
               </div>
               <div
                 className={styles.dropdownItem}
                 onClick={() => {
+                  playClick();
                   setIsFileMenuOpen(false);
                   if (onResetClick) {
                     onResetClick();
@@ -358,8 +362,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
             </div>
           )}
         </div>
-        <span className={styles.menuItem} onClick={onHelpClick}>{t('help')}</span>
-        <span className={styles.menuItem} onClick={() => setIsAboutOpen(true)}>{t('about')}</span>
+        <span className={styles.menuItem} onClick={() => { playClick(); onHelpClick?.(); }}>{t('help')}</span>
+        <span className={styles.menuItem} onClick={() => { playClick(); setIsAboutOpen(true); }}>{t('about')}</span>
       </div>
       <div className={styles.content}>
         {children}

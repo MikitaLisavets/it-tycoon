@@ -4,6 +4,7 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
+import { useAudio } from '../../hooks/useAudio';
 import { REST_ACTIVITIES, RestActivity } from '../../lib/game/constants/index';
 import styles from './RestWindow.module.css';
 
@@ -15,6 +16,7 @@ interface RestWindowProps {
 
 const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => {
     const { state, updateState } = useGameState();
+    const { playCoin } = useAudio();
     const t = useTranslations('Rest');
     const [isHelpOpen, setIsHelpOpen] = useState(false);
 
@@ -58,7 +60,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
 
     if (!isOpen) return null;
 
-    const startRest = (activity: RestActivity) => {
+    const startRest = (activity: ActionableItem) => {
         // Validation
         if (activeRest) return; // Busy
         if (state.money < (activity.cost?.money || 0)) return;
@@ -80,6 +82,10 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
         const activity = REST_ACTIVITIES.find(a => a.id === activityId);
         if (!activity) return;
 
+        if (activity.cost?.money && activity.cost.money > 0) playCoin();
+
+        if (activity.cost?.money && activity.cost.money > 0) playCoin();
+
         const updates: any = {
             money: state.money - (activity.cost?.money || 0),
             health: Math.max(0, state.health - (activity.cost?.health || 0)), // Clamp to 0
@@ -92,17 +98,17 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
             }
         };
 
-        if (activity.stamina === 'full') {
+        if (activity.effect?.stamina === 'full') {
             updates.stamina = state.maxStamina;
-        } else {
-            updates.stamina = Math.min(state.maxStamina, state.stamina + (activity.stamina as number));
+        } else if (activity.effect?.stamina !== undefined) {
+            updates.stamina = Math.min(state.maxStamina, state.stamina + (activity.effect.stamina as number));
         }
 
         updateState(updates);
         setActiveRest(null);
     };
 
-    const getCooldownRemaining = (activity: RestActivity) => {
+    const getCooldownRemaining = (activity: ActionableItem) => {
         const lastUsed = state.cooldowns?.rest?.[activity.id] || 0;
         const remaining = activity.cooldown - (Date.now() - lastUsed);
         return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
@@ -129,7 +135,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
                         return (
                             <div key={activity.id} className={styles.activityRow}>
                                 <div className={styles.info}>
-                                    <span className={styles.name}>{t(activity.name)}</span>
+                                    <span className={styles.name}>{t(activity.id)}</span>
                                     <div className={styles.details}>
                                         <span className={styles.cost}>
                                             {costMoney > 0 && `${t('cost_money', { money: costMoney })} `}
@@ -137,7 +143,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
                                             {costMoney === 0 && costHealth === 0 && 'Free '}
                                         </span>
                                         <span className={styles.effect}>
-                                            {activity.stamina === 'full' ? t('effect_full') : t('effect_stamina', { amount: activity.stamina })}
+                                            {activity.effect?.stamina === 'full' ? t('effect_full') : t('effect_stamina', { amount: activity.effect?.stamina })}
                                         </span>
                                         <span> • {t('duration', { seconds: activity.duration })}</span>
                                     </div>

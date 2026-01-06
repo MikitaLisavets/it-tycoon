@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useGameState } from './useGameState';
+import { useAudio } from './useAudio';
 import { ActionableItem, GameState } from '../lib/game/types';
 import { calculateDynamicPrice } from '../lib/game/utils/economy';
 
 export function useActionableItem() {
     const { state, updateState } = useGameState();
+    const { playCoin } = useAudio();
     const [delayedActivity, setDelayedActivity] = useState<{
         item: ActionableItem;
         startTime: number;
@@ -15,6 +17,7 @@ export function useActionableItem() {
 
     const completeActivity = useCallback((item: ActionableItem) => {
         const actualMoneyCost = calculateDynamicPrice(item.cost?.money || 0, state);
+        if (actualMoneyCost > 0) playCoin();
 
         const updates: any = {
             money: state.money - actualMoneyCost,

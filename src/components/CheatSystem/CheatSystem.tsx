@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { cheatManager } from '../../lib/game/cheats';
 import { useGameState } from '../../hooks/useGameState';
-import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
+import { useAudio } from '../../hooks/useAudio';
 import styles from './CheatSystem.module.css';
 
 export const CHEATS = {
@@ -19,7 +19,7 @@ const CheatSystem: React.FC = () => {
     });
     const inputBuffer = useRef<string>('');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const audioRef = useRef<GameAudioHandle>(null);
+    const { playCheat } = useAudio();
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -40,9 +40,7 @@ const CheatSystem: React.FC = () => {
                 if (inputBuffer.current.endsWith(code)) {
                     const active = cheatManager.toggleCheat(type as any);
                     showNotification(code, active);
-                    if (audioRef.current) {
-                        audioRef.current.play();
-                    }
+                    playCheat();
                     inputBuffer.current = ''; // Clear after activation
                     matched = true;
                 }
@@ -82,7 +80,6 @@ const CheatSystem: React.FC = () => {
 
     return (
         <>
-            <GameAudio ref={audioRef} src="/sfx/cheat.mp3" />
             {notification.visible && (
                 <div className={`${styles.notification} ${notification.exiting ? styles.exit : ''}`}>
                     <div className={styles.titleBar}>

@@ -9,7 +9,8 @@ import { EducationId } from '../../lib/game/types';
 import styles from './EducationWindow.module.css';
 import { calculateDynamicPrice } from '../../lib/game/utils/economy';
 import EducationTrackItem from './components/EducationTrackItem';
-import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
+import { useAudio } from '../../hooks/useAudio';
+import GameAudio from '../GameAudio/GameAudio';
 
 interface EducationWindowProps {
     isOpen: boolean;
@@ -27,7 +28,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     const [expandedTracks, setExpandedTracks] = useState<Set<string>>(new Set());
     const [quizResult, setQuizResult] = useState<{ type: 'success' | 'failure', onContinue: () => void } | null>(null);
     const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-    const levelUpAudioRef = useRef<GameAudioHandle>(null);
+    const { playClick, playError, playLevelUp } = useAudio();
 
     const {
         completedTracks,
@@ -37,6 +38,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     } = state.educationProgress;
 
     const handleStartPart = (trackId: string) => {
+        playClick();
         const track = EDUCATION_TRACKS.find(t => t.id === trackId);
         if (!track) return;
 
@@ -72,7 +74,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
 
         if (answerIndex === currentQuiz.answer) {
             // Correct - play level up sound
-            levelUpAudioRef.current?.play();
+            playLevelUp();
             setQuizResult({
                 type: 'success',
                 onContinue: () => {
@@ -105,6 +107,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
 
         } else {
             // Wrong - Rejected
+            playError();
             setQuizResult({
                 type: 'failure',
                 onContinue: () => {
@@ -183,6 +186,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     }, [activeTrackId, completedTracks, isOpen]); // Rerender on open to ensure fresh state
 
     const toggleTrack = (trackId: string) => {
+        playClick();
         const newExpanded = new Set(expandedTracks);
         if (newExpanded.has(trackId)) {
             newExpanded.delete(trackId);
@@ -230,7 +234,6 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
                     );
                 })}
             </div>
-            <GameAudio ref={levelUpAudioRef} src="/sfx/level-up.mp3" baseVolume={0.5} />
         </WindowFrame>
     );
 };

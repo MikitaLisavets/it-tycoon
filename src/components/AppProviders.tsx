@@ -3,6 +3,7 @@
 import { GameStateProvider, useGameState } from "@/hooks/useGameState";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode, useMemo } from "react";
+import AudioManager from "./AudioManager/AudioManager";
 import enMessages from "../../messages/en.json";
 import deMessages from "../../messages/de.json";
 import enQuizzes from "../../messages/en-quizzes.json";
@@ -51,7 +52,11 @@ function LanguageProvider({ children }: { children: ReactNode }) {
 export default function AppProviders({ children }: { children: ReactNode }) {
     return (
         <GameStateProvider>
-            <LanguageProvider>{children}</LanguageProvider>
+            <LanguageProvider>
+                <AudioManager>
+                    {children}
+                </AudioManager>
+            </LanguageProvider>
         </GameStateProvider>
     );
 }
