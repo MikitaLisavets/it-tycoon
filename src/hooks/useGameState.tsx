@@ -13,13 +13,20 @@ interface GameStateContextType {
     updateState: (updates: Partial<GameState>) => void;
     resetState: () => void;
     isInitialized: boolean;
+    dispatch: (action: any) => void;
 }
 
 const GameStateContext = createContext<GameStateContextType | null>(null);
 
+
+type GameAction =
+    | { type: 'BUY_SOFTWARE'; payload: { category: 'system' | 'office' | 'graphics' | 'antivirus'; id: string; price: number } };
+
 function useGameStateInternal() {
     const [state, setState] = useState<GameState>(INITIAL_STATE);
     const [isInitialized, setIsInitialized] = useState(false);
+
+    // ... (existing useEffects for load/save/loop remain unchanged, I will just wrap dispatch around setState)
 
     // Load from localStorage on mount
     useEffect(() => {
@@ -173,11 +180,30 @@ function useGameStateInternal() {
         setState(INITIAL_STATE);
     };
 
+    const dispatch = (action: GameAction) => {
+        setState(prev => {
+            const next = { ...prev };
+            switch (action.type) {
+                case 'BUY_SOFTWARE':
+                    if (next.money >= action.payload.price) {
+                        next.money -= action.payload.price;
+                        next.programs = {
+                            ...next.programs,
+                            [action.payload.category]: action.payload.id
+                        };
+                    }
+                    break;
+            }
+            return next;
+        });
+    };
+
     return {
         state,
         updateState,
         resetState,
         isInitialized,
+        dispatch
     };
 }
 

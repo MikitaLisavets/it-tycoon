@@ -23,11 +23,13 @@ import ProgressBar from "@/components/ProgressBar/ProgressBar";
 import DesktopGrid, { ShortcutData } from "@/components/DesktopGrid/DesktopGrid";
 import WinampWindow from "@/components/WinampWindow/WinampWindow";
 import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow";
+import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
+import { useAudio } from "@/hooks/useAudio";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -46,9 +48,9 @@ export default function Home() {
     const [isBooting, setIsBooting] = useState(true);
     const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
-    const fileInputRef = useState<HTMLInputElement | null>(null);
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
+    const audio = useAudio()
 
     const shortcuts: ShortcutData[] = [
         {
@@ -102,6 +104,7 @@ export default function Home() {
                 message: tNotification('low_health'),
                 type: 'warning'
             }]);
+            audio.playError();
             setLastWarnings(prev => ({ ...prev, health: now }));
         }
 
@@ -113,6 +116,7 @@ export default function Home() {
                 message: tNotification('low_mood'),
                 type: 'warning'
             }]);
+            audio.playError();
             setLastWarnings(prev => ({ ...prev, mood: now }));
         }
 
@@ -145,7 +149,7 @@ export default function Home() {
     // Close application windows on game over
     useEffect(() => {
         if (state.gameOver) {
-            setOpenWindows(prev => prev.filter(w => w !== 'winamp'));
+            setOpenWindows(prev => prev.filter(w => w !== 'winamp' && w !== 'internet'));
         }
     }, [state.gameOver]);
 
@@ -317,8 +321,7 @@ export default function Home() {
                                 <div className={styles.taskContent}>
                                     <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('buttons.computer')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('buttons.applications')}</XPButton>
-                                    <XPButton variant="primary" disabled>{t('buttons.programs')}</XPButton>
-                                    <XPButton variant="primary" disabled>{t('buttons.internet')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('buttons.internet')}</XPButton>
                                     <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton>
                                 </div>
                             </div>
@@ -480,6 +483,12 @@ export default function Home() {
                     onOpenApp={(id) => {
                         if (id === 'winamp') toggleWindow('winamp');
                     }}
+                />
+                <InternetWindow
+                    isOpen={openWindows.includes('internet')}
+                    onClose={() => closeWindow('internet')}
+                    isFocused={focusedWindow === 'internet'}
+                    onFocus={() => setFocusedWindow('internet')}
                 />
             </div>
             <Taskbar

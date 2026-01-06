@@ -73,6 +73,7 @@ export interface GameState {
         office: string;
         graphics: string;
         antivirus: string;
+        games: string;
     };
 
     // Internet
@@ -150,6 +151,7 @@ export const INITIAL_STATE: GameState = {
         office: "none",
         graphics: "none",
         antivirus: "none",
+        games: "none",
     },
 
     internet: {
