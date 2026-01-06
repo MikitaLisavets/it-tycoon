@@ -1,5 +1,5 @@
-import React from 'react';
 import styles from './DesktopShortcut.module.css';
+import { useAudio } from '@/hooks/useAudio';
 
 interface DesktopShortcutProps {
     id: string;
@@ -9,10 +9,17 @@ interface DesktopShortcutProps {
 }
 
 const DesktopShortcut: React.FC<DesktopShortcutProps> = ({ id, label, icon, onDoubleClick }) => {
+    const { playClick } = useAudio();
+
+    const handleClick = () => {
+        playClick();
+        onDoubleClick(id)
+    };
+
     return (
         <div
             className={styles.shortcut}
-            onDoubleClick={() => onDoubleClick(id)}
+            onDoubleClick={handleClick}
             role="button"
             tabIndex={0}
         >
