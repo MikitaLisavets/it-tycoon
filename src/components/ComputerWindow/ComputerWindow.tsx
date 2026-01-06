@@ -64,18 +64,21 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
         // Show all parts to display progression history
         const parts = HARDWARE_COMPONENTS[activeTab] || [];
 
+        const installedIndex = parts.findIndex(p => state.computer[activeTab as keyof typeof state.computer] === p.id);
+
         return (
             <div className={styles.partsList}>
-                {parts.map((part) => {
-                    const isOwned = state.computer[activeTab as keyof typeof state.computer] === part.id;
+                {parts.map((part, index) => {
+                    const isOwned = index === installedIndex;
                     const canAfford = state.money >= part.price;
                     const isFree = part.price === 0;
                     const levelClass = styles[`levelBadge_${part.level as 0 | 1 | 2 | 3 | 4 | 5}`] || '';
+                    const isPrecedingInstalled = index === installedIndex - 1;
 
                     return (
                         <ListOption
                             key={part.id}
-                            className={isOwned ? styles.installedRow : ''}
+                            className={`${isOwned ? styles.installedRow : ''}`}
                             title={
                                 <span className={styles.partTitle}>
                                     <span className={`${styles.levelBadge} ${levelClass}`}>
@@ -95,9 +98,14 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                                     )}
                                 </div>
                             }
-                            actionLabel={isOwned ? t('mounted') : (part.level < currentLevel ? null : (isFree ? t('starting') : t('buy')))}
+                            actionLabel={isOwned ? null : (part.level < currentLevel ? null : (isFree ? t('starting') : t('buy')))}
                             onAction={(!isOwned && !isFree && part.level >= currentLevel) ? () => handleBuy(activeTab, part.id, part.price) : undefined}
                             actionDisabled={(isOwned || isFree || !canAfford) && part.level >= currentLevel}
+                            actionContent={isOwned && (
+                                <div className={styles.checkmarkIcon}>
+                                    <div className={styles.checkmark} />
+                                </div>
+                            )}
                         />
                     );
                 })}
