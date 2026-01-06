@@ -308,7 +308,7 @@ export default function Home() {
                                     <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('buttons.computer')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('buttons.applications')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('buttons.internet')}</XPButton>
-                                    <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton>
+                                    {/* <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton> */}
                                 </div>
                             </div>
 

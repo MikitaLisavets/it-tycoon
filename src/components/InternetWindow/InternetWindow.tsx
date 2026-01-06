@@ -115,7 +115,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
             title={t('title')}
             onCloseClick={onClose}
             onHelpClick={() => { }}
-            width="800px"
+            width="700px"
             height="600px"
             isFocused={isFocused}
             onFocus={onFocus}
