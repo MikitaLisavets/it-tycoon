@@ -28,6 +28,12 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('food');
 
+    const tabList = [
+        { id: 'food', label: t('food') },
+        { id: 'furniture', label: t('furniture') },
+        { id: 'clothes', label: t('clothes') },
+    ] as const;
+
     const {
         handleAction,
         getCooldown,
@@ -40,7 +46,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
 
     if (!isOpen) return null;
 
-    const renderShopList = (items: ActionableItem[]) => {
+    const renderList = (items: ActionableItem[]) => {
         return items.map((item) => {
             const cooldown = getCooldown(item);
             const isDelayed = delayedActivityId === item.id;
@@ -83,43 +89,6 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
         });
     };
 
-    type Tab = 'food' | 'furniture' | 'clothes';
-
-    const tabList = [
-        { id: 'food', label: t('food') },
-        { id: 'furniture', label: t('furniture') },
-        { id: 'clothes', label: t('clothes') },
-    ] as const;
-
-    const renderLifeList = (items: ActionableItem[]) => {
-        return items.map((item) => {
-            return (
-                <ListOption
-                    key={item.id}
-                    title={t(`items.${item.id}`)}
-                    subtitle={
-                        <div className={styles.subtitle}>
-                            <StatList
-                                type="cost"
-                                data={item.cost}
-                                title={gt('cost')}
-                            />
-                            <StatList
-                                type="effect"
-                                data={item.effect}
-                                title={gt('effects')}
-                            />
-                        </div>
-                    }
-                    actionLabel={t('buy')}
-                    onAction={() => {
-                        handleAction(item);
-                    }}
-                    actionDisabled={state.money < (item.cost?.money || 0)}
-                />
-            );
-        });
-    };
 
     return (
         <>
@@ -140,9 +109,9 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                 />
 
                 <TabContent>
-                    {activeTab === 'food' && renderShopList(FOOD_ITEMS)}
-                    {activeTab === 'furniture' && renderLifeList(FURNITURE_ITEMS)}
-                    {activeTab === 'clothes' && renderLifeList(CLOTHES_ITEMS)}
+                    {activeTab === 'food' && renderList(FOOD_ITEMS)}
+                    {activeTab === 'furniture' && renderList(FURNITURE_ITEMS)}
+                    {activeTab === 'clothes' && renderList(CLOTHES_ITEMS)}
                 </TabContent>
             </WindowFrame>
             <HelpModal
