@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
+import { useAudio } from '@/hooks/useAudio';
 import styles from './Taskbar.module.css';
 
 interface TaskbarProps {
@@ -14,6 +15,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const langRef = React.useRef<HTMLDivElement>(null);
     const volumeRef = React.useRef<HTMLDivElement>(null);
     const { state, updateState } = useGameState();
+    const { playClick } = useAudio();
     const t = useTranslations('Taskbar');
 
     React.useEffect(() => {
@@ -37,6 +39,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     }, []);
 
     const changeLanguage = (lang: 'en' | 'de') => {
+        playClick();
         updateState({ locale: lang });
         setIsLangOpen(false);
     };
@@ -45,7 +48,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
         <div className={styles.taskbar}>
             <button
                 className={styles.startButton}
-                onClick={() => window.open('https://ko-fi.com/mikiapps', '_blank')}
+                onClick={() => { playClick(); window.open('https://ko-fi.com/mikiapps', '_blank'); }}
             >
                 {t('donate')}{' '}❤️
             </button>
@@ -78,7 +81,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                     </div>
                 )}
                 <button
-                    onClick={() => setIsLangOpen(!isLangOpen)}
+                    onClick={() => { playClick(); setIsLangOpen(!isLangOpen); }}
                     title="Switch Language"
                     className={`${styles.langButton} ${isLangOpen ? styles.langButtonActive : ''}`}
                 >
@@ -102,7 +105,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                         </div>
                     )}
                     <button
-                        onClick={() => setIsVolumeOpen(!isVolumeOpen)}
+                        onClick={() => { playClick(); setIsVolumeOpen(!isVolumeOpen); }}
                         className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''}`}
                         title="Volume"
                     >
