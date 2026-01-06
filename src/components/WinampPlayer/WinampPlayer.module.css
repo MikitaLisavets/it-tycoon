@@ -3,6 +3,7 @@
     color: #0f0;
     width: 100%;
     min-width: 280px;
+    flex: 1;
     /* Ensure content fits */
     padding: 10px;
     font-family: 'Courier New', monospace;
