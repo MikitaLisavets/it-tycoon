@@ -27,3 +27,9 @@
     top: 1px;
     border-bottom: 1px solid var(--xp-bg);
 }
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px;
+}

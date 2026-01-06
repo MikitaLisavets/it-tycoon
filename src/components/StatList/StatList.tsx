@@ -38,6 +38,18 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             />
                         </li>
                     ) : null}
+                    {/* Max Money - if ever needed */}
+
+                    {/* Max Health */}
+                    {'maxHealth' in data && data.maxHealth ? (
+                        <li className={styles.uiListItem}>
+                            <StatBadge
+                                stat="HEALTH"
+                                value={data.maxHealth}
+                                label={`${gt('max')} ${gt('health')}`}
+                            />
+                        </li>
+                    ) : null}
 
                     {/* Health */}
                     {data.health ? (
@@ -55,6 +67,17 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                         </li>
                     ) : null}
 
+                    {/* Max Stamina */}
+                    {'maxStamina' in data && data.maxStamina ? (
+                        <li className={styles.uiListItem}>
+                            <StatBadge
+                                stat="STAMINA"
+                                value={data.maxStamina}
+                                label={`${gt('max')} ${gt('stamina')}`}
+                            />
+                        </li>
+                    ) : null}
+
                     {/* Stamina */}
                     {data.stamina ? (
                         <li className={styles.uiListItem}>
@@ -68,6 +91,17 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                                     label={gt('stamina')}
                                 />
                             )}
+                        </li>
+                    ) : null}
+
+                    {/* Max Mood */}
+                    {'maxMood' in data && data.maxMood ? (
+                        <li className={styles.uiListItem}>
+                            <StatBadge
+                                stat="MOOD"
+                                value={data.maxMood}
+                                label={`${gt('max')} ${gt('mood')}`}
+                            />
                         </li>
                     ) : null}
 

@@ -13,8 +13,8 @@ export const FUN_ITEMS: ActionableItem[] = [
 ];
 
 export const GYM_ACTIVITIES: ActionableItem[] = [
-    { id: 'cardio', cost: { money: 10, stamina: 5 }, effect: { mood: 5, health: 3 } },
-    { id: 'weights', cost: { money: 15, stamina: 10 }, effect: { mood: 5, health: 5 } },
-    { id: 'yoga', cost: { money: 20, stamina: 8 }, effect: { mood: 10, health: 10 } },
-    { id: 'personal_trainer', cost: { money: 50, stamina: 20 }, effect: { mood: 10, health: 8 } },
+    { id: 'cardio', cost: { money: 10, stamina: 5 }, effect: { mood: 5, health: 3, maxStamina: 10 } },
+    { id: 'weights', cost: { money: 15, stamina: 10 }, effect: { mood: 5, health: 5, maxStamina: 20 } },
+    { id: 'yoga', cost: { money: 20, stamina: 8 }, effect: { mood: 10, health: 10, maxStamina: 30 } },
+    { id: 'personal_trainer', cost: { money: 50, stamina: 20 }, effect: { mood: 10, health: 8, maxStamina: 40 } },
 ];

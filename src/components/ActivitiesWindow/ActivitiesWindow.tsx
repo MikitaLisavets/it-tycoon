@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
 import StatBadge from '../StatBadge/StatBadge';
 import ListOption from '../ListOption/ListOption';
-import Tabs from '../Tabs/Tabs';
+import Tabs, { TabContent } from '../Tabs/Tabs';
 import StatList from '../StatList/StatList';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import { useGameState } from '../../hooks/useGameState';
@@ -113,7 +113,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                 onTabChange={setActiveTab}
             />
 
-            <div className={styles.content} style={{ padding: '0 10px' }}>
+            <TabContent>
 
                 {activeTab === 'rest' && (
                     <>
@@ -133,7 +133,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     </>
                 )}
 
-            </div>
+            </TabContent>
         </WindowFrame>
     );
 };

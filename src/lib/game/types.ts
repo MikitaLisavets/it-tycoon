@@ -227,8 +227,11 @@ export interface Cost {
 export interface Effect {
     money?: number;
     health?: number | 'full';
+    maxHealth?: number;
     mood?: number | 'full';
+    maxMood?: number;
     stamina?: number | 'full';
+    maxStamina?: number;
 }
 
 export interface ActionableItem {

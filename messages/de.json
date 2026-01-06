@@ -62,6 +62,7 @@
         "access": "Zugang:",
         "salary": "Gehalt:",
         "cost": "Kosten:",
+        "max": "Max",
         "school": "Schule",
         "not_studying": "Nicht studierend",
         "continue": "Weiter",

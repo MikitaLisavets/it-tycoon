@@ -63,6 +63,7 @@
         "salary": "Salary",
         "cost": "Cost",
         "effects": "Effects",
+        "max": "Max",
         "school": "School",
         "not_studying": "Not studying",
         "continue": "Continue",
@@ -191,7 +192,22 @@
         "energy_drink": "Energy Drink",
         "cost": "${amount}",
         "health": "health",
-        "help_content": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit."
+        "help_content": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit.",
+        "furniture": "Furniture",
+        "clothes": "Clothes",
+        "owned": "Owned",
+        "max_mood": "Max Happiness +{amount}",
+        "max_health": "Max Health +{amount}",
+        "items": {
+            "used": "Used Furniture",
+            "ikea_basic": "Basic Set",
+            "designer_set": "Designer Set",
+            "luxury_italian": "Italian Luxury",
+            "ragged": "Ragged Clothes",
+            "casual_wear": "Casual Wear",
+            "business_suit": "Business Suit",
+            "designer_brand": "Designer Brand"
+        }
     },
     "Job": {
         "title": "Job Center",
@@ -457,9 +473,13 @@
             "graphics": "Graphics & Design",
             "antivirus": "Antivirus & Security",
             "games": "Games",
+            "furniture": "Furniture",
+            "clothes": "Clothes",
             "buy": "Buy Now",
             "owned": "Owned",
             "price": "Price: ${amount}",
+            "max_mood": "Max Happiness +{amount}",
+            "max_health": "Max Health +{amount}",
             "description": "Description",
             "copy": "© 2000 MikiApps Inc.",
             "hero_text": "Upgrade your digital life with the latest software!",
@@ -489,7 +509,15 @@
                 "doom_classic": "Doom Classic",
                 "simcity_2000": "SimCity 2000",
                 "half_life": "Half-Life",
-                "world_of_warcraft": "World of Warcraft"
+                "world_of_warcraft": "World of Warcraft",
+                "used": "Used Furniture",
+                "ikea_basic": "Basic Set",
+                "designer_set": "Designer Set",
+                "luxury_italian": "Italian Luxury",
+                "ragged": "Ragged Clothes",
+                "casual_wear": "Casual Wear",
+                "business_suit": "Business Suit",
+                "designer_brand": "Designer Brand"
             }
         }
     }

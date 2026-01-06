@@ -193,6 +193,23 @@ function useGameStateInternal() {
                         };
                     }
                     break;
+                    if (next.money >= action.payload.price) {
+                        next.money -= action.payload.price;
+                        next.life = {
+                            ...next.life,
+                            [action.payload.category]: action.payload.id
+                        };
+
+                        // Apply Buffs (Simplistic approach: Base + Buff)
+                        // Assuming 100 is base.
+                        if (action.payload.buff.type === 'maxMood') {
+                            next.maxMood = 100 + action.payload.buff.value;
+                        } else if (action.payload.buff.type === 'maxHealth') {
+                            next.maxHealth = 100 + action.payload.buff.value;
+                        }
+                    }
+                    break;
+
             }
             return next;
         });
