@@ -205,6 +205,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
             onCloseClick={onClose}
             onResetClick={onReset}
             width="500px"
+            height="600px"
             isFocused={isFocused}
             onFocus={onFocus}
         >

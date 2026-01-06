@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import { SOFTWARES, SoftwareItem, SOFTWARE_LEVELS } from '@/lib/game/constants/software';
 import XPButton from '../XPButton/XPButton';
+import { useAudio } from '@/hooks/useAudio';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -24,10 +25,16 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const t = useTranslations('Internet');
     const { state, dispatch } = useGameState();
     const [currentCategory, setCurrentCategory] = useState<ShopCategory>('home');
+    const audio = useAudio();
 
     if (!isOpen) return null;
 
     const hasModem = state.computer.modem !== 'modem_none';
+
+    const handleClick = (category: ShopCategory) => {
+        audio.playClick();
+        setCurrentCategory(category);
+    }
 
     const handleBuy = (item: SoftwareItem) => {
         if (state.money >= item.price) {
@@ -103,7 +110,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
             onCloseClick={onClose}
             onHelpClick={() => { }}
             width="800px"
-            height="600px" // Taller for shop
+            height="600px"
             isFocused={isFocused}
             onFocus={onFocus}
         >
@@ -146,14 +153,13 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                             <div className={styles.shopBody}>
                                 {/* Sidebar */}
                                 <div className={styles.shopSidebar}>
-                                    <div className={styles.sidebarTitle}>{t('shop.categories')}</div>
                                     <ul className={styles.sidebarLinks}>
-                                        <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => setCurrentCategory('home')}>{t('shop.home')}</li>
-                                        <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => setCurrentCategory('system')}>{t('shop.system')}</li>
-                                        <li className={currentCategory === 'office' ? styles.activeLink : ''} onClick={() => setCurrentCategory('office')}>{t('shop.office')}</li>
-                                        <li className={currentCategory === 'graphics' ? styles.activeLink : ''} onClick={() => setCurrentCategory('graphics')}>{t('shop.graphics')}</li>
-                                        <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => setCurrentCategory('antivirus')}>{t('shop.antivirus')}</li>
-                                        <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => setCurrentCategory('games')}>{t('shop.games')}</li>
+                                        <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('shop.home')}</li>
+                                        <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('shop.system')}</li>
+                                        <li className={currentCategory === 'office' ? styles.activeLink : ''} onClick={() => handleClick('office')}>{t('shop.office')}</li>
+                                        <li className={currentCategory === 'graphics' ? styles.activeLink : ''} onClick={() => handleClick('graphics')}>{t('shop.graphics')}</li>
+                                        <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('shop.antivirus')}</li>
+                                        <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('shop.games')}</li>
                                     </ul>
                                 </div>
 
