@@ -2,41 +2,53 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './WinampPlayer.module.css';
 import { parseM3U } from '@/lib/game/utils/m3u-parser';
 import { useTranslations } from 'next-intl';
+import { MUSIC_SOURCES } from '@/lib/game/constants/music-sources';
 
 const WinampPlayer: React.FC = () => {
     const t = useTranslations('Winamp');
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
-    const [trackName, setTrackName] = useState('2000s Hits Radio');
+    const [currentSourceIndex, setCurrentSourceIndex] = useState(0);
     const [currentTime, setCurrentTime] = useState('00:00');
     const [visualizerData, setVisualizerData] = useState<number[]>(new Array(10).fill(0));
-
-
-    const STREAM_URL = 'https://sa46.scastream.com.au/live/7noughties_128.stream/playlist.m3u8';
 
     // State to hold the resolved audio stream URL
     const [audioSrc, setAudioSrc] = useState<string>('');
 
     useEffect(() => {
         const resolveStream = async () => {
-            if (STREAM_URL.toLowerCase().endsWith('.m3u') || STREAM_URL.includes('.m3u')) {
-                const parsedUrl = await parseM3U(STREAM_URL);
+            // Reset time when source changes
+            setCurrentTime('00:00');
+
+            if (MUSIC_SOURCES[currentSourceIndex].url.toLowerCase().endsWith('.m3u') || MUSIC_SOURCES[currentSourceIndex].url.includes('.m3u')) {
+                const parsedUrl = await parseM3U(MUSIC_SOURCES[currentSourceIndex].url);
                 if (parsedUrl) {
                     setAudioSrc(parsedUrl);
-                    // Update track name if it was a generic one, or keep it.
-                    // Ideally, we might extract metadata eventually.
                 } else {
-                    // Fallback to original if parsing fails (might be a direct stream named .m3u?)
-                    setAudioSrc(STREAM_URL);
+                    setAudioSrc(MUSIC_SOURCES[currentSourceIndex].url);
                 }
             } else {
-                setAudioSrc(STREAM_URL);
+                setAudioSrc(MUSIC_SOURCES[currentSourceIndex].url);
             }
         };
 
         resolveStream();
-    }, [STREAM_URL]);
+    }, [currentSourceIndex]);
+
+    // Sync audio element with isPlaying state and audioSrc changes
+    useEffect(() => {
+        if (!audioRef.current) return;
+
+        if (isPlaying) {
+            audioRef.current.play().catch(e => {
+                console.error("Play failed:", e);
+                setIsPlaying(false); // Revert state if play fails
+            });
+        } else {
+            audioRef.current.pause();
+        }
+    }, [isPlaying, audioSrc]);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -63,24 +75,15 @@ const WinampPlayer: React.FC = () => {
         let interval: NodeJS.Timeout;
         if (isPlaying) {
             interval = setInterval(() => {
-                // Generate random heights for bars
                 setVisualizerData(prev => prev.map(() => Math.random() * 100));
             }, 100);
         } else {
-            // Reset to flat line when stopped/paused
             setVisualizerData(new Array(10).fill(0));
         }
         return () => clearInterval(interval);
     }, [isPlaying]);
 
     const togglePlay = () => {
-        if (!audioRef.current) return;
-
-        if (isPlaying) {
-            audioRef.current.pause();
-        } else {
-            audioRef.current.play().catch(e => console.error("Play failed:", e));
-        }
         setIsPlaying(!isPlaying);
     };
 
@@ -88,12 +91,22 @@ const WinampPlayer: React.FC = () => {
         setVolume(parseFloat(e.target.value));
     };
 
+    const nextSource = () => {
+        setCurrentSourceIndex((prevIndex) => (prevIndex + 1) % MUSIC_SOURCES.length);
+        setIsPlaying(true); // Auto-play on switch
+    };
+
+    const prevSource = () => {
+        setCurrentSourceIndex((prevIndex) => (prevIndex - 1 + MUSIC_SOURCES.length) % MUSIC_SOURCES.length);
+        setIsPlaying(true); // Auto-play on switch
+    };
+
     return (
         <div className={styles.winampContainer}>
             {/* Display Area */}
             <div className={styles.displayArea}>
                 <div className={styles.titleBar}>
-                    <span className={styles.titleText}>{trackName} *** 128kbps *** 44kHz</span>
+                    <span className={styles.titleText}>{MUSIC_SOURCES[currentSourceIndex].name} *** 128kbps *** 44kHz</span>
                 </div>
                 <div className={styles.visuals}>
                     <div className={styles.timer}>{currentTime}</div>
@@ -108,19 +121,18 @@ const WinampPlayer: React.FC = () => {
             {/* Controls Area */}
             <div className={styles.controlsArea}>
                 <div className={styles.mainControls}>
-                    <button className={styles.controlBtn} title={t('controls.prev')} disabled>|&lt;</button>
+                    <button className={styles.controlBtn} title={t('controls.prev')} onClick={prevSource}>|&lt;</button>
                     <button className={styles.controlBtn} onClick={togglePlay} title={isPlaying ? t('controls.pause') : t('controls.play')}>
                         {isPlaying ? '||' : '►'}
                     </button>
                     <button className={styles.controlBtn} onClick={() => {
+                        setIsPlaying(false);
+                        setCurrentTime('00:00');
                         if (audioRef.current) {
-                            audioRef.current.pause();
                             audioRef.current.currentTime = 0;
-                            setIsPlaying(false);
-                            setCurrentTime('00:00');
                         }
                     }} title={t('controls.stop')}>■</button>
-                    <button className={styles.controlBtn} title={t('controls.next')} disabled>&gt;|</button>
+                    <button className={styles.controlBtn} title={t('controls.next')} onClick={nextSource}>&gt;|</button>
                 </div>
 
 

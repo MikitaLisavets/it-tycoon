@@ -90,7 +90,8 @@
             "programs": "Software Store",
             "internet": "ISP Services",
             "hacking": "Terminal",
-            "bank": "Online Banking"
+            "bank": "Online Banking",
+            "applications": "Applications"
         },
         "Education": {
             "title": "Education Center",
@@ -426,5 +427,8 @@
             "repeat": "Repeat",
             "volume": "Vol"
         }
+    },
+    "Applications": {
+        "title": "Applications"
     }
 }

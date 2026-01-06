@@ -91,7 +91,8 @@
             "computer": "Computer",
             "programs": "Programme",
             "internet": "Internet",
-            "hacking": "Hacken"
+            "hacking": "Hacken",
+            "applications": "Anwendungen"
         },
         "Education": {
             "title": "Bildungszentrum",
@@ -439,5 +440,8 @@
             "repeat": "Wiederholen",
             "volume": "Lautst."
         }
+    },
+    "Applications": {
+        "title": "Anwendungen"
     }
 }
