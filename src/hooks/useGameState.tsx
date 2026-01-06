@@ -13,14 +13,9 @@ interface GameStateContextType {
     updateState: (updates: Partial<GameState>) => void;
     resetState: () => void;
     isInitialized: boolean;
-    dispatch: (action: any) => void;
 }
 
 const GameStateContext = createContext<GameStateContextType | null>(null);
-
-
-type GameAction =
-    | { type: 'BUY_SOFTWARE'; payload: { category: 'system' | 'office' | 'graphics' | 'antivirus'; id: string; price: number } };
 
 function useGameStateInternal() {
     const [state, setState] = useState<GameState>(INITIAL_STATE);

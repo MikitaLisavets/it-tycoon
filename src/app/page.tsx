@@ -25,6 +25,7 @@ import WinampWindow from "@/components/WinampWindow/WinampWindow";
 import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow";
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import { useGameState } from "@/hooks/useGameState";
+import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
@@ -35,6 +36,7 @@ export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, resetState, isInitialized } = useGameState();
+    const { notification, showNotification, dismissNotification } = useNotification();
     const t = useTranslations('Game');
     const tWinamp = useTranslations('Winamp');
     const tComputer = useTranslations('Computer');
@@ -42,8 +44,6 @@ export default function Home() {
     const [openWindows, setOpenWindows] = useState<string[]>([]);
     const [focusedWindow, setFocusedWindow] = useState<string | null>(null);
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
-    const [notification, setNotification] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number } | null>(null);
-    const [notificationQueue, setNotificationQueue] = useState<{ title: string; message: string; type: 'warning' | 'info'; id: number }[]>([]);
     const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
     const [isBooting, setIsBooting] = useState(true);
     const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
@@ -80,15 +80,6 @@ export default function Home() {
         }
     ];
 
-    // Notification Queue Processor
-    useEffect(() => {
-        if (!notification && notificationQueue.length > 0) {
-            const next = notificationQueue[0];
-            setNotification(next);
-            setNotificationQueue(prev => prev.slice(1));
-        }
-    }, [notification, notificationQueue]);
-
     // Notification Logic (Generator)
     useEffect(() => {
         if (!isInitialized) return;
@@ -98,25 +89,21 @@ export default function Home() {
 
         // Check Health
         if (state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
-            setNotificationQueue(prev => [...prev, {
-                id: now,
-                title: tNotification('low_health_title'),
-                message: tNotification('low_health'),
-                type: 'warning'
-            }]);
-            audio.playError();
+            showNotification(
+                tNotification('low_health_title'),
+                tNotification('low_health'),
+                'warning'
+            );
             setLastWarnings(prev => ({ ...prev, health: now }));
         }
 
         // Check Mood
         if (state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
-            setNotificationQueue(prev => [...prev, {
-                id: now + 1, // Ensure distinct ID if same tick
-                title: tNotification('low_mood_title'),
-                message: tNotification('low_mood'),
-                type: 'warning'
-            }]);
-            audio.playError();
+            showNotification(
+                tNotification('low_mood_title'),
+                tNotification('low_mood'),
+                'warning'
+            );
             setLastWarnings(prev => ({ ...prev, mood: now }));
         }
 
@@ -133,18 +120,17 @@ export default function Home() {
                     const lastCreditWarning = (lastWarnings as Record<string, number>)[creditWarningKey] || 0;
 
                     if (now - lastCreditWarning > COOLDOWN) {
-                        setNotificationQueue(prev => [...prev, {
-                            id: now + 2,
-                            title: tNotification('credit_due_soon_title'),
-                            message: tNotification('credit_due_soon', { days: daysLeft }),
-                            type: 'warning'
-                        }]);
+                        showNotification(
+                            tNotification('credit_due_soon_title'),
+                            tNotification('credit_due_soon', { days: daysLeft }),
+                            'warning'
+                        );
                         setLastWarnings(prev => ({ ...prev, [creditWarningKey]: now }));
                     }
                 }
             }
         }
-    }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification]);
+    }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification, showNotification, audio]);
 
     // Close application windows on game over
     useEffect(() => {
@@ -513,7 +499,7 @@ export default function Home() {
                         title={notification.title}
                         message={notification.message}
                         type={notification.type}
-                        onClose={() => setNotification(null)}
+                        onClose={dismissNotification}
                     />
                 )
             }

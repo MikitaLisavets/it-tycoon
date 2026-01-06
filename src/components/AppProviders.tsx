@@ -1,6 +1,7 @@
 "use client";
 
 import { GameStateProvider, useGameState } from "@/hooks/useGameState";
+import { NotificationProvider } from "@/hooks/useNotification";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode, useMemo } from "react";
 import AudioManager from "./AudioManager/AudioManager";
@@ -54,7 +55,9 @@ export default function AppProviders({ children }: { children: ReactNode }) {
         <GameStateProvider>
             <LanguageProvider>
                 <AudioManager>
-                    {children}
+                    <NotificationProvider>
+                        {children}
+                    </NotificationProvider>
                 </AudioManager>
             </LanguageProvider>
         </GameStateProvider>

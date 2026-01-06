@@ -8,6 +8,9 @@ interface AudioContextType {
     playLevelUp: () => void;
     playCoin: () => void;
     playCheat: () => void;
+    playWarning: () => void;
+    playNotification: () => void;
+    playBoot: () => void;
 }
 
 export const AudioContext = createContext<AudioContextType | null>(null);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useAudio } from '../../hooks/useAudio';
 import styles from './BootScreen.module.css';
 
 interface BootScreenProps {
@@ -11,6 +12,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
     const [progress, setProgress] = useState(0);
     const [currentMessage, setCurrentMessage] = useState(0);
     const t = useTranslations('BootScreen');
+    const { playBoot } = useAudio();
 
     const bootMessages = [
         t('message1'),
@@ -28,6 +30,8 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
             return;
         }
 
+        playBoot();
+
         // Progress bar animation
         const progressInterval = setInterval(() => {
             setProgress(prev => {
@@ -37,7 +41,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
                 }
                 return prev + 2;
             });
-        }, 15);
+        }, 30);
 
         // Message cycling
         const messageInterval = setInterval(() => {
@@ -48,18 +52,18 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
                 }
                 return prev + 1;
             });
-        }, 150);
+        }, 300);
 
         const bootTimeout = setTimeout(() => {
             onBootComplete();
-        }, 1000);
+        }, 2000);
 
         return () => {
             clearInterval(progressInterval);
             clearInterval(messageInterval);
             clearTimeout(bootTimeout);
         };
-    }, [isBooting, onBootComplete]);
+    }, [isBooting, onBootComplete, playBoot]);
 
     if (!isBooting) return null;
 

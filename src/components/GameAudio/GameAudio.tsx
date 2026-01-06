@@ -28,12 +28,27 @@ const GameAudio = forwardRef<GameAudioHandle, GameAudioProps>(({ src, baseVolume
     useImperativeHandle(ref, () => ({
         play: () => {
             if (audioRef.current) {
-                audioRef.current.currentTime = 0;
-                audioRef.current.play().catch(err => {
-                    // Browsers block autoplay/some audio triggers without interaction
-                    // We log but don't crash
-                    console.warn(`[GameAudio] Playback failed for ${src}:`, err);
-                });
+                const audio = audioRef.current;
+                audio.currentTime = 0;
+
+                const attemptPlay = () => {
+                    audio.play().catch(err => {
+                        // Browsers block autoplay/some audio triggers without interaction
+                        // We log but don't crash
+                        console.warn(`[GameAudio] Playback failed for ${src}:`, err);
+                    });
+                };
+
+                if (audio.readyState >= 3) {
+                    attemptPlay();
+                } else {
+                    // Wait for it to be ready
+                    const onCanPlay = () => {
+                        attemptPlay();
+                        audio.removeEventListener('canplaythrough', onCanPlay);
+                    };
+                    audio.addEventListener('canplaythrough', onCanPlay);
+                }
             }
         },
         stop: () => {
