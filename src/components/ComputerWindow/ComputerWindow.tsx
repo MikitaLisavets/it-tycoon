@@ -5,6 +5,7 @@ import ListOption from '../ListOption/ListOption';
 import Tabs from '../Tabs/Tabs';
 import StatList from '../StatList/StatList';
 import { useGameState } from '../../hooks/useGameState';
+import { useAudio } from '../../hooks/useAudio';
 import styles from './ComputerWindow.module.css';
 import { HARDWARE_COMPONENTS } from '@/lib/game/constants/hardware';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
@@ -23,7 +24,13 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     const { state, updateState } = useGameState();
     const t = useTranslations('Computer');
     const gt = useTranslations('Game');
+    const { playClick } = useAudio();
     const [activeTab, setActiveTab] = useState<Category>('cpu');
+
+    const handleTabChange = (id: string) => {
+        setActiveTab(id as Category);
+        playClick();
+    };
 
     const currentLevel = useMemo(() => calculateComputerLevel(state.computer), [state.computer]);
 
@@ -50,7 +57,13 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     const currentLevelClass = styles[`levelBadge_${currentLevel as 0 | 1 | 2 | 3 | 4 | 5}`] || '';
 
     const renderParts = () => {
+        const currentPartId = state.computer[activeTab as keyof typeof state.computer];
+        const currentPart = (HARDWARE_COMPONENTS[activeTab] as any[]).find(p => p.id === currentPartId);
+        const currentLevel = currentPart?.level || 0;
+
+        // Show all parts to display progression history
         const parts = HARDWARE_COMPONENTS[activeTab] || [];
+
         return (
             <div className={styles.partsList}>
                 {parts.map((part) => {
@@ -62,6 +75,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                     return (
                         <ListOption
                             key={part.id}
+                            className={isOwned ? styles.installedRow : ''}
                             title={
                                 <span className={styles.partTitle}>
                                     <span className={`${styles.levelBadge} ${levelClass}`}>
@@ -81,9 +95,9 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                                     )}
                                 </div>
                             }
-                            actionLabel={isOwned ? t('mounted') : (isFree ? t('starting') : t('buy'))}
-                            onAction={(!isOwned && !isFree) ? () => handleBuy(activeTab, part.id, part.price) : undefined}
-                            actionDisabled={isOwned || isFree || !canAfford}
+                            actionLabel={isOwned ? t('mounted') : (part.level < currentLevel ? null : (isFree ? t('starting') : t('buy')))}
+                            onAction={(!isOwned && !isFree && part.level >= currentLevel) ? () => handleBuy(activeTab, part.id, part.price) : undefined}
+                            actionDisabled={(isOwned || isFree || !canAfford) && part.level >= currentLevel}
                         />
                     );
                 })}
@@ -104,7 +118,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
             <Tabs
                 tabs={tabList}
                 activeTab={activeTab}
-                onTabChange={(id) => setActiveTab(id as Category)}
+                onTabChange={handleTabChange}
             />
 
             <div className={styles.content}>

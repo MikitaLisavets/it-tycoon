@@ -120,12 +120,12 @@ export const INITIAL_STATE: GameState = {
     volume: 50,
 
     computer: {
-        monitor: "monitor_mono",
+        monitor: "monitor_basic",
         modem: "modem_none",
         cpu: "intel_386",
-        hdd: "40mb_hdd",
-        ram: "1mb_ram",
-        video: "ega_card",
+        hdd: "170mb_hdd",
+        ram: "4mb_ram",
+        video: "vga_card",
     },
 
     life: {
