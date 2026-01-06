@@ -20,6 +20,8 @@ import BootScreen from "@/components/BootScreen/BootScreen";
 import Notification from "@/components/Notification/Notification";
 import DesktopContextMenu from "@/components/DesktopContextMenu/DesktopContextMenu";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
+import DesktopGrid, { ShortcutData } from "@/components/DesktopGrid/DesktopGrid";
+import WinampWindow from "@/components/WinampWindow/WinampWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
@@ -44,6 +46,34 @@ export default function Home() {
     const fileInputRef = useState<HTMLInputElement | null>(null);
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
+
+    const shortcuts: ShortcutData[] = [
+        {
+            id: 'winamp',
+            label: 'Music Player',
+            icon: '/icons/winamp.png', // Placeholder, the component handles generic icon if image fails or we can use emoji logic in component if needed. 
+            // For now assuming we might want to put a real icon later.
+            // If we want to use an emoji as icon (supported by my component change mentally? No I implemented string | Node).
+            // Let's pass a Node if I want emoji, or just path string.
+            // The DesktopShortcut component handles string as img src.
+            // Let's try to pass a ReactNode icon for better "no asset" look.
+        }
+    ];
+
+    // Actually, let's fix the shortcut icon to be safe since I don't know if /icons/winamp.png exists.
+    // I will use a simple text/emoji icon for now as I cannot create binary image files easily.
+    const winampIcon = (
+        <div style={{ fontSize: '24px' }}>⚡</div>
+    );
+
+    // Using the React Node for icon
+    const desktopShortcuts: ShortcutData[] = [
+        {
+            id: 'winamp',
+            label: 'Music Player',
+            icon: winampIcon
+        }
+    ];
 
     // Notification Queue Processor
     useEffect(() => {
@@ -233,6 +263,19 @@ export default function Home() {
                     id="wallpaper-upload"
                     onChange={handleFileChange}
                 />
+
+                {/* Desktop Icons */}
+                <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, zIndex: 1, pointerEvents: 'none' }}>
+                    <DesktopGrid
+                        shortcuts={desktopShortcuts}
+                        onIconDoubleClick={(id) => {
+                            if (id === 'winamp') {
+                                toggleWindow('winamp');
+                            }
+                        }}
+                    />
+                </div>
+
                 <WindowFrame
                     title={t('window_title')}
                     width="800px"
@@ -413,6 +456,12 @@ export default function Home() {
                     onReset={() => setIsResetOpen(true)}
                     isFocused={focusedWindow === 'computer'}
                     onFocus={() => setFocusedWindow('computer')}
+                />
+                <WinampWindow
+                    isOpen={openWindows.includes('winamp')}
+                    onClose={() => closeWindow('winamp')}
+                    isFocused={focusedWindow === 'winamp'}
+                    onFocus={() => setFocusedWindow('winamp')}
                 />
             </div>
             <Taskbar

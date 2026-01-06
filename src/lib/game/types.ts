@@ -51,6 +51,10 @@ export interface GameState {
         hdd: string;
         ram: string;
         video: string;
+        printer: string;
+        scanner: string;
+        cd_rom: string;
+        sound: string;
     };
 
     // My Life / Assets
@@ -126,6 +130,10 @@ export const INITIAL_STATE: GameState = {
         hdd: "170mb_hdd",
         ram: "4mb_ram",
         video: "vga_card",
+        printer: "none",
+        scanner: "none",
+        cd_rom: "none",
+        sound: "none",
     },
 
     life: {

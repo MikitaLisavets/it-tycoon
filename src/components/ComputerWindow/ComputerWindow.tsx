@@ -132,7 +132,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
             <div className={styles.content}>
                 <div className={styles.summary}>
                     <div className={styles.summaryRow}>
-                        <span>{t('current_computer_level')}:</span>
+                        <span>{t('Computer.current_computer_level')}:</span>
                         <span className={`${styles.levelBadge} ${currentLevelClass}`}>Level {currentLevel}</span>
                     </div>
                 </div>

@@ -1,0 +1,136 @@
+.winampContainer {
+    background-color: #222;
+    color: #0f0;
+    width: 275px;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    border: 2px solid #555;
+    border-top-color: #777;
+    border-left-color: #777;
+    border-right-color: #333;
+    border-bottom-color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    user-select: none;
+}
+
+.displayArea {
+    background-color: #000;
+    border: 1px solid #555;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.titleBar {
+    white-space: nowrap;
+    overflow: hidden;
+    color: #0f0;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.titleText {
+    display: inline-block;
+    animation: marquee 5s linear infinite;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.visuals {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 30px;
+}
+
+.timer {
+    font-size: 20px;
+    color: #0f0;
+    font-weight: bold;
+}
+
+.oscilloscope {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 100%;
+}
+
+.bar {
+    width: 3px;
+    background-color: #0f0;
+    opacity: 0.7;
+    transition: height 0.1s;
+}
+
+.controlsArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainControls {
+    display: flex;
+    gap: 2px;
+}
+
+.mainControls button {
+    background: linear-gradient(to bottom, #ccc, #888);
+    border: 1px solid #333;
+    border-radius: 2px;
+    width: 25px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.mainControls button:active {
+    background: #666;
+}
+
+.volumeControl {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #aaa;
+}
+
+.volumeSlider {
+    width: 60px;
+    height: 5px;
+    appearance: none;
+    background: #555;
+    outline: none;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #aaa;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.branding {
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    font-weight: bold;
+    color: #666;
+    font-size: 12px;
+    text-align: right;
+    margin-top: -5px;
+}

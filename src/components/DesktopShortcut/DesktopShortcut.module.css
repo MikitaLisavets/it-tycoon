@@ -1,0 +1,77 @@
+.shortcut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 72px;
+    /* Standard Windows icon width */
+    padding: 5px;
+    margin-bottom: 10px;
+    cursor: default;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    gap: 2px;
+    pointer-events: auto;
+    /* Enable interaction for shortcuts */
+}
+
+.shortcut:hover {
+    background-color: rgba(49, 106, 197, 0.2);
+    border: 1px solid rgba(49, 106, 197, 0.4);
+}
+
+.shortcut:focus,
+.shortcut:active {
+    background-color: rgba(49, 106, 197, 0.4);
+    border: 1px solid rgba(49, 106, 197, 0.8);
+    outline: none;
+}
+
+.iconContainer {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* For absolute positioning of overlay */
+}
+
+.shortcutOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.shortcutOverlay svg {
+    width: 10px;
+    height: 10px;
+}
+
+.iconImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.label {
+    color: white;
+    font-size: 11px;
+    text-align: center;
+    text-shadow: 1px 1px 1px black;
+    /* Shadow for readability on wallpaper */
+    word-wrap: break-word;
+    line-height: 1.2;
+    user-select: none;
+    font-family: 'Tahoma', 'Segoe UI', sans-serif;
+    padding: 0 2px;
+}
