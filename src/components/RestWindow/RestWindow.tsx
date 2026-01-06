@@ -5,7 +5,8 @@ import XPButton from '../XPButton/XPButton';
 import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { useAudio } from '../../hooks/useAudio';
-import { REST_ACTIVITIES, RestActivity } from '../../lib/game/constants/index';
+import { REST_ACTIVITIES } from '../../lib/game/constants/index';
+import { ActionableItem } from '../../lib/game/types';
 import styles from './RestWindow.module.css';
 
 interface RestWindowProps {
@@ -67,14 +68,14 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
         if (state.health < (activity.cost?.health || 0)) return;
 
         // Cooldown check
-        const lastUsed = state.cooldowns?.rest?.[activity.id] || 0;
-        if (Date.now() - lastUsed < activity.cooldown) return;
+        const lastUsed = state.cooldowns?.[activity.id] || 0;
+        if (Date.now() - lastUsed < (activity.cooldown || 0)) return;
 
         // Start
         setActiveRest({
             id: activity.id,
             startTime: Date.now(),
-            duration: activity.duration
+            duration: activity.duration || 0
         });
     };
 
@@ -86,15 +87,12 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
 
         if (activity.cost?.money && activity.cost.money > 0) playCoin();
 
-        const updates: any = {
+        const updates: Partial<typeof state> = {
             money: state.money - (activity.cost?.money || 0),
             health: Math.max(0, state.health - (activity.cost?.health || 0)), // Clamp to 0
             cooldowns: {
                 ...state.cooldowns,
-                rest: {
-                    ...state.cooldowns?.rest,
-                    [activity.id]: Date.now()
-                }
+                [activity.id]: Date.now()
             }
         };
 
@@ -109,8 +107,8 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
     };
 
     const getCooldownRemaining = (activity: ActionableItem) => {
-        const lastUsed = state.cooldowns?.rest?.[activity.id] || 0;
-        const remaining = activity.cooldown - (Date.now() - lastUsed);
+        const lastUsed = state.cooldowns?.[activity.id] || 0;
+        const remaining = (activity.cooldown || 0) - (Date.now() - lastUsed);
         return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
     };
 
@@ -143,9 +141,9 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
                                             {costMoney === 0 && costHealth === 0 && 'Free '}
                                         </span>
                                         <span className={styles.effect}>
-                                            {activity.effect?.stamina === 'full' ? t('effect_full') : t('effect_stamina', { amount: activity.effect?.stamina })}
+                                            {activity.effect?.stamina === 'full' ? t('effect_full') : t('effect_stamina', { amount: activity.effect?.stamina ?? 0 })}
                                         </span>
-                                        <span> • {t('duration', { seconds: activity.duration })}</span>
+                                        <span> • {t('duration', { seconds: activity.duration ?? 0 })}</span>
                                     </div>
                                 </div>
                                 <div className={styles.actionArea}>

@@ -23,7 +23,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     onFocus,
 }) => {
     const t = useTranslations('Internet');
-    const { state, dispatch } = useGameState();
+    const { state, updateState } = useGameState();
     const [currentCategory, setCurrentCategory] = useState<ShopCategory>('home');
     const audio = useAudio();
 
@@ -38,7 +38,13 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
     const handleBuy = (item: SoftwareItem) => {
         if (state.money >= item.price) {
-            dispatch({ type: 'BUY_SOFTWARE', payload: { category: item.category, id: item.id, price: item.price } });
+            updateState({
+                money: state.money - item.price,
+                programs: {
+                    ...state.programs,
+                    [item.category]: item.id
+                }
+            });
         }
     };
 

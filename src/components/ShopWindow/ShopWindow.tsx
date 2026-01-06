@@ -22,7 +22,7 @@ interface ShopWindowProps {
 type Tab = 'food' | 'furniture' | 'clothes';
 
 const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
-    const { state, dispatch } = useGameState();
+    const { state } = useGameState();
     const t = useTranslations('Shop');
     const gt = useTranslations('Game');
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
