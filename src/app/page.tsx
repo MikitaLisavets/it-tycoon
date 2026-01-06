@@ -139,6 +139,13 @@ export default function Home() {
         }
     }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification]);
 
+    // Close application windows on game over
+    useEffect(() => {
+        if (state.gameOver) {
+            setOpenWindows(prev => prev.filter(w => w !== 'winamp'));
+        }
+    }, [state.gameOver]);
+
     // Auto-onboarding for first time visit
     useEffect(() => {
         if (isInitialized && !hasTriggeredOnboarding) {

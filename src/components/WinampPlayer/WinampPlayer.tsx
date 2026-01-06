@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './WinampPlayer.module.css';
+import { parseM3U } from '@/lib/game/utils/m3u-parser';
 
 const WinampPlayer: React.FC = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -10,7 +11,30 @@ const WinampPlayer: React.FC = () => {
 
     // user requested "Music Player" branding and 1.FM Top 2000s stream
     // https://strm112.1.fm/top2000_mobile_mp3
-    const STREAM_URL = 'https://www.internet-radio.com/servers/tools/playlistgenerator/?u=https://2000s.radiomonster.fm:443/ultra.m3u&t=.m3u';
+    const STREAM_URL = 'https://sa46.scastream.com.au/live/7noughties_128.stream/playlist.m3u8';
+
+    // State to hold the resolved audio stream URL
+    const [audioSrc, setAudioSrc] = useState<string>('');
+
+    useEffect(() => {
+        const resolveStream = async () => {
+            if (STREAM_URL.toLowerCase().endsWith('.m3u') || STREAM_URL.includes('.m3u')) {
+                const parsedUrl = await parseM3U(STREAM_URL);
+                if (parsedUrl) {
+                    setAudioSrc(parsedUrl);
+                    // Update track name if it was a generic one, or keep it.
+                    // Ideally, we might extract metadata eventually.
+                } else {
+                    // Fallback to original if parsing fails (might be a direct stream named .m3u?)
+                    setAudioSrc(STREAM_URL);
+                }
+            } else {
+                setAudioSrc(STREAM_URL);
+            }
+        };
+
+        resolveStream();
+    }, [STREAM_URL]);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -101,7 +125,7 @@ const WinampPlayer: React.FC = () => {
                 Music Player
             </div>
 
-            <audio ref={audioRef} src={STREAM_URL} crossOrigin="anonymous" />
+            <audio ref={audioRef} src={audioSrc} crossOrigin="anonymous" />
         </div>
     );
 };
