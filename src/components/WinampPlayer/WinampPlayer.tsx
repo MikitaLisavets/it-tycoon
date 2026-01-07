@@ -3,6 +3,7 @@ import styles from './WinampPlayer.module.css';
 import { parseM3U } from '@/lib/game/utils/m3u-parser';
 import { useTranslations } from 'next-intl';
 import { MUSIC_SOURCES } from '@/lib/game/constants/music-sources';
+import { useAudio } from '@/hooks/useAudio';
 
 const WinampPlayer: React.FC = () => {
     const t = useTranslations('Winamp');
@@ -12,6 +13,7 @@ const WinampPlayer: React.FC = () => {
     const [currentSourceIndex, setCurrentSourceIndex] = useState(0);
     const [currentTime, setCurrentTime] = useState('00:00');
     const [visualizerData, setVisualizerData] = useState<number[]>(new Array(10).fill(0));
+    const audio = useAudio();
 
     // State to hold the resolved audio stream URL
     const [audioSrc, setAudioSrc] = useState<string>('');
@@ -121,18 +123,28 @@ const WinampPlayer: React.FC = () => {
             {/* Controls Area */}
             <div className={styles.controlsArea}>
                 <div className={styles.mainControls}>
-                    <button className={styles.controlBtn} title={t('controls.prev')} onClick={prevSource}>|&lt;</button>
-                    <button className={styles.controlBtn} onClick={togglePlay} title={isPlaying ? t('controls.pause') : t('controls.play')}>
+                    <button className={styles.controlBtn} title={t('controls.prev')} onClick={() => {
+                        audio.playClick();
+                        prevSource();
+                    }}>|&lt;</button>
+                    <button className={styles.controlBtn} onClick={() => {
+                        audio.playClick();
+                        togglePlay();
+                    }} title={isPlaying ? t('controls.pause') : t('controls.play')}>
                         {isPlaying ? '||' : '►'}
                     </button>
                     <button className={styles.controlBtn} onClick={() => {
+                        audio.playClick();
                         setIsPlaying(false);
                         setCurrentTime('00:00');
                         if (audioRef.current) {
                             audioRef.current.currentTime = 0;
                         }
                     }} title={t('controls.stop')}>■</button>
-                    <button className={styles.controlBtn} title={t('controls.next')} onClick={nextSource}>&gt;|</button>
+                    <button className={styles.controlBtn} title={t('controls.next')} onClick={() => {
+                        audio.playClick();
+                        nextSource();
+                    }}>&gt;|</button>
                 </div>
 
 
