@@ -11,6 +11,7 @@ interface AudioContextType {
     playWarning: () => void;
     playNotification: () => void;
     playBoot: () => void;
+    playPurchase: () => void;
 }
 
 export const AudioContext = createContext<AudioContextType | null>(null);

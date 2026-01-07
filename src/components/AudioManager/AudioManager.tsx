@@ -17,6 +17,7 @@ export default function AudioManager({ children }: AudioManagerProps) {
     const warningAudioRef = useRef<GameAudioHandle>(null);
     const notificationAudioRef = useRef<GameAudioHandle>(null);
     const bootAudioRef = useRef<GameAudioHandle>(null);
+    const purchaseAudioRef = useRef<GameAudioHandle>(null);
 
     const value = {
         playClick: () => clickAudioRef.current?.play(),
@@ -27,6 +28,7 @@ export default function AudioManager({ children }: AudioManagerProps) {
         playWarning: () => warningAudioRef.current?.play(),
         playNotification: () => notificationAudioRef.current?.play(),
         playBoot: () => bootAudioRef.current?.play(),
+        playPurchase: () => purchaseAudioRef.current?.play(),
     };
 
     return (
@@ -40,6 +42,7 @@ export default function AudioManager({ children }: AudioManagerProps) {
             <GameAudio ref={warningAudioRef} src="/sfx/warning.mp3" baseVolume={0.5} />
             <GameAudio ref={notificationAudioRef} src="/sfx/notification.mp3" baseVolume={0.5} />
             <GameAudio ref={bootAudioRef} src="/sfx/boot.mp3" baseVolume={0.5} />
+            <GameAudio ref={purchaseAudioRef} src="/sfx/purchase.mp3" baseVolume={0.5} />
         </AudioContext.Provider>
     );
 }

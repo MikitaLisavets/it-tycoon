@@ -105,8 +105,8 @@
 }
 
 .badgeLayout .unmet {
-    background-color: #FFF0F0;
-    border: 1px solid #FFCCCC;
+    background-color: var(--ui-bg-tooltip);
+    border: 1px solid var(--status-error);
     padding: 3px 8px;
     margin-bottom: 5px;
     display: flex;
@@ -115,7 +115,8 @@
 
 .badgeLayout .met {
     background-color: #F0FFF0;
-    border: 1px solid #CCFFCC;
+    /* No direct token for very light green */
+    border: 1px solid var(--status-success);
     padding: 3px 8px;
     margin-bottom: 5px;
     display: flex;

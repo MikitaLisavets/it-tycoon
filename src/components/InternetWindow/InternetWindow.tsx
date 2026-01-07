@@ -48,6 +48,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                     [item.category]: item.id
                 }
             });
+            audio.playPurchase();
         }
     };
 
@@ -98,15 +99,16 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 ) : ownedLower ? (
                                     <div className={styles.ownedBadge}>{t('shop.owned')}</div>
                                 ) : (
-                                    <>
-                                        {item.requiredComputerLevel !== undefined && (
-                                            <Requirements
-                                                requirements={{ computerTier: item.requiredComputerLevel }}
-                                                className={styles.badgeLayout}
-                                                onlyUnmet={true}
-                                                showTitle={false}
-                                            />
-                                        )}
+                                    <div className={styles.purchaseBlock}>
+                                        <div className={styles.requirementsWrapper}>
+                                            {item.requiredComputerLevel !== undefined && (
+                                                <Requirements
+                                                    requirements={{ computerTier: item.requiredComputerLevel }}
+                                                    className={styles.badgeLayout}
+                                                    showTitle={true}
+                                                />
+                                            )}
+                                        </div>
                                         <button
                                             className={styles.buyBtn}
                                             disabled={!canBuy(item)}
@@ -114,7 +116,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                         >
                                             {t('shop.buy')}
                                         </button>
-                                    </>
+                                    </div>
                                 )}
                             </div>
                         </div>

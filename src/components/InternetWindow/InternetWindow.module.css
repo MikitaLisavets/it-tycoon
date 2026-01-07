@@ -2,14 +2,13 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #ECE9D8;
-    font-family: 'Tahoma', sans-serif;
-    color: black;
+    background-color: var(--xp-bg);
+    color: var(--color-text-primary);
 }
 
 .toolbar {
     padding: 2px;
-    border-bottom: 1px solid #ACA899;
+    border-bottom: 1px solid var(--xp-border-dark);
 }
 
 .addressBar {
@@ -17,12 +16,12 @@
     align-items: center;
     padding: 4px;
     gap: 5px;
-    background: #ECE9D8;
+    background: var(--xp-bg);
 }
 
 .addressLabel {
     font-size: 11px;
-    color: #444;
+    color: var(--color-text-secondary);
 }
 
 .addressInputContainer {
@@ -33,9 +32,9 @@
 
 .addressInput {
     flex: 1;
-    border: 1px solid #7F9DB9;
+    border: 1px solid var(--xp-border-dark);
     padding: 2px 5px;
-    font-family: 'Tahoma', sans-serif;
+    font-family: var(--font-tahoma);
     font-size: 11px;
     height: 20px;
 }
@@ -43,16 +42,16 @@
 .goButton {
     height: 20px;
     padding: 0 10px;
-    background: #ECE9D8;
-    border: 1px solid #ACA899;
+    background: var(--xp-bg);
+    border: 1px solid var(--xp-border-dark);
     font-size: 11px;
     cursor: pointer;
 }
 
 .contentArea {
     flex: 1;
-    background-color: white;
-    border: 1px solid #7F9DB9;
+    background-color: var(--ui-bg-white);
+    border: 1px solid var(--xp-border-dark);
     margin: 2px;
     overflow: auto;
     font-family: 'Times New Roman', serif;
@@ -70,7 +69,7 @@
 .errorTitle {
     font-size: 18px;
     font-weight: normal;
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 .errorContent {
@@ -79,13 +78,13 @@
 
 .errorDivider {
     border: 0;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--ui-border-default);
     margin: 15px 0;
 }
 
 .errorSuggestion {
     font-weight: bold;
-    color: #333;
+    color: var(--color-text-medium);
 }
 
 /* Shop Container */
@@ -93,14 +92,14 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #FFFFFF;
+    background-color: var(--ui-bg-white);
 }
 
 .shopHeader {
-    background: linear-gradient(to bottom, #003399, #0066CC);
-    color: white;
+    background: var(--xp-title-grad);
+    color: var(--xp-title-text);
     padding: 10px;
-    border-bottom: 4px solid #FF9900;
+    border-bottom: 4px solid var(--status-warning);
 }
 
 .logo {
@@ -108,11 +107,11 @@
     font-weight: bold;
     font-style: italic;
     font-size: 24px;
-    text-shadow: 2px 2px 0px #000066;
+    text-shadow: 2px 2px 0px var(--color-text-xp-blue-dark);
 }
 
 .marqueeContainer {
-    background-color: #000066;
+    background-color: var(--color-text-xp-blue-dark);
     overflow: hidden;
     white-space: nowrap;
     width: 100%;
@@ -123,6 +122,7 @@
     font-family: 'Courier New', monospace;
     font-weight: bold;
     color: #FFFF00;
+    /* Keeping yellow for marquee visibility */
     font-size: 14px;
     display: inline-block;
     padding-left: 100%;
@@ -147,8 +147,8 @@
 
 .shopSidebar {
     width: 150px;
-    background-color: #EEEEEE;
-    border-right: 1px solid #999;
+    background-color: var(--ui-bg-gray);
+    border-right: 1px solid var(--ui-border-dark);
     padding: 10px;
 }
 
@@ -161,18 +161,18 @@
 .sidebarLinks li {
     margin-bottom: 8px;
     cursor: pointer;
-    color: #0000CC;
+    color: var(--xp-link-blue);
     text-decoration: underline;
     font-size: 14px;
 }
 
 .sidebarLinks li:hover {
-    color: #FF0000;
+    color: var(--status-error);
 }
 
 .sidebarLinks .activeLink {
     font-weight: bold;
-    color: #000000;
+    color: var(--color-text-primary);
     text-decoration: none;
     cursor: default;
 }
@@ -211,8 +211,8 @@
 }
 
 .productCard {
-    border: 2px solid #003399;
-    background-color: #FFF;
+    border: 2px solid var(--xp-blue-title);
+    background-color: var(--ui-bg-white);
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -228,7 +228,7 @@
 
 .productName {
     font-weight: bold;
-    color: #003399;
+    color: var(--xp-blue-title);
     margin-bottom: 5px;
     height: 40px;
     /* fixed height for alignment */
@@ -238,43 +238,58 @@
 }
 
 .productPrice {
-    color: #009900;
+    color: var(--color-text-success);
     font-weight: bold;
     margin-bottom: 10px;
 }
 
+.purchaseBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: auto;
+    gap: 10px;
+}
+
+.requirementsWrapper {
+    flex: 1;
+    text-align: left;
+}
+
 .buyBtn {
-    background-color: #FF9900;
-    border: 1px solid #CC6600;
-    color: white;
+    background-color: var(--status-warning);
+    border: 1px solid var(--xp-blue-shadow);
+    color: var(--color-text-light);
     font-weight: bold;
     padding: 5px 15px;
     cursor: pointer;
 }
 
 .buyBtn:hover {
-    background-color: #FFCC00;
+    background-color: var(--status-error);
+    /* Or some other hover color */
 }
 
 .buyBtn:disabled {
-    background-color: #CCC;
-    border-color: #999;
+    background-color: var(--ui-border-default);
+    border-color: var(--xp-border-dark);
     cursor: not-allowed;
-    color: #666;
+    color: var(--color-text-muted);
 }
 
 .installedBadge,
 .ownedBadge {
-    background-color: #EEE;
-    border: 1px solid #CCC;
+    background-color: var(--ui-bg-gray);
+    border: 1px solid var(--ui-border-default);
     padding: 5px 10px;
-    color: #666;
+    color: var(--color-text-muted);
     font-style: italic;
 }
 
 .shopFooter {
-    background-color: #003399;
-    color: white;
+    background-color: var(--xp-blue-title);
+    color: var(--color-text-light);
     text-align: center;
     padding: 5px;
     font-size: 10px;
@@ -282,11 +297,11 @@
 
 .statusBar {
     height: 20px;
-    background: #ECE9D8;
-    border-top: 1px solid #ACA899;
+    background: var(--xp-bg);
+    border-top: 1px solid var(--xp-border-dark);
     display: flex;
     align-items: center;
     padding: 0 5px;
     font-size: 11px;
-    color: #333;
+    color: var(--stat-time);
 }
