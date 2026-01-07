@@ -6,6 +6,8 @@ import { useGameState } from '@/hooks/useGameState';
 import { SOFTWARES, SoftwareItem, SOFTWARE_LEVELS } from '@/lib/game/constants/software';
 import XPButton from '../XPButton/XPButton';
 import { useAudio } from '@/hooks/useAudio';
+import { calculateComputerLevel } from '@/lib/game/utils/hardware';
+import Requirements from '../Requirements/Requirements';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -30,6 +32,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     if (!isOpen) return null;
 
     const hasModem = state.computer.modem !== 'modem_none';
+    const computerLevel = calculateComputerLevel(state.computer);
 
     const handleClick = (category: ShopCategory) => {
         audio.playClick();
@@ -61,11 +64,12 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         return state.programs[item.category] === item.id;
     };
 
-    // Helper check: can only buy if level > current installed level
+    // Helper check: can only buy if level > current installed level AND computer level is enough
     const canBuy = (item: SoftwareItem) => {
         const currentId = state.programs[item.category];
         const currentLevel = SOFTWARE_LEVELS[currentId] || 0;
-        return item.level > currentLevel && state.money >= item.price;
+        const levelReqMet = computerLevel >= (item.requiredComputerLevel || 0);
+        return item.level > currentLevel && state.money >= item.price && levelReqMet;
     }
 
     const renderSoftwareGrid = (category: 'system' | 'office' | 'graphics' | 'antivirus' | 'games') => {
@@ -94,13 +98,23 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 ) : ownedLower ? (
                                     <div className={styles.ownedBadge}>{t('shop.owned')}</div>
                                 ) : (
-                                    <button
-                                        className={styles.buyBtn}
-                                        disabled={state.money < item.price}
-                                        onClick={() => handleBuy(item)}
-                                    >
-                                        {t('shop.buy')}
-                                    </button>
+                                    <>
+                                        {item.requiredComputerLevel !== undefined && (
+                                            <Requirements
+                                                requirements={{ computerTier: item.requiredComputerLevel }}
+                                                className={styles.badgeLayout}
+                                                onlyUnmet={true}
+                                                showTitle={false}
+                                            />
+                                        )}
+                                        <button
+                                            className={styles.buyBtn}
+                                            disabled={!canBuy(item)}
+                                            onClick={() => handleBuy(item)}
+                                        >
+                                            {t('shop.buy')}
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>

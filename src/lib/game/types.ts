@@ -147,7 +147,7 @@ export const INITIAL_STATE: GameState = {
     },
 
     programs: {
-        system: "none",
+        system: "winos_95",
         office: "none",
         graphics: "none",
         antivirus: "none",

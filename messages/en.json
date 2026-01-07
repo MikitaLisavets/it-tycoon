@@ -480,6 +480,7 @@
             "buy": "Buy Now",
             "owned": "Owned",
             "price": "Price: ${amount}",
+            "required_computer_level": "Required Computer: Tier {level}",
             "max_mood": "Max Happiness +{amount}",
             "max_health": "Max Health +{amount}",
             "description": "Description",

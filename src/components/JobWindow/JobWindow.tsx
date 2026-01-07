@@ -14,6 +14,7 @@ import { formatNumberWithSuffix } from '../../lib/game/utils/number-formatter';
 import { JobId, Job } from '../../lib/game/types';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import styles from './JobWindow.module.css';
+import Requirements from '../Requirements/Requirements';
 
 import { useAudio } from '../../hooks/useAudio';
 
@@ -138,31 +139,6 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         return styles[levelKey] || '';
     };
 
-    const renderRequirements = (jobId: JobId) => {
-        const job = JOBS[jobId];
-        if (!job || !job.requirements) return null;
-        const reqs = job.requirements;
-        const requirementsList = [];
-
-        if (reqs.education) requirementsList.push(`${gt('education')} ${gt(`values.${reqs.education}`)}`);
-        if (reqs.computerTier !== undefined) requirementsList.push(`${t('computer_tier')} ${reqs.computerTier}`);
-        if (reqs.previousJob) {
-            requirementsList.push(t('previous_job_max_level', { job: gt(`values.${reqs.previousJob}`) }));
-        }
-        if (reqs.mood) requirementsList.push(<StatBadge stat="MOOD" value={reqs.mood} label={gt('mood')} />);
-        if (requirementsList.length === 0) return null;
-        return (
-            <div className={styles.requirements}>
-                <span className={styles.reqTitle}>{t('requirements')}:</span>
-                <ul className={styles.reqList}>
-                    {requirementsList.map((req, index) => (
-                        <li key={index}>{req}</li>
-                    ))}
-                </ul>
-            </div>
-        );
-    };
-
     return (
         <>
             <WindowFrame
@@ -277,7 +253,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                                 )}
                                             </span>
                                         }
-                                        extra={renderRequirements(jobId)}
+                                        extra={job.requirements && <Requirements requirements={job.requirements} />}
                                         actionLabel={key !== state.job ? t('apply') : undefined}
                                         onAction={key !== state.job ? () => handleApply(jobId) : undefined}
                                         actionDisabled={!canApply}
