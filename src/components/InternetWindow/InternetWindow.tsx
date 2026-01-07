@@ -48,7 +48,6 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                     [item.category]: item.id
                 }
             });
-            audio.playPurchase();
         }
     };
 
@@ -109,13 +108,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                                 />
                                             )}
                                         </div>
-                                        <button
+                                        <XPButton
                                             className={styles.buyBtn}
                                             disabled={!canBuy(item)}
                                             onClick={() => handleBuy(item)}
+                                            actionSound="purchase"
                                         >
                                             {t('shop.buy')}
-                                        </button>
+                                        </XPButton>
                                     </div>
                                 )}
                             </div>

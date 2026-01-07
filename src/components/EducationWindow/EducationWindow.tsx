@@ -28,7 +28,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     const [expandedTracks, setExpandedTracks] = useState<Set<string>>(new Set());
     const [quizResult, setQuizResult] = useState<{ type: 'success' | 'failure', onContinue: () => void } | null>(null);
     const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-    const { playClick, playError, playLevelUp } = useAudio();
+    const { playClick, playError, playLevelUp, playPurchase } = useAudio();
 
     const {
         completedTracks,

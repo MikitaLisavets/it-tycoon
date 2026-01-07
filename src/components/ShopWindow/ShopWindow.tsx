@@ -76,6 +76,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                     }
                     actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('buy')) : undefined}
                     onAction={!isDelayed ? () => handleAction(item) : undefined}
+                    actionSound={(!!item.cost?.money && item.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
                     actionContent={
                         isDelayed && (

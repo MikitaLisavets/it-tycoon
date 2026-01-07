@@ -5,15 +5,16 @@ import { useAudio } from '../../hooks/useAudio';
 interface XPButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'default' | 'primary';
     children: React.ReactNode;
-    mute?: boolean;
+    actionSound?: 'click' | 'purchase' | 'none';
 }
 
-const XPButton: React.FC<XPButtonProps> = ({ variant = 'default', children, className, onClick, mute, ...props }) => {
-    const { playClick } = useAudio();
+const XPButton: React.FC<XPButtonProps> = ({ variant = 'default', children, className, onClick, actionSound = 'click', ...props }) => {
+    const { playClick, playPurchase } = useAudio();
     const btnClass = variant === 'primary' ? styles.primary : styles.button;
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!mute) playClick();
+        if (actionSound === 'click') playClick();
+        if (actionSound === 'purchase') playPurchase();
         if (onClick) onClick(e);
     };
 

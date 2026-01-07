@@ -11,6 +11,7 @@ interface ListOptionProps {
     actionDisabled?: boolean;
     actionContent?: ReactNode;
     className?: string;
+    actionSound?: 'click' | 'purchase' | 'none';
 }
 
 const ListOption: React.FC<ListOptionProps> = ({
@@ -21,7 +22,8 @@ const ListOption: React.FC<ListOptionProps> = ({
     onAction,
     actionDisabled,
     actionContent,
-    className = ''
+    className = '',
+    actionSound = 'click'
 }) => {
     return (
         <div className={`${styles.container} ${className}`}>
@@ -35,6 +37,7 @@ const ListOption: React.FC<ListOptionProps> = ({
                     <XPButton
                         onClick={onAction}
                         disabled={actionDisabled}
+                        actionSound={actionSound}
                         style={{ minWidth: '80px' }}
                     >
                         {actionLabel}

@@ -24,7 +24,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     const { state, updateState } = useGameState();
     const t = useTranslations('Computer');
     const gt = useTranslations('Game');
-    const { playClick } = useAudio();
+    const { playClick, playPurchase } = useAudio();
     const [activeTab, setActiveTab] = useState<Category>('cpu');
 
     const handleTabChange = (id: string) => {
@@ -100,6 +100,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                             }
                             actionLabel={isOwned ? null : (part.level < currentLevel ? null : (isFree ? t('starting') : t('buy')))}
                             onAction={(!isOwned && !isFree && part.level >= currentLevel) ? () => handleBuy(activeTab, part.id, part.price) : undefined}
+                            actionSound={(!isOwned && !isFree && part.level >= currentLevel) ? 'purchase' : 'click'}
                             actionDisabled={(isOwned || isFree || !canAfford) && part.level >= currentLevel}
                             actionContent={isOwned && (
                                 <div className={styles.checkmarkIcon}>

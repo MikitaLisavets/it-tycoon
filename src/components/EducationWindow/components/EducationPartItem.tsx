@@ -117,6 +117,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
                         subtitle={subtitle}
                         actionLabel={actionLabel}
                         onAction={onAction}
+                        actionSound={(!isPartCompleted && !isTrackCompleted && !isLocked && !isNotYetAvailable) ? 'purchase' : 'click'}
                         actionDisabled={actionDisabled}
                         actionContent={actionContent}
                         className={isPartCompleted ? 'opacity-50' : ''}
