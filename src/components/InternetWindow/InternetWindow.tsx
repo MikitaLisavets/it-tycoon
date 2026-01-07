@@ -16,7 +16,7 @@ interface InternetWindowProps {
     onFocus: () => void;
 }
 
-type ShopCategory = 'home' | 'system' | 'office' | 'graphics' | 'antivirus' | 'games';
+type ShopCategory = 'home' | 'system' | 'programs' | 'antivirus' | 'games';
 
 const InternetWindow: React.FC<InternetWindowProps> = ({
     isOpen,
@@ -68,11 +68,11 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const canBuy = (item: SoftwareItem) => {
         const currentId = state.programs[item.category];
         const currentLevel = SOFTWARE_LEVELS[currentId] || 0;
-        const levelReqMet = computerLevel >= (item.requiredComputerLevel || 0);
+        const levelReqMet = computerLevel >= (item.requirements?.computerTier || 0);
         return item.level > currentLevel && state.money >= item.price && levelReqMet;
     }
 
-    const renderSoftwareGrid = (category: 'system' | 'office' | 'graphics' | 'antivirus' | 'games') => {
+    const renderSoftwareGrid = (category: ShopCategory) => {
         const items = SOFTWARES[category];
         return (
             <div className={styles.productGrid}>
@@ -85,24 +85,26 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                     return (
                         <div key={item.id} className={styles.productCard}>
                             <div className={styles.productIcon}>
-                                {/* Placeholder Icon */}
                                 <div className={`${styles.iconBox} ${styles[item.category]}`}>
-                                    {category === 'antivirus' ? '🛡️' : category === 'graphics' ? '🎨' : category === 'office' ? '📝' : '💻'}
+                                    {category === 'system' ? <img src="/icons/os.png" alt="" width={32} height={32} /> : null}
+                                    {category === 'programs' ? <img src="/icons/programs.png" alt="" width={32} height={32} /> : null}
                                 </div>
                             </div>
                             <div className={styles.productInfo}>
                                 <div className={styles.productName}>{t(`shop.items.${item.id}`)}</div>
-                                <div className={styles.productPrice}>{t('shop.price', { amount: item.price })}</div>
+                                {item.price > 0 && <div className={styles.productPrice}>{t('shop.price', { amount: item.price })}</div>}
+                            </div>
+                            <div className={styles.productAction}>
                                 {installed ? (
-                                    <div className={styles.installedBadge}>{t('shop.owned')}</div>
+                                    <div className={styles.installedBadge}>{t('shop.installed')}</div>
                                 ) : ownedLower ? (
                                     <div className={styles.ownedBadge}>{t('shop.owned')}</div>
                                 ) : (
                                     <div className={styles.purchaseBlock}>
                                         <div className={styles.requirementsWrapper}>
-                                            {item.requiredComputerLevel !== undefined && (
+                                            {item.requirements?.computerTier !== undefined && (
                                                 <Requirements
-                                                    requirements={{ computerTier: item.requiredComputerLevel }}
+                                                    requirements={{ computerTier: item.requirements.computerTier }}
                                                     className={styles.badgeLayout}
                                                     showTitle={true}
                                                 />
@@ -178,8 +180,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                     <ul className={styles.sidebarLinks}>
                                         <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('shop.home')}</li>
                                         <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('shop.system')}</li>
-                                        <li className={currentCategory === 'office' ? styles.activeLink : ''} onClick={() => handleClick('office')}>{t('shop.office')}</li>
-                                        <li className={currentCategory === 'graphics' ? styles.activeLink : ''} onClick={() => handleClick('graphics')}>{t('shop.graphics')}</li>
+                                        <li className={currentCategory === 'programs' ? styles.activeLink : ''} onClick={() => handleClick('programs')}>{t('shop.programs')}</li>
                                         <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('shop.antivirus')}</li>
                                         <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('shop.games')}</li>
                                     </ul>
@@ -197,8 +198,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                         </div>
                                     )}
                                     {currentCategory === 'system' && renderSoftwareGrid('system')}
-                                    {currentCategory === 'office' && renderSoftwareGrid('office')}
-                                    {currentCategory === 'graphics' && renderSoftwareGrid('graphics')}
+                                    {currentCategory === 'programs' && renderSoftwareGrid('programs')}
                                     {currentCategory === 'antivirus' && renderSoftwareGrid('antivirus')}
                                     {currentCategory === 'games' && renderSoftwareGrid('games')}
                                 </div>

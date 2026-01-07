@@ -1,6 +1,7 @@
 .requirements {
     font-size: 12px;
     color: var(--color-text-medium);
+    text-align: left;
 }
 
 .reqTitle {

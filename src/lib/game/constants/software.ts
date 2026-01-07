@@ -3,17 +3,17 @@ export interface SoftwareItem {
     level: number;
     price: number;
     category: 'system' | 'office' | 'graphics' | 'antivirus' | 'games';
-    requiredComputerLevel?: number;
+    requirements?: Requirements;
 }
 
 export const SOFTWARES: Record<string, SoftwareItem[]> = {
     system: [
-        { id: "none", level: 0, price: 0, category: 'system' },
-        { id: "winos_95", level: 1, price: 100, category: 'system', requiredComputerLevel: 0 },
-        { id: "winos_98", level: 2, price: 300, category: 'system', requiredComputerLevel: 1 },
-        { id: "winos_xp", level: 3, price: 800, category: 'system', requiredComputerLevel: 2 },
-        { id: "winos_7", level: 4, price: 1500, category: 'system', requiredComputerLevel: 3 },
-        { id: "winos_10", level: 5, price: 3000, category: 'system', requiredComputerLevel: 4 },
+        { id: "winos_95", level: 0, price: 0, category: 'system' },
+        { id: "winos_98", level: 2, price: 300, category: 'system', requirements: { computerTier: 1 } },
+        { id: "winos_xp", level: 3, price: 800, category: 'system', requirements: { computerTier: 2 } },
+        { id: "winos_7", level: 4, price: 1500, category: 'system', requirements: { computerTier: 3 } },
+        { id: "winos_10", level: 5, price: 3000, category: 'system', requirements: { computerTier: 4 } },
+        { id: "winos_11", level: 6, price: 6000, category: 'system', requirements: { computerTier: 5 } },
     ],
     office: [
         { id: "none", level: 0, price: 0, category: 'office' },
