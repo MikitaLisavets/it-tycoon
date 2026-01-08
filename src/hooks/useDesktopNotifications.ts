@@ -8,7 +8,7 @@ import { GameState } from '../lib/game/types';
 export function useDesktopNotifications(
     state: GameState,
     isInitialized: boolean,
-    showNotification: (title: string, message: string, type?: 'info' | 'warning') => void,
+    showNotification: (title: string, message: string, type?: 'info' | 'warning', badge?: any) => void,
     dismissNotification: () => void,
     updateState: (updates: Partial<GameState>) => void
 ) {
@@ -78,7 +78,8 @@ export function useDesktopNotifications(
             showNotification(
                 tNotification('virus_title'),
                 tNotification('virus_description'),
-                'warning'
+                'warning',
+                { stat: 'MOOD', value: GAME_CONSTANTS.VIRUS_MOOD_PENALTY, prefix: '-' }
             );
             updateState({ mood: Math.max(0, state.mood - GAME_CONSTANTS.VIRUS_MOOD_PENALTY) });
         }

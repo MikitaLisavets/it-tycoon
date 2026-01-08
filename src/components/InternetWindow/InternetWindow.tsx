@@ -26,12 +26,9 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const t = useTranslations('Internet');
     const { state, updateState } = useGameState();
     const [currentCategory, setCurrentCategory] = useState<SoftwareCategory>('home');
+    const [installingItemId, setInstallingItemId] = useState<string | null>(null);
+    const [installProgress, setInstallProgress] = useState(0);
     const audio = useAudio();
-
-    if (!isOpen) return null;
-
-    const hasModem = state.computer.modem !== 'modem_none';
-    const computerLevel = calculateComputerLevel(state.computer);
 
     const handleClick = (category: SoftwareCategory) => {
         audio.playClick();
@@ -39,26 +36,83 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     }
 
     const handleBuy = (item: SoftwareItem) => {
+        if (installingItemId) return;
+
         const moneyCost = item.cost?.money || 0;
         if (state.money >= moneyCost) {
-            const currentSoftware = state.software[item.category];
-            let updatedSoftware;
+            // Deduct money immediately
+            updateState({ money: state.money - moneyCost });
 
-            if (Array.isArray(currentSoftware)) {
-                updatedSoftware = [...currentSoftware, item.id];
+            if (item.duration && item.duration > 0) {
+                setInstallingItemId(item.id);
+                setInstallProgress(0);
             } else {
-                updatedSoftware = item.id;
+                completePurchase(item);
             }
-
-            updateState({
-                money: state.money - moneyCost,
-                software: {
-                    ...state.software,
-                    [item.category]: updatedSoftware
-                }
-            });
         }
     };
+
+    const completePurchase = (item: SoftwareItem) => {
+        const currentSoftware = state.software[item.category];
+        let updatedSoftware;
+
+        if (Array.isArray(currentSoftware)) {
+            updatedSoftware = [...currentSoftware, item.id];
+        } else {
+            updatedSoftware = item.id;
+        }
+
+        updateState({
+            software: {
+                ...state.software,
+                [item.category]: updatedSoftware
+            }
+        });
+    };
+
+    // Installation Timer
+    React.useEffect(() => {
+        if (!installingItemId) return;
+
+        // Find the item to get its duration
+        let targetItem: SoftwareItem | undefined;
+        for (const cat in SOFTWARES) {
+            const found = SOFTWARES[cat as keyof typeof SOFTWARES].find(i => i.id === installingItemId);
+            if (found) {
+                targetItem = found;
+                break;
+            }
+        }
+
+        if (!targetItem || !targetItem.duration) {
+            setInstallingItemId(null);
+            return;
+        }
+
+        const durationMs = targetItem.duration * 1000;
+        const startTime = Date.now();
+
+        const interval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const percent = Math.min(100, (elapsed / durationMs) * 100);
+            setInstallProgress(percent);
+
+            if (percent >= 100) {
+                clearInterval(interval);
+                completePurchase(targetItem!);
+                setInstallingItemId(null);
+                setInstallProgress(0);
+            }
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [installingItemId]);
+
+
+    if (!isOpen) return null;
+
+    const hasModem = state.computer.modem !== 'modem_none';
+    const computerLevel = calculateComputerLevel(state.computer);
 
     const getSoftwareLevel = (id: string, category: keyof typeof SOFTWARES) => {
         const items = SOFTWARES[category];
@@ -162,6 +216,19 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                     <div className={styles.installedBadge}>{t('shop.installed')}</div>
                                 ) : ownedLower ? (
                                     <div className={styles.ownedBadge}>{t('shop.owned')}</div>
+                                ) : installingItemId === item.id ? (
+                                    <div className={styles.installingStatus}>
+                                        <div className={styles.installLabel}>
+                                            {installProgress < 50 ? t('shop.downloading') : t('shop.installing')}
+                                        </div>
+                                        <div className={styles.progressBarContainer}>
+                                            <div
+                                                className={styles.progressBarFill}
+                                                style={{ width: `${installProgress}%` }}
+                                            />
+                                        </div>
+                                        <div className={styles.installPercent}>{Math.floor(installProgress)}%</div>
+                                    </div>
                                 ) : (
                                     <div className={styles.purchaseBlock}>
                                         <div className={styles.requirementsWrapper}>
@@ -178,7 +245,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                         </div>
                                         <XPButton
                                             className={styles.buyBtn}
-                                            disabled={!canBuy(item)}
+                                            disabled={!canBuy(item) || !!installingItemId}
                                             onClick={() => handleBuy(item)}
                                             actionSound="purchase"
                                         >

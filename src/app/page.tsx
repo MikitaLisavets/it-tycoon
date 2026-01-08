@@ -377,6 +377,7 @@ export default function Home() {
                         title={notification.title}
                         message={notification.message}
                         type={notification.type}
+                        badge={notification.badge}
                         onClose={dismissNotification}
                     />
                 )

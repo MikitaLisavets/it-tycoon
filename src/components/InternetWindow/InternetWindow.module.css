@@ -323,3 +323,36 @@
     font-size: 11px;
     color: var(--stat-time);
 }
+
+.installingStatus {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 120px;
+}
+
+.installLabel {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+}
+
+.progressBarContainer {
+    height: 10px;
+    background-color: #EEE;
+    border: 1px solid var(--ui-border-default);
+    position: relative;
+    overflow: hidden;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(to right, #4CAF50, #81C784);
+    transition: width 0.1s linear;
+}
+
+.installPercent {
+    font-size: 9px;
+    text-align: right;
+    color: var(--color-text-muted);
+}

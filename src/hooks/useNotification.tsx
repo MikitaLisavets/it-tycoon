@@ -8,11 +8,16 @@ export interface NotificationData {
     title: string;
     message: string;
     type: 'warning' | 'info';
+    badge?: {
+        stat: any; // keyof typeof STAT_ICONS
+        value: string | number;
+        prefix?: string;
+    };
 }
 
 interface NotificationContextType {
     notification: NotificationData | null;
-    showNotification: (title: string, message: string, type?: 'warning' | 'info') => void;
+    showNotification: (title: string, message: string, type?: 'warning' | 'info', badge?: NotificationData['badge']) => void;
     dismissNotification: () => void;
 }
 
@@ -31,12 +36,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         }
     }, [notification, queue]);
 
-    const showNotification = useCallback((title: string, message: string, type: 'warning' | 'info' = 'info') => {
+    const showNotification = useCallback((title: string, message: string, type: 'warning' | 'info' = 'info', badge?: NotificationData['badge']) => {
         const newNotification: NotificationData = {
             id: Date.now(),
             title,
             message,
             type,
+            badge
         };
         if (type === 'warning') {
             audio.playWarning();

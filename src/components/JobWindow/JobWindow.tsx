@@ -196,7 +196,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 ))}
                                 <XPButton
                                     onClick={handleWork}
-                                    mute={true}
+                                    actionSound="coin"
                                     disabled={
                                         (currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
                                         (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
