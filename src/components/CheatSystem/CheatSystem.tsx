@@ -1,14 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { cheatManager } from '../../lib/game/cheats';
-import { useGameState } from '../../hooks/useGameState';
+import { cheatManager, CHEATS } from '../../lib/game/cheats';
 import { useAudio } from '../../hooks/useAudio';
 import styles from './CheatSystem.module.css';
-
-export const CHEATS = {
-    G0D: 'G0D',
-};
 
 const CheatSystem: React.FC = () => {
     const [notification, setNotification] = useState<{ message: string; visible: boolean; exiting: boolean; active: boolean }>({

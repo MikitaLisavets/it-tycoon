@@ -32,3 +32,7 @@ class CheatManager {
 }
 
 export const cheatManager = new CheatManager();
+
+export const CHEATS = {
+    G0D: 'G0D',
+};

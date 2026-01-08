@@ -10,6 +10,130 @@
     padding: 0;
     font-family: var(--font-tahoma), sans-serif;
     user-select: none;
+    z-index: 10000;
+}
+
+/* --- Windows 95/98 (Classic) --- */
+.taskbar95 {
+    background: #C0C0C0;
+    border-top: 2px solid #FFFFFF;
+    /* Highlight */
+    box-shadow: inset 0 1px 0 #FFFFFF;
+    /* Extra highlight if needed, simplified */
+}
+
+.taskbar95 .tray {
+    background: transparent;
+    border: none;
+    border-left: 1px solid #808080;
+    border-top: 1px solid #808080;
+    border-right: 1px solid #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+    box-shadow: inset 1px 1px 0 #000000, 1px 1px 0 #FFFFFF;
+    margin: 2px;
+    padding: 0 5px;
+    color: black;
+}
+
+.taskbar95 .divider {
+    background-color: #808080;
+    border-right: 1px solid #FFFFFF;
+    width: 2px;
+}
+
+.taskbar95 .windowButton {
+    background: #C0C0C0;
+    color: black;
+    border: 2px solid;
+    border-color: #FFFFFF #000000 #000000 #FFFFFF;
+    /* Outset 3D */
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.taskbar95 .langButton,
+.taskbar95 .trayIcon {
+    color: black;
+}
+
+/* --- Windows XP (Default Blue) --- */
+.taskbarXP {
+    /* Uses default variables defined in :root or .taskbar base */
+    background: var(--xp-taskbar-grad);
+    border-top: 1px solid var(--xp-window-border-color);
+}
+
+/* XP uses default .tray and .divider styles */
+
+
+/* --- Windows 7 (Aero Glass) --- */
+.taskbar7 {
+    /* Glassy effect */
+    background: linear-gradient(to bottom,
+            rgba(10, 20, 30, 0.85) 0%,
+            rgba(10, 20, 30, 0.85) 100%);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.taskbar7 .tray {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    margin: 2px 5px;
+    color: white;
+}
+
+.taskbar7 .divider {
+    display: none;
+    /* Win7 usually didn't have explicit dividers like 95/XP */
+}
+
+.taskbar7 .windowButton {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.taskbar7 .windowButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+
+/* --- Windows 10/11 (Flat Dark) --- */
+.taskbar10 {
+    background: rgba(20, 20, 20, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.taskbar10 .tray {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: white;
+}
+
+.taskbar10 .divider {
+    display: none;
+}
+
+.taskbar10 .windowButton {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    color: white;
+    box-shadow: none;
+}
+
+.taskbar10 .windowButton:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .startButton {
@@ -38,6 +162,73 @@
 
 .startButton img {
     margin-right: 4px;
+}
+
+/* Windows 95/98 (Default) */
+/* Windows 95/98 (Default - Classic) */
+.start95 {
+    background: #C0C0C0;
+    border-radius: 2px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: none;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080, 1px 1px #000;
+    margin-right: 5px;
+    border: none;
+}
+
+/* Windows XP */
+.startXP {
+    background: linear-gradient(to bottom, #3E9E3E 0%, #308F30 50%, #257E25 51%, #1A701A 100%);
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    border: 1px solid #1A521A;
+    margin-right: 8px;
+    box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Windows 7 (Aero Rectangle) */
+.start7 {
+    /* Aero-ish glass gradient blue/black */
+    background: linear-gradient(to bottom,
+            rgba(56, 92, 120, 0.9) 0%,
+            rgba(26, 45, 60, 0.9) 49%,
+            rgba(21, 36, 46, 0.9) 50%,
+            rgba(26, 48, 64, 0.9) 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 0 5px rgba(255, 255, 255, 0.2),
+        0 0 3px rgba(0, 0, 0, 0.5);
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    margin-right: 5px;
+}
+
+.start7 span,
+.start7::after {
+    /* Reset any previous pseudo-element hacks if present */
+    display: inline;
+    content: none;
+}
+
+/* Windows 10/11 (Flat) */
+.start10 {
+    background: #0078D7;
+    border-radius: 0;
+    font-style: normal;
+    font-weight: normal;
+    color: white;
+    box-shadow: none;
+    margin-right: 0;
+    transition: background 0.2s;
+}
+
+.start10:hover {
+    background: #0063B1;
 }
 
 .divider {

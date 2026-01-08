@@ -3,8 +3,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { GameState, INITIAL_STATE } from '../lib/game/types';
 import { GAME_CONSTANTS, JOBS } from '../lib/game/constants/index';
-import { cheatManager } from '../lib/game/cheats';
-import { CHEATS } from '@/components/CheatSystem/CheatSystem';
+import { cheatManager, CHEATS } from '../lib/game/cheats';
 
 const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-state`;
 
@@ -107,12 +106,6 @@ function useGameStateInternal() {
                     next.gameOver = true;
                 }
 
-                if (cheatManager.isCheatActive(CHEATS.G0D)) {
-                    next.health = next.maxHealth;
-                    next.mood = next.maxMood;
-                    next.stamina = next.maxStamina;
-                }
-
                 // Banking: Check credit due dates
                 if (next.banking && next.banking.credits.length > 0) {
                     const currentDays = next.date.year * 360 + next.date.month * 30 + next.date.day;
@@ -150,6 +143,13 @@ function useGameStateInternal() {
                             return deposit;
                         }),
                     };
+                }
+
+                if (cheatManager.isCheatActive(CHEATS.G0D)) {
+                    next.money = 10000000;
+                    next.health = next.maxHealth;
+                    next.mood = next.maxMood;
+                    next.stamina = next.maxStamina;
                 }
 
                 return next;

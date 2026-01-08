@@ -44,10 +44,28 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
         setIsLangOpen(false);
     };
 
+    const getStartButtonStyle = () => {
+        const sys = state.software.system;
+        if (sys === 'winos_95' || sys === 'winos_98') return styles.start95;
+        if (sys === 'winos_xp') return styles.startXP;
+        if (sys === 'winos_7') return styles.start7;
+        if (sys === 'winos_10' || sys === 'winos_11') return styles.start10;
+        return styles.start95;
+    };
+
+    const getTaskbarClass = () => {
+        const sys = state.software.system;
+        if (sys === 'winos_95' || sys === 'winos_98') return styles.taskbar95;
+        if (sys === 'winos_xp') return styles.taskbarXP;
+        if (sys === 'winos_7') return styles.taskbar7;
+        if (sys === 'winos_10' || sys === 'winos_11') return styles.taskbar10;
+        return styles.taskbarXP;
+    };
+
     return (
-        <div className={styles.taskbar}>
+        <div className={`${styles.taskbar} ${getTaskbarClass()}`}>
             <button
-                className={styles.startButton}
+                className={`${styles.startButton} ${getStartButtonStyle()}`}
                 onClick={() => { playClick(); window.open('https://ko-fi.com/mikiapps', '_blank'); }}
             >
                 {t('donate')}{' '}❤️
