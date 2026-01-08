@@ -9,6 +9,8 @@ import { useAudio } from '@/hooks/useAudio';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
 import Requirements from '../Requirements/Requirements';
 import StatBadge from '../StatBadge/StatBadge';
+import { calculateDynamicPrice } from '@/lib/game/utils/economy';
+import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -39,10 +41,12 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const handleBuy = (item: SoftwareItem) => {
         if (installingItemId) return;
 
-        const moneyCost = item.cost?.money || 0;
-        if (state.money >= moneyCost) {
+        const basePrice = item.cost?.money || 0;
+        const dynamicPrice = calculateDynamicPrice(basePrice, state);
+
+        if (state.money >= dynamicPrice) {
             // Deduct money immediately
-            updateState({ money: state.money - moneyCost });
+            updateState({ money: state.money - dynamicPrice });
 
             if (item.duration && item.duration > 0) {
                 setInstallingItemId(item.id);
@@ -179,8 +183,9 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
             osReqMet = currentOSLevel >= requiredOSLevel;
         }
 
-        const moneyCost = item.cost?.money || 0;
-        const affordable = state.money >= moneyCost;
+        const basePrice = item.cost?.money || 0;
+        const dynamicPrice = calculateDynamicPrice(basePrice, state);
+        const affordable = state.money >= dynamicPrice;
 
         if (item.category === 'system') {
             // Can buy if NOT owned yet
@@ -239,7 +244,10 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 <div className={styles.productName}>{t(`shop.items.${item.id}`)}</div>
                                 {item.cost?.money !== undefined && item.cost.money > 0 && !owned && (
                                     <div className={styles.productPrice}>
-                                        {t('shop.price', { amount: item.cost.money })}
+                                        <StatBadge
+                                            stat="MONEY"
+                                            value={formatNumberWithSuffix(calculateDynamicPrice(item.cost.money, state))}
+                                        />
                                     </div>
                                 )}
                             </div>

@@ -1,0 +1,37 @@
+.levelBadge {
+    display: inline-block;
+    color: white;
+    padding: 1px 4px;
+    font-size: 10px;
+    border-radius: 2px;
+    margin-left: 4px;
+    vertical-align: middle;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    background: #494f49;
+}
+
+.levelBadge_0 {
+    background: #888888;
+}
+
+.levelBadge_1 {
+    background: #689f38;
+}
+
+.levelBadge_2 {
+    background: #0054E3;
+}
+
+.levelBadge_3 {
+    background: #f57c00;
+}
+
+.levelBadge_4 {
+    background: #d81b60;
+}
+
+.levelBadge_5 {
+    background: linear-gradient(135deg, #800080 0%, #4B0082 100%);
+    box-shadow: 0 0 5px rgba(128, 0, 128, 0.4);
+}

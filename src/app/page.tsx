@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { useTranslations } from 'next-intl';
 import styles from "./page.module.css";
 import WindowFrame from "@/components/WindowFrame/WindowFrame";
@@ -24,6 +24,7 @@ import DesktopGrid, { ShortcutData } from "@/components/DesktopGrid/DesktopGrid"
 import WinampWindow from "@/components/WinampWindow/WinampWindow";
 import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow";
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
+import LevelBadge from "@/components/LevelBadge/LevelBadge";
 import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
@@ -239,7 +240,10 @@ export default function Home() {
                                     <StatRow label={t('video')} value={tComputer(`parts.${state.computer.video}`)} />
                                     <StatRow label={t('modem')} value={tComputer(`parts.${state.computer.modem}`)} />
                                     <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
-                                    <StatRow label={tComputer('current_computer_level')} value={`Level ${calculateComputerLevel(state.computer)}`} />
+                                    <StatRow
+                                        label={tComputer('current_computer_level')}
+                                        value={<LevelBadge level={calculateComputerLevel(state.computer)} text="Level" />}
+                                    />
                                 </Panel>
 
                                 <Panel label={t('panels.my_life')}>
@@ -405,7 +409,7 @@ export default function Home() {
     );
 }
 
-function StatRow({ label, value, icon, iconColor, isCritical }: { label: string; value: string; icon?: string; iconColor?: string; isCritical?: boolean }) {
+function StatRow({ label, value, icon, iconColor, isCritical }: { label: string; value: string | ReactNode; icon?: string; iconColor?: string; isCritical?: boolean }) {
     return (
         <div className={`${styles.statRow} ${isCritical ? styles.critical : ''}`}>
             <span className={styles.statLabel}>

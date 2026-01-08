@@ -9,6 +9,7 @@ import { useAudio } from '../../hooks/useAudio';
 import styles from './ComputerWindow.module.css';
 import { HARDWARE_COMPONENTS } from '@/lib/game/constants/hardware';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
+import LevelBadge from '../LevelBadge/LevelBadge';
 
 interface ComputerWindowProps {
     isOpen: boolean;
@@ -54,7 +55,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
         label: t(`categories.${cat}`)
     }));
 
-    const currentLevelClass = styles[`levelBadge_${currentLevel as 0 | 1 | 2 | 3 | 4 | 5}`] || '';
+
 
     const renderParts = () => {
         const currentPartId = state.computer[activeTab as keyof typeof state.computer];
@@ -72,7 +73,6 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                     const isOwned = index === installedIndex;
                     const canAfford = state.money >= part.price;
                     const isFree = part.price === 0;
-                    const levelClass = styles[`levelBadge_${part.level as 0 | 1 | 2 | 3 | 4 | 5}`] || '';
                     const isPrecedingInstalled = index === installedIndex - 1;
 
                     return (
@@ -81,9 +81,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                             className={`${isOwned ? styles.installedRow : ''}`}
                             title={
                                 <span className={styles.partTitle}>
-                                    <span className={`${styles.levelBadge} ${levelClass}`}>
-                                        Lv.{part.level}
-                                    </span>
+                                    <LevelBadge level={part.level} text="Lv." />
                                     {t(`parts.${part.id}`)}
                                 </span>
                             }
@@ -134,7 +132,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                 <div className={styles.summary}>
                     <div className={styles.summaryRow}>
                         <span>{t('current_computer_level')}:</span>
-                        <span className={`${styles.levelBadge} ${currentLevelClass}`}>Level {currentLevel}</span>
+                        <LevelBadge level={currentLevel} text="Level" />
                     </div>
                 </div>
 
