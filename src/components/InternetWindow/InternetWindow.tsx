@@ -8,6 +8,7 @@ import XPButton from '../XPButton/XPButton';
 import { useAudio } from '@/hooks/useAudio';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
 import Requirements from '../Requirements/Requirements';
+import StatBadge from '../StatBadge/StatBadge';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -243,14 +244,26 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                                 />
                                             )}
                                         </div>
-                                        <XPButton
-                                            className={styles.buyBtn}
-                                            disabled={!canBuy(item) || !!installingItemId}
-                                            onClick={() => handleBuy(item)}
-                                            actionSound="purchase"
-                                        >
-                                            {t('shop.buy')}
-                                        </XPButton>
+                                        <div className={styles.buyActionGroup}>
+                                            <XPButton
+                                                className={styles.buyBtn}
+                                                disabled={!canBuy(item) || !!installingItemId}
+                                                onClick={() => handleBuy(item)}
+                                                actionSound="purchase"
+                                            >
+                                                {t('shop.buy')}
+                                            </XPButton>
+                                            {item.duration !== undefined && item.duration > 0 && (
+                                                <div className={styles.durationBadgeWrapper}>
+                                                    <StatBadge
+                                                        stat="TIME"
+                                                        value={item.duration}
+                                                        label="s"
+                                                        className={styles.durationBadge}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>

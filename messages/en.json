@@ -498,6 +498,7 @@
             "price": "Price: ${amount}",
             "downloading": "Downloading...",
             "installing": "Installing...",
+            "duration": "Install: {seconds}s",
             "required_computer_level": "Required Computer: Level {level}",
             "max_mood": "Max Happiness +{amount}",
             "max_health": "Max Health +{amount}",

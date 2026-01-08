@@ -260,6 +260,10 @@
     font-size: 14px;
 }
 
+.productDuration {
+    display: none;
+}
+
 .productAction {
     flex-shrink: 0;
     display: flex;
@@ -270,6 +274,22 @@
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.buyActionGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.durationBadgeWrapper {
+    margin-top: 2px;
+}
+
+.durationBadge {
+    font-size: 10px;
+    padding: 2px 6px;
 }
 
 .requirementsWrapper {
