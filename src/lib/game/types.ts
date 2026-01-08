@@ -70,6 +70,7 @@ export interface GameState {
     // Programs / Software
     software: {
         system: string;
+        ownedSystems: string[];
         antivirus: string;
         games: string[];
         programs: string[];
@@ -147,6 +148,7 @@ export const INITIAL_STATE: GameState = {
 
     software: {
         system: "winos_95",
+        ownedSystems: ["winos_95"],
         games: [],
         programs: [],
         antivirus: "none",

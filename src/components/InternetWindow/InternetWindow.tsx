@@ -56,8 +56,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const completePurchase = (item: SoftwareItem) => {
         const currentSoftware = state.software[item.category];
         let updatedSoftware;
+        let updatedOwnedSystems = state.software.ownedSystems || []; // Ensure array exists
 
-        if (Array.isArray(currentSoftware)) {
+        if (item.category === 'system') {
+            updatedSoftware = item.id; // Set as current active system
+            if (!updatedOwnedSystems.includes(item.id)) {
+                updatedOwnedSystems = [...updatedOwnedSystems, item.id];
+            }
+        } else if (Array.isArray(currentSoftware)) {
             updatedSoftware = [...currentSoftware, item.id];
         } else {
             updatedSoftware = item.id;
@@ -66,9 +72,23 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         updateState({
             software: {
                 ...state.software,
-                [item.category]: updatedSoftware
+                [item.category]: updatedSoftware,
+                ownedSystems: updatedOwnedSystems
             }
         });
+    };
+
+    // Helper to switch active system from owned list
+    const handleUseSystem = (item: SoftwareItem) => {
+        if (state.software.system === item.id) return; // Already current
+
+        updateState({
+            software: {
+                ...state.software,
+                system: item.id
+            }
+        });
+        audio.playClick();
     };
 
     // Installation Timer
@@ -124,11 +144,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const isOwned = (item: SoftwareItem) => {
         const currentData = state.software[item.category];
 
+        if (item.category === 'system') {
+            return state.software.ownedSystems?.includes(item.id);
+        }
+
         if (Array.isArray(currentData)) {
             return currentData.includes(item.id);
         }
 
-        // For linear categories like system
         const currentLevel = getSoftwareLevel(currentData, item.category);
         const itemLevel = getSoftwareLevel(item.id, item.category);
         return itemLevel <= currentLevel;
@@ -159,12 +182,17 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         const moneyCost = item.cost?.money || 0;
         const affordable = state.money >= moneyCost;
 
+        if (item.category === 'system') {
+            // Can buy if NOT owned yet
+            return !state.software.ownedSystems?.includes(item.id) && affordable && levelReqMet;
+        }
+
         if (Array.isArray(currentData)) {
             // Can buy if not already owned
             return !currentData.includes(item.id) && affordable && levelReqMet && osReqMet;
         }
 
-        // Linear (system): can buy if level > current level
+        // Linear (other categories): can buy if level > current level
         const currentLevel = getSoftwareLevel(currentData, item.category);
         const itemLevel = getSoftwareLevel(item.id, item.category);
         return itemLevel > currentLevel && affordable && levelReqMet && osReqMet;
@@ -176,7 +204,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         if (category === 'home') {
             items = [];
         } else {
-            // @ts-ignore - indexing with SoftwareType is now safe since we added antivirus to GameState
+            // @ts-ignore
             items = SOFTWARES[category];
         }
 
@@ -190,11 +218,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                     const currentData = state.software[item.category];
 
                     let ownedLower = false;
-                    if (!Array.isArray(currentData)) {
+                    if (item.category !== 'system' && !Array.isArray(currentData)) {
                         const currentLevel = getSoftwareLevel(currentData, item.category);
                         const itemLevel = getSoftwareLevel(item.id, item.category);
                         ownedLower = itemLevel <= currentLevel;
                     }
+
+                    // For System: Owned but not active -> Use button
+                    const showUseButton = item.category === 'system' && owned && !installed;
 
                     return (
                         <div key={item.id} className={styles.productCard}>
@@ -206,7 +237,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                             </div>
                             <div className={styles.productInfo}>
                                 <div className={styles.productName}>{t(`shop.items.${item.id}`)}</div>
-                                {item.cost?.money !== undefined && item.cost.money > 0 && (
+                                {item.cost?.money !== undefined && item.cost.money > 0 && !owned && (
                                     <div className={styles.productPrice}>
                                         {t('shop.price', { amount: item.cost.money })}
                                     </div>
@@ -215,7 +246,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                             <div className={styles.productAction}>
                                 {installed ? (
                                     <div className={styles.installedBadge}>{t('shop.installed')}</div>
-                                ) : ownedLower ? (
+                                ) : showUseButton ? (
+                                    <XPButton
+                                        className={styles.buyBtn}
+                                        onClick={() => handleUseSystem(item)}
+                                    >
+                                        Use
+                                    </XPButton>
+                                ) : owned || ownedLower ? (
                                     <div className={styles.ownedBadge}>{t('shop.owned')}</div>
                                 ) : installingItemId === item.id ? (
                                     <div className={styles.installingStatus}>

@@ -43,6 +43,11 @@ function useGameStateInternal() {
                     if (!parsed.maxHealth) mergedState.maxHealth = 100;
                     if (!parsed.maxStamina) mergedState.maxStamina = 100;
 
+                    // Migration for ownedSystems
+                    if (mergedState.software && !mergedState.software.ownedSystems) {
+                        mergedState.software.ownedSystems = [mergedState.software.system || 'winos_95'];
+                    }
+
                     // Migration for Cooldowns
                     if (parsed.cooldowns && typeof parsed.cooldowns.rest === 'object') {
                         // Old format: { rest: { ... } }
