@@ -295,7 +295,9 @@
         "credit_due_soon_title": "Credit Due Soon!",
         "credit_due_soon": "You have a credit due in {days} days. Visit the Bank to repay!",
         "credit_overdue_title": "CREDIT OVERDUE!",
-        "credit_overdue": "Your credit payment is overdue! Repay immediately or face bankruptcy!"
+        "credit_overdue": "Your credit payment is overdue! Repay immediately or face bankruptcy!",
+        "virus_title": "Virus Alert!",
+        "virus_description": "Your computer has been infected with a virus! It's very annoying and makes you sad."
     },
     "Rest": {
         "title": "Rest & Relax",

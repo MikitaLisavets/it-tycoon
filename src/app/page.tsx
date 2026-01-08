@@ -26,52 +26,58 @@ import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow"
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
-import { STAT_ICONS, GAME_CONSTANTS, CREDIT_WARNING_DAYS } from "@/lib/game/constants/index";
+import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
-import { useAudio } from "@/hooks/useAudio";
+import { useWindowManager } from "@/hooks/useWindowManager";
+import { useDesktopWallpaper } from "@/hooks/useDesktopWallpaper";
+import { useDesktopNotifications } from "@/hooks/useDesktopNotifications";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
-    const { state, resetState, isInitialized } = useGameState();
+    const { state, updateState, resetState, isInitialized } = useGameState();
     const { notification, showNotification, dismissNotification } = useNotification();
     const t = useTranslations('Game');
     const tWinamp = useTranslations('Winamp');
     const tComputer = useTranslations('Computer');
-    const tNotification = useTranslations('Notifications');
-    const [openWindows, setOpenWindows] = useState<string[]>([]);
-    const [focusedWindow, setFocusedWindow] = useState<string | null>(null);
+
+    // Custom Hooks
+    const {
+        openWindows,
+        focusedWindow,
+        setFocusedWindow,
+        toggleWindow,
+        closeWindow,
+        resetWindows
+    } = useWindowManager(isInitialized, state.gameOver);
+
+    const {
+        backgroundImage,
+        handleFileChange,
+        resetBackground
+    } = useDesktopWallpaper(isInitialized);
+
+    useDesktopNotifications(
+        state,
+        isInitialized,
+        showNotification,
+        dismissNotification,
+        updateState
+    );
+
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
-    const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
     const [isBooting, setIsBooting] = useState(true);
-    const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
-    const audio = useAudio()
 
-    const shortcuts: ShortcutData[] = [
-        {
-            id: 'winamp',
-            label: 'Music Player',
-            icon: '/icons/winamp.png', // Placeholder, the component handles generic icon if image fails or we can use emoji logic in component if needed. 
-            // For now assuming we might want to put a real icon later.
-            // If we want to use an emoji as icon (supported by my component change mentally? No I implemented string | Node).
-            // Let's pass a Node if I want emoji, or just path string.
-            // The DesktopShortcut component handles string as img src.
-            // Let's try to pass a ReactNode icon for better "no asset" look.
-        }
-    ];
-
-    // Actually, let's fix the shortcut icon to be safe since I don't know if /icons/winamp.png exists.
-    // I will use a simple text/emoji icon for now as I cannot create binary image files easily.
     const winampIcon = (
         <div style={{ fontSize: '24px' }}>⚡</div>
     );
 
-    // Using the React Node for icon
     const desktopShortcuts: ShortcutData[] = [
         {
             id: 'winamp',
@@ -79,66 +85,6 @@ export default function Home() {
             icon: winampIcon
         }
     ];
-
-    // Notification Logic (Generator)
-    useEffect(() => {
-        if (!isInitialized || state.gameOver) return;
-
-        const now = Date.now();
-        const COOLDOWN = 60000; // 1 minute cooldown for same warning
-
-        // Check Health
-        if (state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
-            showNotification(
-                tNotification('low_health_title'),
-                tNotification('low_health'),
-                'warning'
-            );
-            setLastWarnings(prev => ({ ...prev, health: now }));
-        }
-
-        // Check Mood
-        if (state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
-            showNotification(
-                tNotification('low_mood_title'),
-                tNotification('low_mood'),
-                'warning'
-            );
-            setLastWarnings(prev => ({ ...prev, mood: now }));
-        }
-
-        // Check Credits Due Soon
-        if (state.banking && state.banking.credits.length > 0) {
-            const currentDays = state.date.year * 360 + state.date.month * 30 + state.date.day;
-
-            for (const credit of state.banking.credits) {
-                const dueDays = credit.dueDate.year * 360 + credit.dueDate.month * 30 + credit.dueDate.day;
-                const daysLeft = dueDays - currentDays;
-
-                if (daysLeft <= CREDIT_WARNING_DAYS && daysLeft > 0) {
-                    const creditWarningKey = `credit_${credit.id}`;
-                    const lastCreditWarning = (lastWarnings as Record<string, number>)[creditWarningKey] || 0;
-
-                    if (now - lastCreditWarning > COOLDOWN) {
-                        showNotification(
-                            tNotification('credit_due_soon_title'),
-                            tNotification('credit_due_soon', { days: daysLeft }),
-                            'warning'
-                        );
-                        setLastWarnings(prev => ({ ...prev, [creditWarningKey]: now }));
-                    }
-                }
-            }
-        }
-    }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification, showNotification, audio]);
-
-    // Close application windows and dismiss notifications on game over
-    useEffect(() => {
-        if (state.gameOver) {
-            setOpenWindows(prev => prev.filter(w => w !== 'winamp' && w !== 'internet'));
-            dismissNotification();
-        }
-    }, [state.gameOver, dismissNotification]);
 
     // Auto-onboarding for first time visit
     useEffect(() => {
@@ -152,63 +98,10 @@ export default function Home() {
         }
     }, [isInitialized, hasTriggeredOnboarding]);
 
-    // Load open windows from localStorage
-    useEffect(() => {
-        if (isInitialized) {
-            try {
-                const storageKey = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
-                const saved = localStorage.getItem(storageKey);
-                if (saved) {
-                    setOpenWindows(JSON.parse(saved));
-                }
-            } catch (e) {
-                console.error('Failed to load open windows:', e);
-            }
-        }
-    }, [isInitialized]);
-
-    // Save open windows to localStorage
-    useEffect(() => {
-        if (isInitialized) {
-            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
-            localStorage.setItem(storageKey, JSON.stringify(openWindows));
-        }
-    }, [openWindows, isInitialized]);
-    // Load background from localStorage
-    useEffect(() => {
-        if (isInitialized) {
-            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
-            const savedBg = localStorage.getItem(storageKey);
-            if (savedBg) {
-                setBackgroundImage(savedBg);
-            }
-        }
-    }, [isInitialized]);
-
     const handleContextMenu = (e: React.MouseEvent) => {
         if (e.target !== e.currentTarget) return;
         e.preventDefault();
         setContextMenu({ x: e.clientX, y: e.clientY });
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result as string;
-                setBackgroundImage(base64String);
-                const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
-                localStorage.setItem(storageKey, base64String);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const resetBackground = () => {
-        setBackgroundImage(null);
-        const storageKey = `${GAME_CONSTANTS.GAME_NAME}-desktop-wallpaper`;
-        localStorage.removeItem(storageKey);
     };
 
     const handleCloseOnboarding = () => {
@@ -217,28 +110,10 @@ export default function Home() {
         localStorage.setItem(storageKey, 'true');
     };
 
-    const toggleWindow = (id: string) => {
-        setOpenWindows(prev => {
-            if (prev.includes(id)) {
-                return prev.filter(w => w !== id);
-            }
-            return [...prev, id];
-        });
-        setFocusedWindow(id);
-    };
-
-    const closeWindow = (id: string) => {
-        setOpenWindows(prev => prev.filter(w => w !== id));
-        if (focusedWindow === id) {
-            setFocusedWindow(null);
-        }
-    };
-
     const handleReset = () => {
         setIsBooting(true);
         setIsResetOpen(false);
-        setOpenWindows([]);
-        setFocusedWindow(null);
+        resetWindows();
         setIsHelpOpen(false);
         resetState();
     };

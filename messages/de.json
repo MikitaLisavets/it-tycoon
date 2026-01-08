@@ -286,7 +286,9 @@
         "credit_due_soon_title": "Kredit bald fällig!",
         "credit_due_soon": "Ein Kredit ist in {days} Tagen fällig. Besuche die Bank zur Rückzahlung!",
         "credit_overdue_title": "KREDIT ÜBERFÄLLIG!",
-        "credit_overdue": "Deine Kreditzahlung ist überfällig! Zahle sofort zurück oder du gehst bankrott!"
+        "credit_overdue": "Deine Kreditzahlung ist überfällig! Zahle sofort zurück oder du gehst bankrott!",
+        "virus_title": "Virenalarm!",
+        "virus_description": "Dein Computer wurde mit einem Virus infiziert! Das ist sehr nervig und macht dich traurig."
     },
     "Rest": {
         "title": "Ruhe & Entspannung",

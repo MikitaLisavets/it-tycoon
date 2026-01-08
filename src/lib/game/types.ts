@@ -149,7 +149,7 @@ export const INITIAL_STATE: GameState = {
         system: "winos_95",
         games: [],
         programs: [],
-        antivirus: [],
+        antivirus: "none",
     },
 
     internet: {
