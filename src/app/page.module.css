@@ -138,12 +138,16 @@
     align-items: center;
     margin-bottom: 2px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 12px;
     gap: 5px;
 }
 
 .statLabel {
     color: var(--color-text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 .statValue {
@@ -181,6 +185,9 @@
     font-weight: bold;
     font-size: 14px;
     margin-right: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .critical .statLabel,

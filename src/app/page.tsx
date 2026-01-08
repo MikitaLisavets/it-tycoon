@@ -409,7 +409,7 @@ export default function Home() {
     );
 }
 
-function StatRow({ label, value, icon, iconColor, isCritical }: { label: string; value: string | ReactNode; icon?: string; iconColor?: string; isCritical?: boolean }) {
+function StatRow({ label, value, icon, iconColor, isCritical }: { label: string; value: string | ReactNode; icon?: ReactNode; iconColor?: string; isCritical?: boolean }) {
     return (
         <div className={`${styles.statRow} ${isCritical ? styles.critical : ''}`}>
             <span className={styles.statLabel}>
