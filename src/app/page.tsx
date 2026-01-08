@@ -376,10 +376,13 @@ export default function Home() {
                                 </Panel>
 
                                 <Panel label={t('panels.programs')}>
-                                    <StatRow label={t('system')} value={t(`values.${state.programs.system}`)} />
-                                    <StatRow label={t('office')} value={t(`values.${state.programs.office}`)} />
-                                    <StatRow label={t('graphics')} value={t(`values.${state.programs.graphics}`)} />
-                                    <StatRow label={t('antivirus')} value={t(`values.${state.programs.antivirus}`)} />
+                                    <StatRow label={t('system')} value={t(`values.${state.software.system}`)} />
+                                    <StatRow
+                                        label={t('programs')}
+                                        value={state.software.programs.length > 0
+                                            ? state.software.programs.map(p => t(`values.${p}`)).join(', ')
+                                            : t('values.none')}
+                                    />
                                 </Panel>
 
                                 <Panel label={t('panels.internet')}>
@@ -409,7 +412,6 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-
                 </WindowFrame>
 
                 {/* Inner windows rendered outside main window for full-page movement */}
@@ -476,7 +478,7 @@ export default function Home() {
                     isFocused={focusedWindow === 'internet'}
                     onFocus={() => setFocusedWindow('internet')}
                 />
-            </div>
+            </div >
             <Taskbar
                 date={formatDate(state.date.day, state.date.month, state.date.year)}
                 time={formatTime(state.date.hour, state.date.minute)}

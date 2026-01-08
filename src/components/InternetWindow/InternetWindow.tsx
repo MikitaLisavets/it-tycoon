@@ -3,7 +3,7 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import styles from './InternetWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
-import { SOFTWARES, SoftwareItem, SOFTWARE_LEVELS } from '@/lib/game/constants/software';
+import { SOFTWARES, SoftwareCategory, SoftwareItem } from '@/lib/game/constants/software';
 import XPButton from '../XPButton/XPButton';
 import { useAudio } from '@/hooks/useAudio';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
@@ -16,7 +16,6 @@ interface InternetWindowProps {
     onFocus: () => void;
 }
 
-type ShopCategory = 'home' | 'system' | 'programs' | 'antivirus' | 'games';
 
 const InternetWindow: React.FC<InternetWindowProps> = ({
     isOpen,
@@ -26,7 +25,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 }) => {
     const t = useTranslations('Internet');
     const { state, updateState } = useGameState();
-    const [currentCategory, setCurrentCategory] = useState<ShopCategory>('home');
+    const [currentCategory, setCurrentCategory] = useState<SoftwareCategory>('home');
     const audio = useAudio();
 
     if (!isOpen) return null;
@@ -34,65 +33,129 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const hasModem = state.computer.modem !== 'modem_none';
     const computerLevel = calculateComputerLevel(state.computer);
 
-    const handleClick = (category: ShopCategory) => {
+    const handleClick = (category: SoftwareCategory) => {
         audio.playClick();
         setCurrentCategory(category);
     }
 
     const handleBuy = (item: SoftwareItem) => {
-        if (state.money >= item.price) {
+        const moneyCost = item.cost?.money || 0;
+        if (state.money >= moneyCost) {
+            const currentSoftware = state.software[item.category];
+            let updatedSoftware;
+
+            if (Array.isArray(currentSoftware)) {
+                updatedSoftware = [...currentSoftware, item.id];
+            } else {
+                updatedSoftware = item.id;
+            }
+
             updateState({
-                money: state.money - item.price,
-                programs: {
-                    ...state.programs,
-                    [item.category]: item.id
+                money: state.money - moneyCost,
+                software: {
+                    ...state.software,
+                    [item.category]: updatedSoftware
                 }
             });
         }
     };
 
+    const getSoftwareLevel = (id: string, category: keyof typeof SOFTWARES) => {
+        const items = SOFTWARES[category];
+        if (!items) return -1;
+        return items.findIndex(i => i.id === id);
+    };
+
     const isOwned = (item: SoftwareItem) => {
-        const currentId = state.programs[item.category];
-        const currentLevel = SOFTWARE_LEVELS[currentId] || 0;
-        return item.level <= currentLevel; // Consider owned if current installed version differs but level makes it obsolete? 
-        // Actually, let's keep it simple: owned if exactly installed OR lower level? 
-        // Usually you buy upgrades. Let's say "Installed" if currentId === item.id.
-        // "Outdated" if item.level < currentLevel ??
+        const currentData = state.software[item.category];
+
+        if (Array.isArray(currentData)) {
+            return currentData.includes(item.id);
+        }
+
+        // For linear categories like system
+        const currentLevel = getSoftwareLevel(currentData, item.category);
+        const itemLevel = getSoftwareLevel(item.id, item.category);
+        return itemLevel <= currentLevel;
     };
 
     const isInstalled = (item: SoftwareItem) => {
-        return state.programs[item.category] === item.id;
+        const currentData = state.software[item.category];
+        if (Array.isArray(currentData)) {
+            return currentData.includes(item.id);
+        }
+        return currentData === item.id;
     };
 
     // Helper check: can only buy if level > current installed level AND computer level is enough
     const canBuy = (item: SoftwareItem) => {
-        const currentId = state.programs[item.category];
-        const currentLevel = SOFTWARE_LEVELS[currentId] || 0;
+        const currentData = state.software[item.category];
         const levelReqMet = computerLevel >= (item.requirements?.computerTier || 0);
-        return item.level > currentLevel && state.money >= item.price && levelReqMet;
+
+        // OS requirement check
+        let osReqMet = true;
+        if (item.requirements?.system) {
+            const currentOS = state.software.system;
+            const currentOSLevel = getSoftwareLevel(currentOS, 'system');
+            const requiredOSLevel = getSoftwareLevel(item.requirements.system, 'system');
+            osReqMet = currentOSLevel >= requiredOSLevel;
+        }
+
+        const moneyCost = item.cost?.money || 0;
+        const affordable = state.money >= moneyCost;
+
+        if (Array.isArray(currentData)) {
+            // Can buy if not already owned
+            return !currentData.includes(item.id) && affordable && levelReqMet && osReqMet;
+        }
+
+        // Linear (system): can buy if level > current level
+        const currentLevel = getSoftwareLevel(currentData, item.category);
+        const itemLevel = getSoftwareLevel(item.id, item.category);
+        return itemLevel > currentLevel && affordable && levelReqMet && osReqMet;
     }
 
-    const renderSoftwareGrid = (category: ShopCategory) => {
-        const items = SOFTWARES[category];
+    const renderSoftwareGrid = (category: SoftwareCategory) => {
+        // Handle antivirus category mapping to programs
+        let items: SoftwareItem[] = [];
+        if (category === 'home') {
+            items = [];
+        } else {
+            // @ts-ignore - indexing with SoftwareType is now safe since we added antivirus to GameState
+            items = SOFTWARES[category];
+        }
+
+        if (!items) return null;
+
         return (
             <div className={styles.productGrid}>
                 {items.filter(i => i.id !== 'none').map((item) => {
                     const installed = isInstalled(item);
-                    const currentId = state.programs[item.category];
-                    const currentLevel = SOFTWARE_LEVELS[currentId] || 0;
-                    const ownedLower = item.level <= currentLevel;
+                    const owned = isOwned(item);
+                    const currentData = state.software[item.category];
+
+                    let ownedLower = false;
+                    if (!Array.isArray(currentData)) {
+                        const currentLevel = getSoftwareLevel(currentData, item.category);
+                        const itemLevel = getSoftwareLevel(item.id, item.category);
+                        ownedLower = itemLevel <= currentLevel;
+                    }
 
                     return (
                         <div key={item.id} className={styles.productCard}>
                             <div className={styles.productIcon}>
                                 <div className={`${styles.iconBox} ${styles[item.category]}`}>
                                     {category === 'system' ? <img src="/icons/os.png" alt="" width={32} height={32} /> : null}
-                                    {category === 'programs' ? <img src="/icons/programs.png" alt="" width={32} height={32} /> : null}
+                                    {category === 'programs' || category === 'antivirus' ? <img src="/icons/programs.png" alt="" width={32} height={32} /> : null}
                                 </div>
                             </div>
                             <div className={styles.productInfo}>
                                 <div className={styles.productName}>{t(`shop.items.${item.id}`)}</div>
-                                {item.price > 0 && <div className={styles.productPrice}>{t('shop.price', { amount: item.price })}</div>}
+                                {item.cost?.money !== undefined && item.cost.money > 0 && (
+                                    <div className={styles.productPrice}>
+                                        {t('shop.price', { amount: item.cost.money })}
+                                    </div>
+                                )}
                             </div>
                             <div className={styles.productAction}>
                                 {installed ? (
@@ -102,9 +165,12 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 ) : (
                                     <div className={styles.purchaseBlock}>
                                         <div className={styles.requirementsWrapper}>
-                                            {item.requirements?.computerTier !== undefined && (
+                                            {(item.requirements?.computerTier !== undefined || item.requirements?.system !== undefined) && (
                                                 <Requirements
-                                                    requirements={{ computerTier: item.requirements.computerTier }}
+                                                    requirements={{
+                                                        computerTier: item.requirements?.computerTier,
+                                                        system: item.requirements?.system
+                                                    }}
                                                     className={styles.badgeLayout}
                                                     showTitle={true}
                                                 />

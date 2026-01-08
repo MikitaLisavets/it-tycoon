@@ -59,6 +59,7 @@
         "office": "Office",
         "graphics": "Graphics",
         "antivirus": "Antivirus",
+        "programs": "Software",
         "access": "Access",
         "salary": "Salary",
         "cost": "Cost",
@@ -91,7 +92,7 @@
             "internet": "Internet",
             "hacking": "Hacking",
             "bank": "Bank",
-            "applications": "Applications"
+            "applications": "My applications"
         },
         "Education": {
             "title": "Education Center",
@@ -471,7 +472,7 @@
             "home": "Home",
             "categories": "Categories",
             "system": "Operating Systems",
-            "programs": "Programs",
+            "programs": "Software",
             "antivirus": "Antivirus & Security",
             "games": "Games",
             "furniture": "Furniture",
@@ -514,6 +515,12 @@
                 "simcity_2000": "SimCity 2000",
                 "half_life": "Half-Life",
                 "world_of_warcraft": "World of Warcraft",
+                "software_antivirus": "Antivirus",
+                "software_office": "Office",
+                "software_notepad": "Notepad",
+                "software_code_editor": "Code Editor",
+                "software_web_wallet": "Web Wallet",
+                "software_3d_studio": "3D Studio",
                 "used": "Used Furniture",
                 "ikea_basic": "Basic Set",
                 "designer_set": "Designer Set",

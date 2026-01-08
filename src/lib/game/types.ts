@@ -68,12 +68,11 @@ export interface GameState {
     };
 
     // Programs / Software
-    programs: {
+    software: {
         system: string;
-        office: string;
-        graphics: string;
         antivirus: string;
-        games: string;
+        games: string[];
+        programs: string[];
     };
 
     // Internet
@@ -146,12 +145,11 @@ export const INITIAL_STATE: GameState = {
         car: "no_car",
     },
 
-    programs: {
+    software: {
         system: "winos_95",
-        office: "none",
-        graphics: "none",
-        antivirus: "none",
-        games: "none",
+        games: [],
+        programs: [],
+        antivirus: [],
     },
 
     internet: {

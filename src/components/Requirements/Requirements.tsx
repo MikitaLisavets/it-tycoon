@@ -4,6 +4,7 @@ import { useGameState } from '../../hooks/useGameState';
 import { calculateComputerLevel } from '../../lib/game/utils/hardware';
 import StatBadge from '../StatBadge/StatBadge';
 import { EducationId, JobId } from '../../lib/game/types';
+import { SOFTWARES } from '../../lib/game/constants/software';
 import styles from './Requirements.module.css';
 
 export interface RequirementsProps {
@@ -12,6 +13,7 @@ export interface RequirementsProps {
         computerTier?: number;
         previousJob?: JobId;
         mood?: number;
+        system?: string;
     };
     title?: string;
     className?: string;
@@ -47,6 +49,11 @@ const Requirements: React.FC<RequirementsProps> = ({
                 return (state.jobLevels[val as JobId] || 0) >= 10;
             case 'mood':
                 return state.mood >= (val as number);
+            case 'system':
+                const currentSystemId = state.software.system;
+                const currentLevel = SOFTWARES.system.findIndex(i => i.id === currentSystemId);
+                const requiredLevel = SOFTWARES.system.findIndex(i => i.id === (val as string));
+                return currentLevel >= requiredLevel;
             default:
                 return true;
         }
@@ -83,6 +90,14 @@ const Requirements: React.FC<RequirementsProps> = ({
             id: 'mood',
             met: checkRequirement('mood'),
             content: <StatBadge stat="MOOD" value={requirements.mood} label={gt('mood')} />
+        });
+    }
+
+    if (requirements.system) {
+        requirementNodes.push({
+            id: 'system',
+            met: checkRequirement('system'),
+            content: `${it('shop.system')} ${it(`shop.items.${requirements.system}`)}`
         });
     }
 
