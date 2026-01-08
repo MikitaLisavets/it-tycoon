@@ -127,7 +127,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     };
 
     useEffect(() => {
-        if (status === 'studying' && activeTrackId && state.educationProgress.startTime) {
+        if (status === 'studying' && activeTrackId && state.educationProgress.startTime && !state.gameOver) {
             const track = EDUCATION_TRACKS.find(t => t.id === activeTrackId);
             if (!track) return;
             const part = track.parts[currentPartIndex];

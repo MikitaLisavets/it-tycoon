@@ -82,7 +82,7 @@ export default function Home() {
 
     // Notification Logic (Generator)
     useEffect(() => {
-        if (!isInitialized) return;
+        if (!isInitialized || state.gameOver) return;
 
         const now = Date.now();
         const COOLDOWN = 60000; // 1 minute cooldown for same warning
@@ -132,12 +132,13 @@ export default function Home() {
         }
     }, [state.health, state.mood, state.banking, state.date, isInitialized, lastWarnings, tNotification, showNotification, audio]);
 
-    // Close application windows on game over
+    // Close application windows and dismiss notifications on game over
     useEffect(() => {
         if (state.gameOver) {
             setOpenWindows(prev => prev.filter(w => w !== 'winamp' && w !== 'internet'));
+            dismissNotification();
         }
-    }, [state.gameOver]);
+    }, [state.gameOver, dismissNotification]);
 
     // Auto-onboarding for first time visit
     useEffect(() => {
@@ -541,7 +542,7 @@ function EducationProgressBar({ onToggle }: { onToggle: () => void }) {
     useEffect(() => {
         const { status, activeTrackId, currentPartIndex, startTime } = state.educationProgress;
 
-        if (status === 'studying' && activeTrackId && startTime) {
+        if (status === 'studying' && activeTrackId && startTime && !state.gameOver) {
             const track = EDUCATION_TRACKS.find(t => t.id === activeTrackId);
             if (!track) return;
             const part = track.parts[currentPartIndex];

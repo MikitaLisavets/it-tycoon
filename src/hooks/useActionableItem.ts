@@ -69,7 +69,7 @@ export function useActionableItem() {
     }, [state, updateState]);
 
     useEffect(() => {
-        if (!delayedActivity) {
+        if (!delayedActivity || state.gameOver) {
             setProgress(0);
             return;
         }

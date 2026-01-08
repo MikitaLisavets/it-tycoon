@@ -38,7 +38,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
 
     // Handle progress tick
     useEffect(() => {
-        if (!activeRest) {
+        if (!activeRest || state.gameOver) {
             setProgress(0);
             return;
         }
