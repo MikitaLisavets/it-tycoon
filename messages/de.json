@@ -59,7 +59,8 @@
         "office": "Büro:",
         "graphics": "Grafik:",
         "antivirus": "Antivirus:",
-        "programs": "Programm:",
+        "programs": "Software:",
+        "games": "Spiele:",
         "access": "Zugang:",
         "salary": "Gehalt:",
         "cost": "Kosten:",
@@ -72,7 +73,7 @@
             "personal_status": "Persönlicher Status",
             "computer": "Computer",
             "my_life": "Mein Leben",
-            "programs": "Programme",
+            "programs": "System",
             "internet": "Internet",
             "job": "Beruf",
             "education": "Bildung"

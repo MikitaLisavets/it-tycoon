@@ -251,12 +251,19 @@ export default function Home() {
                                     <StatRow label={t('car')} value={t(`values.${state.life.car}`)} />
                                 </Panel>
 
-                                <Panel label={t('panels.programs')}>
+                                <Panel label={t('panels.system')}>
                                     <StatRow label={t('system')} value={t(`values.${state.software.system}`)} />
                                     <StatRow
                                         label={t('programs')}
                                         value={state.software.programs.length > 0
                                             ? state.software.programs.map(p => t(`values.${p}`)).join(', ')
+                                            : t('values.none')}
+                                    />
+                                    <StatRow label={t('antivirus')} value={state.software.antivirus !== 'none' ? t(`values.${state.software.antivirus}`) : t('values.none')} />
+                                    <StatRow
+                                        label={t('games')}
+                                        value={state.software.games.length > 0
+                                            ? state.software.games.map(g => t(`values.${g}`)).join(', ')
                                             : t('values.none')}
                                     />
                                 </Panel>
