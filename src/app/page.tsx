@@ -25,10 +25,12 @@ import WinampWindow from "@/components/WinampWindow/WinampWindow";
 import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow";
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import LevelBadge from "@/components/LevelBadge/LevelBadge";
+import SolitaireWindow from "@/components/SolitaireWindow/SolitaireWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
+import { SolitaireIcon } from "@/components/Icons/AppIcons";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 import { useWindowManager } from "@/hooks/useWindowManager";
@@ -84,7 +86,12 @@ export default function Home() {
             id: 'winamp',
             label: tWinamp('title'),
             icon: winampIcon
-        }
+        },
+        ...(state.software.games.includes('solitaire') ? [{
+            id: 'solitaire',
+            label: t('values.solitaire'),
+            icon: <SolitaireIcon />
+        }] : [])
     ];
 
     // Auto-onboarding for first time visit
@@ -148,6 +155,8 @@ export default function Home() {
                         onIconDoubleClick={(id) => {
                             if (id === 'winamp') {
                                 toggleWindow('winamp');
+                            } else if (id === 'solitaire') {
+                                toggleWindow('solitaire');
                             }
                         }}
                     />
@@ -357,7 +366,14 @@ export default function Home() {
                     onFocus={() => setFocusedWindow('applications')}
                     onOpenApp={(id) => {
                         if (id === 'winamp') toggleWindow('winamp');
+                        if (id === 'solitaire') toggleWindow('solitaire');
                     }}
+                />
+                <SolitaireWindow
+                    isOpen={openWindows.includes('solitaire')}
+                    onClose={() => closeWindow('solitaire')}
+                    isFocused={focusedWindow === 'solitaire'}
+                    onFocus={() => setFocusedWindow('solitaire')}
                 />
                 <InternetWindow
                     isOpen={openWindows.includes('internet')}

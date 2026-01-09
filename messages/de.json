@@ -182,6 +182,12 @@
             "bucket": "Eimer",
             "ragged": "Zerlumpt",
             "no_car": "Kein Auto"
+        },
+        "solitaire_game": {
+            "new_game": "Neues Spiel",
+            "victory": "Glückwunsch! Du hast gewonnen!",
+            "score": "Punktzahl: {score}",
+            "time": "Zeit: {time}"
         }
     },
     "PWAUpdate": {

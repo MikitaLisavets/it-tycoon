@@ -179,6 +179,12 @@
             "bucket": "Bucket",
             "ragged": "Ragged",
             "no_car": "No car"
+        },
+        "solitaire_game": {
+            "new_game": "New Game",
+            "victory": "Congratulations! You won!",
+            "score": "Score: {score}",
+            "time": "Time: {time}"
         }
     },
     "PWAUpdate": {

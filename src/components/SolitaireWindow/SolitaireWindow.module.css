@@ -1,0 +1,172 @@
+.container {
+    --card-width: min(60px, 12vw);
+    --card-height: calc(var(--card-width) * 1.4);
+    --stack-offset: calc(var(--card-height) * 0.2);
+    background-color: #008000;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(5px, 2vw, 15px);
+    user-select: none;
+    overflow: hidden;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 3vw, 25px);
+    flex: 1;
+}
+
+.topRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stockWaste {
+    display: flex;
+    gap: 8px;
+}
+
+.foundations {
+    display: flex;
+    gap: 8px;
+}
+
+.tableau {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    flex: 1;
+}
+
+.pile {
+    width: var(--card-width);
+    height: var(--card-height);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+    background-color: white;
+    border: 1px solid #000;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1px, 0.5vw, 4px);
+    cursor: grab;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card:active {
+    cursor: grabbing;
+}
+
+.selected {
+    box-shadow: 0 0 10px #ff0, 0 0 5px #ff0;
+    z-index: 10;
+}
+
+.cardBack {
+    background-color: #3b5998;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, .1) 5px, rgba(255, 255, 255, .1) 10px),
+        repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(255, 255, 255, .1) 5px, rgba(255, 255, 255, .1) 10px);
+    border: 1px solid #fff;
+}
+
+.cardRed {
+    color: #d11;
+}
+
+.cardBlack {
+    color: #000;
+}
+
+.tableauPile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tableauCardWrapper {
+    position: absolute;
+}
+
+.emptyPile {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.rank {
+    font-weight: bold;
+    font-size: clamp(10px, 2.5vw, 14px);
+    line-height: 1;
+}
+
+.suit {
+    font-size: clamp(14px, 4vw, 24px);
+    text-align: center;
+    line-height: 1;
+}
+
+.bottomRank {
+    transform: rotate(180deg);
+}
+
+.winMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: auto;
+    align-items: center;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.button {
+    background: #c0c0c0;
+    border: 1px solid #fff;
+    border-right-color: #808080;
+    border-bottom-color: #808080;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+
+.button:active {
+    border: 1px solid #808080;
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+}
+
+.animationCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}

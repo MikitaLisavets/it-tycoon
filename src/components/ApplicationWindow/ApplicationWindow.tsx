@@ -3,6 +3,8 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import DesktopShortcut from '../DesktopShortcut/DesktopShortcut';
 import styles from './ApplicationWindow.module.css';
 import { useTranslations } from 'next-intl';
+import { useGameState } from '@/hooks/useGameState';
+import { SolitaireIcon } from '../Icons/AppIcons';
 
 interface ApplicationWindowProps {
     isOpen: boolean;
@@ -21,6 +23,10 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
 }) => {
     const t = useTranslations('Applications');
     const tWinamp = useTranslations('Winamp');
+    const tGame = useTranslations('Game');
+    const { state } = useGameState();
+
+    const isSolitaireOwned = state.software.games.includes('solitaire');
 
     const winampIcon = (
         <div style={{ fontSize: '24px' }}>⚡</div>
@@ -44,6 +50,14 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                     icon={winampIcon}
                     onDoubleClick={onOpenApp}
                 />
+                {isSolitaireOwned && (
+                    <DesktopShortcut
+                        id="solitaire"
+                        label={tGame('values.solitaire')}
+                        icon={<SolitaireIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
             </div>
         </WindowFrame>
     );
