@@ -30,7 +30,8 @@ import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
-import { SolitaireIcon } from "@/components/Icons/AppIcons";
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon } from "@/components/Icons/AppIcons";
+import { NotepadWindow, OfficeWindow, CodeEditorWindow, WebWalletWindow, InvestorWindow } from "@/components/SoftwareWindows/SoftwareWindows";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 import { useWindowManager } from "@/hooks/useWindowManager";
@@ -91,6 +92,31 @@ export default function Home() {
             id: 'solitaire',
             label: t('values.solitaire'),
             icon: <SolitaireIcon />
+        }] : []),
+        ...(state.software.programs.includes('software_office') ? [{
+            id: 'software_office',
+            label: t('values.software_office'),
+            icon: <OfficeIcon />
+        }] : []),
+        ...(state.software.programs.includes('software_notepad') ? [{
+            id: 'software_notepad',
+            label: t('values.software_notepad'),
+            icon: <NotepadIcon />
+        }] : []),
+        ...(state.software.programs.includes('software_code_editor') ? [{
+            id: 'software_code_editor',
+            label: t('values.software_code_editor'),
+            icon: <CodeEditorIcon />
+        }] : []),
+        ...(state.software.programs.includes('software_web_wallet') ? [{
+            id: 'software_web_wallet',
+            label: t('values.software_web_wallet'),
+            icon: <WebWalletIcon />
+        }] : []),
+        ...(state.software.programs.includes('software_investor') ? [{
+            id: 'software_investor',
+            label: t('values.software_investor'),
+            icon: <InvestorIcon />
         }] : [])
     ];
 
@@ -157,6 +183,8 @@ export default function Home() {
                                 toggleWindow('winamp');
                             } else if (id === 'solitaire') {
                                 toggleWindow('solitaire');
+                            } else if (id.startsWith('software_')) {
+                                toggleWindow(id);
                             }
                         }}
                     />
@@ -367,6 +395,7 @@ export default function Home() {
                     onOpenApp={(id) => {
                         if (id === 'winamp') toggleWindow('winamp');
                         if (id === 'solitaire') toggleWindow('solitaire');
+                        if (id.startsWith('software_')) toggleWindow(id);
                     }}
                 />
                 <SolitaireWindow
@@ -380,6 +409,36 @@ export default function Home() {
                     onClose={() => closeWindow('internet')}
                     isFocused={focusedWindow === 'internet'}
                     onFocus={() => setFocusedWindow('internet')}
+                />
+                <NotepadWindow
+                    isOpen={openWindows.includes('software_notepad')}
+                    onClose={() => closeWindow('software_notepad')}
+                    isFocused={focusedWindow === 'software_notepad'}
+                    onFocus={() => setFocusedWindow('software_notepad')}
+                />
+                <OfficeWindow
+                    isOpen={openWindows.includes('software_office')}
+                    onClose={() => closeWindow('software_office')}
+                    isFocused={focusedWindow === 'software_office'}
+                    onFocus={() => setFocusedWindow('software_office')}
+                />
+                <CodeEditorWindow
+                    isOpen={openWindows.includes('software_code_editor')}
+                    onClose={() => closeWindow('software_code_editor')}
+                    isFocused={focusedWindow === 'software_code_editor'}
+                    onFocus={() => setFocusedWindow('software_code_editor')}
+                />
+                <WebWalletWindow
+                    isOpen={openWindows.includes('software_web_wallet')}
+                    onClose={() => closeWindow('software_web_wallet')}
+                    isFocused={focusedWindow === 'software_web_wallet'}
+                    onFocus={() => setFocusedWindow('software_web_wallet')}
+                />
+                <InvestorWindow
+                    isOpen={openWindows.includes('software_investor')}
+                    onClose={() => closeWindow('software_investor')}
+                    isFocused={focusedWindow === 'software_investor'}
+                    onFocus={() => setFocusedWindow('software_investor')}
                 />
             </div >
             <Taskbar

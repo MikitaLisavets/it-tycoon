@@ -4,7 +4,7 @@ import DesktopShortcut from '../DesktopShortcut/DesktopShortcut';
 import styles from './ApplicationWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
-import { SolitaireIcon } from '../Icons/AppIcons';
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon } from '../Icons/AppIcons';
 
 interface ApplicationWindowProps {
     isOpen: boolean;
@@ -55,6 +55,46 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                         id="solitaire"
                         label={tGame('values.solitaire')}
                         icon={<SolitaireIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.programs.includes('software_office') && (
+                    <DesktopShortcut
+                        id="software_office"
+                        label={tGame('values.software_office')}
+                        icon={<OfficeIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.programs.includes('software_notepad') && (
+                    <DesktopShortcut
+                        id="software_notepad"
+                        label={tGame('values.software_notepad')}
+                        icon={<NotepadIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.programs.includes('software_code_editor') && (
+                    <DesktopShortcut
+                        id="software_code_editor"
+                        label={tGame('values.software_code_editor')}
+                        icon={<CodeEditorIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.programs.includes('software_web_wallet') && (
+                    <DesktopShortcut
+                        id="software_web_wallet"
+                        label={tGame('values.software_web_wallet')}
+                        icon={<WebWalletIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.programs.includes('software_investor') && (
+                    <DesktopShortcut
+                        id="software_investor"
+                        label={tGame('values.software_investor')}
+                        icon={<InvestorIcon />}
                         onDoubleClick={onOpenApp}
                     />
                 )}

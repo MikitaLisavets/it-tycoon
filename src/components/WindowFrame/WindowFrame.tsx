@@ -18,6 +18,7 @@ interface WindowFrameProps {
   onResetClick?: () => void;
   isFocused?: boolean;
   onFocus?: () => void;
+  minWidth?: string;
 }
 
 const WindowFrame: React.FC<WindowFrameProps> = ({
@@ -30,7 +31,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   onCloseClick,
   onResetClick,
   isFocused,
-  onFocus
+  onFocus,
+  minWidth
 }) => {
   const t = useTranslations('WindowFrame');
   const { state, updateState } = useGameState();
@@ -238,6 +240,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
     : {
       width: size ? `${size.width}px` : width,
       height: size ? `${size.height}px` : height,
+      minWidth: minWidth,
       maxHeight: size ? `${size.height}px` : '',
       position: 'absolute',
       left: position ? `${position.x}px` : '50%', // Fallback to center before measurement
