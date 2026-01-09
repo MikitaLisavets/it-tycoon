@@ -82,7 +82,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
             )}
             {!isPartCompleted && (
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <StatBadge stat="TIME" value={`${part.duration}s`} label={t('Common.duration')} />
+                    <StatBadge stat="TIME" value={`${part.duration}s`} />
                 </div>
             )}
         </div>
