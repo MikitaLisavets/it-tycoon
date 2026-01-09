@@ -17,9 +17,11 @@ const WinampPlayer: React.FC = () => {
 
     // State to hold the resolved audio stream URL
     const [audioSrc, setAudioSrc] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const resolveStream = async () => {
+            setIsLoading(true);
             // Reset time when source changes
             setCurrentTime('00:00');
 
@@ -33,6 +35,7 @@ const WinampPlayer: React.FC = () => {
             } else {
                 setAudioSrc(MUSIC_SOURCES[currentSourceIndex].url);
             }
+            setIsLoading(false);
         };
 
         resolveStream();
@@ -40,13 +43,19 @@ const WinampPlayer: React.FC = () => {
 
     // Sync audio element with isPlaying state and audioSrc changes
     useEffect(() => {
-        if (!audioRef.current) return;
+        if (!audioRef.current || !audioSrc) return;
 
         if (isPlaying) {
-            audioRef.current.play().catch(e => {
-                console.error("Play failed:", e);
-                setIsPlaying(false); // Revert state if play fails
-            });
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    // Ignore abort errors which happen when switching tracks/toggling quickly
+                    if (e.name !== 'AbortError') {
+                        console.error("Play failed:", e);
+                        setIsPlaying(false);
+                    }
+                });
+            }
         } else {
             audioRef.current.pause();
         }
@@ -108,7 +117,9 @@ const WinampPlayer: React.FC = () => {
             {/* Display Area */}
             <div className={styles.displayArea}>
                 <div className={styles.titleBar}>
-                    <span className={styles.titleText}>{MUSIC_SOURCES[currentSourceIndex].name} *** 128kbps *** 44kHz</span>
+                    <span className={styles.titleText}>
+                        {isLoading ? t('loading') : `${MUSIC_SOURCES[currentSourceIndex].name} *** 128kbps *** 44kHz`}
+                    </span>
                 </div>
                 <div className={styles.visuals}>
                     <div className={styles.timer}>{currentTime}</div>
