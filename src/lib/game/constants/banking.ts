@@ -18,19 +18,19 @@ export const CREDIT_OPTIONS: CreditOption[] = [
     {
         id: 'small_credit',
         amount: 500,
-        termDays: 30,
+        termDays: 2,
         interestRate: 10,
     },
     {
         id: 'medium_credit',
         amount: 2000,
-        termDays: 60,
+        termDays: 4,
         interestRate: 15,
     },
     {
         id: 'large_credit',
         amount: 10000,
-        termDays: 90,
+        termDays: 7,
         interestRate: 20,
     },
 ];

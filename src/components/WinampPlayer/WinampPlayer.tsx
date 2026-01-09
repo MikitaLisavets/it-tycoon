@@ -4,6 +4,7 @@ import { parseM3U } from '@/lib/game/utils/m3u-parser';
 import { useTranslations } from 'next-intl';
 import { MUSIC_SOURCES } from '@/lib/game/constants/music-sources';
 import { useAudio } from '@/hooks/useAudio';
+import { useGameState } from '@/hooks/useGameState';
 
 const WinampPlayer: React.FC = () => {
     const t = useTranslations('Winamp');
@@ -15,9 +16,18 @@ const WinampPlayer: React.FC = () => {
     const [visualizerData, setVisualizerData] = useState<number[]>(new Array(10).fill(0));
     const audio = useAudio();
 
+    const { state } = useGameState();
+
     // State to hold the resolved audio stream URL
     const [audioSrc, setAudioSrc] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
+
+    // Stop playing on game over
+    useEffect(() => {
+        if (state.gameOver && isPlaying) {
+            setIsPlaying(false);
+        }
+    }, [state.gameOver, isPlaying]);
 
     useEffect(() => {
         const resolveStream = async () => {

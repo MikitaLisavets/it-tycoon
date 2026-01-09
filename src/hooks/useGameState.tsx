@@ -11,7 +11,8 @@ interface GameStateContextType {
     state: GameState;
     updateState: (updates: Partial<GameState>) => void;
     resetState: () => void;
-    isInitialized: boolean;
+    isPaused: boolean;
+    setIsPaused: (paused: boolean) => void;
 }
 
 const GameStateContext = createContext<GameStateContextType | null>(null);
@@ -19,6 +20,7 @@ const GameStateContext = createContext<GameStateContextType | null>(null);
 function useGameStateInternal() {
     const [state, setState] = useState<GameState>(INITIAL_STATE);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
 
     // ... (existing useEffects for load/save/loop remain unchanged, I will just wrap dispatch around setState)
 
@@ -68,7 +70,7 @@ function useGameStateInternal() {
 
     // Game Loop
     useEffect(() => {
-        if (!isInitialized || state.gameOver) return;
+        if (!isInitialized || state.gameOver || isPaused) return;
 
         const interval = setInterval(() => {
             setState((prev) => {
@@ -137,14 +139,12 @@ function useGameStateInternal() {
                             const startDays = deposit.startDate.year * 360 + deposit.startDate.month * 30 + deposit.startDate.day;
                             const daysSinceStart = currentDays - startDays;
 
-                            // Calculate interest each 30 days
-                            if (daysSinceStart > 0 && daysSinceStart % 30 === 0) {
-                                const monthlyInterest = deposit.amount * (deposit.interestRate / 100);
-                                return {
-                                    ...deposit,
-                                    accumulatedInterest: deposit.accumulatedInterest + monthlyInterest,
-                                };
-                            }
+                            // Calculate daily interest (Monthly Rate / 30)
+                            const dailyInterest = (deposit.amount * (deposit.interestRate / 100)) / 30;
+                            return {
+                                ...deposit,
+                                accumulatedInterest: deposit.accumulatedInterest + dailyInterest,
+                            };
                             return deposit;
                         }),
                     };
@@ -184,7 +184,9 @@ function useGameStateInternal() {
         state,
         updateState,
         resetState,
-        isInitialized
+        isInitialized,
+        isPaused,
+        setIsPaused
     };
 }
 

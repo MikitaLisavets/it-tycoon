@@ -67,7 +67,6 @@ export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, i
                 <div className={styles.officePage}>
                     <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>QUARTERLY REPORT</h2>
                     <p style={{ lineHeight: '1.6' }}>Profit is up by 200%. Everything is going great. Our market share is expanding rapidly across all sectors.</p>
-                    <p style={{ lineHeight: '1.6', marginTop: '15px' }}>Next steps include further expansion into the virtual reality space and enhancing our cloud infrastructure.</p>
                 </div>
             </div>
         </WindowFrame>

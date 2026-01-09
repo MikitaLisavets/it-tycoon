@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, useCallback } from "react";
 import { useTranslations } from 'next-intl';
 import styles from "./page.module.css";
 import WindowFrame from "@/components/WindowFrame/WindowFrame";
@@ -42,7 +42,7 @@ import { useDesktopNotifications } from "@/hooks/useDesktopNotifications";
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
-    const { state, updateState, resetState, isInitialized } = useGameState();
+    const { state, updateState, resetState, isInitialized, setIsPaused } = useGameState();
     const { notification, showNotification, dismissNotification } = useNotification();
     const t = useTranslations('Game');
     const tWinamp = useTranslations('Winamp');
@@ -75,6 +75,11 @@ export default function Home() {
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
     const [isBooting, setIsBooting] = useState(true);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+
+    // Pause game loop while booting
+    useEffect(() => {
+        setIsPaused(isBooting);
+    }, [isBooting, setIsPaused]);
     const [hackingLogs, setHackingLogs] = useState<string[]>([]);
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
@@ -154,9 +159,9 @@ export default function Home() {
         resetState();
     };
 
-    const handleBootComplete = () => {
+    const handleBootComplete = useCallback(() => {
         setIsBooting(false);
-    };
+    }, []);
 
     if (!isInitialized) {
         return null; // or a loading screen
@@ -528,7 +533,7 @@ function EducationProgressBar({ onToggle }: { onToggle: () => void }) {
 
             return () => clearInterval(interval);
         }
-    }, [state.educationProgress]);
+    }, [state.educationProgress, state.gameOver]);
 
     if (state.educationProgress.status === 'quiz') {
         return (

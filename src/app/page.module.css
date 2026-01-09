@@ -135,7 +135,7 @@
 .statRow {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 2px;
     font-family: inherit;
     font-size: 12px;
@@ -153,6 +153,7 @@
 .statValue {
     color: var(--color-text-primary);
     font-weight: bold;
+    text-align: right;
 }
 
 .examPending {

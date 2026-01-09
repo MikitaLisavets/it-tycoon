@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef, ReactNode } from 'react';
+import React, { useRef, ReactNode, useMemo } from 'react';
 import GameAudio, { GameAudioHandle } from '../GameAudio/GameAudio';
 import { AudioContext } from '../../hooks/useAudio';
+import { useGameState } from '../../hooks/useGameState';
 
 interface AudioManagerProps {
     children: ReactNode;
@@ -18,6 +19,8 @@ export default function AudioManager({ children }: AudioManagerProps) {
     const notificationAudioRef = useRef<GameAudioHandle>(null);
     const bootAudioRef = useRef<GameAudioHandle>(null);
     const purchaseAudioRef = useRef<GameAudioHandle>(null);
+
+    const { state } = useGameState();
 
     const value = {
         playClick: () => clickAudioRef.current?.play(),

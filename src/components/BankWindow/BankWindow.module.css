@@ -1,17 +1,300 @@
-.content {
-    padding: 10px;
+/* ATM Chassis/Bezel */
+.atmContainer {
+    background-color: #2a2a2a;
+    background-image: linear-gradient(to right, #2a2a2a, #333, #2a2a2a);
+    padding: 15px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    box-shadow: inset 0 0 20px #000;
+    border: 2px solid #1a1a1a;
+    border-radius: 4px;
 }
 
-/* Terminal-style section */
-.terminalSection {
-    background: linear-gradient(180deg, #1a2a1a 0%, #0d1a0d 100%);
-    border: 2px inset #2a4a2a;
-    border-radius: 4px;
-    padding: 12px;
+/* The Green Screen */
+.atmScreen {
+    background-color: #001100;
+    background-image:
+        repeating-linear-gradient(0deg,
+            rgba(0, 50, 0, 0.1),
+            rgba(0, 50, 0, 0.1) 1px,
+            transparent 1px,
+            transparent 2px);
+    border: 4px inset #111;
+    border-radius: 8px;
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
     font-family: 'Courier New', monospace;
+    color: #44ff44;
+    text-shadow: 0 0 4px rgba(68, 255, 68, 0.6);
+    position: relative;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Screen overlay for scanline flicker effect (optional, keep subtle) */
+.atmScreen::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    z-index: 3;
+    /* Above scanlines */
+}
+
+/* Balance Display - top of screen */
+.balanceDisplay {
+    border-bottom: 2px solid #44ff44;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.balanceLabel {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.balanceValue {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Sections */
+.terminalSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sectionHeader {
+    background: #003300;
+    color: #44ff44;
+    padding: 4px 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom: 1px solid #44ff44;
+}
+
+/* Cards (Credits/Deposits) */
+.optionCard,
+.activeItem {
+    border: 1px solid #005500;
+    background: rgba(0, 30, 0, 0.4);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.optionCard:hover,
+.activeItem:hover {
+    background: rgba(0, 50, 0, 0.6);
+    border-color: #44ff44;
+}
+
+.optionInfo,
+.activeItemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.optionTitle,
+.activeItemTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ccffcc;
+}
+
+.optionDetails,
+.activeItemDetails {
+    font-size: 12px;
+    color: #88cc88;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.optionDetail,
+.activeItemDetail {
+    display: flex;
+    gap: 4px;
+}
+
+/* Metallic/Plastic Buttons */
+.actionButton,
+.repayButton {
+    background: linear-gradient(180deg, #e0e0e0 0%, #a0a0a0 100%);
+    border: 1px solid #444;
+    border-bottom-width: 3px;
+    border-right-width: 2px;
+    border-radius: 4px;
+    color: #333;
+    font-family: sans-serif;
+    /* Physical buttons usually aren't monospace */
+    font-weight: bold;
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: center;
+}
+
+.actionButton:hover:not(:disabled),
+.repayButton:hover:not(:disabled) {
+    background: linear-gradient(180deg, #ffffff 0%, #c0c0c0 100%);
+    transform: translateY(1px);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    border-bottom-width: 2px;
+}
+
+.actionButton:active:not(:disabled),
+.repayButton:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+    border-bottom-width: 1px;
+}
+
+.actionButton:disabled,
+.repayButton:disabled {
+    background: #666;
+    color: #444;
+    border-color: #444;
+    cursor: not-allowed;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* Special styling for Repay button */
+.repayButton {
+    background: linear-gradient(180deg, #ffcc88 0%, #e6a044 100%);
+    color: #553300;
+}
+
+.repayButton:hover:not(:disabled) {
+    background: linear-gradient(180deg, #ffddaa 0%, #ffbb66 100%);
+}
+
+/* Warnings */
+.activeItem.warning {
+    border-color: #ff4444;
+    color: #ffaaaa;
+    background: rgba(50, 0, 0, 0.3);
+}
+
+.dueSoon {
+    color: #ff4444 !important;
+    text-decoration: blink;
+}
+
+/* Input Fields */
+.depositInput {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-top: 5px;
+}
+
+.inputField {
+    background: #002200;
+    border: 1px solid #44ff44;
+    color: #44ff44;
+    font-family: inherit;
+    padding: 6px;
+    flex: 1;
+    font-size: 14px;
+}
+
+.inputField:focus {
+    outline: none;
+    background: #003300;
+    box-shadow: 0 0 5px #44ff44;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* Scrollbar for screen */
+.atmScreen::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* ATM Tabs */
+.tabsContainer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #004400;
+    padding-bottom: 10px;
+}
+
+.atmTab {
+    background: #002200;
+    border: 1px solid #005500;
+    color: #44ff44;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    flex: 1;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.atmTab:hover {
+    background: #003300;
+    border-color: #44ff44;
+    box-shadow: 0 0 5px rgba(68, 255, 68, 0.3);
+}
+
+.atmTabActive {
+    background: #44ff44;
+    color: #000;
+    border-color: #44ff44;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(68, 255, 68, 0.5);
+}
+
+.atmScreen::-webkit-scrollbar-track {
+    background: #001100;
+}
+
+.atmScreen::-webkit-scrollbar-thumb {
+    background: #004400;
+    border: 1px solid #002200;
+}
+
+.atmScreen::-webkit-scrollbar-thumb:hover {
+    background: #005500;
 }
 
 .sectionHeader {
@@ -104,9 +387,9 @@
 
 /* Active Credits/Deposits Section */
 .activeSection {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #00aa00;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #00aa00;
 }
 
 .activeTitle {

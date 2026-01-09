@@ -23,14 +23,20 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
         t('message6')
     ];
 
+    const hasStartedBoot = React.useRef(false);
+
     useEffect(() => {
         if (!isBooting) {
             setProgress(0);
             setCurrentMessage(0);
+            hasStartedBoot.current = false;
             return;
         }
 
-        playBoot();
+        if (!hasStartedBoot.current) {
+            playBoot();
+            hasStartedBoot.current = true;
+        }
 
         // Progress bar animation
         const progressInterval = setInterval(() => {
@@ -63,7 +69,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
             clearInterval(messageInterval);
             clearTimeout(bootTimeout);
         };
-    }, [isBooting, onBootComplete, playBoot]);
+    }, [isBooting, onBootComplete, playBoot, bootMessages.length]);
 
     if (!isBooting) return null;
 
