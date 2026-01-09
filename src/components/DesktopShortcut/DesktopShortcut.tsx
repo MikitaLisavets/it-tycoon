@@ -1,3 +1,4 @@
+import React, { useState, useRef } from 'react';
 import styles from './DesktopShortcut.module.css';
 import { useAudio } from '@/hooks/useAudio';
 
@@ -10,16 +11,30 @@ interface DesktopShortcutProps {
 
 const DesktopShortcut: React.FC<DesktopShortcutProps> = ({ id, label, icon, onDoubleClick }) => {
     const { playClick } = useAudio();
+    const [isSelected, setIsSelected] = useState(false);
+    const lastClickTime = useRef<number>(0);
 
-    const handleClick = () => {
+    const handleShortCutClick = (e: React.MouseEvent | React.TouchEvent) => {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - lastClickTime.current;
+        lastClickTime.current = currentTime;
+
         playClick();
-        onDoubleClick(id)
+
+        if (timeDiff < 300) {
+            // Double click detected
+            onDoubleClick(id);
+            setIsSelected(false);
+        } else {
+            // Single click - select
+            setIsSelected(true);
+        }
     };
 
     return (
         <div
-            className={styles.shortcut}
-            onDoubleClick={handleClick}
+            className={`${styles.shortcut} ${isSelected ? styles.selected : ''}`}
+            onClick={handleShortCutClick}
             role="button"
             tabIndex={0}
         >
