@@ -11,6 +11,7 @@ interface GameStateContextType {
     state: GameState;
     updateState: (updates: Partial<GameState>) => void;
     resetState: () => void;
+    isInitialized: boolean;
     isPaused: boolean;
     setIsPaused: (paused: boolean) => void;
 }
