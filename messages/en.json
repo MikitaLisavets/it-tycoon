@@ -395,6 +395,30 @@
     "Applications": {
         "title": "Applications"
     },
+    "Software": {
+        "notepad_title": "Notepad",
+        "notepad_content": "Dear Diary, today I bought a new computer...",
+        "office_title": "EasyOffice 2000",
+        "office_report": "QUARTERLY REPORT",
+        "office_content": "Profit is up by 200%. Everything is going great. Our market share is expanding rapidly across all sectors.",
+        "code_editor_title": "Code Editor Pro",
+        "code_editor_comment": "// Making progress",
+        "web_wallet_title": "Web Wallet",
+        "web_wallet_balance": "Total Balance",
+        "web_wallet_recent": "Recent Transactions",
+        "web_wallet_ad_revenue": "Ad Revenue",
+        "web_wallet_transfer": "External Transfer",
+        "web_wallet_fee": "Service Fee",
+        "web_wallet_today": "Today",
+        "web_wallet_yesterday": "Yesterday",
+        "investor_title": "Investor Dashboard",
+        "investor_portfolio": "Portfolio Value",
+        "investor_period": "Last 30 Days",
+        "investor_sp500": "S&P 500",
+        "investor_nasdaq": "Nasdaq",
+        "investor_tech": "Tech Stocks",
+        "office_font": "Times New Roman"
+    },
     "Notifications": {
         "low_health_title": "Critical Health!",
         "low_health": "Your health is dangerously low. Visit the Supermarket!",

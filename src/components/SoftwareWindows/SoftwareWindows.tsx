@@ -1,5 +1,5 @@
-import React from 'react';
 import WindowFrame from '../WindowFrame/WindowFrame';
+import { useTranslations } from 'next-intl';
 import styles from './SoftwareWindows.module.css';
 
 interface SoftwareWindowProps {
@@ -10,12 +10,13 @@ interface SoftwareWindowProps {
 }
 
 export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     return (
         <WindowFrame
             id="notepad"
-            title="Notepad"
+            title={t('Software.notepad_title')}
             onCloseClick={onClose}
             width="400px"
             height="320px"
@@ -26,7 +27,7 @@ export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, 
             <div className={styles.container}>
                 <textarea
                     className={styles.textArea}
-                    defaultValue="Dear Diary, today I bought a new computer..."
+                    defaultValue={t('Software.notepad_content')}
                     spellCheck={false}
                 />
             </div>
@@ -35,12 +36,13 @@ export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, 
 };
 
 export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     return (
         <WindowFrame
             id="office"
-            title="EasyOffice 2000"
+            title={t('Software.office_title')}
             onCloseClick={onClose}
             width="600px"
             height="500px"
@@ -61,12 +63,12 @@ export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, i
                         <div className={styles.toolbarButton} style={{ fontSize: '14px' }}>≣</div>
                     </div>
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', fontSize: '11px', paddingRight: '8px' }}>
-                        Times New Roman
+                        {t('Software.office_font')}
                     </div>
                 </div>
                 <div className={styles.officePage}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>QUARTERLY REPORT</h2>
-                    <p style={{ lineHeight: '1.6' }}>Profit is up by 200%. Everything is going great. Our market share is expanding rapidly across all sectors.</p>
+                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>{t('Software.office_report')}</h2>
+                    <p style={{ lineHeight: '1.6' }}>{t('Software.office_content')}</p>
                 </div>
             </div>
         </WindowFrame>
@@ -74,12 +76,13 @@ export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, i
 };
 
 export const CodeEditorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     return (
         <WindowFrame
             id="code_editor"
-            title="Code Editor Pro"
+            title={t('Software.code_editor_title')}
             onCloseClick={onClose}
             width="600px"
             height="400px"
@@ -95,7 +98,7 @@ export const CodeEditorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClos
                     <span className={styles.keyword}>import</span> react <span className={styles.keyword}>from</span> <span className={styles.string}>'react'</span>;<br />
                     <br />
                     <span className={styles.keyword}>const</span> <span className={styles.function}>itTycoon</span> = () ={'>'} ({'{'})<br />
-                    &nbsp;&nbsp;<span className={styles.comment}>// Making progress</span><br />
+                    &nbsp;&nbsp;<span className={styles.comment}>{t('Software.code_editor_comment')}</span><br />
                     &nbsp;&nbsp;<span className={styles.keyword}>const</span> status = <span className={styles.string}>"Running"</span>;<br />
                     <br />
                     &nbsp;&nbsp;<span className={styles.function}>console</span>.<span className={styles.function}>log</span>(<span className={styles.string}>"Hello World"</span>);<br />
@@ -108,12 +111,13 @@ export const CodeEditorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClos
 };
 
 export const WebWalletWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     return (
         <WindowFrame
             id="web_wallet"
-            title="Web Wallet"
+            title={t('Software.web_wallet_title')}
             onCloseClick={onClose}
             width="350px"
             height="460px"
@@ -123,32 +127,32 @@ export const WebWalletWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
         >
             <div className={styles.walletContainer}>
                 <div className={styles.walletHeader}>
-                    <div className={styles.balanceTitle}>Total Balance</div>
+                    <div className={styles.balanceTitle}>{t('Software.web_wallet_balance')}</div>
                     <div className={styles.balanceValue}>
                         $1,234.56
                         <span>+12.5%</span>
                     </div>
                 </div>
                 <div className={styles.walletContent}>
-                    <div className={styles.sectionTitle}>Recent Transactions</div>
+                    <div className={styles.sectionTitle}>{t('Software.web_wallet_recent')}</div>
                     <div className={styles.transactionList}>
                         <div className={styles.transactionItem}>
                             <div className={styles.txInfo}>
-                                <span className={styles.txLabel}>Ad Revenue</span>
-                                <span className={styles.txDate}>Today, 10:42 AM</span>
+                                <span className={styles.txLabel}>{t('Software.web_wallet_ad_revenue')}</span>
+                                <span className={styles.txDate}>{t('Software.web_wallet_today')}, 10:42 AM</span>
                             </div>
                             <span className={styles.txAmount} style={{ color: '#4caf50' }}>+$50.00</span>
                         </div>
                         <div className={styles.transactionItem}>
                             <div className={styles.txInfo}>
-                                <span className={styles.txLabel}>External Transfer</span>
-                                <span className={styles.txDate}>Yesterday, 08:15 PM</span>
+                                <span className={styles.txLabel}>{t('Software.web_wallet_transfer')}</span>
+                                <span className={styles.txDate}>{t('Software.web_wallet_yesterday')}, 08:15 PM</span>
                             </div>
                             <span className={styles.txAmount} style={{ color: '#f44336' }}>-$100.00</span>
                         </div>
                         <div className={styles.transactionItem}>
                             <div className={styles.txInfo}>
-                                <span className={styles.txLabel}>Service Fee</span>
+                                <span className={styles.txLabel}>{t('Software.web_wallet_fee')}</span>
                                 <span className={styles.txDate}>Jan 08, 02:30 PM</span>
                             </div>
                             <span className={styles.txAmount} style={{ color: '#f44336' }}>-$0.05</span>
@@ -161,12 +165,13 @@ export const WebWalletWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
 };
 
 export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     return (
         <WindowFrame
             id="investor"
-            title="Investor Dashboard"
+            title={t('Software.investor_title')}
             onCloseClick={onClose}
             width="520px"
             height="500px"
@@ -178,12 +183,12 @@ export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose,
                 <div className={styles.chartCard}>
                     <div className={styles.chartHeader}>
                         <div className={styles.assetInfo}>
-                            <h4>Portfolio Value</h4>
+                            <h4>{t('Software.investor_portfolio')}</h4>
                             <div className={styles.assetPrice}>$124,560.00</div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                             <div style={{ fontSize: '12px', color: '#28a745', fontWeight: 'bold' }}>+$12,450 (10.2%)</div>
-                            <div style={{ fontSize: '10px', color: '#888' }}>Last 30 Days</div>
+                            <div style={{ fontSize: '10px', color: '#888' }}>{t('Software.investor_period')}</div>
                         </div>
                     </div>
                     <div className={styles.chartArea}>
@@ -201,15 +206,15 @@ export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose,
                 </div>
                 <div className={styles.grid}>
                     <div className={styles.statCard}>
-                        <div className={styles.statLabel}>S&P 500</div>
+                        <div className={styles.statLabel}>{t('Software.investor_sp500')}</div>
                         <div className={styles.statValue}>+2.45%</div>
                     </div>
                     <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Nasdaq</div>
+                        <div className={styles.statLabel}>{t('Software.investor_nasdaq')}</div>
                         <div className={styles.statValue}>+3.12%</div>
                     </div>
                     <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Tech Stocks</div>
+                        <div className={styles.statLabel}>{t('Software.investor_tech')}</div>
                         <div className={styles.statValue} style={{ color: '#f44336' }}>-0.85%</div>
                     </div>
                 </div>
