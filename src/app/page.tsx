@@ -26,6 +26,7 @@ import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow"
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import LevelBadge from "@/components/LevelBadge/LevelBadge";
 import SolitaireWindow from "@/components/SolitaireWindow/SolitaireWindow";
+import HackingWindow from "@/components/HackingWindow/HackingWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
@@ -74,6 +75,7 @@ export default function Home() {
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
     const [isBooting, setIsBooting] = useState(true);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+    const [hackingLogs, setHackingLogs] = useState<string[]>([]);
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
@@ -222,7 +224,7 @@ export default function Home() {
                                     <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('buttons.computer')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('buttons.applications')}</XPButton>
                                     <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('buttons.internet')}</XPButton>
-                                    {/* <XPButton variant="primary" disabled>{t('buttons.hacking')}</XPButton> */}
+                                    <XPButton variant="primary" onClick={() => toggleWindow('hacking')}>{t('buttons.hacking')}</XPButton>
                                 </div>
                             </div>
 
@@ -409,6 +411,14 @@ export default function Home() {
                     onClose={() => closeWindow('internet')}
                     isFocused={focusedWindow === 'internet'}
                     onFocus={() => setFocusedWindow('internet')}
+                />
+                <HackingWindow
+                    isOpen={openWindows.includes('hacking')}
+                    onClose={() => closeWindow('hacking')}
+                    isFocused={focusedWindow === 'hacking'}
+                    onFocus={() => setFocusedWindow('hacking')}
+                    lines={hackingLogs}
+                    setLines={setHackingLogs}
                 />
                 <NotepadWindow
                     isOpen={openWindows.includes('software_notepad')}

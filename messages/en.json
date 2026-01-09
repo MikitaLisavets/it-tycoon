@@ -185,6 +185,37 @@
             "victory": "Congratulations! You won!",
             "score": "Score: {score}",
             "time": "Time: {time}"
+        },
+        "hacking": {
+            "title": "Terminal Hacking",
+            "choose_target": "Select Target Node:",
+            "risk": "Detection Risk",
+            "reward": "Reward",
+            "fine": "Anti-Hack Fine",
+            "duration": "Duration",
+            "start": "Execute Hack",
+            "accessing": "Accessing {target}...",
+            "decrypting": "Decrypting security layers...",
+            "bypassing": "Bypassing firewall...",
+            "capturing": "Capturing data packets...",
+            "success": "HACK SUCCESSFUL! Reward: {amount}",
+            "failure": "TRACE DETECTED! Connection severed. Fine paid: {amount}",
+            "system_init": "SYSTEM INITIALIZED...",
+            "connection_established": "SECURE CONNECTION ESTABLISHED.",
+            "welcome_operator": "WELCOME, OPERATOR.",
+            "running": "RUNNING... [|]",
+            "insufficient_funds": "INSUFFICIENT FUNDS FOR POTENTIAL FINE",
+            "executing": "EXECUTE HACK ON {target}...",
+            "prompt": "> ",
+            "failure_wrap": "!!! {text} !!!",
+            "targets": {
+                "local_shop": "Local Shop Database",
+                "small_business": "Small Business Server",
+                "regional_bank": "Regional Bank Network",
+                "government_database": "Government Secure Node",
+                "global_stock_exchange": "Global Stock Exchange Mainframe"
+            },
+            "no_modem_error": "NETWORK ERROR: NO VALID MODEM DETECTED. HARDWARE REQUIRED."
         }
     },
     "PWAUpdate": {

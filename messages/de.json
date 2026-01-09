@@ -188,6 +188,36 @@
             "victory": "Glückwunsch! Du hast gewonnen!",
             "score": "Punktzahl: {score}",
             "time": "Zeit: {time}"
+        },
+        "hacking": {
+            "title": "Terminal-Hacking",
+            "choose_target": "Zielknoten auswählen:",
+            "risk": "Entdeckungsrisiko",
+            "reward": "Geschätzte Belohnung",
+            "fine": "Anti-Hack-Strafe",
+            "duration": "Dauer",
+            "start": "Hack ausführen",
+            "accessing": "Greife auf {target} zu...",
+            "decrypting": "Sicherheitsebenen entschlüsseln...",
+            "bypassing": "Firewall umgehen...",
+            "capturing": "Datenpakete erfassen...",
+            "success": "HACK ERFOLGREICH! Belohnung: {amount}",
+            "failure": "SPUR ERKANNT! Verbindung getrennt. Strafe gezahlt: {amount}",
+            "system_init": "SYSTEM INITIALISIERT...",
+            "connection_established": "SICHERE VERBINDUNG HERGESTELLT.",
+            "welcome_operator": "WILLKOMMEN, OPERATOR.",
+            "running": "LÄUFT... [|]",
+            "insufficient_funds": "UNZUREICHENDE MITTEL FÜR POTENZIELLE STRAFE",
+            "executing": "HACK AUF {target} AUSFÜHREN...",
+            "prompt": "> ",
+            "failure_wrap": "!!! {text} !!!",
+            "targets": {
+                "local_shop": "Lokale Shop-Datenbank",
+                "small_business": "Server eines kleinen Unternehmens",
+                "regional_bank": "Regionales Banknetzwerk",
+                "government_database": "Sicherer Regierungsknoten",
+                "global_stock_exchange": "Mainframe der globalen Börse"
+            }
         }
     },
     "PWAUpdate": {

@@ -1,0 +1,154 @@
+.container {
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.terminalOutput {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 80px;
+    gap: 4px;
+}
+
+.line {
+    word-break: break-all;
+    line-height: 1.2;
+}
+
+.prompt {
+    color: #00ff00;
+}
+
+.inputArea {
+    border-top: 1px solid #005500;
+    padding-top: 10px;
+}
+
+.targetGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.targetCard {
+    border: 1px solid #7a9e7a;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #eef5ee;
+    color: #333;
+}
+
+.targetCard:hover:not(.disabled) {
+    background: #ffffff;
+    border-color: #00ff00;
+}
+
+.targetCard.disabled {
+    cursor: not-allowed;
+    background: repeating-linear-gradient(45deg,
+            #f0f0f0,
+            #f0f0f0 10px,
+            #e0e0e0 10px,
+            #e0e0e0 20px);
+    border: 1px dashed #999;
+    color: #666;
+}
+
+.targetName {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #004400;
+}
+
+.targetStats {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.statRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.statValue {
+    color: #333;
+    font-weight: bold;
+}
+
+.insufficientValue {
+    color: #ff0000 !important;
+}
+
+.insufficient {
+    color: #ff0000;
+}
+
+.insufficientFundsLabel {
+    color: #ffffff;
+    background-color: #ff0000;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 8px;
+    padding: 4px 8px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.success {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.failure {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+/* Custom scrollbar for terminal look */
+.terminalOutput::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminalOutput::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.terminalOutput::-webkit-scrollbar-thumb {
+    background: #005500;
+}
+
+.terminalOutput::-webkit-scrollbar-thumb:hover {
+    background: #00aa00;
+}
