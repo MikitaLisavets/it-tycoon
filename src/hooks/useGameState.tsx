@@ -151,7 +151,7 @@ function useGameStateInternal() {
                 }
 
                 if (cheatManager.isCheatActive(CHEATS.G0D)) {
-                    next.money = 10000000;
+                    next.money = 1000000;
                     next.health = next.maxHealth;
                     next.mood = next.maxMood;
                     next.stamina = next.maxStamina;

@@ -110,8 +110,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
             if (levels.indexOf(state.education) < levels.indexOf(reqs.education)) return false;
         }
 
-        if (reqs.computerTier !== undefined) {
-            if (computerLevel < reqs.computerTier) return false;
+        if (reqs.software) {
+            if (!state.software.programs.includes(reqs.software)) return false;
         }
 
         if (reqs.previousJob) {

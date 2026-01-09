@@ -208,6 +208,7 @@ export interface JobRequirements {
     computerTier?: number;
     previousJob?: JobId;
     mood?: number;
+    software?: string;
 }
 
 export interface Job {

@@ -14,6 +14,7 @@ export interface RequirementsProps {
         previousJob?: JobId;
         mood?: number;
         system?: string;
+        software?: string;
     };
     title?: string;
     className?: string;
@@ -54,6 +55,8 @@ const Requirements: React.FC<RequirementsProps> = ({
                 const currentLevel = SOFTWARES.system.findIndex(i => i.id === currentSystemId);
                 const requiredLevel = SOFTWARES.system.findIndex(i => i.id === (val as string));
                 return currentLevel >= requiredLevel;
+            case 'software':
+                return state.software.programs.includes(val as string);
             default:
                 return true;
         }
@@ -65,7 +68,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'education',
             met: checkRequirement('education'),
-            content: `${gt('education')} ${gt(`values.${requirements.education}`)}`
+            content: `${gt('education')}: ${gt(`values.${requirements.education}`)}`
         });
     }
 
@@ -73,7 +76,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'computer',
             met: checkRequirement('computerTier'),
-            content: `${t('computer_tier')} ${requirements.computerTier}`
+            content: `${t('computer_tier')}: ${requirements.computerTier}`
         });
     }
 
@@ -97,7 +100,15 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'system',
             met: checkRequirement('system'),
-            content: `${it('shop.system')} ${it(`shop.items.${requirements.system}`)}`
+            content: `${it('shop.system')}: ${it(`shop.items.${requirements.system}`)}`
+        });
+    }
+
+    if (requirements.software) {
+        requirementNodes.push({
+            id: `soft_${requirements.software}`,
+            met: state.software.programs.includes(requirements.software),
+            content: `${gt('programs')}: ${it(`shop.items.${requirements.software}`)}`
         });
     }
 

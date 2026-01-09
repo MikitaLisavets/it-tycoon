@@ -26,7 +26,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         requirements: {
             previousJob: "courier",
             education: 'school',
-            mood: 40
+            mood: 40,
+            software: "software_office"
         }
     },
     web_dev: {
@@ -35,9 +36,9 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         cost: { mood: 1, stamina: 3 },
         requirements: {
             education: "college",
-            computerTier: 1,
             previousJob: "office_worker",
-            mood: 45
+            mood: 45,
+            software: "software_notepad"
         }
     },
     senior_dev: {
@@ -46,9 +47,9 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         cost: { stamina: 4, mood: 2 },
         requirements: {
             education: "university",
-            computerTier: 2,
             previousJob: "web_dev",
-            mood: 60
+            mood: 60,
+            software: "software_code_editor"
         }
     },
     startup_founder: {
@@ -57,9 +58,9 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         cost: { stamina: 5, mood: 3, health: 1 },
         requirements: {
             education: "university",
-            computerTier: 3,
             previousJob: "senior_dev",
-            mood: 70
+            mood: 70,
+            software: "software_web_wallet"
         }
     },
     it_investor: {
@@ -68,9 +69,9 @@ export const JOBS: Partial<Record<JobId, Job>> = {
         cost: { stamina: 8, mood: 5, health: 2 },
         requirements: {
             education: "university",
-            computerTier: 4,
             previousJob: "startup_founder",
-            mood: 80
+            mood: 80,
+            software: "software_investor"
         }
     }
 };
