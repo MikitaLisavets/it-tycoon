@@ -201,7 +201,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     return (
         <WindowFrame
             id="education_window"
-            title={t('Game.Education.title')}
+            title={t('Education.title')}
             onCloseClick={onClose}
             onResetClick={onReset}
             width="500px"

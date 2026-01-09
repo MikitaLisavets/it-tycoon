@@ -59,7 +59,7 @@ function generateId(): string {
 const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const audio = useAudio();
-    const t = useTranslations('Bank');
+    const t = useTranslations();
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('credits');
     const [depositAmounts, setDepositAmounts] = useState<Record<string, string>>({});
@@ -154,15 +154,15 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
     const formatDate = (date: GameDate) => `${date.day}/${date.month}/${date.year}`;
 
     const tabList = [
-        { id: 'credits' as const, label: t('tabs.credits') },
-        { id: 'deposits' as const, label: t('tabs.deposits') },
+        { id: 'credits' as const, label: t('Bank.tab_credits') },
+        { id: 'deposits' as const, label: t('Bank.tab_deposits') },
     ];
 
     return (
         <>
             <WindowFrame
                 id="bank_window"
-                title={t('title')}
+                title={t('Bank.title')}
                 onCloseClick={onClose}
                 onResetClick={onReset}
                 onHelpClick={() => setIsHelpOpen(true)}
@@ -174,7 +174,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                     <div className={styles.atmScreen}>
                         {/* Balance Display */}
                         <div className={styles.balanceDisplay}>
-                            <span className={styles.balanceLabel}>{t('balance')}:</span>
+                            <span className={styles.balanceLabel}>{t('Bank.balance')}:</span>
                             <span className={styles.balanceValue}>${formatNumberWithSuffix(state.money)}</span>
                         </div>
 
@@ -196,12 +196,12 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                         <div className={styles.content}>
                             {activeTab === 'credits' && (
                                 <div className={styles.terminalSection}>
-                                    <div className={styles.sectionHeader}>{t('available_credits')}</div>
+                                    <div className={styles.sectionHeader}>{t('Bank.available_credits')}</div>
 
                                     {/* Active Credits */}
                                     {state.banking.credits.length > 0 && (
                                         <div className={styles.activeSection}>
-                                            <div className={styles.activeTitle}>{t('active_credits')}</div>
+                                            <div className={styles.activeTitle}>{t('Bank.active_credits')}</div>
                                             {state.banking.credits.map(credit => {
                                                 const remaining = daysUntilDue(state.date, credit.dueDate);
                                                 const isWarning = remaining <= CREDIT_WARNING_DAYS;
@@ -214,18 +214,21 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                     >
                                                         <div className={styles.activeItemInfo}>
                                                             <div className={styles.activeItemTitle}>
-                                                                ${formatNumberWithSuffix(credit.totalDue)} {t('due')}
+                                                                ${formatNumberWithSuffix(credit.totalDue)} {t('Bank.due')}
                                                             </div>
                                                             <div className={`${styles.activeItemDetails} ${isWarning ? styles.dueSoon : ''}`}>
-                                                                {t('due_date')}: {formatDate(credit.dueDate)} ({remaining} {t('days_left')})
+                                                                {t('Bank.due_date')}: {formatDate(credit.dueDate)} ({remaining} {t('Bank.days_left')})
                                                             </div>
                                                         </div>
                                                         <button
                                                             className={styles.repayButton}
-                                                            onClick={() => handleRepayCredit(credit.id)}
+                                                            onClick={() => {
+                                                                audio.playClick();
+                                                                handleRepayCredit(credit.id);
+                                                            }}
                                                             disabled={!canRepay}
                                                         >
-                                                            {t('repay_now')}
+                                                            {t('Bank.repay_now')}
                                                         </button>
                                                     </div>
                                                 );
@@ -236,29 +239,32 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                     {CREDIT_OPTIONS.map(option => {
                                         const hasActiveCredit = state.banking.credits.length > 0;
                                         return (
-                                            <div key={option.id} className={styles.optionCard}>
+                                            <div key={option.id} className={`${styles.optionCard} ${hasActiveCredit ? styles.disabledOption : ''}`}>
                                                 <div className={styles.optionInfo}>
                                                     <div className={styles.optionTitle}>
                                                         ${formatNumberWithSuffix(option.amount)}
                                                     </div>
                                                     <div className={styles.optionDetails}>
                                                         <span className={styles.optionDetail}>
-                                                            <span>{t('term')}:</span> {option.termDays} {t('days')}
+                                                            <span>{t('Bank.term')}:</span> {option.termDays} {t('Bank.days')}
                                                         </span>
                                                         <span className={styles.optionDetail}>
-                                                            <span>{t('interest')}:</span> {option.interestRate}%
+                                                            <span>{t('Bank.interest')}:</span> {option.interestRate}%
                                                         </span>
                                                         <span className={styles.optionDetail}>
-                                                            <span>{t('repay')}:</span> ${formatNumberWithSuffix(option.amount * (1 + option.interestRate / 100))}
+                                                            <span>{t('Bank.repay')}:</span> ${formatNumberWithSuffix(option.amount * (1 + option.interestRate / 100))}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <button
                                                     className={styles.actionButton}
-                                                    onClick={() => handleTakeCredit(option.id)}
+                                                    onClick={() => {
+                                                        audio.playClick();
+                                                        handleTakeCredit(option.id);
+                                                    }}
                                                     disabled={hasActiveCredit}
                                                 >
-                                                    {t('take_credit')}
+                                                    {t('Bank.take_credit')}
                                                 </button>
                                             </div>
                                         );
@@ -268,12 +274,12 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
 
                             {activeTab === 'deposits' && (
                                 <div className={styles.terminalSection}>
-                                    <div className={styles.sectionHeader}>{t('deposit_options')}</div>
+                                    <div className={styles.sectionHeader}>{t('Bank.deposit_options')}</div>
 
                                     {/* Active Deposits */}
                                     {state.banking.deposits.length > 0 && (
                                         <div className={styles.activeSection}>
-                                            <div className={styles.activeTitle}>{t('active_deposits')}</div>
+                                            <div className={styles.activeTitle}>{t('Bank.active_deposits')}</div>
                                             {state.banking.deposits.map(deposit => {
                                                 const total = deposit.amount + deposit.accumulatedInterest;
 
@@ -284,15 +290,18 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                                 ${formatNumberWithSuffix(total)}
                                                             </div>
                                                             <div className={styles.activeItemDetails}>
-                                                                {t('principal')}: ${formatNumberWithSuffix(deposit.amount)} |
-                                                                {t('interest_earned')}: ${formatNumberWithSuffix(deposit.accumulatedInterest)}
+                                                                {t('Bank.principal')}: ${formatNumberWithSuffix(deposit.amount)}{' '}|{' '}
+                                                                {t('Bank.interest_earned')}: ${formatNumberWithSuffix(deposit.accumulatedInterest)}
                                                             </div>
                                                         </div>
                                                         <button
                                                             className={styles.repayButton}
-                                                            onClick={() => handleWithdraw(deposit.id)}
+                                                            onClick={() => {
+                                                                audio.playClick();
+                                                                handleWithdraw(deposit.id);
+                                                            }}
                                                         >
-                                                            {t('withdraw')}
+                                                            {t('Bank.withdraw')}
                                                         </button>
                                                     </div>
                                                 );
@@ -301,24 +310,23 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                     )}
 
                                     {state.banking.deposits.length === 0 && (
-                                        <div className={styles.emptyState}>{t('no_deposits')}</div>
+                                        <div className={styles.emptyState}>{t('Bank.no_deposits')}</div>
                                     )}
 
                                     {DEPOSIT_OPTIONS.map(option => {
                                         const inputAmount = parseFloat(depositAmounts[option.id] || '0');
                                         const canDeposit = inputAmount >= option.minAmount && inputAmount <= state.money;
                                         const hasActiveDeposit = state.banking.deposits.length > 0;
-
                                         return (
-                                            <div key={option.id} className={styles.optionCard}>
+                                            <div key={option.id} className={`${styles.optionCard} ${hasActiveDeposit ? styles.disabledOption : ''}`}>
                                                 <div className={styles.optionInfo}>
-                                                    <div className={styles.optionTitle}>{t(option.id)}</div>
+                                                    <div className={styles.optionTitle}>{t(`Bank.${option.id}`)}</div>
                                                     <div className={styles.optionDetails}>
                                                         <span className={styles.optionDetail}>
-                                                            <span>{t('min')}:</span> ${option.minAmount}
+                                                            <span>{t('Bank.min')}:</span> ${option.minAmount}
                                                         </span>
                                                         <span className={styles.optionDetail}>
-                                                            <span>{t('monthly_interest')}:</span> {option.interestRate}%
+                                                            <span>{t('Bank.monthly_interest')}:</span> {option.interestRate}%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -326,7 +334,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                     <input
                                                         type="number"
                                                         className={styles.inputField}
-                                                        placeholder={`${t('amount')}...`}
+                                                        placeholder={`${t('Bank.amount')}...`}
                                                         value={depositAmounts[option.id] || ''}
                                                         onChange={(e) => setDepositAmounts(prev => ({ ...prev, [option.id]: e.target.value }))}
                                                         min={option.minAmount}
@@ -335,10 +343,13 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                     />
                                                     <button
                                                         className={styles.actionButton}
-                                                        onClick={() => handleDeposit(option.id)}
+                                                        onClick={() => {
+                                                            audio.playClick();
+                                                            handleDeposit(option.id);
+                                                        }}
                                                         disabled={!canDeposit || hasActiveDeposit}
                                                     >
-                                                        {t('deposit')}
+                                                        {t('Bank.deposit')}
                                                     </button>
                                                 </div>
                                             </div>
@@ -354,8 +365,8 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
             <HelpModal
                 isOpen={isHelpOpen}
                 onClose={() => setIsHelpOpen(false)}
-                title={t('title')}
-                content={t('help_content')}
+                title={t('Bank.title')}
+                content={t('Bank.help_content')}
             />
         </>
     );

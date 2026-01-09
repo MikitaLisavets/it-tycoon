@@ -23,15 +23,14 @@ type Tab = 'food' | 'furniture' | 'clothes';
 
 const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state } = useGameState();
-    const t = useTranslations('Shop');
-    const gt = useTranslations('Game');
+    const t = useTranslations();
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('food');
 
     const tabList = [
-        { id: 'food', label: t('food') },
-        { id: 'furniture', label: t('furniture') },
-        { id: 'clothes', label: t('clothes') },
+        { id: 'food', label: t('Shop.tab_food') },
+        { id: 'furniture', label: t('Shop.tab_furniture') },
+        { id: 'clothes', label: t('Shop.tab_clothes') },
     ] as const;
 
     const {
@@ -56,7 +55,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
             return (
                 <ListOption
                     key={item.id}
-                    title={t(item.id)}
+                    title={t(`Values.${item.id}`)}
                     subtitle={
                         <div className={styles.subtitle}>
                             <StatList
@@ -65,16 +64,16 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                     ...item.cost,
                                     money: item.cost?.money ? getDynamicPrice(item.cost.money) : undefined
                                 }}
-                                title={gt('cost')}
+                                title={t('Common.cost')}
                             />
                             <StatList
                                 type="effect"
                                 data={item.effect}
-                                title={gt('effects')}
+                                title={t('Common.effects')}
                             />
                         </div>
                     }
-                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('buy')) : undefined}
+                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('Common.buy')) : undefined}
                     onAction={!isDelayed ? () => handleAction(item) : undefined}
                     actionSound={(!!item.cost?.money && item.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
@@ -95,7 +94,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
         <>
             <WindowFrame
                 id="shop_window"
-                title={t('title')}
+                title={t('Shop.title')}
                 onCloseClick={onClose}
                 onResetClick={onReset}
                 onHelpClick={() => setIsHelpOpen(true)}
@@ -118,8 +117,8 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
             <HelpModal
                 isOpen={isHelpOpen}
                 onClose={() => setIsHelpOpen(false)}
-                title={t('title')}
-                content={t('help_content')}
+                title={t('Shop.title')}
+                content={t('Shop.help')}
             />
         </>
     );

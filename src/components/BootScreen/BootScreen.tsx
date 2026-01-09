@@ -11,16 +11,16 @@ interface BootScreenProps {
 const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) => {
     const [progress, setProgress] = useState(0);
     const [currentMessage, setCurrentMessage] = useState(0);
-    const t = useTranslations('BootScreen');
+    const t = useTranslations();
     const { playBoot } = useAudio();
 
     const bootMessages = [
-        t('message1'),
-        t('message2'),
-        t('message3'),
-        t('message4'),
-        t('message5'),
-        t('message6')
+        t('BootScreen.msg1'),
+        t('BootScreen.msg2'),
+        t('BootScreen.msg3'),
+        t('BootScreen.msg4'),
+        t('BootScreen.msg5'),
+        t('BootScreen.msg5')
     ];
 
     const hasStartedBoot = React.useRef(false);
@@ -77,8 +77,8 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
         <div className={styles.bootScreen}>
             <div className={styles.bootContent}>
                 <div className={styles.logo}>
-                    <h1>{t('title')}</h1>
-                    <p className={styles.subtitle}>{t('subtitle')}</p>
+                    <h1>{t('BootScreen.title')}</h1>
+                    <p className={styles.subtitle}>{t('BootScreen.subtitle')}</p>
                 </div>
 
                 <div className={styles.loadingArea}>
@@ -92,7 +92,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
                 </div>
 
                 <div className={styles.copyright}>
-                    <p>{t('copyright')}</p>
+                    <p>{t('BootScreen.copyright')}</p>
                 </div>
             </div>
         </div>

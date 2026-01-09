@@ -26,7 +26,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     isFocused,
     onFocus,
 }) => {
-    const t = useTranslations('Internet');
+    const t = useTranslations();
     const { state, updateState } = useGameState();
     const [currentCategory, setCurrentCategory] = useState<SoftwareCategory>('home');
     const [installingItemId, setInstallingItemId] = useState<string | null>(null);
@@ -241,7 +241,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 </div>
                             </div>
                             <div className={styles.productInfo}>
-                                <div className={styles.productName}>{t(`shop.items.${item.id}`)}</div>
+                                <div className={styles.productName}>{t(`Values.${item.id}`)}</div>
                                 {item.cost?.money !== undefined && item.cost.money > 0 && !owned && (
                                     <div className={styles.productPrice}>
                                         <StatBadge
@@ -253,20 +253,20 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                             </div>
                             <div className={styles.productAction}>
                                 {installed ? (
-                                    <div className={styles.installedBadge}>{t('shop.installed')}</div>
+                                    <div className={styles.installedBadge}>{t('Common.installed')}</div>
                                 ) : showUseButton ? (
                                     <XPButton
                                         className={styles.buyBtn}
                                         onClick={() => handleUseSystem(item)}
                                     >
-                                        Use
+                                        {t('Common.use')}
                                     </XPButton>
                                 ) : owned || ownedLower ? (
-                                    <div className={styles.ownedBadge}>{t('shop.owned')}</div>
+                                    <div className={styles.ownedBadge}>{t('Common.owned')}</div>
                                 ) : installingItemId === item.id ? (
                                     <div className={styles.installingStatus}>
                                         <div className={styles.installLabel}>
-                                            {installProgress < 50 ? t('shop.downloading') : t('shop.installing')}
+                                            {installProgress < 50 ? t('Internet.downloading') : t('Internet.installing')}
                                         </div>
                                         <div className={styles.progressBarContainer}>
                                             <div
@@ -297,15 +297,13 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                                 onClick={() => handleBuy(item)}
                                                 actionSound="purchase"
                                             >
-                                                {t('shop.buy')}
+                                                {t('Common.buy')}
                                             </XPButton>
                                             {item.duration !== undefined && item.duration > 0 && (
                                                 <div className={styles.durationBadgeWrapper}>
                                                     <StatBadge
                                                         stat="TIME"
-                                                        value={item.duration}
-                                                        label="s"
-                                                        className={styles.durationBadge}
+                                                        value={`${item.duration}s`}
                                                     />
                                                 </div>
                                             )}
@@ -322,7 +320,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
     return (
         <WindowFrame
-            title={t('title')}
+            title={t('Internet.title')}
             onCloseClick={onClose}
             onHelpClick={() => { }}
             width="700px"
@@ -333,7 +331,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
             <div className={styles.browserContainer}>
                 <div className={styles.toolbar}>
                     <div className={styles.addressBar}>
-                        <span className={styles.addressLabel}>{t('address')}:</span>
+                        <span className={styles.addressLabel}>{t('Internet.address')}:</span>
                         <div className={styles.addressInputContainer}>
                             <input
                                 type="text"
@@ -341,7 +339,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 value="http://www.mikiapps.com"
                                 readOnly
                             />
-                            <button className={styles.goButton}>{t('go')}</button>
+                            <button className={styles.goButton}>{t('Internet.go')}</button>
                         </div>
                     </div>
                 </div>
@@ -349,20 +347,20 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                 <div className={styles.contentArea}>
                     {!hasModem ? (
                         <div className={styles.errorPage}>
-                            <h1 className={styles.errorTitle}>{t('error_title')}</h1>
+                            <h1 className={styles.errorTitle}>{t('Internet.error_title')}</h1>
                             <div className={styles.errorContent}>
-                                <p>{t('error_desc')}</p>
+                                <p>{t('Internet.error_desc')}</p>
                                 <hr className={styles.errorDivider} />
-                                <p className={styles.errorSuggestion}>{t('error_suggestion')}</p>
+                                <p className={styles.errorSuggestion}>{t('Internet.error_modem')}</p>
                             </div>
                         </div>
                     ) : (
                         <div className={styles.shopContainer}>
                             {/* Header */}
                             <div className={styles.shopHeader}>
-                                <div className={styles.logo}>{t('shop.title')}</div>
+                                <div className={styles.logo}>{t('Internet.store_title')}</div>
                                 <div className={styles.marqueeContainer}>
-                                    <div className={styles.marqueeContent}>{t('shop.subtitle')}</div>
+                                    <div className={styles.marqueeContent}>{t('Internet.store_subtitle')}</div>
                                 </div>
                             </div>
 
@@ -370,11 +368,11 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 {/* Sidebar */}
                                 <div className={styles.shopSidebar}>
                                     <ul className={styles.sidebarLinks}>
-                                        <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('shop.home')}</li>
-                                        <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('shop.system')}</li>
-                                        <li className={currentCategory === 'programs' ? styles.activeLink : ''} onClick={() => handleClick('programs')}>{t('shop.programs')}</li>
-                                        <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('shop.antivirus')}</li>
-                                        <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('shop.games')}</li>
+                                        <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('Internet.home')}</li>
+                                        <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('Internet.cat_system')}</li>
+                                        <li className={currentCategory === 'programs' ? styles.activeLink : ''} onClick={() => handleClick('programs')}>{t('Internet.cat_software')}</li>
+                                        <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('Internet.cat_security')}</li>
+                                        <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('Internet.cat_games')}</li>
                                     </ul>
                                 </div>
 
@@ -382,8 +380,8 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                 <div className={styles.shopMain}>
                                     {currentCategory === 'home' && (
                                         <div className={styles.homePage}>
-                                            <h2>{t('welcome_title')}</h2>
-                                            <p>{t('shop.hero_text')}</p>
+                                            <h2>{t('Internet.welcome')}</h2>
+                                            <p>{t('Internet.hero_text')}</p>
                                             <div className={styles.heroImage}>
                                                 💿
                                             </div>
@@ -398,13 +396,13 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
                             {/* Footer */}
                             <div className={styles.shopFooter}>
-                                {t('shop.copy')}
+                                {t('Internet.copy')}
                             </div>
                         </div>
                     )}
                 </div>
                 <div className={styles.statusBar}>
-                    <span>{hasModem ? t('status_done') : t('status_error')}</span>
+                    <span>{hasModem ? t('Internet.status_done') : t('Internet.status_error')}</span>
                 </div>
             </div>
         </WindowFrame>

@@ -23,8 +23,7 @@ type Category = keyof typeof HARDWARE_COMPONENTS;
 
 const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
-    const t = useTranslations('Computer');
-    const gt = useTranslations('Game');
+    const t = useTranslations();
     const { playClick, playPurchase } = useAudio();
     const [activeTab, setActiveTab] = useState<Category>('cpu');
 
@@ -52,7 +51,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     const categories = Object.keys(HARDWARE_COMPONENTS) as Category[];
     const tabList = categories.map(cat => ({
         id: cat,
-        label: t(`categories.${cat}`)
+        label: t(`Computer.cat_${cat}`)
     }));
 
 
@@ -82,7 +81,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                             title={
                                 <span className={styles.partTitle}>
                                     <LevelBadge level={part.level} text="Lv." />
-                                    {t(`parts.${part.id}`)}
+                                    {t(`Values.${part.id}`)}
                                 </span>
                             }
                             subtitle={
@@ -91,12 +90,12 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                                         <StatList
                                             type="cost"
                                             data={{ money: part.price }}
-                                            title={gt('cost')}
+                                            title={t('Common.cost')}
                                         />
                                     )}
                                 </div>
                             }
-                            actionLabel={isOwned ? null : (part.level < currentLevel ? null : (isFree ? t('starting') : t('buy')))}
+                            actionLabel={isOwned ? null : (part.level < currentLevel ? null : (isFree ? t('Computer.installing') : t('Common.buy')))}
                             onAction={(!isOwned && !isFree && part.level >= currentLevel) ? () => handleBuy(activeTab, part.id, part.price) : undefined}
                             actionSound={(!isOwned && !isFree && part.level >= currentLevel) ? 'purchase' : 'click'}
                             actionDisabled={(isOwned || isFree || !canAfford) && part.level >= currentLevel}
@@ -115,7 +114,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     return (
         <WindowFrame
             id="computer_window"
-            title={t('title')}
+            title={t('Computer.title')}
             onCloseClick={onClose}
             onResetClick={onReset}
             width="520px"
@@ -131,7 +130,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
             <div className={styles.content}>
                 <div className={styles.summary}>
                     <div className={styles.summaryRow}>
-                        <span>{t('current_computer_level')}:</span>
+                        <span>{t('Computer.overall_level')}:</span>
                         <LevelBadge level={currentLevel} text="Level" />
                     </div>
                 </div>

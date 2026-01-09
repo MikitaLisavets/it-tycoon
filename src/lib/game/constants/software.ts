@@ -26,11 +26,11 @@ export const SOFTWARES: Record<SoftwareType, SoftwareItem[]> = {
         { id: "winos_11", cost: { money: 6000 }, category: 'system', requirements: { computerTier: 5 }, duration: 60 },
     ],
     programs: [
-        { id: "software_office", cost: { money: 100 }, category: 'programs', requirements: { system: 'winos_98' }, duration: 15 },
-        { id: "software_notepad", cost: { money: 500 }, category: 'programs', requirements: { system: 'winos_xp' }, duration: 5 },
-        { id: "software_code_editor", cost: { money: 800 }, category: 'programs', requirements: { system: 'winos_7' }, duration: 20 },
-        { id: "software_web_wallet", cost: { money: 1500 }, category: 'programs', requirements: { system: 'winos_10' }, duration: 25 },
-        { id: "software_investor", cost: { money: 5000 }, category: 'programs', requirements: { system: 'winos_11' }, duration: 40 },
+        { id: "software_office", cost: { money: 100 }, category: 'programs', requirements: { system: 'winos_98' }, duration: 2 },
+        { id: "software_notepad", cost: { money: 500 }, category: 'programs', requirements: { system: 'winos_xp' }, duration: 2 },
+        { id: "software_code_editor", cost: { money: 800 }, category: 'programs', requirements: { system: 'winos_7' }, duration: 2 },
+        { id: "software_web_wallet", cost: { money: 1500 }, category: 'programs', requirements: { system: 'winos_10' }, duration: 2 },
+        { id: "software_investor", cost: { money: 5000 }, category: 'programs', requirements: { system: 'winos_11' }, duration: 2 },
     ],
     antivirus: [
         { id: "software_antivirus", cost: { money: 300 }, category: 'antivirus', duration: 10 },

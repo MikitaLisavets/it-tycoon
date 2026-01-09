@@ -20,8 +20,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     isFocused,
     onFocus,
 }) => {
-    const t = useTranslations('Game.solitaire_game');
-    const tCommon = useTranslations('Game');
+    const t = useTranslations();
     const [gameState, setGameState] = useState<logic.SolitaireState | null>(null);
     const [selectedCard, setSelectedCard] = useState<{ card: logic.Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | logic.Suit; cardIndex?: number } | null>(null);
     const [isWon, setIsWon] = useState(false);
@@ -472,7 +471,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
 
     return (
         <WindowFrame
-            title={tCommon('values.solitaire')}
+            title={t('Values.solitaire')}
             onCloseClick={onClose}
             width="min(800px, 95vw)"
             height="min(600px, 80vh)"
@@ -481,7 +480,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         >
             <div className={styles.container}>
                 <div className={styles.controls}>
-                    <XPButton onClick={startNewGame}>{t('new_game')}</XPButton>
+                    <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
                     {/* {process.env.NODE_ENV === 'development' && (
                         <XPButton onClick={cheatWin}>Win (Debug)</XPButton>
                     )} */}
@@ -531,8 +530,8 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                 {isWon && <canvas ref={canvasRef} className={styles.animationCanvas} />}
                 {isWon && (
                     <div className={styles.winMessage}>
-                        <h2>{t('victory')}</h2>
-                        <XPButton onClick={startNewGame}>{t('new_game')}</XPButton>
+                        <h2>{t('Solitaire.victory')}</h2>
+                        <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
                     </div>
                 )}
             </div>

@@ -25,7 +25,7 @@ type Tab = 'rest' | 'entertainment' | 'gym';
 const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state } = useGameState();
     const t = useTranslations();
-    const gt = useTranslations('Game');
+    const gt = useTranslations(); // using same hook for everything now, keeping var name to minimize diff but it's redundant
     const [activeTab, setActiveTab] = useState<Tab>('rest');
 
     const {
@@ -57,18 +57,18 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                     ...activity.cost,
                                     money: activity.cost?.money ? getDynamicPrice(activity.cost.money) : undefined
                                 }}
-                                title={gt('cost')}
+                                title={gt('Common.cost')}
                                 isFree={!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood}
-                                freeLabel={t('free')}
+                                freeLabel={t('Common.free')}
                             />
                             <StatList
                                 type="effect"
                                 data={activity.effect}
-                                title={gt('effects')}
+                                title={gt('Common.effects')}
                             />
                         </div>
                     }
-                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('Rest.start')) : undefined}
+                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('Common.start')) : undefined}
                     onAction={!isDelayed ? () => handleAction(activity) : undefined}
                     actionSound={(!!activity.cost?.money && activity.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
@@ -80,7 +80,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
 
                             {activity.duration && (
                                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                    <StatBadge stat="TIME" value={`${activity.duration}s`} label={t('Rest.duration')} />
+                                    <StatBadge stat="TIME" value={`${activity.duration}s`} label={t('Common.duration')} />
                                 </div>
                             )}
                         </div>
@@ -91,9 +91,9 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
     }
 
     const tabList = [
-        { id: 'rest', label: t('Activities.tabs.rest') },
-        { id: 'entertainment', label: t('Activities.tabs.entertainment') },
-        { id: 'gym', label: t('Activities.tabs.gym') },
+        { id: 'rest', label: t('Activities.tab_rest') },
+        { id: 'entertainment', label: t('Activities.tab_entertainment') },
+        { id: 'gym', label: t('Activities.tab_gym') },
     ] as const;
 
     if (!isOpen) return null;

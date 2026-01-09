@@ -13,12 +13,12 @@ interface WinampWindowProps {
 const WinampWindow: React.FC<WinampWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     if (!isOpen) return null;
 
-    const t = useTranslations('Winamp');
+    const t = useTranslations();
 
     return (
         <WindowFrame
             id="winamp"
-            title={t('title')}
+            title={t('Winamp.title')}
             onCloseClick={onClose}
             width="auto"
             height="auto"

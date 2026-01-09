@@ -31,7 +31,7 @@ import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon } from "@/components/Icons/AppIcons";
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon } from "@/components/Icons/AppIcons";
 import { NotepadWindow, OfficeWindow, CodeEditorWindow, WebWalletWindow, InvestorWindow } from "@/components/SoftwareWindows/SoftwareWindows";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
@@ -44,9 +44,7 @@ export default function Home() {
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, updateState, resetState, isInitialized, setIsPaused } = useGameState();
     const { notification, showNotification, dismissNotification } = useNotification();
-    const t = useTranslations('Game');
-    const tWinamp = useTranslations('Winamp');
-    const tComputer = useTranslations('Computer');
+    const t = useTranslations();
 
     // Custom Hooks
     const {
@@ -85,44 +83,40 @@ export default function Home() {
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;
     const formatDate = (d: number, m: number, y: number) => `${d}/${m}/${y}`;
 
-    const winampIcon = (
-        <div style={{ fontSize: '24px' }}>⚡</div>
-    );
-
     const desktopShortcuts: ShortcutData[] = [
         {
             id: 'winamp',
-            label: tWinamp('title'),
-            icon: winampIcon
+            label: t('Winamp.title'),
+            icon: <WinampIcon />
         },
         ...(state.software.games.includes('solitaire') ? [{
             id: 'solitaire',
-            label: t('values.solitaire'),
+            label: t('Values.solitaire'),
             icon: <SolitaireIcon />
         }] : []),
         ...(state.software.programs.includes('software_office') ? [{
             id: 'software_office',
-            label: t('values.software_office'),
+            label: t('Values.software_office'),
             icon: <OfficeIcon />
         }] : []),
         ...(state.software.programs.includes('software_notepad') ? [{
             id: 'software_notepad',
-            label: t('values.software_notepad'),
+            label: t('Values.software_notepad'),
             icon: <NotepadIcon />
         }] : []),
         ...(state.software.programs.includes('software_code_editor') ? [{
             id: 'software_code_editor',
-            label: t('values.software_code_editor'),
+            label: t('Values.software_code_editor'),
             icon: <CodeEditorIcon />
         }] : []),
         ...(state.software.programs.includes('software_web_wallet') ? [{
             id: 'software_web_wallet',
-            label: t('values.software_web_wallet'),
+            label: t('Values.software_web_wallet'),
             icon: <WebWalletIcon />
         }] : []),
         ...(state.software.programs.includes('software_investor') ? [{
             id: 'software_investor',
-            label: t('values.software_investor'),
+            label: t('Values.software_investor'),
             icon: <InvestorIcon />
         }] : [])
     ];
@@ -198,7 +192,7 @@ export default function Home() {
                 </div>
 
                 <WindowFrame
-                    title={t('window_title')}
+                    title={t('Dashboard.title')}
                     width="800px"
                     onHelpClick={() => setIsHelpOpen(true)}
                     onCloseClick={() => setIsResetOpen(true)}
@@ -210,36 +204,36 @@ export default function Home() {
                             {/* Lifestyle Tasks */}
                             <div className={styles.taskBox}>
                                 <div className={styles.taskHeader}>
-                                    <span className={styles.taskLabel}>{t('groups.lifestyle')}</span>
+                                    <span className={styles.taskLabel}>{t('Dashboard.group_lifestyle')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('job')}>{t('buttons.job')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('activities')}>{t('buttons.activities')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('shop')}>{t('buttons.shop')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('education')}>{t('buttons.education')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('job')}>{t('Dashboard.btn_job')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('activities')}>{t('Dashboard.btn_activities')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('shop')}>{t('Dashboard.btn_shop')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('education')}>{t('Dashboard.btn_education')}</XPButton>
                                 </div>
                             </div>
 
                             {/* System Tasks */}
                             <div className={styles.taskBox}>
                                 <div className={styles.taskHeader}>
-                                    <span className={styles.taskLabel}>{t('groups.system')}</span>
+                                    <span className={styles.taskLabel}>{t('Dashboard.group_system')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('buttons.computer')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('buttons.applications')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('buttons.internet')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('hacking')}>{t('buttons.hacking')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('Dashboard.btn_computer')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('Dashboard.btn_applications')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('Dashboard.btn_internet')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('hacking')}>{t('Dashboard.btn_hacking')}</XPButton>
                                 </div>
                             </div>
 
                             {/* Services Tasks */}
                             <div className={styles.taskBox}>
                                 <div className={styles.taskHeader}>
-                                    <span className={styles.taskLabel}>{t('groups.services')}</span>
+                                    <span className={styles.taskLabel}>{t('Dashboard.group_services')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('bank')}>{t('buttons.bank')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('bank')}>{t('Dashboard.btn_bank')}</XPButton>
                                 </div>
                             </div>
                         </div>
@@ -249,92 +243,92 @@ export default function Home() {
                             {/* Top Summary Bar */}
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
-                                    <StatRow label={t('money')} value={formatNumberWithSuffix(state.money)} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
+                                    <StatRow label={t('Stats.money')} value={formatNumberWithSuffix(state.money)} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
                                     <StatRow
-                                        label={t('mood')}
+                                        label={t('Stats.mood')}
                                         value={`${Math.floor(state.mood)}/${state.maxMood}`}
                                         icon={STAT_ICONS.MOOD.icon}
                                         iconColor={STAT_ICONS.MOOD.color}
                                         isCritical={state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD}
                                     />
                                     <StatRow
-                                        label={t('health')}
+                                        label={t('Stats.health')}
                                         value={`${Math.floor(state.health)}/${state.maxHealth}`}
                                         icon={STAT_ICONS.HEALTH.icon}
                                         iconColor={STAT_ICONS.HEALTH.color}
                                         isCritical={state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD}
                                     />
-                                    <StatRow label={t('stamina')} value={`${Math.floor(state.stamina)}/${state.maxStamina}`} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
+                                    <StatRow label={t('Stats.stamina')} value={`${Math.floor(state.stamina)}/${state.maxStamina}`} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
                                 </div>
                             </div>
 
                             {/* Main Info Grid */}
                             <div className={styles.panelGrid}>
-                                <Panel label={t('panels.personal_status')}>
-                                    <StatRow label={t('job')} value={t(`values.${state.job}`) /* Should use mapped job title eventually */} />
-                                    <StatRow label={t('education')} value={t(`values.${state.education}`)} />
-                                    <StatRow label={t('english')} value={t(`values.${state.english}`)} />
+                                <Panel label={t('Dashboard.panel_personal')}>
+                                    <StatRow label={t('Stats.job')} value={t(`Values.${state.job}`) /* Should use mapped job title eventually */} />
+                                    <StatRow label={t('Stats.education')} value={t(`Values.${state.education}`)} />
+                                    <StatRow label={t('Stats.english')} value={t(`Values.${state.english}`)} />
                                 </Panel>
 
-                                <Panel label={t('panels.computer')}>
-                                    <StatRow label={t('monitor')} value={tComputer(`parts.${state.computer.monitor}`)} />
-                                    <StatRow label={t('cpu')} value={tComputer(`parts.${state.computer.cpu}`)} />
-                                    <StatRow label={t('hdd')} value={tComputer(`parts.${state.computer.hdd}`)} />
-                                    <StatRow label={t('ram')} value={tComputer(`parts.${state.computer.ram}`)} />
-                                    <StatRow label={t('video')} value={tComputer(`parts.${state.computer.video}`)} />
-                                    <StatRow label={t('modem')} value={tComputer(`parts.${state.computer.modem}`)} />
+                                <Panel label={t('Dashboard.panel_computer')}>
+                                    <StatRow label={t('Stats.monitor')} value={t(`Values.${state.computer.monitor}`)} />
+                                    <StatRow label={t('Stats.cpu')} value={t(`Values.${state.computer.cpu}`)} />
+                                    <StatRow label={t('Stats.hdd')} value={t(`Values.${state.computer.hdd}`)} />
+                                    <StatRow label={t('Stats.ram')} value={t(`Values.${state.computer.ram}`)} />
+                                    <StatRow label={t('Stats.video')} value={t(`Values.${state.computer.video}`)} />
+                                    <StatRow label={t('Stats.modem')} value={t(`Values.${state.computer.modem}`)} />
                                     <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
                                     <StatRow
-                                        label={tComputer('current_computer_level')}
+                                        label={t('Computer.overall_level')}
                                         value={<LevelBadge level={calculateComputerLevel(state.computer)} text="Level" />}
                                     />
                                 </Panel>
 
-                                <Panel label={t('panels.my_life')}>
-                                    <StatRow label={t('rooms')} value={state.life.rooms.toString()} />
-                                    <StatRow label={t('furniture')} value={t(`values.${state.life.furniture}`)} />
-                                    <StatRow label={t('kitchen')} value={t(`values.${state.life.kitchen}`)} />
-                                    <StatRow label={t('bathroom')} value={t(`values.${state.life.bathroom}`)} />
-                                    <StatRow label={t('clothes')} value={t(`values.${state.life.clothes}`)} />
-                                    <StatRow label={t('car')} value={t(`values.${state.life.car}`)} />
+                                <Panel label={t('Dashboard.panel_life')}>
+                                    <StatRow label={t('Stats.rooms')} value={state.life.rooms.toString()} />
+                                    <StatRow label={t('Stats.furniture')} value={t(`Values.${state.life.furniture}`)} />
+                                    <StatRow label={t('Stats.kitchen')} value={t(`Values.${state.life.kitchen}`)} />
+                                    <StatRow label={t('Stats.bathroom')} value={t(`Values.${state.life.bathroom}`)} />
+                                    <StatRow label={t('Stats.clothes')} value={t(`Values.${state.life.clothes}`)} />
+                                    <StatRow label={t('Stats.car')} value={t(`Values.${state.life.car}`)} />
                                 </Panel>
 
-                                <Panel label={t('panels.system')}>
-                                    <StatRow label={t('system')} value={t(`values.${state.software.system}`)} />
+                                <Panel label={t('Dashboard.panel_system')}>
+                                    <StatRow label={t('Stats.system')} value={t(`Values.${state.software.system}`)} />
                                     <StatRow
-                                        label={t('programs')}
+                                        label={t('Stats.programs')}
                                         value={state.software.programs.length > 0
-                                            ? state.software.programs.map(p => t(`values.${p}`)).join(', ')
-                                            : t('values.none')}
+                                            ? state.software.programs.map(p => t(`Values.${p}`)).join(', ')
+                                            : t('Values.none')}
                                     />
-                                    <StatRow label={t('antivirus')} value={state.software.antivirus !== 'none' ? t(`values.${state.software.antivirus}`) : t('values.none')} />
+                                    <StatRow label={t('Stats.antivirus')} value={state.software.antivirus !== 'none' ? t(`Values.${state.software.antivirus}`) : t('Values.none')} />
                                     <StatRow
-                                        label={t('games')}
+                                        label={t('Stats.games')}
                                         value={state.software.games.length > 0
-                                            ? state.software.games.map(g => t(`values.${g}`)).join(', ')
-                                            : t('values.none')}
+                                            ? state.software.games.map(g => t(`Values.${g}`)).join(', ')
+                                            : t('Values.none')}
                                     />
                                 </Panel>
 
-                                <Panel label={t('panels.internet')}>
-                                    <StatRow label={t('access')} value={t(`values.${state.internet.access}`)} />
+                                <Panel label={t('Dashboard.panel_internet')}>
+                                    <StatRow label={t('Stats.access')} value={t(`Values.${state.internet.access}`)} />
                                 </Panel>
 
-                                <Panel label={t('panels.education')}>
+                                <Panel label={t('Dashboard.panel_education')}>
                                     <>
-                                        <StatRow label={t('Education.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('values.none'))} />
+                                        <StatRow label={t('Values.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('Values.none'))} />
                                         {state.educationProgress.activeTrackId === 'school' && state.educationProgress.status !== 'idle' && (
                                             <EducationProgressBar onToggle={() => toggleWindow('education')} />
                                         )}
                                     </>
                                     <>
-                                        <StatRow label={t('Education.college')} value={state.educationProgress.completedTracks.includes('college') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'college' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'college')?.parts.length}` : t('values.none'))} />
+                                        <StatRow label={t('Values.college')} value={state.educationProgress.completedTracks.includes('college') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'college' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'college')?.parts.length}` : t('Values.none'))} />
                                         {state.educationProgress.activeTrackId === 'college' && state.educationProgress.status !== 'idle' && (
                                             <EducationProgressBar onToggle={() => toggleWindow('education')} />
                                         )}
                                     </>
                                     <>
-                                        <StatRow label={t('Education.university')} value={state.educationProgress.completedTracks.includes('university') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'university' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'university')?.parts.length}` : t('values.none'))} />
+                                        <StatRow label={t('Values.university')} value={state.educationProgress.completedTracks.includes('university') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'university' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'university')?.parts.length}` : t('Values.none'))} />
                                         {state.educationProgress.activeTrackId === 'university' && state.educationProgress.status !== 'idle' && (
                                             <EducationProgressBar onToggle={() => toggleWindow('education')} />
                                         )}
@@ -513,7 +507,7 @@ function StatRow({ label, value, icon, iconColor, isCritical }: { label: string;
 
 function EducationProgressBar({ onToggle }: { onToggle: () => void }) {
     const { state } = useGameState();
-    const t = useTranslations('Game');
+    const t = useTranslations();
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {

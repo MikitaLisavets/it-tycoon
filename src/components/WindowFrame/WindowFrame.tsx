@@ -34,7 +34,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   onFocus,
   minWidth
 }) => {
-  const t = useTranslations('WindowFrame');
+  const t = useTranslations();
   const { state, updateState } = useGameState();
   const { playClick } = useAudio();
   const [isMaximized, setIsMaximized] = React.useState(false);
@@ -275,7 +275,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       const stateString = JSON.stringify(state);
       const encodedState = btoa(stateString);
       navigator.clipboard.writeText(encodedState).then(() => {
-        alert(t('save_success'));
+        alert(t('Common.save_success'));
       });
     } catch (e) {
       console.error('Failed to save game:', e);
@@ -284,7 +284,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   };
 
   const handleLoadGame = () => {
-    const code = window.prompt(t('load_prompt'));
+    const code = window.prompt(t('Common.load_prompt'));
     if (code) {
       try {
         const decodedString = atob(code);
@@ -293,13 +293,13 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
         // Basic validation
         if (parsedState && typeof parsedState === 'object' && 'version' in parsedState) {
           updateState(parsedState);
-          alert(t('load_success'));
+          alert(t('Common.load_success'));
         } else {
-          alert(t('load_invalid'));
+          alert(t('Common.load_invalid'));
         }
       } catch (e) {
         console.error('Failed to load game:', e);
-        alert(t('load_error'));
+        alert(t('Common.load_error'));
       }
     }
     setIsFileMenuOpen(false);
@@ -338,15 +338,15 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
             onClick={() => { playClick(); setIsFileMenuOpen(!isFileMenuOpen); }}
             style={{ backgroundColor: isFileMenuOpen ? '#316AC5' : undefined, color: isFileMenuOpen ? 'white' : undefined }}
           >
-            {t('file')}
+            {t('Common.file')}
           </span>
           {isFileMenuOpen && (
             <div className={styles.dropdown}>
               <div className={styles.dropdownItem} onClick={() => { playClick(); handleSaveGame(); }}>
-                {t('save')}
+                {t('Common.save')}
               </div>
               <div className={styles.dropdownItem} onClick={() => { playClick(); handleLoadGame(); }}>
-                {t('load')}
+                {t('Common.load')}
               </div>
               <div
                 className={styles.dropdownItem}
@@ -360,13 +360,13 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
                   }
                 }}
               >
-                {t('reset')}
+                {t('Common.reset')}
               </div>
             </div>
           )}
         </div>
-        <span className={styles.menuItem} onClick={() => { playClick(); onHelpClick?.(); }}>{t('help')}</span>
-        <span className={styles.menuItem} onClick={() => { playClick(); setIsAboutOpen(true); }}>{t('about')}</span>
+        <span className={styles.menuItem} onClick={() => { playClick(); onHelpClick?.(); }}>{t('Common.help')}</span>
+        <span className={styles.menuItem} onClick={() => { playClick(); setIsAboutOpen(true); }}>{t('Common.about')}</span>
       </div>
       <div className={styles.content}>
         {children}

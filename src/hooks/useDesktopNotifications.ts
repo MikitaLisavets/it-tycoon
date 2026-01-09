@@ -12,7 +12,7 @@ export function useDesktopNotifications(
     dismissNotification: () => void,
     updateState: (updates: Partial<GameState>) => void
 ) {
-    const tNotification = useTranslations('Notifications');
+    const tNotification = useTranslations();
     const [lastWarnings, setLastWarnings] = useState<{ health: number; mood: number }>({ health: 0, mood: 0 });
 
     // Notification Logic (Generator)
@@ -25,8 +25,8 @@ export function useDesktopNotifications(
         // Check Health
         if (state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
             showNotification(
-                tNotification('low_health_title'),
-                tNotification('low_health'),
+                tNotification('Notifications.low_health_title'),
+                tNotification('Notifications.low_health'),
                 'warning'
             );
             setLastWarnings(prev => ({ ...prev, health: now }));
@@ -35,8 +35,8 @@ export function useDesktopNotifications(
         // Check Mood
         if (state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
             showNotification(
-                tNotification('low_mood_title'),
-                tNotification('low_mood'),
+                tNotification('Notifications.low_mood_title'),
+                tNotification('Notifications.low_mood'),
                 'warning'
             );
             setLastWarnings(prev => ({ ...prev, mood: now }));
@@ -56,8 +56,8 @@ export function useDesktopNotifications(
 
                     if (now - lastCreditWarning > COOLDOWN) {
                         showNotification(
-                            tNotification('credit_due_soon_title'),
-                            tNotification('credit_due_soon', { days: daysLeft }),
+                            tNotification('Notifications.credit_due_soon_title'),
+                            tNotification('Notifications.credit_due_soon', { days: daysLeft }),
                             'warning'
                         );
                         setLastWarnings(prev => ({ ...prev, [creditWarningKey]: now }));
@@ -76,8 +76,8 @@ export function useDesktopNotifications(
         const roll = Math.random();
         if (roll < GAME_CONSTANTS.VIRUS_PROBABILITY_PER_TICK) {
             showNotification(
-                tNotification('virus_title'),
-                tNotification('virus_description'),
+                tNotification('Notifications.virus_title'),
+                tNotification('Notifications.virus_description'),
                 'warning',
                 { stat: 'MOOD', value: GAME_CONSTANTS.VIRUS_MOOD_PENALTY, prefix: '-' }
             );

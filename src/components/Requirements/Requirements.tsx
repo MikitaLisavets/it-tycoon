@@ -30,9 +30,7 @@ const Requirements: React.FC<RequirementsProps> = ({
     onlyUnmet = false
 }) => {
     const { state } = useGameState();
-    const t = useTranslations('Job');
-    const gt = useTranslations('Game');
-    const it = useTranslations('Internet');
+    const t = useTranslations();
 
     const computerLevel = calculateComputerLevel(state.computer);
 
@@ -68,7 +66,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'education',
             met: checkRequirement('education'),
-            content: `${gt('education')}: ${gt(`values.${requirements.education}`)}`
+            content: `${t('Stats.education')}: ${t(`Values.${requirements.education}`)}`
         });
     }
 
@@ -76,7 +74,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'computer',
             met: checkRequirement('computerTier'),
-            content: `${t('computer_tier')}: ${requirements.computerTier}`
+            content: `${t('Job.computer_level')}: ${requirements.computerTier}`
         });
     }
 
@@ -84,7 +82,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'previousJob',
             met: checkRequirement('previousJob'),
-            content: t('previous_job_max_level', { job: gt(`values.${requirements.previousJob}`) })
+            content: t('Job.previous_job_max_level', { job: t(`Values.${requirements.previousJob}`) })
         });
     }
 
@@ -92,7 +90,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'mood',
             met: checkRequirement('mood'),
-            content: <StatBadge stat="MOOD" value={requirements.mood} label={gt('mood')} />
+            content: <StatBadge stat="MOOD" value={requirements.mood} label={t('Stats.mood')} />
         });
     }
 
@@ -100,7 +98,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: 'system',
             met: checkRequirement('system'),
-            content: `${it('shop.system')}: ${it(`shop.items.${requirements.system}`)}`
+            content: `${t('Internet.cat_system')}: ${t(`Values.${requirements.system}`)}`
         });
     }
 
@@ -108,7 +106,7 @@ const Requirements: React.FC<RequirementsProps> = ({
         requirementNodes.push({
             id: `soft_${requirements.software}`,
             met: state.software.programs.includes(requirements.software),
-            content: `${gt('programs')}: ${it(`shop.items.${requirements.software}`)}`
+            content: `${t('Internet.cat_software')}: ${t(`Values.${requirements.software}`)}`
         });
     }
 
@@ -120,7 +118,7 @@ const Requirements: React.FC<RequirementsProps> = ({
 
     return (
         <div className={`${styles.requirements} ${className}`}>
-            {showTitle && <span className={styles.reqTitle}>{title || t('requirements')}:</span>}
+            {showTitle && <span className={styles.reqTitle}>{title || t('Common.requirements')}:</span>}
             <ul className={styles.reqList}>
                 {filteredNodes.map((node) => (
                     <li

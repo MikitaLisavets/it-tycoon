@@ -16,7 +16,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const volumeRef = React.useRef<HTMLDivElement>(null);
     const { state, updateState } = useGameState();
     const { playClick } = useAudio();
-    const t = useTranslations('Taskbar');
+    const t = useTranslations();
 
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -68,7 +68,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 className={`${styles.startButton} ${getStartButtonStyle()}`}
                 onClick={() => { playClick(); window.open('https://ko-fi.com/mikiapps', '_blank'); }}
             >
-                {t('donate')}{' '}❤️
+                {t('Common.donate')}{' '}❤️
             </button>
 
             <div className={styles.divider} />

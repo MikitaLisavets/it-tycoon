@@ -10,31 +10,31 @@ interface OnboardingModalProps {
 }
 
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
-    const t = useTranslations('Onboarding');
+    const t = useTranslations();
 
     return (
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title={t('title')}
+            title={t('Onboarding.title')}
             width="450px"
-            footer={<XPButton onClick={onClose}>{t('ok')}</XPButton>}
+            footer={<XPButton onClick={onClose}>{t('Common.ok')}</XPButton>}
         >
             <div className={styles.body}>
                 <p style={{ marginBottom: '10px' }}>
-                    <strong>{t('welcome')}</strong>
+                    <strong>{t('Onboarding.welcome')}</strong>
                 </p>
                 <p style={{ marginBottom: '10px' }}>
-                    {t('intro')}
+                    {t('Onboarding.intro')}
                 </p>
                 <ul style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <li><strong>{t('work_title')}</strong> {t('work_desc')}</li>
-                    <li><strong>{t('hack_title')}</strong> {t('hack_desc')}</li>
-                    <li><strong>{t('learn_title')}</strong> {t('learn_desc')}</li>
-                    <li><strong>{t('shop_title')}</strong> {t('shop_desc')}</li>
+                    <li><strong>{t('Onboarding.section_work')}</strong> {t('Onboarding.section_work')}</li>
+                    <li><strong>{t('Onboarding.section_hack')}</strong> {t('Onboarding.section_hack')}</li>
+                    <li><strong>{t('Onboarding.section_learn')}</strong> {t('Onboarding.section_learn')}</li>
+                    <li><strong>{t('Onboarding.section_shop')}</strong> {t('Onboarding.section_shop')}</li>
                 </ul>
                 <p>
-                    {t('good_luck')}
+                    {t('Onboarding.good_luck')}
                 </p>
             </div>
         </Modal>

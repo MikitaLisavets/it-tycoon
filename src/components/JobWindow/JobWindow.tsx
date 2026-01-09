@@ -33,8 +33,7 @@ interface MoneyPopup {
 
 const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
-    const t = useTranslations('Job');
-    const gt = useTranslations('Game');
+    const t = useTranslations();
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [moneyPopups, setMoneyPopups] = React.useState<MoneyPopup[]>([]);
@@ -143,7 +142,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         <>
             <WindowFrame
                 id="job_window"
-                title={t('title')}
+                title={t('Job.title')}
                 onCloseClick={onClose}
                 onResetClick={onReset}
                 onHelpClick={() => setIsHelpOpen(true)}
@@ -155,19 +154,19 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>
                             <h3>
-                                <span className={styles.jobTitle}>{t('current_job', { job: gt(`values.${state.job}`) })}</span>
-                                {state.job !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('level')} {jobLevel}</span>}
+                                <span className={styles.jobTitle}>{t('Job.current_job')}: {t(`Values.${state.job}`)}</span>
+                                {state.job !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('Common.level')} {jobLevel}</span>}
                             </h3>
                             {state.job !== 'none' && (
                                 <>
                                     <p>
-                                        {t('income', { income: formatNumberWithSuffix(totalIncome) })}
+                                        {t('Job.income', { income: formatNumberWithSuffix(totalIncome) })}
                                         {jobLevel > 0 && <span className={styles.bonusText}>(+{formatNumberWithSuffix(bonusIncome)})</span>}
                                     </p>
                                     <div className={styles.expContainer}>
                                         <div className={styles.expInfo}>
-                                            <span>{t('experience')}</span>
-                                            <span>{isMaxLevel ? t('max_level') : `${jobExp}/${expToNext}`}</span>
+                                            <span>{t('Job.experience')}</span>
+                                            <span>{isMaxLevel ? t('Job.max_level') : `${jobExp}/${expToNext}`}</span>
                                         </div>
                                         <ProgressBar
                                             progress={isMaxLevel ? 100 : (jobExp / expToNext) * 100}
@@ -182,7 +181,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 <StatList
                                     type="cost"
                                     data={currentJob.cost}
-                                    title={gt('cost')}
+                                    title={t('Common.cost')}
                                 />
                             )}
                         </div>
@@ -204,17 +203,17 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                     }
                                     className={`${styles.workButton} ${isAnimating ? styles.workButtonAnimating : ''}`}
                                 >
-                                    {t('work_now')}
+                                    {t('Job.work_now')}
                                 </XPButton>
                                 {((currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
                                     (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
                                     (currentJob.cost?.stamina ? state.stamina < currentJob.cost.stamina : false)) && (
                                         <div className={styles.workError}>
                                             {currentJob.cost?.health && state.health < currentJob.cost.health
-                                                ? t('error_low_health')
+                                                ? t('Job.error_low_health')
                                                 : currentJob.cost?.stamina && state.stamina < currentJob.cost.stamina
-                                                    ? gt('stamina').replace(':', '') + ' low!'
-                                                    : t('error_low_mood')}
+                                                    ? t('Stats.stamina').replace(':', '') + ' low!'
+                                                    : t('Job.error_low_mood')}
                                         </div>
                                     )}
                             </div>
@@ -223,7 +222,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
 
                     <hr className={styles.divider} />
 
-                    <h4 className={styles.availableTitle}>{t('available_jobs')}</h4>
+                    <h4 className={styles.availableTitle}>{t('Job.available_jobs')}</h4>
                     <div className={styles.jobList}>
                         {Object.entries(JOBS)
                             .filter(([key]) => key !== 'none')
@@ -239,7 +238,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 return (
                                     <ListOption
                                         key={jobId}
-                                        title={gt(`values.${job.id}`)}
+                                        title={t(`Values.${job.id}`)}
                                         subtitle={
                                             <span className={styles.jobIncome}>
                                                 <StatBadge
@@ -254,12 +253,12 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                             </span>
                                         }
                                         extra={job.requirements && <Requirements requirements={job.requirements} />}
-                                        actionLabel={key !== state.job ? t('apply') : undefined}
+                                        actionLabel={key !== state.job ? t('Job.apply') : undefined}
                                         onAction={key !== state.job ? () => handleApply(jobId) : undefined}
                                         actionDisabled={!canApply}
                                         actionContent={
                                             key === state.job && (
-                                                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{t('current_job', { job: '' })}</p>
+                                                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{t('Job.current_job', { job: '' })}</p>
                                             )
                                         }
                                     />
@@ -271,8 +270,8 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
             <HelpModal
                 isOpen={isHelpOpen}
                 onClose={() => setIsHelpOpen(false)}
-                title={t('title')}
-                content={t('help_content')}
+                title={t('Job.title')}
+                content={t('Job.help_content')}
             />
         </>
     );

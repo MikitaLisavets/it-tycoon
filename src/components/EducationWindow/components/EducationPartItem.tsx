@@ -62,11 +62,11 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
         : index > 0;                 // Track not started: can only click first part
 
     // Actions logic
-    let actionLabel = t('Game.Education.start_part');
+    let actionLabel = t('Education.start');
     if (isPartCompleted) {
-        actionLabel = t('Game.Education.completed_btn');
+        actionLabel = t('Education.btn_completed');
     } else if (isPartActive && (status === 'studying' || status === 'quiz')) {
-        actionLabel = t('Game.Education.in_progress');
+        actionLabel = t('Education.learning');
     }
 
     const onAction = onStart;
@@ -82,7 +82,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
             )}
             {!isPartCompleted && (
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <StatBadge stat="TIME" value={`${part.duration}s`} label={t('Rest.duration')} />
+                    <StatBadge stat="TIME" value={`${part.duration}s`} label={t('Common.duration')} />
                 </div>
             )}
         </div>
@@ -96,7 +96,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
                 <StatList
                     type="cost"
                     data={{ money: dynamicCost }}
-                    title={t('Game.cost')}
+                    title={t('Common.cost')}
                 />
             </div>
         );
@@ -104,11 +104,11 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
 
     return (
         <div className={`${styles.ticketCard} ${isPartCompleted ? styles.completed : ''} ${isPartActive ? styles.active : ''}`}>
-            {isPartCompleted && <div className={styles.stamp}>{t('Game.Education.completed')}</div>}
+            {isPartCompleted && <div className={styles.stamp}>{t('Education.completed')}</div>}
 
             <div className={styles.ticketContent}>
                 <div className={styles.ticketHeader}>
-                    <span>{t('Game.Education.class').toUpperCase()} #{index + 1}0{Math.floor(Math.random() * 10)}</span>
+                    <span>{t('Education.class').toUpperCase()} #{index + 1}0{Math.floor(Math.random() * 10)}</span>
                 </div>
 
                 <div className={styles.ticketBody}>

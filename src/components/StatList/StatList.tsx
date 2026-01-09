@@ -14,7 +14,7 @@ interface StatListProps {
 }
 
 const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabel }) => {
-    const gt = useTranslations('Game');
+    const t = useTranslations();
 
     if (!data && !isFree) return null;
 
@@ -46,7 +46,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             <StatBadge
                                 stat="HEALTH"
                                 value={data.maxHealth}
-                                label={`${gt('max')} ${gt('health')}`}
+                                label={`${t('Common.max')} ${t('Stats.health')}`}
                             />
                         </li>
                     ) : null}
@@ -55,13 +55,13 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.health ? (
                         <li className={styles.uiListItem}>
                             {data.health === 'full' ? (
-                                <StatBadge stat="HEALTH" value={freeLabel || 'Full'} label={gt('health')} />
+                                <StatBadge stat="HEALTH" value={freeLabel || 'Full'} label={t('Stats.health')} />
                             ) : (
                                 <StatBadge
                                     stat="HEALTH"
                                     value={data.health}
 
-                                    label={gt('health')}
+                                    label={t('Stats.health')}
                                 />
                             )}
                         </li>
@@ -73,7 +73,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             <StatBadge
                                 stat="STAMINA"
                                 value={data.maxStamina}
-                                label={`${gt('max')} ${gt('stamina')}`}
+                                label={`${t('Common.max')} ${t('Stats.stamina')}`}
                             />
                         </li>
                     ) : null}
@@ -82,13 +82,13 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.stamina ? (
                         <li className={styles.uiListItem}>
                             {data.stamina === 'full' ? (
-                                <StatBadge stat="STAMINA" value={freeLabel || 'Full'} label={gt('stamina')} />
+                                <StatBadge stat="STAMINA" value={freeLabel || 'Full'} label={t('Stats.stamina')} />
                             ) : (
                                 <StatBadge
                                     stat="STAMINA"
                                     value={data.stamina}
 
-                                    label={gt('stamina')}
+                                    label={t('Stats.stamina')}
                                 />
                             )}
                         </li>
@@ -100,7 +100,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             <StatBadge
                                 stat="MOOD"
                                 value={data.maxMood}
-                                label={`${gt('max')} ${gt('mood')}`}
+                                label={`${t('Common.max')} ${t('Stats.mood')}`}
                             />
                         </li>
                     ) : null}
@@ -109,13 +109,13 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {data.mood ? (
                         <li className={styles.uiListItem}>
                             {data.mood === 'full' ? (
-                                <StatBadge stat="MOOD" value={freeLabel || 'Full'} label={gt('mood')} />
+                                <StatBadge stat="MOOD" value={freeLabel || 'Full'} label={t('Stats.mood')} />
                             ) : (
                                 <StatBadge
                                     stat="MOOD"
                                     value={data.mood}
 
-                                    label={gt('mood')}
+                                    label={t('Stats.mood')}
                                 />
                             )}
                         </li>

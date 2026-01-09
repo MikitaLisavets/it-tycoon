@@ -58,3 +58,10 @@ export const InvestorIcon: React.FC = () => (
         <line x1="8" y1="24" x2="8" y2="8" stroke="#ADB5BD" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
 );
+
+export const WinampIcon: React.FC = () => (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="24" height="24" rx="4" fill="#222222" stroke="#444444" strokeWidth="1.5" />
+        <path d="M17.5 7L11 17 H16 L12.5 25 L21 15 H16 L19 7 H17.5Z" fill="#FFD700" stroke="#FFA500" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+);

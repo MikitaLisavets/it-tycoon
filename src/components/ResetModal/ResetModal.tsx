@@ -13,18 +13,18 @@ interface ResetModalProps {
 }
 
 const ResetModal: React.FC<ResetModalProps> = ({ isOpen, onConfirm, onCancel }) => {
-    const t = useTranslations('ResetModal');
+    const t = useTranslations();
 
     return (
         <Modal
             isOpen={isOpen}
             onClose={onCancel}
-            title={t('confirm_title')}
+            title={t('ResetModal.title')}
             width="350px"
             footer={
                 <>
-                    <XPButton onClick={onConfirm}>{t('yes')}</XPButton>
-                    <XPButton onClick={onCancel}>{t('no')}</XPButton>
+                    <XPButton onClick={onConfirm}>{t('Common.yes')}</XPButton>
+                    <XPButton onClick={onCancel}>{t('Common.no')}</XPButton>
                 </>
             }
         >
@@ -33,7 +33,7 @@ const ResetModal: React.FC<ResetModalProps> = ({ isOpen, onConfirm, onCancel }) 
                     <img src="/icons/warning.png" alt="Warning" width={32} height={32} />
                 </div>
                 <div className={styles.message}>
-                    {t('confirm_message')}
+                    {t('ResetModal.confirm')}
                 </div>
             </div>
         </Modal>

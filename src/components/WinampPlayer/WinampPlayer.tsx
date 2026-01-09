@@ -6,8 +6,10 @@ import { MUSIC_SOURCES } from '@/lib/game/constants/music-sources';
 import { useAudio } from '@/hooks/useAudio';
 import { useGameState } from '@/hooks/useGameState';
 
+import { NextIcon, PauseIcon, PlayIcon, PrevIcon, StopIcon } from './WinampIcons';
+
 const WinampPlayer: React.FC = () => {
-    const t = useTranslations('Winamp');
+    const t = useTranslations();
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
@@ -128,7 +130,7 @@ const WinampPlayer: React.FC = () => {
             <div className={styles.displayArea}>
                 <div className={styles.titleBar}>
                     <span className={styles.titleText}>
-                        {isLoading ? t('loading') : `${MUSIC_SOURCES[currentSourceIndex].name} *** 128kbps *** 44kHz`}
+                        {isLoading ? t('Winamp.loading') : `${MUSIC_SOURCES[currentSourceIndex].name} *** 128kbps *** 44kHz`}
                     </span>
                 </div>
                 <div className={styles.visuals}>
@@ -144,15 +146,17 @@ const WinampPlayer: React.FC = () => {
             {/* Controls Area */}
             <div className={styles.controlsArea}>
                 <div className={styles.mainControls}>
-                    <button className={styles.controlBtn} title={t('controls.prev')} onClick={() => {
+                    <button className={styles.controlBtn} title={t('Winamp.controls_prev')} onClick={() => {
                         audio.playClick();
                         prevSource();
-                    }}>|&lt;</button>
+                    }}>
+                        <PrevIcon />
+                    </button>
                     <button className={styles.controlBtn} onClick={() => {
                         audio.playClick();
                         togglePlay();
-                    }} title={isPlaying ? t('controls.pause') : t('controls.play')}>
-                        {isPlaying ? '||' : '►'}
+                    }} title={isPlaying ? t('Winamp.controls_pause') : t('Winamp.controls_play')}>
+                        {isPlaying ? <PauseIcon /> : <PlayIcon />}
                     </button>
                     <button className={styles.controlBtn} onClick={() => {
                         audio.playClick();
@@ -161,17 +165,21 @@ const WinampPlayer: React.FC = () => {
                         if (audioRef.current) {
                             audioRef.current.currentTime = 0;
                         }
-                    }} title={t('controls.stop')}>■</button>
-                    <button className={styles.controlBtn} title={t('controls.next')} onClick={() => {
+                    }} title={t('Winamp.controls_stop')}>
+                        <StopIcon />
+                    </button>
+                    <button className={styles.controlBtn} title={t('Winamp.controls_next')} onClick={() => {
                         audio.playClick();
                         nextSource();
-                    }}>&gt;|</button>
+                    }}>
+                        <NextIcon />
+                    </button>
                 </div>
 
 
 
                 <div className={styles.volumeControl}>
-                    <label>{t('controls.volume')}</label>
+                    <label>{t('Winamp.controls_volume')}</label>
                     <input
                         type="range"
                         min="0"
@@ -185,7 +193,7 @@ const WinampPlayer: React.FC = () => {
             </div>
 
             <div className={styles.branding}>
-                {t('title')}
+                {t('Winamp.title')}
             </div>
 
             <audio ref={audioRef} src={audioSrc} crossOrigin="anonymous" />

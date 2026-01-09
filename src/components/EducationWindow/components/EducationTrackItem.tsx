@@ -63,14 +63,14 @@ const EducationTrackItem: React.FC<EducationTrackItemProps> = ({
                     <div className={`${styles.chevron} ${isExpanded ? styles.expanded : ''}`} />
                     <span>{track.title}</span>
                 </div>
-                {isCompleted && <span className={styles.completedBadge}>{t('Game.Education.completed')}</span>}
+                {isCompleted && <span className={styles.completedBadge}>{t('Education.completed')}</span>}
             </div>
 
             {isExpanded && (
                 <>
                     {locked ? (
                         <div className={styles.lockedMessage}>
-                            {t('Game.Education.locked_by', { req: t(`Game.values.${track.requirements?.education}`) || '' })}
+                            {t('Education.locked', { req: t(`Values.${track.requirements?.education}`) || '' })}
                         </div>
                     ) : (
                         <div className={styles.partList}>

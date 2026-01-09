@@ -26,16 +26,16 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, result, onAnswer }) => 
                         {result.type === 'success' ? '✓' : '✗'}
                     </div>
                     <div className={`${styles.resultTitle} ${styles[result.type]}`}>
-                        {result.type === 'success' ? t('Game.Education.completed') : t('Game.Education.rejected_title') || 'Failed!'}
+                        {result.type === 'success' ? t('Education.exam_passed') : t('Education.exam_failed_title') || 'Failed!'}
                     </div>
                     <div className={styles.resultMessage}>
-                        {result.type === 'success' ? t('Game.Education.completed_message') || 'Great job!' : t('Game.Education.rejected_message')}
+                        {result.type === 'success' ? t('Education.exam_passed') || 'Great job!' : t('Education.rejected')}
                     </div>
                     <button
                         className={`${styles.continueBtn} ${styles[result.type]}`}
                         onClick={result.onContinue}
                     >
-                        {t('Game.continue')}
+                        {t('Common.continue')}
                     </button>
                 </div>
             ) : (

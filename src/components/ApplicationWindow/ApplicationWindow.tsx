@@ -4,7 +4,7 @@ import DesktopShortcut from '../DesktopShortcut/DesktopShortcut';
 import styles from './ApplicationWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon } from '../Icons/AppIcons';
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon } from '../Icons/AppIcons';
 
 interface ApplicationWindowProps {
     isOpen: boolean;
@@ -21,22 +21,16 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
     onFocus,
     onOpenApp,
 }) => {
-    const t = useTranslations('Applications');
-    const tWinamp = useTranslations('Winamp');
-    const tGame = useTranslations('Game');
+    const t = useTranslations();
     const { state } = useGameState();
 
     const isSolitaireOwned = state.software.games.includes('solitaire');
-
-    const winampIcon = (
-        <div style={{ fontSize: '24px' }}>⚡</div>
-    );
 
     if (!isOpen) return null;
 
     return (
         <WindowFrame
-            title={t('title')}
+            title={t('Applications.title')}
             onCloseClick={onClose}
             onHelpClick={() => { }}
             width="400px"
@@ -46,14 +40,14 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
             <div className={styles.grid}>
                 <DesktopShortcut
                     id="winamp"
-                    label={tWinamp('title')}
-                    icon={winampIcon}
+                    label={t('Winamp.title')}
+                    icon={<WinampIcon />}
                     onDoubleClick={onOpenApp}
                 />
                 {isSolitaireOwned && (
                     <DesktopShortcut
                         id="solitaire"
-                        label={tGame('values.solitaire')}
+                        label={t('Values.solitaire')}
                         icon={<SolitaireIcon />}
                         onDoubleClick={onOpenApp}
                     />
@@ -61,7 +55,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                 {state.software.programs.includes('software_office') && (
                     <DesktopShortcut
                         id="software_office"
-                        label={tGame('values.software_office')}
+                        label={t('Values.software_office')}
                         icon={<OfficeIcon />}
                         onDoubleClick={onOpenApp}
                     />
@@ -69,7 +63,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                 {state.software.programs.includes('software_notepad') && (
                     <DesktopShortcut
                         id="software_notepad"
-                        label={tGame('values.software_notepad')}
+                        label={t('Values.software_notepad')}
                         icon={<NotepadIcon />}
                         onDoubleClick={onOpenApp}
                     />
@@ -77,7 +71,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                 {state.software.programs.includes('software_code_editor') && (
                     <DesktopShortcut
                         id="software_code_editor"
-                        label={tGame('values.software_code_editor')}
+                        label={t('Values.software_code_editor')}
                         icon={<CodeEditorIcon />}
                         onDoubleClick={onOpenApp}
                     />
@@ -85,7 +79,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                 {state.software.programs.includes('software_web_wallet') && (
                     <DesktopShortcut
                         id="software_web_wallet"
-                        label={tGame('values.software_web_wallet')}
+                        label={t('Values.software_web_wallet')}
                         icon={<WebWalletIcon />}
                         onDoubleClick={onOpenApp}
                     />
@@ -93,7 +87,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                 {state.software.programs.includes('software_investor') && (
                     <DesktopShortcut
                         id="software_investor"
-                        label={tGame('values.software_investor')}
+                        label={t('Values.software_investor')}
                         icon={<InvestorIcon />}
                         onDoubleClick={onOpenApp}
                     />
