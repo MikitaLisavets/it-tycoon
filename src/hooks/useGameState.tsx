@@ -38,25 +38,29 @@ function useGameStateInternal() {
                     setState(INITIAL_STATE);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_STATE));
                 } else {
-                    // Ensure new fields like locale are present even if version matches
                     const mergedState = { ...INITIAL_STATE, ...parsed };
 
-                    // Migration for Max Stats if missing
-                    if (!parsed.maxMood) mergedState.maxMood = 100;
-                    if (!parsed.maxHealth) mergedState.maxHealth = 100;
-                    if (!parsed.maxStamina) mergedState.maxStamina = 100;
-
-                    // Migration for ownedSystems
-                    if (mergedState.software && !mergedState.software.ownedSystems) {
-                        mergedState.software.ownedSystems = [mergedState.software.system || 'winos_95'];
-                    }
-
-                    // Migration for Cooldowns
-                    if (parsed.cooldowns && typeof parsed.cooldowns.rest === 'object') {
-                        // Old format: { rest: { ... } }
-                        mergedState.cooldowns = { ...parsed.cooldowns.rest };
-                    } else if (!parsed.cooldowns) {
-                        mergedState.cooldowns = {};
+                    // Migration for Player Stats
+                    if (parsed.money !== undefined && !parsed.stats) {
+                        mergedState.stats = {
+                            money: parsed.money,
+                            mood: parsed.mood ?? 50,
+                            maxMood: parsed.maxMood ?? 100,
+                            health: parsed.health ?? 50,
+                            maxHealth: parsed.maxHealth ?? 100,
+                            stamina: parsed.stamina ?? 30,
+                            maxStamina: parsed.maxStamina ?? 100,
+                            education: parsed.education ?? "none",
+                        };
+                        // Remove old properties
+                        delete (mergedState as any).money;
+                        delete (mergedState as any).mood;
+                        delete (mergedState as any).maxMood;
+                        delete (mergedState as any).health;
+                        delete (mergedState as any).maxHealth;
+                        delete (mergedState as any).stamina;
+                        delete (mergedState as any).maxStamina;
+                        delete (mergedState as any).education;
                     }
 
                     setState(mergedState);
@@ -77,6 +81,7 @@ function useGameStateInternal() {
             setState((prev) => {
                 const next = { ...prev };
                 next.date = { ...prev.date };
+                next.stats = { ...prev.stats };
 
                 // Update Time
                 next.date.minute += GAME_CONSTANTS.GAME_MINUTES_PER_TICK;
@@ -102,19 +107,19 @@ function useGameStateInternal() {
                     }
                 }
 
-                next.health = Math.max(0, next.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
-                next.mood = Math.max(0, next.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
+                next.stats.health = Math.max(0, next.stats.health - GAME_CONSTANTS.DECAY_RATES.HEALTH_PER_TICK);
+                next.stats.mood = Math.max(0, next.stats.mood - GAME_CONSTANTS.DECAY_RATES.MOOD_PER_TICK);
 
                 // Stamina Regen (Clamp to Max)
-                const maxStamina = next.maxStamina || 100; // Fallback
-                next.stamina = Math.min(maxStamina, Math.max(0, next.stamina + GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK));
+                const maxStamina = next.stats.maxStamina || 100; // Fallback
+                next.stats.stamina = Math.min(maxStamina, Math.max(0, next.stats.stamina + GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK));
 
                 // Check Game Over
-                if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                if (next.stats.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
                     next.gameOverReason = 'health';
                     next.gameOver = true;
                 }
-                if (next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                if (next.stats.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
                     next.gameOverReason = 'mood';
                     next.gameOver = true;
                 }
@@ -151,16 +156,15 @@ function useGameStateInternal() {
                                 ...deposit,
                                 accumulatedInterest: deposit.accumulatedInterest + dailyInterest,
                             };
-                            return deposit;
                         }),
                     };
                 }
 
                 if (cheatManager.isCheatActive(CHEATS.G0D)) {
-                    next.money = 1000000;
-                    next.health = next.maxHealth;
-                    next.mood = next.maxMood;
-                    next.stamina = next.maxStamina;
+                    next.stats.money = 1000000;
+                    next.stats.health = next.stats.maxHealth;
+                    next.stats.mood = next.stats.maxMood;
+                    next.stats.stamina = next.stats.maxStamina;
                 }
 
                 return next;

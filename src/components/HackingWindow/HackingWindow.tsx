@@ -77,7 +77,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
     };
 
     const handleExecute = async (target: HackingTarget) => {
-        if (isHacking || state.money < target.fine || state.computer.modem === 'modem_none') {
+        if (isHacking || state.stats.money < target.fine || state.computer.modem === 'modem_none') {
             return;
         }
 
@@ -105,15 +105,21 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
         if (success) {
             addLine(`${t('Hacking.success', { amount: formatNumberWithSuffix(target.reward) })}`);
             updateState({
-                money: state.money + target.reward,
-                mood: Math.min(state.maxMood, state.mood + 5)
+                stats: {
+                    ...state.stats,
+                    money: state.stats.money + target.reward,
+                    mood: Math.min(state.stats.maxMood, state.stats.mood + 5)
+                }
             });
             audio.playLevelUp();
         } else {
             addLine(t('Hacking.failure_wrap', { text: t('Hacking.failure', { amount: formatNumberWithSuffix(target.fine) }) }));
             updateState({
-                money: Math.max(0, state.money - target.fine),
-                mood: Math.max(0, state.mood - 10)
+                stats: {
+                    ...state.stats,
+                    money: Math.max(0, state.stats.money - target.fine),
+                    mood: Math.max(0, state.stats.mood - 10)
+                }
             });
             audio.playError();
         }
@@ -150,7 +156,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
                             {dynamicTargets.map(target => (
                                 <div
                                     key={target.id}
-                                    className={`${styles.targetCard} ${state.money < target.fine || state.computer.modem === 'modem_none' ? 'striped-disabled-overlay' : ''}`}
+                                    className={`${styles.targetCard} ${state.stats.money < target.fine || state.computer.modem === 'modem_none' ? 'striped-disabled-overlay' : ''}`}
                                     onClick={() => handleExecute(target)}
                                 >
                                     <div className={styles.targetName}>{t(`Hacking.targets_${target.id}`)}</div>
@@ -163,12 +169,12 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
                                             <span className={styles.statLabel}>{t('Hacking.reward')}:</span>
                                             <StatBadge stat="MONEY" value={formatNumberWithSuffix(target.reward)} />
                                         </div>
-                                        <div className={`${styles.statRow} ${state.money < target.fine ? styles.insufficient : ''}`}>
+                                        <div className={`${styles.statRow} ${state.stats.money < target.fine ? styles.insufficient : ''}`}>
                                             <span className={styles.statLabel}>{t('Hacking.fine')}:</span>
                                             <StatBadge
                                                 stat="MONEY"
                                                 value={formatNumberWithSuffix(target.fine)}
-                                                className={state.money < target.fine ? styles.insufficientValue : ''}
+                                                className={state.stats.money < target.fine ? styles.insufficientValue : ''}
                                             />
                                         </div>
                                         <div className={styles.statRow}>
@@ -176,7 +182,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
                                             <StatBadge stat="TIME" value={`${target.duration}s`} />
                                         </div>
                                     </div>
-                                    {state.money < target.fine && (
+                                    {state.stats.money < target.fine && (
                                         <div className={styles.insufficientFundsLabel}>
                                             {t('Hacking.insufficient_funds')}
                                         </div>

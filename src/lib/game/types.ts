@@ -28,20 +28,22 @@ export interface DepositRecord {
     accumulatedInterest: number; // Total interest earned so far
 }
 
-export interface GameState {
-    version: number;
-    locale: 'en' | 'de';
+export interface PlayerStats {
     money: number;
-    education: EducationId;
-    english: string;
-    volume: number;
-
     mood: number;
     maxMood: number;
     health: number;
     maxHealth: number;
     stamina: number;
     maxStamina: number;
+    education: EducationId;
+}
+
+export interface GameState {
+    version: number;
+    locale: 'en' | 'de';
+    volume: number;
+    stats: PlayerStats;
 
     // Computer Hardware
     computer: {
@@ -123,16 +125,17 @@ export interface GameState {
 export const INITIAL_STATE: GameState = {
     version: 1,
     locale: 'en',
-    money: 100,
-    mood: 50,
-    maxMood: 100,
-    health: 50,
-    maxHealth: 100,
-    stamina: 30,
-    maxStamina: 100,
-    education: "none",
-    english: "none",
     volume: 50,
+    stats: {
+        money: 100,
+        mood: 50,
+        maxMood: 100,
+        health: 50,
+        maxHealth: 100,
+        stamina: 30,
+        maxStamina: 100,
+        education: "none",
+    },
 
     computer: {
         monitor: "monitor_basic",

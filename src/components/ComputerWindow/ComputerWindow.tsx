@@ -39,10 +39,13 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
 
     const handleBuy = (category: Category, partId: string, basePrice: number) => {
         const price = calculateDynamicPrice(basePrice, state);
-        if (state.money < price) return;
+        if (state.stats.money < price) return;
 
         updateState({
-            money: state.money - price,
+            stats: {
+                ...state.stats,
+                money: state.stats.money - price,
+            },
             computer: {
                 ...state.computer,
                 [category]: partId
@@ -73,7 +76,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                 {parts.map((part, index) => {
                     const isOwned = index === installedIndex;
                     const dynamicPrice = calculateDynamicPrice(part.price, state);
-                    const canAfford = state.money >= dynamicPrice;
+                    const canAfford = state.stats.money >= dynamicPrice;
                     const isFree = part.price === 0;
                     const isPrecedingInstalled = index === installedIndex - 1;
 

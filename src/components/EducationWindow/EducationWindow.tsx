@@ -50,10 +50,13 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
         const partToStart = track.parts[targetPartIndex];
         const cost = calculateDynamicPrice(partToStart.cost, state);
 
-        if (state.money < cost) return;
+        if (state.stats.money < cost) return;
 
         updateState({
-            money: state.money - cost,
+            stats: {
+                ...state.stats,
+                money: state.stats.money - cost
+            },
             educationProgress: {
                 ...state.educationProgress,
                 activeTrackId: trackId as EducationId,
@@ -90,7 +93,10 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
                                 status: 'idle'
                             },
                             // Also update the legacy education field for backward compatibility
-                            education: activeTrackId
+                            stats: {
+                                ...state.stats,
+                                education: activeTrackId
+                            }
                         });
                     } else {
                         // Next part

@@ -71,7 +71,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
 
     const onAction = isPartActive ? undefined : onStart;
     const isLearningInProgress = status === 'studying' || status === 'quiz';
-    const actionDisabled = state.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked || isNotYetAvailable || isLearningInProgress;
+    const actionDisabled = state.stats.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked || isNotYetAvailable || isLearningInProgress;
 
 
     // Action Content (Progress Bar + Time)
@@ -112,10 +112,10 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
 
                     {actionDisabled && !isPartCompleted && !isTrackCompleted && !isLearningInProgress && (
                         <div className={styles.errorMessage}>
-                            {state.money < dynamicCost && (
+                            {state.stats.money < dynamicCost && (
                                 <span>{t('Education.insufficient_funds')}</span>
                             )}
-                            {isNotYetAvailable && state.money >= dynamicCost && (
+                            {isNotYetAvailable && state.stats.money >= dynamicCost && (
                                 <span>{t('Education.complete_previous_first')}</span>
                             )}
                         </div>

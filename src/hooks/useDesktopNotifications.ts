@@ -23,7 +23,7 @@ export function useDesktopNotifications(
         const COOLDOWN = 60000; // 1 minute cooldown for same warning
 
         // Check Health
-        if (state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
+        if (state.stats.health < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.health > COOLDOWN) {
             showNotification(
                 tNotification('Notifications.low_health_title'),
                 tNotification('Notifications.low_health'),
@@ -33,7 +33,7 @@ export function useDesktopNotifications(
         }
 
         // Check Mood
-        if (state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
+        if (state.stats.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD && now - lastWarnings.mood > COOLDOWN) {
             showNotification(
                 tNotification('Notifications.low_mood_title'),
                 tNotification('Notifications.low_mood'),
@@ -65,7 +65,7 @@ export function useDesktopNotifications(
                 }
             }
         }
-    }, [state.health, state.mood, state.banking, state.date, state.gameOver, isInitialized, lastWarnings, tNotification, showNotification]);
+    }, [state.stats.health, state.stats.mood, state.banking, state.date, state.gameOver, isInitialized, lastWarnings, tNotification, showNotification]);
 
     // Random Virus Event Logic
     useEffect(() => {
@@ -81,7 +81,12 @@ export function useDesktopNotifications(
                 'warning',
                 { stat: 'MOOD', value: GAME_CONSTANTS.VIRUS_MOOD_PENALTY, prefix: '-' }
             );
-            updateState({ mood: Math.max(0, state.mood - GAME_CONSTANTS.VIRUS_MOOD_PENALTY) });
+            updateState({
+                stats: {
+                    ...state.stats,
+                    mood: Math.max(0, state.stats.mood - GAME_CONSTANTS.VIRUS_MOOD_PENALTY)
+                }
+            });
         }
     }, [state.date, state.computer.modem, state.software.antivirus, state.gameOver, isInitialized, showNotification, tNotification, updateState]);
 

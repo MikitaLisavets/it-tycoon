@@ -61,7 +61,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
             const moodCost = currentJob.cost?.mood || 0;
             const staminaCost = currentJob.cost?.stamina || 0;
 
-            if (state.health >= healthCost && (state.mood >= moodCost) && state.stamina >= staminaCost) {
+            if (state.stats.health >= healthCost && (state.stats.mood >= moodCost) && state.stats.stamina >= staminaCost) {
                 // Play sound
                 playCoin();
 
@@ -88,10 +88,13 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                 }
 
                 updateState({
-                    money: state.money + totalIncome,
-                    health: state.health - healthCost,
-                    mood: state.mood - moodCost,
-                    stamina: state.stamina - staminaCost,
+                    stats: {
+                        ...state.stats,
+                        money: state.stats.money + totalIncome,
+                        health: state.stats.health - healthCost,
+                        mood: state.stats.mood - moodCost,
+                        stamina: state.stats.stamina - staminaCost,
+                    },
                     job: {
                         ...state.job,
                         exp: { ...state.job.exp, [state.job.id]: isMaxLevel ? jobExp : newExp },
@@ -107,9 +110,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         if (!job || !job.requirements) return true;
         const reqs = job.requirements;
 
-        if (reqs.education && state.education !== reqs.education) {
+        if (reqs.education && state.stats.education !== reqs.education) {
             const levels = ['none', 'school', 'college', 'university'];
-            if (levels.indexOf(state.education) < levels.indexOf(reqs.education)) return false;
+            if (levels.indexOf(state.stats.education) < levels.indexOf(reqs.education)) return false;
         }
 
         if (reqs.software) {
@@ -122,7 +125,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
             if ((state.job.levels[reqs.previousJob] || 0) < 10) return false;
         }
 
-        if (reqs.mood && state.mood < reqs.mood) {
+        if (reqs.mood && state.stats.mood < reqs.mood) {
             return false;
         }
 
@@ -205,25 +208,25 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                     onClick={handleWork}
                                     actionSound="coin"
                                     disabled={
-                                        (currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
-                                        (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
-                                        (currentJob.cost?.stamina ? state.stamina < currentJob.cost.stamina : false)
+                                        (currentJob.cost?.health ? state.stats.health < currentJob.cost.health : false) ||
+                                        (currentJob.cost?.mood ? state.stats.mood < currentJob.cost.mood : false) ||
+                                        (currentJob.cost?.stamina ? state.stats.stamina < currentJob.cost.stamina : false)
                                     }
                                     className={`${styles.workButton} ${isAnimating ? styles.workButtonAnimating : ''}`}
                                 >
                                     {t('Job.work_now')}
                                 </XPButton>
-                                {currentJob.cost?.health && state.health < currentJob.cost.health ? (
+                                {currentJob.cost?.health && state.stats.health < currentJob.cost.health ? (
                                     <div className={styles.workError}>
                                         {t('Job.error_low_health')}
                                     </div>
                                 ) : null}
-                                {currentJob.cost?.mood && state.mood < currentJob.cost.mood ? (
+                                {currentJob.cost?.mood && state.stats.mood < currentJob.cost.mood ? (
                                     <div className={styles.workError}>
                                         {t('Job.error_low_mood')}
                                     </div>
                                 ) : null}
-                                {currentJob.cost?.stamina && state.stamina < currentJob.cost.stamina ? (
+                                {currentJob.cost?.stamina && state.stats.stamina < currentJob.cost.stamina ? (
                                     <div className={styles.workError}>
                                         {t('Job.error_low_stamina')}
                                     </div>

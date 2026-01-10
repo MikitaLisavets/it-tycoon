@@ -85,7 +85,10 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
         };
 
         updateState({
-            money: state.money + option.amount,
+            stats: {
+                ...state.stats,
+                money: state.stats.money + option.amount,
+            },
             banking: {
                 ...state.banking,
                 credits: [...state.banking.credits, newCredit],
@@ -97,10 +100,13 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
         const credit = state.banking.credits.find(c => c.id === creditId);
         if (!credit) return;
 
-        if (state.money < credit.totalDue) return; // Can't afford
+        if (state.stats.money < credit.totalDue) return; // Can't afford
 
         updateState({
-            money: state.money - credit.totalDue,
+            stats: {
+                ...state.stats,
+                money: state.stats.money - credit.totalDue,
+            },
             banking: {
                 ...state.banking,
                 credits: state.banking.credits.filter(c => c.id !== creditId),
@@ -116,7 +122,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
         if (!option) return;
 
         const amount = parseFloat(depositAmounts[optionId] || '0');
-        if (isNaN(amount) || amount < option.minAmount || amount > state.money) return;
+        if (isNaN(amount) || amount < option.minAmount || amount > state.stats.money) return;
 
         const newDeposit: DepositRecord = {
             id: generateId(),
@@ -127,7 +133,10 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
         };
 
         updateState({
-            money: state.money - amount,
+            stats: {
+                ...state.stats,
+                money: state.stats.money - amount,
+            },
             banking: {
                 ...state.banking,
                 deposits: [...state.banking.deposits, newDeposit],
@@ -143,7 +152,10 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
         const totalAmount = deposit.amount + deposit.accumulatedInterest;
 
         updateState({
-            money: state.money + totalAmount,
+            stats: {
+                ...state.stats,
+                money: state.stats.money + totalAmount,
+            },
             banking: {
                 ...state.banking,
                 deposits: state.banking.deposits.filter(d => d.id !== depositId),
@@ -175,7 +187,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                         {/* Balance Display */}
                         <div className={styles.balanceDisplay}>
                             <span className={styles.balanceLabel}>{t('Bank.balance')}:</span>
-                            <span className={styles.balanceValue}>${formatNumberWithSuffix(state.money)}</span>
+                            <span className={styles.balanceValue}>${formatNumberWithSuffix(state.stats.money)}</span>
                         </div>
 
                         <div className={styles.tabsContainer}>
@@ -205,7 +217,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                             {state.banking.credits.map(credit => {
                                                 const remaining = daysUntilDue(state.date, credit.dueDate);
                                                 const isWarning = remaining <= CREDIT_WARNING_DAYS;
-                                                const canRepay = state.money >= credit.totalDue;
+                                                const canRepay = state.stats.money >= credit.totalDue;
 
                                                 return (
                                                     <div
@@ -315,7 +327,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
 
                                     {DEPOSIT_OPTIONS.map(option => {
                                         const inputAmount = parseFloat(depositAmounts[option.id] || '0');
-                                        const canDeposit = inputAmount >= option.minAmount && inputAmount <= state.money;
+                                        const canDeposit = inputAmount >= option.minAmount && inputAmount <= state.stats.money;
                                         const hasActiveDeposit = state.banking.deposits.length > 0;
                                         return (
                                             <div key={option.id} className={`${styles.optionCard} ${hasActiveDeposit ? styles.disabledOption : ''}`}>
@@ -338,7 +350,7 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                         value={depositAmounts[option.id] || ''}
                                                         onChange={(e) => setDepositAmounts(prev => ({ ...prev, [option.id]: e.target.value }))}
                                                         min={option.minAmount}
-                                                        max={state.money}
+                                                        max={state.stats.money}
                                                         disabled={hasActiveDeposit}
                                                     />
                                                     <button

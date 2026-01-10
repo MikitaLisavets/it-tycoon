@@ -14,39 +14,39 @@ export function useActionableItem() {
     const [progress, setProgress] = useState(0);
 
     const performActivity = useCallback((item: ActionableItem, mode: 'cost' | 'effect' | 'both') => {
-        const updates: any = {};
+        const statsUpdates: Partial<GameState['stats']> = {};
 
-        // Base state to calculate against (will be merged later)
-        const currentMoney = updates.money !== undefined ? updates.money : state.money;
-        const currentHealth = updates.health !== undefined ? updates.health : state.health;
-        const currentStamina = updates.stamina !== undefined ? updates.stamina : state.stamina;
-        const currentMood = updates.mood !== undefined ? updates.mood : state.mood;
+        // Base values for calculation (using current state if not updated in this pass)
+        const currentMoney = state.stats.money;
+        const currentHealth = state.stats.health;
+        const currentStamina = state.stats.stamina;
+        const currentMood = state.stats.mood;
 
         if (mode === 'cost' || mode === 'both') {
             const actualMoneyCost = calculateDynamicPrice(item.cost?.money || 0, state);
-            updates.money = currentMoney - actualMoneyCost;
-            updates.health = Math.max(0, currentHealth - (item.cost?.health || 0));
-            updates.stamina = Math.max(0, currentStamina - (item.cost?.stamina || 0));
-            updates.mood = Math.max(0, currentMood - (item.cost?.mood || 0));
+            statsUpdates.money = currentMoney - actualMoneyCost;
+            statsUpdates.health = Math.max(0, currentHealth - (item.cost?.health || 0));
+            statsUpdates.stamina = Math.max(0, currentStamina - (item.cost?.stamina || 0));
+            statsUpdates.mood = Math.max(0, currentMood - (item.cost?.mood || 0));
         }
 
         if (mode === 'effect' || mode === 'both') {
-            const baseMoney = updates.money !== undefined ? updates.money : currentMoney;
-            const baseHealth = updates.health !== undefined ? updates.health : currentHealth;
-            const baseStamina = updates.stamina !== undefined ? updates.stamina : currentStamina;
-            const baseMood = updates.mood !== undefined ? updates.mood : currentMood;
+            const baseMoney = statsUpdates.money !== undefined ? statsUpdates.money : currentMoney;
+            const baseHealth = statsUpdates.health !== undefined ? statsUpdates.health : currentHealth;
+            const baseStamina = statsUpdates.stamina !== undefined ? statsUpdates.stamina : currentStamina;
+            const baseMood = statsUpdates.mood !== undefined ? statsUpdates.mood : currentMood;
 
             (['health', 'stamina', 'mood', 'money'] as const).forEach((stat) => {
                 const effect = item.effect?.[stat];
                 if (effect !== undefined) {
                     if (stat === 'money') {
-                        updates.money = baseMoney + (effect as number);
+                        statsUpdates.money = baseMoney + (effect as number);
                     } else {
-                        const maxKey = `max${stat.charAt(0).toUpperCase()}${stat.slice(1)}` as keyof GameState;
+                        const maxKey = `max${stat.charAt(0).toUpperCase()}${stat.slice(1)}` as keyof GameState['stats'];
                         const val = stat === 'health' ? baseHealth : stat === 'stamina' ? baseStamina : baseMood;
-                        updates[stat] = effect === 'full'
-                            ? state[maxKey]
-                            : Math.min(state[maxKey] as number, val + (effect as number));
+                        statsUpdates[stat] = effect === 'full'
+                            ? state.stats[maxKey] as any
+                            : Math.min(state.stats[maxKey] as number, val + (effect as number));
                     }
                 }
             });
@@ -55,17 +55,26 @@ export function useActionableItem() {
             (['maxHealth', 'maxStamina', 'maxMood'] as const).forEach((maxStat) => {
                 const effect = item.effect?.[maxStat];
                 if (effect !== undefined) {
-                    updates[maxStat] = (state[maxStat] as number) + (effect as number);
+                    statsUpdates[maxStat] = (state.stats[maxStat] as number) + (effect as number);
                 }
             });
+        }
 
-            updates.cooldowns = {
+        const finalUpdate: Partial<GameState> = {
+            stats: {
+                ...state.stats,
+                ...statsUpdates
+            }
+        };
+
+        if (mode === 'effect' || mode === 'both') {
+            finalUpdate.cooldowns = {
                 ...state.cooldowns,
                 [item.id]: Date.now()
             };
         }
 
-        updateState(updates);
+        updateState(finalUpdate);
     }, [state, updateState]);
 
     useEffect(() => {
@@ -106,11 +115,11 @@ export function useActionableItem() {
         const costStamina = item.cost?.stamina || 0;
         const costMood = item.cost?.mood || 0;
 
-        return state.money >= costMoney &&
-            state.health >= costHealth &&
-            state.stamina >= costStamina &&
-            state.mood >= costMood;
-    }, [state.money, state.health, state.stamina, state.mood]);
+        return state.stats.money >= costMoney &&
+            state.stats.health >= costHealth &&
+            state.stats.stamina >= costStamina &&
+            state.stats.mood >= costMood;
+    }, [state.stats.money, state.stats.health, state.stats.stamina, state.stats.mood, state.stats.education]);
 
     const handleAction = useCallback((item: ActionableItem) => {
         if (delayedActivity) return;

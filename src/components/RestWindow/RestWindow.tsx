@@ -6,7 +6,7 @@ import HelpModal from '../HelpModal/HelpModal';
 import { useGameState } from '../../hooks/useGameState';
 import { useAudio } from '../../hooks/useAudio';
 import { REST_ACTIVITIES } from '../../lib/game/constants/index';
-import { ActionableItem } from '../../lib/game/types';
+import { ActionableItem, GameState } from '../../lib/game/types';
 import styles from './RestWindow.module.css';
 
 interface RestWindowProps {
@@ -64,8 +64,8 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
     const startRest = (activity: ActionableItem) => {
         // Validation
         if (activeRest) return; // Busy
-        if (state.money < (activity.cost?.money || 0)) return;
-        if (state.health < (activity.cost?.health || 0)) return;
+        if (state.stats.money < (activity.cost?.money || 0)) return;
+        if (state.stats.health < (activity.cost?.health || 0)) return;
 
         // Cooldown check
         const lastUsed = state.cooldowns?.[activity.id] || 0;
@@ -85,24 +85,27 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
 
         if (activity.cost?.money && activity.cost.money > 0) playCoin();
 
-        if (activity.cost?.money && activity.cost.money > 0) playCoin();
+        const statsUpdates: Partial<GameState['stats']> = {
+            money: state.stats.money - (activity.cost?.money || 0),
+            health: Math.max(0, state.stats.health - (activity.cost?.health || 0)),
+        };
 
-        const updates: Partial<typeof state> = {
-            money: state.money - (activity.cost?.money || 0),
-            health: Math.max(0, state.health - (activity.cost?.health || 0)), // Clamp to 0
+        if (activity.effect?.stamina === 'full') {
+            statsUpdates.stamina = state.stats.maxStamina;
+        } else if (activity.effect?.stamina !== undefined) {
+            statsUpdates.stamina = Math.min(state.stats.maxStamina, state.stats.stamina + (activity.effect.stamina as number));
+        }
+
+        updateState({
+            stats: {
+                ...state.stats,
+                ...statsUpdates
+            },
             cooldowns: {
                 ...state.cooldowns,
                 [activity.id]: Date.now()
             }
-        };
-
-        if (activity.effect?.stamina === 'full') {
-            updates.stamina = state.maxStamina;
-        } else if (activity.effect?.stamina !== undefined) {
-            updates.stamina = Math.min(state.maxStamina, state.stamina + (activity.effect.stamina as number));
-        }
-
-        updateState(updates);
+        });
         setActiveRest(null);
     };
 
@@ -117,7 +120,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
             <WindowFrame id="rest_window" title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="450px">
                 <div style={{ padding: '10px' }}>
                     <div style={{ marginBottom: '15px', padding: '8px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
-                        <strong>{t('effect_full').replace('Full Stamina', 'Current Stamina')}: {Math.floor(state.stamina)}/{state.maxStamina}</strong>
+                        <strong>{t('effect_full').replace('Full Stamina', 'Current Stamina')}: {Math.floor(state.stats.stamina)}/{state.stats.maxStamina}</strong>
                     </div>
 
                     {REST_ACTIVITIES.map(activity => {
@@ -127,7 +130,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
                         const costMoney = activity.cost?.money || 0;
                         const costHealth = activity.cost?.health || 0;
 
-                        const canAfford = state.money >= costMoney && state.health >= costHealth;
+                        const canAfford = state.stats.money >= costMoney && state.stats.health >= costHealth;
                         const isDisabled = isBlocked || (cooldown > 0) || !canAfford;
 
                         return (

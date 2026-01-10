@@ -41,13 +41,13 @@ const Requirements: React.FC<RequirementsProps> = ({
         switch (type) {
             case 'education':
                 const levels: EducationId[] = ['none', 'school', 'college', 'university'];
-                return levels.indexOf(state.education) >= levels.indexOf(val as EducationId);
+                return levels.indexOf(state.stats.education) >= levels.indexOf(val as EducationId);
             case 'computerTier':
                 return computerLevel >= (val as number);
             case 'previousJob':
                 return (state.job.levels[val as JobId] || 0) >= 10;
             case 'mood':
-                return state.mood >= (val as number);
+                return state.stats.mood >= (val as number);
             case 'system':
                 const currentSystemId = state.software.system;
                 const currentLevel = SOFTWARES.system.findIndex(i => i.id === currentSystemId);

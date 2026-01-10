@@ -244,22 +244,22 @@ export default function Home() {
                             {/* Top Summary Bar */}
                             <div className={styles.topBar}>
                                 <div className={styles.summaryPanel}>
-                                    <StatRow label={t('Stats.money')} value={formatNumberWithSuffix(state.money)} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
+                                    <StatRow label={t('Stats.money')} value={formatNumberWithSuffix(state.stats.money)} icon={STAT_ICONS.MONEY.icon} iconColor={STAT_ICONS.MONEY.color} />
                                     <StatRow
                                         label={t('Stats.mood')}
-                                        value={`${Math.floor(state.mood)}/${state.maxMood}`}
+                                        value={`${Math.floor(state.stats.mood)}/${state.stats.maxMood}`}
                                         icon={STAT_ICONS.MOOD.icon}
                                         iconColor={STAT_ICONS.MOOD.color}
-                                        isCritical={state.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD}
+                                        isCritical={state.stats.mood < GAME_CONSTANTS.CRITICAL_THRESHOLD}
                                     />
                                     <StatRow
                                         label={t('Stats.health')}
-                                        value={`${Math.floor(state.health)}/${state.maxHealth}`}
+                                        value={`${Math.floor(state.stats.health)}/${state.stats.maxHealth}`}
                                         icon={STAT_ICONS.HEALTH.icon}
                                         iconColor={STAT_ICONS.HEALTH.color}
-                                        isCritical={state.health < GAME_CONSTANTS.CRITICAL_THRESHOLD}
+                                        isCritical={state.stats.health < GAME_CONSTANTS.CRITICAL_THRESHOLD}
                                     />
-                                    <StatRow label={t('Stats.stamina')} value={`${Math.floor(state.stamina)}/${state.maxStamina}`} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
+                                    <StatRow label={t('Stats.stamina')} value={`${Math.floor(state.stats.stamina)}/${state.stats.maxStamina}`} icon={STAT_ICONS.STAMINA.icon} iconColor={STAT_ICONS.STAMINA.color} />
                                 </div>
                             </div>
 
@@ -267,8 +267,7 @@ export default function Home() {
                             <div className={styles.panelGrid}>
                                 <Panel label={t('Dashboard.panel_personal')}>
                                     <StatRow label={t('Stats.job')} value={t(`Values.${state.job.id}`) /* Should use mapped job title eventually */} />
-                                    <StatRow label={t('Stats.education')} value={t(`Values.${state.education}`)} />
-                                    <StatRow label={t('Stats.english')} value={t(`Values.${state.english}`)} />
+                                    <StatRow label={t('Stats.education')} value={t(`Values.${state.stats.education}`)} />
                                 </Panel>
 
                                 <Panel label={t('Dashboard.panel_computer')}>

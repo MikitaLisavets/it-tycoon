@@ -55,9 +55,14 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         const basePrice = item.cost?.money || 0;
         const dynamicPrice = calculateDynamicPrice(basePrice, state);
 
-        if (state.money >= dynamicPrice) {
+        if (state.stats.money >= dynamicPrice) {
             // Deduct money immediately
-            updateState({ money: state.money - dynamicPrice });
+            updateState({
+                stats: {
+                    ...state.stats,
+                    money: state.stats.money - dynamicPrice
+                }
+            });
 
             if (item.duration && item.duration > 0) {
                 setInstallingItemId(item.id);
@@ -196,7 +201,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
         const basePrice = item.cost?.money || 0;
         const dynamicPrice = calculateDynamicPrice(basePrice, state);
-        const affordable = state.money >= dynamicPrice;
+        const affordable = state.stats.money >= dynamicPrice;
 
         if (item.category === 'system') {
             // Can buy if NOT owned yet
