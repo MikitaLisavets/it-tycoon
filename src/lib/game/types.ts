@@ -283,4 +283,5 @@ export interface ActionableItem {
     cost?: Cost;
     cooldown?: number;
     effect?: Effect;
+    isOneTime?: boolean;
 }

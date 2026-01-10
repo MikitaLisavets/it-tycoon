@@ -36,9 +36,9 @@ const ListOption: React.FC<ListOptionProps> = ({
                 {extra && <div className={styles.extra}>{extra}</div>}
             </div>
             <div className={styles.action}>
-                {actionLabel && onAction && (
+                {actionLabel && (
                     <XPButton
-                        onClick={onAction}
+                        onClick={onAction || (() => { })}
                         disabled={actionDisabled}
                         actionSound={actionSound}
                         style={{ minWidth: '80px' }}

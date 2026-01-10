@@ -10,13 +10,13 @@ export const FOOD_ITEMS: ActionableItem[] = [
 
 
 export const FURNITURE_ITEMS: ActionableItem[] = [
-    { id: 'ikea_basic', cost: { money: 500 }, effect: { maxMood: 10 } },
-    { id: 'designer_set', cost: { money: 2000 }, effect: { maxMood: 25 } },
-    { id: 'luxury_italian', cost: { money: 5000 }, effect: { maxMood: 50 } },
+    { id: 'ikea_basic', cost: { money: 500 }, effect: { maxMood: 10 }, isOneTime: true },
+    { id: 'designer_set', cost: { money: 2000 }, effect: { maxMood: 25 }, isOneTime: true },
+    { id: 'luxury_italian', cost: { money: 5000 }, effect: { maxMood: 50 }, isOneTime: true },
 ];
 
 export const CLOTHES_ITEMS: ActionableItem[] = [
-    { id: 'casual_wear', cost: { money: 200 }, effect: { maxHealth: 5 } },
-    { id: 'business_suit', cost: { money: 1000 }, effect: { maxHealth: 15 } },
-    { id: 'designer_brand', cost: { money: 3000 }, effect: { maxHealth: 30 } },
+    { id: 'casual_wear', cost: { money: 200 }, effect: { maxHealth: 5 }, isOneTime: true },
+    { id: 'business_suit', cost: { money: 1000 }, effect: { maxHealth: 15 }, isOneTime: true },
+    { id: 'designer_brand', cost: { money: 3000 }, effect: { maxHealth: 30 }, isOneTime: true },
 ];

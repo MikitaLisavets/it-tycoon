@@ -109,7 +109,13 @@ export function useActionableItem() {
         return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
     }, [state.cooldowns]);
 
+    const isPurchased = useCallback((item: ActionableItem) => {
+        return !!state.cooldowns?.[item.id];
+    }, [state.cooldowns]);
+
     const canAfford = useCallback((item: ActionableItem) => {
+        if (item.isOneTime && isPurchased(item)) return false;
+
         const costMoney = calculateDynamicPrice(item.cost?.money || 0, state);
         const costHealth = item.cost?.health || 0;
         const costStamina = item.cost?.stamina || 0;
@@ -119,7 +125,7 @@ export function useActionableItem() {
             state.stats.health >= costHealth &&
             state.stats.stamina >= costStamina &&
             state.stats.mood >= costMood;
-    }, [state.stats.money, state.stats.health, state.stats.stamina, state.stats.mood, state.stats.education]);
+    }, [state.stats.money, state.stats.health, state.stats.stamina, state.stats.mood, state.stats.education, isPurchased, state]);
 
     const handleAction = useCallback((item: ActionableItem) => {
         if (delayedActivity) return;
@@ -140,6 +146,7 @@ export function useActionableItem() {
     return {
         handleAction,
         getCooldown,
+        isPurchased,
         canAfford,
         getDynamicPrice: useCallback((basePrice: number) => calculateDynamicPrice(basePrice, state), [state]),
         progress,

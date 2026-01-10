@@ -36,6 +36,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
     const {
         handleAction,
         getCooldown,
+        isPurchased,
         canAfford,
         progress,
         delayedActivityId,
@@ -48,9 +49,21 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
     const renderList = (items: ActionableItem[]) => {
         return items.map((item) => {
             const cooldown = getCooldown(item);
+            const isPurchasedItem = item.isOneTime && isPurchased(item);
             const isDelayed = delayedActivityId === item.id;
             const isBlocked = isAnyInProgress && !isDelayed;
-            const isDisabled = isBlocked || (cooldown > 0) || !canAfford(item);
+            const isDisabled = isBlocked || (cooldown > 0) || !canAfford(item) || isPurchasedItem;
+
+            let actionLabel: string | undefined = undefined;
+            if (!isDelayed) {
+                if (isPurchasedItem) {
+                    actionLabel = t('Common.owned');
+                } else if (cooldown > 0) {
+                    actionLabel = `${cooldown}s`;
+                } else {
+                    actionLabel = t('Common.buy');
+                }
+            }
 
             return (
                 <ListOption
@@ -73,8 +86,8 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                             />
                         </div>
                     }
-                    actionLabel={!isDelayed ? (cooldown > 0 ? `${cooldown}s` : t('Common.buy')) : undefined}
-                    onAction={!isDelayed ? () => handleAction(item) : undefined}
+                    actionLabel={actionLabel}
+                    onAction={!isDelayed && !isPurchasedItem ? () => handleAction(item) : undefined}
                     actionSound={(!!item.cost?.money && item.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
                     disabledOverlay={isDisabled && !isDelayed}
