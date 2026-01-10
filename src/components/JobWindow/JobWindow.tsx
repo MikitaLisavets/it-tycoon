@@ -181,7 +181,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 <StatList
                                     type="cost"
                                     data={currentJob.cost}
-                                    title={t('Common.cost')}
+                                    title={`${t('Common.cost')} ${t('Job.per_click')}`}
                                 />
                             )}
                         </div>
