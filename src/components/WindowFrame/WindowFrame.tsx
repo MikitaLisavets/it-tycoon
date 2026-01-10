@@ -5,6 +5,7 @@ import { useAudio } from '@/hooks/useAudio';
 import { GAME_CONSTANTS } from '@/lib/game/constants/index';
 import AboutModal from '../AboutModal/AboutModal';
 import styles from './WindowFrame.module.css';
+import { ComputerIcon } from '../Icons/SystemIcons';
 
 interface WindowFrameProps {
   id?: string;
@@ -346,7 +347,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       >
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
-          <img src="/icons/computer.png" alt="" width={16} height={16} />
+          <ComputerIcon size={16} />
           {title}
         </div>
         <div className={styles.controls}>

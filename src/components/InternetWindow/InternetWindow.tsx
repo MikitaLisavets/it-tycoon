@@ -11,6 +11,17 @@ import Requirements from '../Requirements/Requirements';
 import StatBadge from '../StatBadge/StatBadge';
 import { calculateDynamicPrice } from '@/lib/game/utils/economy';
 import StatList from '../StatList/StatList';
+import {
+    SolitaireIcon,
+    NotepadIcon,
+    OfficeIcon,
+    CodeEditorIcon,
+    WebWalletIcon,
+    InvestorIcon,
+    WinampIcon,
+    AntivirusIcon,
+    OSIcon
+} from '../Icons/AppIcons';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -203,6 +214,25 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
         return itemLevel > currentLevel && affordable && levelReqMet && osReqMet;
     }
 
+    const getIconForSoftware = (id: string, category: SoftwareCategory) => {
+        if (category === 'system') return <OSIcon />;
+        if (category === 'antivirus') return <AntivirusIcon />;
+
+        switch (id) {
+            case 'solitaire': return <SolitaireIcon />;
+            case 'software_notepad': return <NotepadIcon />;
+            case 'software_office': return <OfficeIcon />;
+            case 'software_code_editor': return <CodeEditorIcon />;
+            case 'software_web_wallet': return <WebWalletIcon />;
+            case 'software_investor': return <InvestorIcon />;
+            case 'software_winamp': return <WinampIcon />;
+            default:
+                // Fallback based on category if ID doesn't match specific icons
+                if (category === 'games') return <SolitaireIcon />; // Placeholder for generic game
+                return <NotepadIcon />; // Generic fallback
+        }
+    };
+
     const renderSoftwareGrid = (category: SoftwareCategory) => {
         // Handle antivirus category mapping to programs
         let items: SoftwareItem[] = [];
@@ -237,8 +267,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                         <div key={item.id} className={`${styles.productCard} ${showDisabledOverlay ? 'striped-disabled-overlay' : ''}`}>
                             <div className={styles.productIcon}>
                                 <div className={`${styles.iconBox} ${styles[item.category]}`}>
-                                    {category === 'system' ? <img src="/icons/os.png" alt="" width={32} height={32} /> : null}
-                                    {category === 'programs' || category === 'antivirus' ? <img src="/icons/programs.png" alt="" width={32} height={32} /> : null}
+                                    {getIconForSoftware(item.id, item.category)}
                                 </div>
                             </div>
                             <div className={styles.productInfo}>

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Modal from '../Modal/Modal';
 import XPButton from '../XPButton/XPButton';
 import styles from './ResetModal.module.css';
+import { WarningIcon } from '../Icons/SystemIcons';
 
 interface ResetModalProps {
     isOpen: boolean;
@@ -30,7 +31,7 @@ const ResetModal: React.FC<ResetModalProps> = ({ isOpen, onConfirm, onCancel }) 
         >
             <div className={styles.body}>
                 <div className={styles.icon}>
-                    <img src="/icons/warning.png" alt="Warning" width={32} height={32} />
+                    <WarningIcon size={32} />
                 </div>
                 <div className={styles.message}>
                     {t('ResetModal.confirm')}

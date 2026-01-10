@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import styles from './Taskbar.module.css';
+import { WorldIcon, HeartIcon, SpeakerIcon } from '../Icons/SystemIcons';
 
 interface TaskbarProps {
     date: string;
@@ -68,7 +69,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 className={`${styles.startButton} ${getStartButtonStyle()}`}
                 onClick={() => { playClick(); window.open('https://ko-fi.com/mikiapps', '_blank'); }}
             >
-                {t('Common.donate')}{' '}❤️
+                {t('Common.donate')}{' '}<HeartIcon size={14} />
             </button>
 
             <div className={styles.divider} />
@@ -77,7 +78,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 className={styles.windowButton}
                 onClick={() => window.open('https://mikiapps.com', '_blank')}
             >
-                <img src="icons/world.png" alt="" className={styles.windowIcon} />
+                <WorldIcon size={16} className={styles.windowIcon} />
                 <span className={styles.windowTitle}>More apps at MikiApps</span>
             </button>
 
@@ -127,7 +128,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                         className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''}`}
                         title="Volume"
                     >
-                        {state.volume === 0 ? '🔇' : '🔊'}
+                        <SpeakerIcon size={16} muted={state.volume === 0} />
                     </button>
                 </div>
                 <div className={styles.time}>

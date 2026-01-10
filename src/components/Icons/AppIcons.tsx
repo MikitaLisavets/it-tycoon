@@ -65,3 +65,21 @@ export const WinampIcon: React.FC = () => (
         <path d="M17.5 7L11 17 H16 L12.5 25 L21 15 H16 L19 7 H17.5Z" fill="#FFD700" stroke="#FFA500" strokeWidth="1.5" strokeLinejoin="round" />
     </svg>
 );
+
+export const AntivirusIcon: React.FC = () => (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 4L28 9V16C28 22.5 22.5 28 16 30C9.5 28 4 22.5 4 16V9L16 4Z" fill="#E8F5E9" stroke="#2E7D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11 16L14.5 19.5L21 13" stroke="#2E7D32" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+export const OSIcon: React.FC = () => (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="6" width="26" height="20" rx="2" fill="#E3F2FD" stroke="#1565C0" strokeWidth="1.5" />
+        <line x1="3" y1="22" x2="29" y2="22" stroke="#1565C0" strokeWidth="1.5" />
+        <rect x="6" y="9" width="4" height="4" rx="0.5" fill="#1565C0" opacity="0.2" />
+        <rect x="12" y="9" width="4" height="4" rx="0.5" fill="#1565C0" opacity="0.2" />
+        <rect x="6" y="15" width="4" height="4" rx="0.5" fill="#1565C0" opacity="0.2" />
+        <rect x="12" y="15" width="4" height="4" rx="0.5" fill="#1565C0" opacity="0.2" />
+    </svg>
+);
