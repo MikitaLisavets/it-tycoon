@@ -357,15 +357,19 @@
     },
     "Entertainment": {
         "title": "Entertainment",
+        "walk": "Walk in the Park",
+        "tv": "Watch TV",
+        "cinema": "Go to Cinema",
+        "restaurant": "Fine Dining",
+        "concert": "Concert",
         "help": "Keep your happiness high by participating in various activities."
     },
     "Gym": {
         "title": "Fitness Center",
-        "train": "Train",
         "cardio": "Cardio Training",
         "weights": "Weight Lifting",
         "yoga": "Yoga Session",
-        "trainer": "Personal Trainer"
+        "personal_trainer": "Personal Trainer"
     },
     "Rest": {
         "title": "Rest & Relax",
