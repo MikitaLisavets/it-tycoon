@@ -72,6 +72,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                     onAction={!isDelayed ? () => handleAction(activity) : undefined}
                     actionSound={(!!activity.cost?.money && activity.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
+                    disabledOverlay={isDisabled && !isDelayed}
                     actionContent={
                         <div className={styles.actionContent}>
                             {isDelayed && (

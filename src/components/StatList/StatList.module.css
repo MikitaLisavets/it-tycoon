@@ -59,6 +59,10 @@
     font-weight: bold;
 }
 
+.withoutIcon .uiListItem {
+    padding-left: 0;
+}
+
 .uiListItem {
     align-items: center;
     font-size: 12px;
@@ -79,12 +83,12 @@
     }
 }
 
-.costList .uiListItem::before {
+.costList:not(.withoutIcon) .uiListItem::before {
     content: '[-]';
     color: var(--status-error);
 }
 
-.effectList .uiListItem::before {
+.effectList:not(.withoutIcon) .uiListItem::before {
     content: '[+]';
     color: var(--status-success);
 }

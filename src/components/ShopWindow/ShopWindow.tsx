@@ -77,6 +77,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                     onAction={!isDelayed ? () => handleAction(item) : undefined}
                     actionSound={(!!item.cost?.money && item.cost.money > 0) ? 'purchase' : 'click'}
                     actionDisabled={isDisabled}
+                    disabledOverlay={isDisabled && !isDelayed}
                     actionContent={
                         isDelayed && (
                             <div className={styles.progressBarContainer}>

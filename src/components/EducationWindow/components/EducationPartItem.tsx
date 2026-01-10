@@ -103,7 +103,7 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
     }
 
     return (
-        <div className={`${styles.ticketCard} ${isPartCompleted ? styles.completed : ''} ${isPartActive ? styles.active : ''} ${actionDisabled && !isPartCompleted && !isTrackCompleted && !isPartActive ? styles.disabled : ''}`}>
+        <div className={`${styles.ticketCard} ${isPartCompleted ? styles.completed : ''} ${isPartActive ? styles.active : ''} ${actionDisabled && !isPartCompleted && !isTrackCompleted && !isPartActive ? 'striped-disabled-overlay' : ''}`}>
             {isPartCompleted && <div className={styles.stamp}>{t('Education.completed')}</div>}
 
             <div className={styles.ticketContent}>

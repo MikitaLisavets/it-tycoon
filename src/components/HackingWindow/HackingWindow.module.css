@@ -54,16 +54,7 @@
     border-color: #00ff00;
 }
 
-.targetCard.disabled {
-    cursor: not-allowed;
-    background: repeating-linear-gradient(45deg,
-            #f0f0f0,
-            #f0f0f0 10px,
-            #e0e0e0 10px,
-            #e0e0e0 20px);
-    border: 1px dashed #999;
-    color: #666;
-}
+
 
 .targetName {
     font-weight: bold;

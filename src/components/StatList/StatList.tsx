@@ -11,9 +11,10 @@ interface StatListProps {
     title?: string;
     isFree?: boolean;
     freeLabel?: string;
+    withoutIcon?: boolean;
 }
 
-const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabel }) => {
+const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabel, withoutIcon }) => {
     const t = useTranslations();
 
     if (!data && !isFree) return null;
@@ -28,7 +29,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                 </span>
             )}
             {hasValues && (
-                <ul className={`${styles.uiList} ${type === 'cost' ? styles.costList : styles.effectList}`}>
+                <ul className={`${styles.uiList} ${type === 'cost' ? styles.costList : styles.effectList} ${withoutIcon ? styles.withoutIcon : ''}`}>
                     {/* Money */}
                     {data.money ? (
                         <li className={styles.uiListItem}>

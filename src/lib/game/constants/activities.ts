@@ -2,7 +2,7 @@ import { ActionableItem } from '../types';
 
 export const REST_ACTIVITIES: ActionableItem[] = [
     { id: 'short_break', duration: 10, cooldown: 60, effect: { stamina: 20 } },
-    { id: 'sleep', duration: 20, cooldown: 5 * 60, effect: { stamina: 'full' } },
+    { id: 'sleep', duration: 24, cooldown: 5 * 60, effect: { stamina: 'full', health: 'full', mood: 'full' } },
 ];
 
 export const FUN_ITEMS: ActionableItem[] = [

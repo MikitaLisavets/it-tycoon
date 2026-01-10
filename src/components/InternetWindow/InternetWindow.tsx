@@ -10,7 +10,7 @@ import { calculateComputerLevel } from '@/lib/game/utils/hardware';
 import Requirements from '../Requirements/Requirements';
 import StatBadge from '../StatBadge/StatBadge';
 import { calculateDynamicPrice } from '@/lib/game/utils/economy';
-import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
+import StatList from '../StatList/StatList';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -231,9 +231,10 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
                     // For System: Owned but not active -> Use button
                     const showUseButton = item.category === 'system' && owned && !installed;
+                    const showDisabledOverlay = !canBuy(item) && !owned && !ownedLower && !installed;
 
                     return (
-                        <div key={item.id} className={styles.productCard}>
+                        <div key={item.id} className={`${styles.productCard} ${showDisabledOverlay ? 'striped-disabled-overlay' : ''}`}>
                             <div className={styles.productIcon}>
                                 <div className={`${styles.iconBox} ${styles[item.category]}`}>
                                     {category === 'system' ? <img src="/icons/os.png" alt="" width={32} height={32} /> : null}
@@ -243,12 +244,12 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                             <div className={styles.productInfo}>
                                 <div className={styles.productName}>{t(`Values.${item.id}`)}</div>
                                 {item.cost?.money !== undefined && item.cost.money > 0 && !owned && (
-                                    <div className={styles.productPrice}>
-                                        <StatBadge
-                                            stat="MONEY"
-                                            value={formatNumberWithSuffix(calculateDynamicPrice(item.cost.money, state))}
-                                        />
-                                    </div>
+                                    <StatList
+                                        type="cost"
+                                        withoutIcon
+                                        data={{ money: calculateDynamicPrice(item.cost.money, state) }}
+                                        title={t('Common.cost')}
+                                    />
                                 )}
                             </div>
                             <div className={styles.productAction}>

@@ -150,7 +150,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
                             {dynamicTargets.map(target => (
                                 <div
                                     key={target.id}
-                                    className={`${styles.targetCard} ${state.money < target.fine || state.computer.modem === 'modem_none' ? styles.disabled : ''}`}
+                                    className={`${styles.targetCard} ${state.money < target.fine || state.computer.modem === 'modem_none' ? 'striped-disabled-overlay' : ''}`}
                                     onClick={() => handleExecute(target)}
                                 >
                                     <div className={styles.targetName}>{t(`Hacking.targets_${target.id}`)}</div>

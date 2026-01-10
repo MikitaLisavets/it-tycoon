@@ -12,7 +12,9 @@ interface ListOptionProps {
     actionContent?: ReactNode;
     className?: string;
     actionSound?: 'click' | 'purchase' | 'none';
+    disabledOverlay?: boolean;
 }
+
 
 const ListOption: React.FC<ListOptionProps> = ({
     title,
@@ -23,10 +25,11 @@ const ListOption: React.FC<ListOptionProps> = ({
     actionDisabled,
     actionContent,
     className = '',
-    actionSound = 'click'
+    actionSound = 'click',
+    disabledOverlay = false
 }) => {
     return (
-        <div className={`${styles.container} ${className}`}>
+        <div className={`${styles.container} ${className} ${disabledOverlay ? 'striped-disabled-overlay' : ''}`}>
             <div className={styles.info}>
                 <div className={styles.title}>{title}</div>
                 {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
