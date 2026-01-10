@@ -44,6 +44,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   const [position, setPosition] = React.useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
   const dragStartRef = React.useRef<{ x: number; y: number } | null>(null);
+  const rafIdRef = React.useRef<number | null>(null);
+  const windowDimensionsRef = React.useRef<{ width: number; height: number } | null>(null);
 
   // Resizing state
   const [size, setSize] = React.useState<{ width: number; height: number } | null>(null);
@@ -131,6 +133,13 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       x: e.clientX - position.x,
       y: e.clientY - position.y
     };
+    // Cache window dimensions to avoid layout recalculation during drag
+    if (windowRef.current) {
+      windowDimensionsRef.current = {
+        width: windowRef.current.offsetWidth,
+        height: windowRef.current.offsetHeight
+      };
+    }
   };
 
   const handleResizeMouseDown = (e: React.MouseEvent) => {
@@ -150,20 +159,27 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging || !dragStartRef.current || !windowRef.current) return;
+      if (!isDragging || !dragStartRef.current || !windowDimensionsRef.current) return;
 
-      const newX = e.clientX - dragStartRef.current.x;
-      const newY = e.clientY - dragStartRef.current.y;
+      // Cancel any pending RAF
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
 
-      // Boundary checks
-      const windowWidth = windowRef.current.offsetWidth;
-      const windowHeight = windowRef.current.offsetHeight;
-      const maxX = window.innerWidth - windowWidth;
-      const maxY = window.innerHeight - 28 - windowHeight; // 28px is taskbar height
+      // Use RAF for smooth 60fps updates
+      rafIdRef.current = requestAnimationFrame(() => {
+        const newX = e.clientX - dragStartRef.current!.x;
+        const newY = e.clientY - dragStartRef.current!.y;
 
-      setPosition({
-        x: Math.max(0, Math.min(newX, maxX)),
-        y: Math.max(0, Math.min(newY, maxY))
+        // Boundary checks using cached dimensions
+        const { width: windowWidth, height: windowHeight } = windowDimensionsRef.current!;
+        const maxX = window.innerWidth - windowWidth;
+        const maxY = window.innerHeight - 28 - windowHeight; // 28px is taskbar height
+
+        setPosition({
+          x: Math.max(0, Math.min(newX, maxX)),
+          y: Math.max(0, Math.min(newY, maxY))
+        });
       });
     };
 
@@ -180,19 +196,28 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
     };
 
     const handleMouseUp = () => {
+      // Cancel any pending RAF
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+
       setIsDragging(false);
       dragStartRef.current = null;
+      windowDimensionsRef.current = null;
 
-      // Save position to localStorage
+      // Debounce localStorage save to avoid blocking
       if (position && id) {
-        try {
-          const storageKey = `${GAME_CONSTANTS.GAME_NAME}-window-positions`;
-          const savedPositions = JSON.parse(localStorage.getItem(storageKey) || '{}');
-          savedPositions[id] = position;
-          localStorage.setItem(storageKey, JSON.stringify(savedPositions));
-        } catch (e) {
-          console.error('Failed to save window position:', e);
-        }
+        setTimeout(() => {
+          try {
+            const storageKey = `${GAME_CONSTANTS.GAME_NAME}-window-positions`;
+            const savedPositions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            savedPositions[id] = position;
+            localStorage.setItem(storageKey, JSON.stringify(savedPositions));
+          } catch (e) {
+            console.error('Failed to save window position:', e);
+          }
+        }, 0);
       }
     };
 
@@ -243,11 +268,12 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       minWidth: minWidth,
       maxHeight: size ? `${size.height}px` : '',
       position: 'absolute',
-      left: position ? `${position.x}px` : '50%', // Fallback to center before measurement
-      top: position ? `${position.y}px` : '50%',
-      transform: position ? 'none' : 'translate(-50%, -50%)', // Center transform fallback
+      // Use transform for GPU acceleration instead of left/top
+      left: 0,
+      top: 0,
+      transform: position ? `translate3d(${position.x}px, ${position.y}px, 0)` : 'translate(-50%, -50%)',
       zIndex: isFocused ? 100 : (isDragging ? 90 : 10),
-      boxShadow: isDragging ? '4px 4px 10px rgba(0,0,0,0.5)' : undefined
+      willChange: isDragging ? 'transform' : undefined
     };
 
   // Dropdown state
@@ -308,7 +334,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   return (
     <div
       ref={windowRef}
-      className={`${styles.window} ${(isMaximized || isMobile) ? styles.maximized : ''} ${isFocused ? styles.focused : ''}`}
+      className={`${styles.window} ${(isMaximized || isMobile) ? styles.maximized : ''} ${isFocused ? styles.focused : ''} ${isDragging ? styles.dragging : ''}`}
       style={windowStyle}
       onMouseDown={() => onFocus?.()}
     >

@@ -9,6 +9,12 @@
     overflow: hidden;
     position: relative;
     max-height: 700px;
+    /* Hint browser to prepare GPU layer for transforms */
+    will-change: transform;
+}
+
+.window.dragging {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .titleBar {
