@@ -59,36 +59,20 @@
     font-weight: bold;
 }
 
-.withoutIcon .uiListItem {
-    padding-left: 0;
-}
-
 .uiListItem {
     align-items: center;
     font-size: 12px;
     position: relative;
-    padding-left: 24px;
     display: inline-flex;
-    ;
-
-    &:before {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--color-text-medium);
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-        font-size: 10px;
-    }
+    gap: 6px;
 }
 
-.costList:not(.withoutIcon) .uiListItem::before {
-    content: '[-]';
+.costIcon {
     color: var(--status-error);
+    flex-shrink: 0;
 }
 
-.effectList:not(.withoutIcon) .uiListItem::before {
-    content: '[+]';
+.effectIcon {
     color: var(--status-success);
+    flex-shrink: 0;
 }

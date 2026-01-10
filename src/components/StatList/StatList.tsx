@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import StatBadge from '../StatBadge/StatBadge';
+import { PlusIcon, MinusIcon } from '../Icons/StatIcons';
 import { Cost, Effect } from '@/lib/game/types';
 import styles from './StatList.module.css';
 import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
@@ -21,6 +22,9 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
 
     const hasValues = data && Object.values(data).some(v => v !== undefined && v !== 0);
 
+    const Icon = type === 'cost' ? MinusIcon : PlusIcon;
+    const iconClass = type === 'cost' ? styles.costIcon : styles.effectIcon;
+
     return (
         <div className={styles.statListSection}>
             {title && (
@@ -33,6 +37,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Money */}
                     {data.money ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="MONEY"
                                 value={typeof data.money === 'number' ? formatNumberWithSuffix(data.money) : data.money}
@@ -44,6 +49,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Max Health */}
                     {'maxHealth' in data && data.maxHealth ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="HEALTH"
                                 value={data.maxHealth}
@@ -55,6 +61,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Health */}
                     {data.health ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             {data.health === 'full' ? (
                                 <StatBadge stat="HEALTH" value={freeLabel || 'Full'} label={t('Stats.health')} />
                             ) : (
@@ -71,6 +78,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Max Stamina */}
                     {'maxStamina' in data && data.maxStamina ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="STAMINA"
                                 value={data.maxStamina}
@@ -82,6 +90,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Stamina */}
                     {data.stamina ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             {data.stamina === 'full' ? (
                                 <StatBadge stat="STAMINA" value={freeLabel || 'Full'} label={t('Stats.stamina')} />
                             ) : (
@@ -98,6 +107,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Max Mood */}
                     {'maxMood' in data && data.maxMood ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="MOOD"
                                 value={data.maxMood}
@@ -109,6 +119,7 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                     {/* Mood */}
                     {data.mood ? (
                         <li className={styles.uiListItem}>
+                            {!withoutIcon && <Icon className={iconClass} size={12} />}
                             {data.mood === 'full' ? (
                                 <StatBadge stat="MOOD" value={freeLabel || 'Full'} label={t('Stats.mood')} />
                             ) : (
