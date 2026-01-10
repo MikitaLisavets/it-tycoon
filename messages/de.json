@@ -112,7 +112,9 @@
             "exam_pending": "Prüfung ausstehend! Öffne das Bildungszentrum",
             "completed_message": "Glückwunsch! Du hast die Prüfung bestanden.",
             "rejected_title": "Prüfung nicht bestanden",
-            "class": "Klasse"
+            "class": "Klasse",
+            "insufficient_funds": "Nicht genug Geld",
+            "complete_previous_first": "Vorherigen Teil zuerst abschließen"
         },
         "values": {
             "none": "Arbeitslos",

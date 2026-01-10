@@ -250,7 +250,9 @@
         "exam_pending": "Time for the exam! Open Education Center",
         "exam_passed": "Congratulations! You successfully passed the exam.",
         "exam_failed_title": "Exam Failed",
-        "class": "Class"
+        "class": "Class",
+        "insufficient_funds": "Not enough money",
+        "complete_previous_first": "Complete previous class first"
     },
     "Bank": {
         "title": "Online Banking",

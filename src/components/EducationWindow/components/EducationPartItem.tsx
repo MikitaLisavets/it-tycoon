@@ -69,13 +69,13 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
         actionLabel = t('Education.learning');
     }
 
-    const onAction = onStart;
+    const onAction = isPartActive ? null : onStart;
     const isLearningInProgress = status === 'studying' || status === 'quiz';
     const actionDisabled = state.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked || isNotYetAvailable || isLearningInProgress;
 
 
     // Action Content (Progress Bar + Time)
-    const actionContent = (
+    const actionContent = isPartActive && (status === 'quiz') ? null : (
         <div className={styles.actionContent}>
             {isPartActive && status === 'studying' && (
                 <ProgressBar progress={progress} height="12px" />
@@ -103,12 +103,23 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
     }
 
     return (
-        <div className={`${styles.ticketCard} ${isPartCompleted ? styles.completed : ''} ${isPartActive ? styles.active : ''}`}>
+        <div className={`${styles.ticketCard} ${isPartCompleted ? styles.completed : ''} ${isPartActive ? styles.active : ''} ${actionDisabled && !isPartCompleted && !isTrackCompleted && !isPartActive ? styles.disabled : ''}`}>
             {isPartCompleted && <div className={styles.stamp}>{t('Education.completed')}</div>}
 
             <div className={styles.ticketContent}>
                 <div className={styles.ticketHeader}>
                     <span>{t('Education.class').toUpperCase()} #{index + 1}0{Math.floor(Math.random() * 10)}</span>
+
+                    {actionDisabled && !isPartCompleted && !isTrackCompleted && !isLearningInProgress && (
+                        <div className={styles.errorMessage}>
+                            {state.money < dynamicCost && (
+                                <span>{t('Education.insufficient_funds')}</span>
+                            )}
+                            {isNotYetAvailable && state.money >= dynamicCost && (
+                                <span>{t('Education.complete_previous_first')}</span>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.ticketBody}>
