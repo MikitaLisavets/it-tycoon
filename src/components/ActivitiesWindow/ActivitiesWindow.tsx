@@ -80,7 +80,7 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
 
                             {activity.duration && (
                                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                    <StatBadge stat="TIME" value={`${activity.duration}s`} label={t('Common.duration')} />
+                                    <StatBadge stat="TIME" value={`${activity.duration}s`} />
                                 </div>
                             )}
                         </div>
