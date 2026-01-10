@@ -8,7 +8,7 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     warehouse_worker: {
         id: 'warehouse_worker',
         income: 1,
-        cost: { mood: 1, stamina: 1 }
+        cost: { stamina: 1 }
     },
     courier: {
         id: 'courier',

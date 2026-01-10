@@ -160,7 +160,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                             {state.job !== 'none' && (
                                 <>
                                     <p>
-                                        {t('Job.income', { income: formatNumberWithSuffix(totalIncome) })}
+                                        {t('Job.income', { income: formatNumberWithSuffix(totalIncome) })} {t('Job.per_click')}
                                         {jobLevel > 0 && <span className={styles.bonusText}>(+{formatNumberWithSuffix(bonusIncome)})</span>}
                                     </p>
                                     <div className={styles.expContainer}>
@@ -205,17 +205,21 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 >
                                     {t('Job.work_now')}
                                 </XPButton>
-                                {((currentJob.cost?.health ? state.health < currentJob.cost.health : false) ||
-                                    (currentJob.cost?.mood ? state.mood < currentJob.cost.mood : false) ||
-                                    (currentJob.cost?.stamina ? state.stamina < currentJob.cost.stamina : false)) && (
-                                        <div className={styles.workError}>
-                                            {currentJob.cost?.health && state.health < currentJob.cost.health
-                                                ? t('Job.error_low_health')
-                                                : currentJob.cost?.stamina && state.stamina < currentJob.cost.stamina
-                                                    ? t('Stats.stamina').replace(':', '') + ' low!'
-                                                    : t('Job.error_low_mood')}
-                                        </div>
-                                    )}
+                                {currentJob.cost?.health && state.health < currentJob.cost.health ? (
+                                    <div className={styles.workError}>
+                                        {t('Job.error_low_health')}
+                                    </div>
+                                ) : null}
+                                {currentJob.cost?.mood && state.mood < currentJob.cost.mood ? (
+                                    <div className={styles.workError}>
+                                        {t('Job.error_low_mood')}
+                                    </div>
+                                ) : null}
+                                {currentJob.cost?.stamina && state.stamina < currentJob.cost.stamina ? (
+                                    <div className={styles.workError}>
+                                        {t('Job.error_low_stamina')}
+                                    </div>
+                                ) : null}
                             </div>
                         )}
                     </div>
