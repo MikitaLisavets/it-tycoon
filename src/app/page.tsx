@@ -74,10 +74,11 @@ export default function Home() {
     const [isBooting, setIsBooting] = useState(true);
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
 
-    // Pause game loop while booting
+    // Pause game loop when any modal/overlay is active
     useEffect(() => {
-        setIsPaused(isBooting);
-    }, [isBooting, setIsPaused]);
+        const shouldPause = isBooting || isHelpOpen || state.gameOver;
+        setIsPaused(shouldPause);
+    }, [isBooting, isHelpOpen, state.gameOver, setIsPaused]);
     const [hackingLogs, setHackingLogs] = useState<string[]>([]);
 
     const formatTime = (h: number, m: number) => `${h}:${m.toString().padStart(2, '0')}`;

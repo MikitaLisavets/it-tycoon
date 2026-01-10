@@ -163,7 +163,7 @@ function useGameStateInternal() {
         }, GAME_CONSTANTS.TICK_RATE_MS);
 
         return () => clearInterval(interval);
-    }, [isInitialized, state.gameOver]);
+    }, [isInitialized, state.gameOver, isPaused]);
 
     // Save to localStorage on change
     useEffect(() => {
