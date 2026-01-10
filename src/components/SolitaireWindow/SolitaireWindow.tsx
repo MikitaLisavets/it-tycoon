@@ -3,6 +3,8 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import styles from './SolitaireWindow.module.css';
 import { useTranslations } from 'next-intl';
 import * as logic from './logic';
+import { SolitaireState, Card, Suit, Pile } from '../../lib/game/types';
+import { useGameState } from '../../hooks/useGameState';
 import { useAudio } from '../../hooks/useAudio';
 import XPButton from '../XPButton/XPButton';
 
@@ -21,23 +23,47 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     onFocus,
 }) => {
     const t = useTranslations();
-    const [gameState, setGameState] = useState<logic.SolitaireState | null>(null);
-    const [selectedCard, setSelectedCard] = useState<{ card: logic.Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | logic.Suit; cardIndex?: number } | null>(null);
-    const [isWon, setIsWon] = useState(false);
+    const { state, updateState } = useGameState();
+    const gameState = state.apps.solitaire;
+
+    const [selectedCard, setSelectedCard] = useState<{ card: Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | Suit; cardIndex?: number } | null>(null);
     const audio = useAudio();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>(null);
     const foundationsRef = useRef<(HTMLDivElement | null)[]>([]);
 
+    // Helper to update solitaire part of global state
+    const updateSolitaireState = useCallback((newStateOrFn: SolitaireState | ((prev: SolitaireState | null) => SolitaireState | null)) => {
+        let newState: SolitaireState | null;
+
+        if (typeof newStateOrFn === 'function') {
+            // We need current state to calc new state, but we can't access it inside the reducer easily without refs or dependency
+            // But actually we have gameState from props/hook which is fresh enough? useGameState triggers rerender.
+            // Wait, the function passed to setGameState usually receives previous state.
+            // We emulate that:
+            newState = newStateOrFn(state.apps.solitaire);
+        } else {
+            newState = newStateOrFn;
+        }
+
+        if (newState) {
+            updateState({
+                apps: {
+                    ...state.apps,
+                    solitaire: newState
+                }
+            });
+        }
+    }, [state.apps.solitaire, updateState]);
+
 
     const startNewGame = useCallback(() => {
-        setGameState(logic.initializeGame());
+        updateSolitaireState(logic.initializeGame());
         setSelectedCard(null);
-        setIsWon(false);
-    }, []);
+    }, [updateSolitaireState]);
 
     const cheatWin = useCallback(() => {
-        setGameState(prev => {
+        updateSolitaireState(prev => {
             if (!prev) return prev;
             const newState = { ...prev };
             logic.SUITS.forEach(suit => {
@@ -48,16 +74,17 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                     id: `cheat-${rank}-${suit}`
                 }));
             });
+            newState.isWon = true;
             return newState;
         });
-        setIsWon(true);
-    }, []);
+    }, [updateSolitaireState]);
 
     useEffect(() => {
         if (isOpen && !gameState) {
             startNewGame();
         }
     }, [isOpen, gameState, startNewGame]);
+
     const runWinAnimation = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -73,7 +100,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         const foundations = gameState?.foundation;
         if (!foundations) return;
 
-        const suits: logic.Suit[] = ['spades', 'hearts', 'diamonds', 'clubs'];
+        const suits: Suit[] = ['spades', 'hearts', 'diamonds', 'clubs'];
         let suitIdx = 0;
         let cardIdx = 12; // Start from top card (King)
 
@@ -149,7 +176,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                 ctx.fillStyle = isRed ? '#d11' : '#000';
                 ctx.font = 'bold 12px Arial';
                 ctx.fillText(c.rank, c.x + 5, c.y + 15);
-                const suitSymbol = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' }[c.suit as logic.Suit];
+                const suitSymbol = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' }[c.suit as Suit];
                 ctx.font = '20px Arial';
                 ctx.fillText(suitSymbol, c.x + cardWidth / 2 - 10, c.y + cardHeight / 2 + 7);
 
@@ -177,7 +204,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     }, [gameState]);
 
     useEffect(() => {
-        if (isWon) {
+        if (gameState?.isWon) {
             const canvas = canvasRef.current;
             if (canvas) {
                 canvas.width = canvas.parentElement?.clientWidth || 800;
@@ -189,14 +216,14 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                 if (animationRef.current) cancelAnimationFrame(animationRef.current);
             };
         }
-    }, [isWon, runWinAnimation]);
+    }, [gameState?.isWon, runWinAnimation]);
 
     if (!isOpen || !gameState) return null;
 
     const handleStockClick = () => {
         if (gameState.stock.length === 0) {
             // Recycle waste to stock
-            setGameState(prev => {
+            updateSolitaireState(prev => {
                 if (!prev) return prev;
                 return {
                     ...prev,
@@ -206,7 +233,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
             });
         } else {
             // Draw from stock to waste
-            setGameState(prev => {
+            updateSolitaireState(prev => {
                 if (!prev) return prev;
                 const newStock = [...prev.stock];
                 const card = newStock.pop()!;
@@ -221,7 +248,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         setSelectedCard(null);
     };
 
-    const handleCardClick = (card: logic.Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | logic.Suit, cardIndex?: number) => {
+    const handleCardClick = (card: Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | Suit, cardIndex?: number) => {
         onFocus();
 
         if (!selectedCard) {
@@ -239,7 +266,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         if (pileType === 'tableau' && typeof pileIndex === 'number') {
             success = moveCardsToTableau(pileIndex);
         } else if (pileType === 'foundation' && typeof pileIndex === 'string') {
-            success = moveCardsToFoundation(pileIndex as logic.Suit);
+            success = moveCardsToFoundation(pileIndex as Suit);
         }
 
         if (success) {
@@ -258,14 +285,14 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     };
 
 
-    const handleEmptyPileClick = (pileType: 'tableau' | 'foundation', pileIndex: number | logic.Suit) => {
+    const handleEmptyPileClick = (pileType: 'tableau' | 'foundation', pileIndex: number | Suit) => {
         if (!selectedCard) return;
 
         let success = false;
         if (pileType === 'tableau' && typeof pileIndex === 'number') {
             success = moveCardsToTableau(pileIndex);
         } else if (pileType === 'foundation' && typeof pileIndex === 'string') {
-            success = moveCardsToFoundation(pileIndex as logic.Suit);
+            success = moveCardsToFoundation(pileIndex as Suit);
         }
 
         if (success) {
@@ -274,7 +301,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         }
     };
 
-    const handleDragStart = (e: React.DragEvent, card: logic.Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | logic.Suit, cardIndex?: number) => {
+    const handleDragStart = (e: React.DragEvent, card: Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | Suit, cardIndex?: number) => {
         if (!card.isFaceUp) {
             e.preventDefault();
             return;
@@ -292,7 +319,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         e.dataTransfer.dropEffect = 'move';
     };
 
-    const handleDrop = (e: React.DragEvent, targetPileType: 'tableau' | 'foundation', targetPileIndex: number | logic.Suit) => {
+    const handleDrop = (e: React.DragEvent, targetPileType: 'tableau' | 'foundation', targetPileIndex: number | Suit) => {
         e.preventDefault();
         if (!selectedCard) return;
 
@@ -300,7 +327,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         if (targetPileType === 'tableau' && typeof targetPileIndex === 'number') {
             success = moveCardsToTableau(targetPileIndex);
         } else if (targetPileType === 'foundation' && typeof targetPileIndex === 'string') {
-            success = moveCardsToFoundation(targetPileIndex as logic.Suit);
+            success = moveCardsToFoundation(targetPileIndex as Suit);
         }
 
         if (success) {
@@ -313,14 +340,14 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         if (!selectedCard || !gameState) return false;
 
         let success = false;
-        setGameState(prev => {
+        updateSolitaireState(prev => {
             if (!prev) return prev;
 
             const targetPile = prev.tableau[targetPileIndex];
             if (!logic.canMoveToTableau(selectedCard.card, targetPile)) return prev;
 
             const newState = { ...prev };
-            let cardsToMove: logic.Card[] = [];
+            let cardsToMove: Card[] = [];
 
             if (selectedCard.pileType === 'waste') {
                 if (newState.waste.length === 0 || newState.waste[newState.waste.length - 1].id !== selectedCard.card.id) return prev;
@@ -352,11 +379,11 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         return success;
     };
 
-    const moveCardsToFoundation = (suit: logic.Suit): boolean => {
+    const moveCardsToFoundation = (suit: Suit): boolean => {
         if (!selectedCard || !gameState) return false;
 
         let success = false;
-        setGameState(prev => {
+        updateSolitaireState(prev => {
             if (!prev) return prev;
 
             // Only top card can move to foundation
@@ -370,7 +397,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
             if (!logic.canMoveToFoundation(selectedCard.card, targetFoundation, suit)) return prev;
 
             const newState = { ...prev };
-            let card: logic.Card;
+            let card: Card;
 
             if (selectedCard.pileType === 'waste') {
                 if (newState.waste.length === 0 || newState.waste[newState.waste.length - 1].id !== selectedCard.card.id) return prev;
@@ -397,15 +424,15 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         return success;
     };
 
-    const checkWinCondition = (state: logic.SolitaireState) => {
+    const checkWinCondition = (state: SolitaireState) => {
         const allDone = Object.values(state.foundation).every(pile => pile.length === 13);
         if (allDone) {
-            setIsWon(true);
+            state.isWon = true;
         }
     };
 
 
-    const renderCard = (card: logic.Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | logic.Suit, cardIndex?: number, isRootInPile: boolean = false, children?: React.ReactNode) => {
+    const renderCard = (card: Card, pileType: 'waste' | 'tableau' | 'foundation', pileIndex?: number | Suit, cardIndex?: number, isRootInPile: boolean = false, children?: React.ReactNode) => {
         if (!card) return null;
         const isSelected = selectedCard?.card?.id === card.id;
         const colorClass = logic.getSuitColor(card.suit) === 'red' ? styles.cardRed : styles.cardBlack;
@@ -440,7 +467,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                     if (pileType === 'tableau' && typeof pileIndex === 'number') {
                         handleDrop(e, 'tableau', pileIndex);
                     } else if (pileType === 'foundation' && typeof pileIndex === 'string') {
-                        handleDrop(e, 'foundation', pileIndex as logic.Suit);
+                        handleDrop(e, 'foundation', pileIndex as Suit);
                     }
                 }}
             >
@@ -456,7 +483,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         );
     };
 
-    const renderTableauStack = (pile: logic.Card[], pIdx: number, cIdx: number): React.ReactNode => {
+    const renderTableauStack = (pile: Card[], pIdx: number, cIdx: number): React.ReactNode => {
         if (cIdx >= pile.length) return null;
         return renderCard(
             pile[cIdx],
@@ -497,7 +524,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                             </div>
                         </div>
                         <div className={styles.foundations}>
-                            {(['spades', 'hearts', 'diamonds', 'clubs'] as logic.Suit[]).map((suit, idx) => (
+                            {(['spades', 'hearts', 'diamonds', 'clubs'] as Suit[]).map((suit, idx) => (
                                 <div
                                     key={suit}
                                     ref={el => { foundationsRef.current[idx] = el; }}
@@ -528,8 +555,8 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
                         ))}
                     </div>
                 </div>
-                {isWon && <canvas ref={canvasRef} className={styles.animationCanvas} />}
-                {isWon && (
+                {gameState.isWon && <canvas ref={canvasRef} className={styles.animationCanvas} />}
+                {gameState.isWon && (
                     <div className={styles.winMessage}>
                         <h2>{t('Solitaire.victory')}</h2>
                         <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>

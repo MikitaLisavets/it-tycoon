@@ -107,6 +107,11 @@ export interface GameState {
         credits: CreditRecord[];
         deposits: DepositRecord[];
     };
+
+    // Apps State
+    apps: {
+        solitaire: SolitaireState | null;
+    };
 }
 
 export const INITIAL_STATE: GameState = {
@@ -201,7 +206,32 @@ export const INITIAL_STATE: GameState = {
         credits: [],
         deposits: [],
     },
+
+    apps: {
+        solitaire: null
+    }
 };
+
+// Solitaire Types
+export type Suit = 'spades' | 'hearts' | 'diamonds' | 'clubs';
+export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';
+
+export interface Card {
+    suit: Suit;
+    rank: Rank;
+    isFaceUp: boolean;
+    id: string;
+}
+
+export type Pile = Card[];
+
+export interface SolitaireState {
+    stock: Pile;
+    waste: Pile;
+    foundation: Record<Suit, Pile>;
+    tableau: Pile[];
+    isWon: boolean;
+}
 
 export interface JobRequirements {
     education?: EducationId;

@@ -1,22 +1,6 @@
-export type Suit = 'spades' | 'hearts' | 'diamonds' | 'clubs';
-export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';
+import { Suit, Rank, Card, Pile, SolitaireState } from '../../lib/game/types';
 
-export interface Card {
-    suit: Suit;
-    rank: Rank;
-    isFaceUp: boolean;
-    id: string;
-}
-
-export type Pile = Card[];
-
-export interface SolitaireState {
-    stock: Pile;
-    waste: Pile;
-    foundation: Record<Suit, Pile>;
-    tableau: Pile[];
-}
-
+// Re-export constants if needed by components, or just use them here
 export const SUITS: Suit[] = ['spades', 'hearts', 'diamonds', 'clubs'];
 export const RANKS: Rank[] = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
@@ -69,7 +53,8 @@ export const initializeGame = (): SolitaireState => {
             diamonds: [],
             clubs: []
         },
-        tableau
+        tableau,
+        isWon: false
     };
 };
 
