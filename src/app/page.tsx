@@ -266,7 +266,7 @@ export default function Home() {
                             {/* Main Info Grid */}
                             <div className={styles.panelGrid}>
                                 <Panel label={t('Dashboard.panel_personal')}>
-                                    <StatRow label={t('Stats.job')} value={t(`Values.${state.job}`) /* Should use mapped job title eventually */} />
+                                    <StatRow label={t('Stats.job')} value={t(`Values.${state.job.id}`) /* Should use mapped job title eventually */} />
                                     <StatRow label={t('Stats.education')} value={t(`Values.${state.education}`)} />
                                     <StatRow label={t('Stats.english')} value={t(`Values.${state.english}`)} />
                                 </Panel>

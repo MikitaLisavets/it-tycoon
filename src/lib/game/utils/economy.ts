@@ -9,7 +9,7 @@ import { GameState } from "../types";
  * the cost of living (food, entertainment) increases to stay relevant.
  */
 export function getInflationMultiplier(state: GameState): number {
-    const totalJobLevels = Object.values(state.jobLevels).reduce((sum, lvl) => sum + lvl, 0);
+    const totalJobLevels = Object.values(state.job.levels).reduce((sum, lvl) => sum + lvl, 0);
 
     // Scale factor: 1.2 ^ (levels / 5)
     // At Level 0: 1.0x

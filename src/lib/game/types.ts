@@ -32,16 +32,16 @@ export interface GameState {
     version: number;
     locale: 'en' | 'de';
     money: number;
-    job: JobId;
+    education: EducationId;
+    english: string;
+    volume: number;
+
     mood: number;
     maxMood: number;
     health: number;
     maxHealth: number;
     stamina: number;
     maxStamina: number;
-    education: EducationId;
-    english: string;
-    volume: number;
 
     // Computer Hardware
     computer: {
@@ -89,8 +89,14 @@ export interface GameState {
         status: 'idle' | 'studying' | 'quiz';
         startTime?: number;
     };
-    jobLevels: Record<string, number>; // jobId -> level (0-10)
-    jobExp: Record<string, number>;    // jobId -> exp
+
+    // Job
+    job: {
+        id: JobId;
+        levels: Record<string, number>; // jobId -> level (0-10)
+        exp: Record<string, number>;    // jobId -> exp
+    };
+
     cooldowns: Record<string, number>; // activityId -> timestamp
     date: {
         day: number;
@@ -118,7 +124,6 @@ export const INITIAL_STATE: GameState = {
     version: 1,
     locale: 'en',
     money: 100,
-    job: "none",
     mood: 50,
     maxMood: 100,
     health: 50,
@@ -169,23 +174,27 @@ export const INITIAL_STATE: GameState = {
         currentPartIndex: 0,
         status: 'idle',
     },
-    jobLevels: {
-        warehouse_worker: 0,
-        courier: 0,
-        office_worker: 0,
-        web_dev: 0,
-        senior_dev: 0,
-        startup_founder: 0,
-        it_investor: 0,
-    },
-    jobExp: {
-        warehouse_worker: 0,
-        courier: 0,
-        office_worker: 0,
-        web_dev: 0,
-        senior_dev: 0,
-        startup_founder: 0,
-        it_investor: 0,
+
+    job: {
+        id: "none",
+        levels: {
+            warehouse_worker: 0,
+            courier: 0,
+            office_worker: 0,
+            web_dev: 0,
+            senior_dev: 0,
+            startup_founder: 0,
+            it_investor: 0,
+        },
+        exp: {
+            warehouse_worker: 0,
+            courier: 0,
+            office_worker: 0,
+            web_dev: 0,
+            senior_dev: 0,
+            startup_founder: 0,
+            it_investor: 0,
+        },
     },
 
     cooldowns: {},

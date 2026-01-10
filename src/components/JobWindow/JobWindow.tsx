@@ -41,13 +41,13 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
 
     if (!isOpen) return null;
 
-    const currentJob = JOBS[state.job];
+    const currentJob = JOBS[state.job.id];
 
 
     const computerLevel = calculateComputerLevel(state.computer);
 
-    const jobLevel = state.jobLevels[state.job] || 0;
-    const jobExp = state.jobExp[state.job] || 0;
+    const jobLevel = state.job.levels[state.job.id] || 0;
+    const jobExp = state.job.exp[state.job.id] || 0;
     const expToNext = (jobLevel + 1) * 10;
     const isMaxLevel = jobLevel >= 10;
 
@@ -92,8 +92,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                     health: state.health - healthCost,
                     mood: state.mood - moodCost,
                     stamina: state.stamina - staminaCost,
-                    jobExp: { ...state.jobExp, [state.job]: isMaxLevel ? jobExp : newExp },
-                    jobLevels: { ...state.jobLevels, [state.job]: newLevel }
+                    job: {
+                        ...state.job,
+                        exp: { ...state.job.exp, [state.job.id]: isMaxLevel ? jobExp : newExp },
+                        levels: { ...state.job.levels, [state.job.id]: newLevel }
+                    }
                 });
             }
         }
@@ -114,9 +117,9 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
         }
 
         if (reqs.previousJob) {
-            if (state.job !== reqs.previousJob) return false;
+            if (state.job.id !== reqs.previousJob) return false;
             // CHECK FOR LEVEL 10
-            if ((state.jobLevels[reqs.previousJob] || 0) < 10) return false;
+            if ((state.job.levels[reqs.previousJob] || 0) < 10) return false;
         }
 
         if (reqs.mood && state.mood < reqs.mood) {
@@ -128,7 +131,12 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
 
     const handleApply = (jobId: JobId) => {
         if (checkRequirements(jobId)) {
-            updateState({ job: jobId });
+            updateState({
+                job: {
+                    ...state.job,
+                    id: jobId
+                }
+            });
         }
     };
 
@@ -154,10 +162,10 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                     <div className={styles.currentJobWrapper}>
                         <div className={styles.currentJobSection}>
                             <h3>
-                                <span className={styles.jobTitle}>{t('Job.current_job')}: {t(`Values.${state.job}`)}</span>
-                                {state.job !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('Common.level')} {jobLevel}</span>}
+                                <span className={styles.jobTitle}>{t('Job.current_job')}: {t(`Values.${state.job.id}`)}</span>
+                                {state.job.id !== 'none' && <span className={`${styles.levelBadge} ${getLevelClass(jobLevel)}`}>{t('Common.level')} {jobLevel}</span>}
                             </h3>
-                            {state.job !== 'none' && (
+                            {state.job.id !== 'none' && (
                                 <>
                                     <p>
                                         {t('Job.income', { income: formatNumberWithSuffix(totalIncome) })} {t('Job.per_click')}
@@ -235,7 +243,7 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                 const canApply = checkRequirements(jobId);
 
                                 // Calculate income at current level for this job
-                                const currentJobLevel = state.jobLevels[jobId] || 0;
+                                const currentJobLevel = state.job.levels[jobId] || 0;
                                 const baseJobIncome = job.income;
                                 const totalJobIncome = calculateLevelIncome(baseJobIncome, currentJobLevel);
 
@@ -257,11 +265,11 @@ const JobWindow: React.FC<JobWindowProps> = ({ isOpen, onClose, onReset, isFocus
                                             </span>
                                         }
                                         extra={job.requirements && <Requirements requirements={job.requirements} />}
-                                        actionLabel={key !== state.job ? t('Job.apply') : undefined}
-                                        onAction={key !== state.job ? () => handleApply(jobId) : undefined}
+                                        actionLabel={key !== state.job.id ? t('Job.apply') : undefined}
+                                        onAction={key !== state.job.id ? () => handleApply(jobId) : undefined}
                                         actionDisabled={!canApply}
                                         actionContent={
-                                            key === state.job && (
+                                            key === state.job.id && (
                                                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '12px' }}>{t('Job.current_job', { job: '' })}</p>
                                             )
                                         }

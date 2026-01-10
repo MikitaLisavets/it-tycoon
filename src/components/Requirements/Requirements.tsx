@@ -45,7 +45,7 @@ const Requirements: React.FC<RequirementsProps> = ({
             case 'computerTier':
                 return computerLevel >= (val as number);
             case 'previousJob':
-                return (state.jobLevels[val as JobId] || 0) >= 10;
+                return (state.job.levels[val as JobId] || 0) >= 10;
             case 'mood':
                 return state.mood >= (val as number);
             case 'system':
