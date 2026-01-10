@@ -125,6 +125,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
 
     return (
         <WindowFrame
+            id="hacking"
             title={t('Hacking.title')}
             onCloseClick={onClose}
             width="600px"

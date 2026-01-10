@@ -269,9 +269,10 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       maxHeight: size ? `${size.height}px` : '',
       position: 'absolute',
       // Use transform for GPU acceleration instead of left/top
-      left: 0,
-      top: 0,
+      left: position ? 0 : '50%',
+      top: position ? 0 : '50%',
       transform: position ? `translate3d(${position.x}px, ${position.y}px, 0)` : 'translate(-50%, -50%)',
+      opacity: position ? 1 : 0,
       zIndex: isFocused ? 100 : (isDragging ? 90 : 10),
       willChange: isDragging ? 'transform' : undefined
     };

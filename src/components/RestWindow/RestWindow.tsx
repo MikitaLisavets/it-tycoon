@@ -114,7 +114,7 @@ const RestWindow: React.FC<RestWindowProps> = ({ isOpen, onClose, onReset }) => 
 
     return (
         <>
-            <WindowFrame title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="450px">
+            <WindowFrame id="rest_window" title={t('title')} onCloseClick={onClose} onResetClick={onReset} onHelpClick={() => setIsHelpOpen(true)} width="450px">
                 <div style={{ padding: '10px' }}>
                     <div style={{ marginBottom: '15px', padding: '8px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
                         <strong>{t('effect_full').replace('Full Stamina', 'Current Stamina')}: {Math.floor(state.stamina)}/{state.maxStamina}</strong>

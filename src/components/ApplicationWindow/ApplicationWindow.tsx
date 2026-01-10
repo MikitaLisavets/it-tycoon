@@ -30,6 +30,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
 
     return (
         <WindowFrame
+            id="applications_window"
             title={t('Applications.title')}
             onCloseClick={onClose}
             onHelpClick={() => { }}

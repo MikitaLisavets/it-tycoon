@@ -320,6 +320,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
     return (
         <WindowFrame
+            id="internet"
             title={t('Internet.title')}
             onCloseClick={onClose}
             onHelpClick={() => { }}

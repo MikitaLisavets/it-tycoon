@@ -471,6 +471,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
 
     return (
         <WindowFrame
+            id="solitaire_window"
             title={t('Values.solitaire')}
             onCloseClick={onClose}
             width="min(800px, 95vw)"
