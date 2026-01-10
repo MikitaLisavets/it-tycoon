@@ -9,6 +9,7 @@ import { useAudio } from '../../hooks/useAudio';
 import styles from './ComputerWindow.module.css';
 import { HARDWARE_COMPONENTS } from '@/lib/game/constants/hardware';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
+import { calculateDynamicPrice } from '@/lib/game/utils/economy';
 import LevelBadge from '../LevelBadge/LevelBadge';
 
 interface ComputerWindowProps {
@@ -24,7 +25,7 @@ type Category = keyof typeof HARDWARE_COMPONENTS;
 const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const { state, updateState } = useGameState();
     const t = useTranslations();
-    const { playClick, playPurchase } = useAudio();
+    const { playClick } = useAudio();
     const [activeTab, setActiveTab] = useState<Category>('cpu');
 
     const handleTabChange = (id: string) => {
@@ -36,7 +37,8 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
 
     if (!isOpen) return null;
 
-    const handleBuy = (category: Category, partId: string, price: number) => {
+    const handleBuy = (category: Category, partId: string, basePrice: number) => {
+        const price = calculateDynamicPrice(basePrice, state);
         if (state.money < price) return;
 
         updateState({
@@ -70,7 +72,8 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
             <div className={styles.partsList}>
                 {parts.map((part, index) => {
                     const isOwned = index === installedIndex;
-                    const canAfford = state.money >= part.price;
+                    const dynamicPrice = calculateDynamicPrice(part.price, state);
+                    const canAfford = state.money >= dynamicPrice;
                     const isFree = part.price === 0;
                     const isPrecedingInstalled = index === installedIndex - 1;
 
@@ -89,7 +92,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                                     {!isOwned && part.price > 0 && (
                                         <StatList
                                             type="cost"
-                                            data={{ money: part.price }}
+                                            data={{ money: dynamicPrice }}
                                             title={t('Common.cost')}
                                         />
                                     )}
