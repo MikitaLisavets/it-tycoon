@@ -1,4 +1,4 @@
-# IT Tycoon Agent Guidelines
+# Desktop Life Agent Guidelines
 
 ## Styling Guidelines
 

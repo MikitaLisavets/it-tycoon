@@ -190,7 +190,7 @@
     },
     "Onboarding": {
         "title": "How to Play",
-        "welcome": "Welcome to IT Tycoon!",
+        "welcome": "Welcome to Desktop Life!",
         "intro": "Start your journey from a newbie to an IT mogul. Manage your money, status, and happiness.",
         "section_work": "Work: Earn money but lose energy.",
         "section_hack": "Hack: High risk, high reward.",
@@ -199,7 +199,7 @@
         "good_luck": "Good luck!"
     },
     "About": {
-        "title": "About IT Tycoon",
+        "title": "About Desktop Life",
         "description": "This game was built using simple rules and human logic.",
         "no_ai": "No Artificial Intelligence.",
         "no_ml": "No Machine Learning.",
@@ -439,8 +439,7 @@
     },
     "GameOver": {
         "title": "Game Over",
-        "header_line1": "A problem has been detected and IT Tycoon has been shut down to prevent damage to your career.",
-        "header_line2": "If this is the first time you've seen this error screen, restart your game. If this screen appears again, follow these steps:",
+        "header": "A problem has been detected and Desktop Life has been shut down.",
         "health_code": "CRITICAL_HEALTH_FAILURE",
         "health_desc": "The system detected an imminent physical collapse.",
         "health_cause": "Health reached 0%.",
@@ -457,26 +456,19 @@
         "default_desc": "An unknown error has occurred.",
         "default_cause": "System instability detected.",
         "cause_prefix": "Technical Information:",
-        "first_time_line1": "Check to make sure your basic needs are met.",
-        "first_time_line2": "If this is a new game, check your starting strategy.",
-        "first_time_line3": "Disable risking activities or uninstall heavy software.",
-        "advice_money": "* Monitor your finances closely.",
-        "advice_stats": "* Maintain healthy stats balance.",
-        "advice_progression": "* Don't rush into expensive upgrades.",
-        "technical_info": "Collecting data for crash dump... Initializing disk for crash dump...",
         "restart": "Press any key to restart game"
     },
     "BootScreen": {
-        "title": "IT Tycoon",
+        "title": "Desktop Life",
         "subtitle": "Professional Edition",
-        "loading": "Initializing IT Tycoon...",
+        "loading": "Initializing Desktop Life...",
         "msg1": "Loading operating system...",
         "msg2": "Checking memory...",
         "msg3": "Initializing hardware drivers...",
         "msg4": "Configuring network...",
         "msg5": "Starting services...",
         "msg6": "Welcome!",
-        "copyright": "© 2026 IT Tycoon OS. All rights reserved."
+        "copyright": "© 2026 Desktop Life OS. All rights reserved."
     },
     "ResetModal": {
         "title": "Game Reset",

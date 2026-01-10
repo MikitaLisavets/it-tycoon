@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "IT Tycoon",
-    description: "Retro IT Tycoon Game",
+    title: "Desktop Life",
+    description: "Manage your computer and lifestyle",
 };
 
 export default function RootLayout({

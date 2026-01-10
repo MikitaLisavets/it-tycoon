@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'IT Tycoon',
-        short_name: 'IT Tycoon',
-        description: 'A retro OS style IT Tycoon game',
+        name: 'Desktop Life',
+        short_name: 'Desktop Life',
+        description: 'Manage your computer and lifestyle',
         start_url: '/',
         display: 'standalone',
         background_color: '#536F96',

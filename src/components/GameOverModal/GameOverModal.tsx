@@ -21,8 +21,14 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason
 
     if (!isOpen) return null;
 
+    const handleRestart = (e: React.MouseEvent | React.KeyboardEvent) => {
+        e.stopPropagation();
+        onRestart();
+    };
+
     // Map reasons to more descriptive error messages
     const getErrorDetails = (reason?: string) => {
+        console.log('reason', reason);
         if (reason?.includes('health') || reason?.includes('Health')) {
             return {
                 code: t('GameOver.health_code'),
@@ -59,11 +65,10 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason
     const errorDetails = getErrorDetails(reason);
 
     return (
-        <div className={styles.bsodOverlay} onClick={onRestart}>
+        <div className={styles.bsodOverlay} onClick={handleRestart} onKeyDown={handleRestart} autoFocus>
             <div className={styles.bsodScreen}>
                 <div className={styles.bsodHeader}>
-                    <p>{t('GameOver.header_line1')}</p>
-                    <p>{t('GameOver.header_line2')}</p>
+                    <p>{t('GameOver.header')}</p>
                 </div>
 
                 <div className={styles.bsodError}>
@@ -73,18 +78,9 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ isOpen, onRestart, reason
                 <div className={styles.bsodContent}>
                     <p>{errorDetails.description}</p>
                     <br />
-                    <p>{t('GameOver.cause_prefix')}</p>
+                    <b>{t('GameOver.cause_prefix')}</b>
                     <p>{errorDetails.cause}</p>
                     <br />
-                    <p>{t('GameOver.first_time_line1')}</p>
-                    <p>{t('GameOver.first_time_line2')}</p>
-                    <p>{t('GameOver.first_time_line3')}</p>
-                    <br />
-                    <p>{t('GameOver.advice_money')}</p>
-                    <p>{t('GameOver.advice_stats')}</p>
-                    <p>{t('GameOver.advice_progression')}</p>
-                    <br />
-                    <p>{t('GameOver.technical_info')}</p>
                     <br />
                     <p>*** STOP: 0x000000{Math.floor(Math.random() * 100).toString(16).toUpperCase().padStart(2, '0')} (0x{Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, '0')},0x{Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, '0')},0x{Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, '0')},0x{Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, '0')})</p>
                 </div>

@@ -110,7 +110,12 @@ function useGameStateInternal() {
                 next.stamina = Math.min(maxStamina, Math.max(0, next.stamina + GAME_CONSTANTS.DECAY_RATES.STAMINA_PER_TICK));
 
                 // Check Game Over
-                if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD || next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                if (next.health <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                    next.gameOverReason = 'health';
+                    next.gameOver = true;
+                }
+                if (next.mood <= GAME_CONSTANTS.GAME_OVER_THRESHOLD) {
+                    next.gameOverReason = 'mood';
                     next.gameOver = true;
                 }
 

@@ -17,8 +17,8 @@ export interface DepositOption {
 export const CREDIT_OPTIONS: CreditOption[] = [
     {
         id: 'small_credit',
-        amount: 500,
-        termDays: 2,
+        amount: 100,
+        termDays: 1,
         interestRate: 10,
     },
     {
