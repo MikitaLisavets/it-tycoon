@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '../EducationWindow.module.css';
 import { Quiz } from '../../../lib/game/constants/education';
+import XPButton from '@/components/XPButton/XPButton';
 
 interface QuizResult {
     type: 'success' | 'failure';
@@ -31,12 +32,11 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, result, onAnswer }) => 
                     <div className={styles.resultMessage}>
                         {result.type === 'success' ? t('Education.exam_passed') || 'Great job!' : t('Education.rejected')}
                     </div>
-                    <button
-                        className={`${styles.continueBtn} ${styles[result.type]}`}
+                    <XPButton
                         onClick={result.onContinue}
                     >
                         {t('Common.continue')}
-                    </button>
+                    </XPButton>
                 </div>
             ) : (
                 <>
@@ -45,13 +45,12 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, result, onAnswer }) => 
                     </div>
                     <div className={styles.options}>
                         {quiz.optionKeys.map((optionKey: string, idx: number) => (
-                            <button
+                            <XPButton
                                 key={idx}
-                                className={styles.optionBtn}
                                 onClick={() => onAnswer(idx)}
                             >
                                 {t(optionKey)}
-                            </button>
+                            </XPButton>
                         ))}
                     </div>
                 </>
