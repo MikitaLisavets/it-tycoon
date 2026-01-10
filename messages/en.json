@@ -266,6 +266,7 @@
         "term": "Term",
         "days": "days",
         "interest": "Interest",
+        "repay": "Repayment",
         "repay_now": "Repay Now",
         "take_credit": "Take Credit",
         "due": "Due",
