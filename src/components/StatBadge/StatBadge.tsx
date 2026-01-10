@@ -28,9 +28,9 @@ const StatBadge: React.FC<StatBadgeProps> = ({
             className={`${styles.statBadge} ${className}`}
             style={{ color: iconData.color }}
         >
-            <span className={`${styles.value}`}>{prefix}{value}</span>
             {showIcon && <span className={styles.icon}>{iconData.icon}</span>}
-            {label && <span className={styles.label}> {label}</span>}
+            <span className={`${styles.value}`}>{prefix}{value}</span>
+            {label && <span className={styles.label}>{label}</span>}
         </span>
     );
 };
