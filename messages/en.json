@@ -430,7 +430,18 @@
         "investor_sp500": "S&P 500",
         "investor_nasdaq": "Nasdaq",
         "investor_tech": "Tech Stocks",
-        "office_font": "Times New Roman"
+        "office_font": "Times New Roman",
+        "antivirus_title": "Dr. Antivirus",
+        "antivirus_status": "System Status",
+        "antivirus_protected": "System Protected",
+        "antivirus_vulnerable": "System Vulnerable",
+        "antivirus_last_scan": "Last Scan",
+        "antivirus_btn_scan": "Scan Now",
+        "antivirus_scanning": "Scanning system...",
+        "antivirus_cleaning": "Cleaning threats...",
+        "antivirus_game_start": "Identify and click the red virus icons to clean your system!",
+        "antivirus_game_complete": "Scan complete! Your system is now clean.",
+        "antivirus_threats_found": "Threats found: {count}"
     },
     "Notifications": {
         "low_health_title": "Critical Health!",

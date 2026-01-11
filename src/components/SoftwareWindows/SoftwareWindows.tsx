@@ -1,5 +1,8 @@
 import WindowFrame from '../WindowFrame/WindowFrame';
 import { useTranslations } from 'next-intl';
+import { useState, useEffect, useCallback } from 'react';
+import ProgressBar from '../ProgressBar/ProgressBar';
+import { AntivirusIcon } from '../Icons/AppIcons';
 import styles from './SoftwareWindows.module.css';
 
 interface SoftwareWindowProps {
@@ -66,7 +69,7 @@ export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, i
                         {t('Software.office_font')}
                     </div>
                 </div>
-                <div className={styles.officePage}>
+                <div className={styles.officePage} contentEditable>
                     <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>{t('Software.office_report')}</h2>
                     <p style={{ lineHeight: '1.6' }}>{t('Software.office_content')}</p>
                 </div>
@@ -217,6 +220,124 @@ export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose,
                         <div className={styles.statLabel}>{t('Software.investor_tech')}</div>
                         <div className={styles.statValue} style={{ color: '#f44336' }}>-0.85%</div>
                     </div>
+                </div>
+            </div>
+        </WindowFrame>
+    );
+};
+
+export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+    const t = useTranslations();
+    const [isScanning, setIsScanning] = useState(false);
+    const [caughtCount, setCaughtCount] = useState(0);
+    const [lastScan, setLastScan] = useState<string | null>(null);
+    const [viruses, setViruses] = useState<{ id: number; x: number; y: number }[]>([]);
+    const totalToCatch = 15;
+
+    const handleScan = useCallback(() => {
+        setIsScanning(true);
+        setCaughtCount(0);
+        setViruses([]);
+    }, []);
+
+    const spawnVirus = useCallback(() => {
+        if (!isScanning) return;
+        const id = Math.random();
+        const x = Math.random() * 90; // percentage
+        const y = Math.random() * 85; // percentage
+        setViruses(prev => [...prev.slice(-4), { id, x, y }]); // Keep max 5 viruses on screen
+    }, [isScanning]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (isScanning && caughtCount < totalToCatch) {
+            timer = setInterval(spawnVirus, 800);
+        }
+        return () => clearInterval(timer);
+    }, [isScanning, spawnVirus, caughtCount]);
+
+    const handleCatch = (id: number) => {
+        setViruses(prev => prev.filter(v => v.id !== id));
+        setCaughtCount(prev => {
+            const next = prev + 1;
+            if (next >= totalToCatch) {
+                setIsScanning(false);
+                setViruses([]);
+                setLastScan(new Date().toLocaleString());
+            }
+            return next;
+        });
+    };
+
+    if (!isOpen) return null;
+
+    const progress = (caughtCount / totalToCatch) * 100;
+
+    return (
+        <WindowFrame
+            id="antivirus"
+            title={t('Software.antivirus_title')}
+            onCloseClick={onClose}
+            width="400px"
+            height="420px"
+            minWidth="300px"
+            isFocused={isFocused}
+            onFocus={onFocus}
+        >
+            <div className={styles.antivirusContainer}>
+                <div className={styles.avStatusArea}>
+                    <div className={styles.avIconShield}>
+                        <AntivirusIcon />
+                    </div>
+                    <div className={styles.avStatusInfo}>
+                        <h3>{t('Software.antivirus_status')}: {caughtCount >= totalToCatch || !isScanning ? t('Software.antivirus_protected') : t('Software.antivirus_scanning')}</h3>
+                        <div className={styles.avStatusDetail}>
+                            {lastScan ? `${t('Software.antivirus_last_scan')}: ${lastScan}` : t('Software.antivirus_vulnerable')}
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.avMainActions}>
+                    {!isScanning && (
+                        <div className={styles.avButtonGroup}>
+                            <button className={styles.avScanButton} onClick={handleScan}>
+                                {t('Software.antivirus_btn_scan')}
+                            </button>
+                        </div>
+                    )}
+
+                    {isScanning && (
+                        <div className={styles.avScanningArea}>
+                            <div className={styles.avScanningText}>
+                                {t('Software.antivirus_game_start')}
+                            </div>
+                            <div className={styles.avGameArea}>
+                                {viruses.map(v => (
+                                    <div
+                                        key={v.id}
+                                        className={styles.avVirus}
+                                        style={{ left: `${v.x}%`, top: `${v.y}%` }}
+                                        onClick={() => handleCatch(v.id)}
+                                    >
+                                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M19,7H16.89A6,6 0 0,0 12,2A6,6 0 0,0 7.11,7H5V9H7.11L5.84,10.27L7.25,11.68L9,9.93V14.07L7.25,15.82L5.84,14.41L4.43,15.82L5.7,17.09L3.5,19.29L4.91,20.7L7.11,18.5H16.89L19.09,20.7L20.5,19.29L18.3,17.09L19.57,15.82L18.16,14.41L16.75,15.82L15,14.07V9.93L16.75,11.68L18.16,10.27L16.89,9H19V7M14,12H10V9H14V12Z" />
+                                        </svg>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={styles.avFooter}>
+                                <span>{t('Software.antivirus_threats_found', { count: caughtCount })} / {totalToCatch}</span>
+                                <div className={styles.avProgressBarContainer} style={{ width: '60%' }}>
+                                    <ProgressBar progress={progress} variant="green" />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {!isScanning && lastScan && (
+                        <div style={{ marginTop: '10px', color: '#2e7d32', fontSize: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+                            ✓ {t('Software.antivirus_game_complete')}
+                        </div>
+                    )}
                 </div>
             </div>
         </WindowFrame>

@@ -31,8 +31,8 @@ import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon } from "@/components/Icons/AppIcons";
-import { NotepadWindow, OfficeWindow, CodeEditorWindow, WebWalletWindow, InvestorWindow } from "@/components/SoftwareWindows/SoftwareWindows";
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from "@/components/Icons/AppIcons";
+import { NotepadWindow, OfficeWindow, CodeEditorWindow, WebWalletWindow, InvestorWindow, AntivirusWindow } from "@/components/SoftwareWindows/SoftwareWindows";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 import { useWindowManager } from "@/hooks/useWindowManager";
@@ -123,6 +123,11 @@ export default function Home() {
             id: 'software_investor',
             label: t('Values.software_investor'),
             icon: <InvestorIcon />
+        }] : []),
+        ...(state.software.antivirus !== 'none' ? [{
+            id: 'software_antivirus',
+            label: t('Software.antivirus_title'),
+            icon: <AntivirusIcon />
         }] : [])
     ];
 
@@ -459,6 +464,12 @@ export default function Home() {
                     onClose={() => closeWindow('software_investor')}
                     isFocused={focusedWindow === 'software_investor'}
                     onFocus={() => setFocusedWindow('software_investor')}
+                />
+                <AntivirusWindow
+                    isOpen={openWindows.includes('software_antivirus')}
+                    onClose={() => closeWindow('software_antivirus')}
+                    isFocused={focusedWindow === 'software_antivirus'}
+                    onFocus={() => setFocusedWindow('software_antivirus')}
                 />
             </div >
             <Taskbar

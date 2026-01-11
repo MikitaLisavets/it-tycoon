@@ -630,13 +630,26 @@
                 "simcity_2000": "SimCity 2000",
                 "half_life": "Half-Life",
                 "world_of_warcraft": "World of Warcraft",
-                "software_antivirus": "Antivirus",
+                "software_antivirus": "Dr. Antivirus",
                 "software_office": "Office",
                 "software_notepad": "Notepad",
                 "software_code_editor": "Code Editor",
                 "software_web_wallet": "Web Wallet",
                 "software_3d_studio": "3D Studio"
             }
+        },
+        "Software": {
+            "antivirus_title": "Dr. Antivirus",
+            "antivirus_status": "Systemstatus",
+            "antivirus_protected": "System geschützt",
+            "antivirus_vulnerable": "System gefährdet",
+            "antivirus_last_scan": "Letzter Scan",
+            "antivirus_btn_scan": "Jetzt scannen",
+            "antivirus_scanning": "System wird gescannt...",
+            "antivirus_cleaning": "Bedrohungen werden entfernt...",
+            "antivirus_game_start": "Identifiziere und klicke auf die roten Virus-Symbole, um dein System zu reinigen!",
+            "antivirus_game_complete": "Scan abgeschlossen! Dein System ist jetzt sauber.",
+            "antivirus_threats_found": "Bedrohungen gefunden: {count}"
         }
     }
 }

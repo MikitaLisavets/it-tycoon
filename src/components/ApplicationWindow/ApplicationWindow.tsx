@@ -4,7 +4,7 @@ import DesktopShortcut from '../DesktopShortcut/DesktopShortcut';
 import styles from './ApplicationWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon } from '../Icons/AppIcons';
+import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from '../Icons/AppIcons';
 
 interface ApplicationWindowProps {
     isOpen: boolean;
@@ -90,6 +90,14 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                         id="software_investor"
                         label={t('Values.software_investor')}
                         icon={<InvestorIcon />}
+                        onDoubleClick={onOpenApp}
+                    />
+                )}
+                {state.software.antivirus !== 'none' && (
+                    <DesktopShortcut
+                        id="software_antivirus"
+                        label={t('Software.antivirus_title')}
+                        icon={<AntivirusIcon />}
                         onDoubleClick={onOpenApp}
                     />
                 )}

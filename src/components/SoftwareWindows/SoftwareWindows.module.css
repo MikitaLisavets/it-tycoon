@@ -72,6 +72,7 @@
     width: calc(100% - 30px);
     overflow-y: auto;
     box-sizing: border-box;
+    outline: none;
 }
 
 /* Code Editor Styles */
@@ -295,4 +296,146 @@
     .balanceValue {
         font-size: 24px;
     }
+}
+
+/* Antivirus Styles */
+.antivirusContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #f0f0f0;
+    font-family: 'Tahoma', sans-serif;
+}
+
+.avStatusArea {
+    padding: 20px;
+    background: #fff;
+    border-bottom: 1px solid #aca899;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avIconShield {
+    color: #4caf50;
+    filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.2));
+}
+
+.avStatusInfo h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+}
+
+.avStatusDetail {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.avMainActions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #fff;
+    margin: 10px;
+    border: 1px solid #aca899;
+    flex: 1;
+}
+
+.avButtonGroup {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.avScanButton {
+    background: linear-gradient(to bottom, #FAFBFF 0%, #CCD3E6 50%, #BCC5E0 51%, #D6DFF7 100%);
+    color: #000;
+    border: 1px solid #003c74;
+    padding: 6px 16px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.avScanButton:hover {
+    background: linear-gradient(to bottom, #FFFFFF 0%, #D6DFF7 50%, #C4D0F0 51%, #E1E9FF 100%);
+    border-color: #316ac5;
+}
+
+.avScanButton:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.avScanningArea {
+    margin-top: 10px;
+    border-top: 1px dotted #ccc;
+    padding-top: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.avGameArea {
+    position: relative;
+    flex: 1;
+    background: #000;
+    border: 2px inset #aca899;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: crosshair;
+    min-height: 120px;
+}
+
+.avVirus {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    color: #f44336;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: avVirusAppear 0.2s ease-out;
+}
+
+.avVirus:hover {
+    transform: scale(1.2);
+}
+
+@keyframes avVirusAppear {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.avScanningText {
+    font-size: 11px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.avFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #666;
+}
+
+.avProgressBarContainer {
+    width: 100%;
 }

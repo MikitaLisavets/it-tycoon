@@ -69,7 +69,8 @@ const EducationPartItem: React.FC<EducationPartItemProps> = ({
         actionLabel = t('Education.learning');
     }
 
-    const onAction = isPartActive ? undefined : onStart;
+
+    const onAction = onStart;
     const isLearningInProgress = status === 'studying' || status === 'quiz';
     const actionDisabled = state.stats.money < dynamicCost || isPartCompleted || isTrackCompleted || isLocked || isNotYetAvailable || isLearningInProgress;
 
