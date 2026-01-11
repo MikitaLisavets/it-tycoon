@@ -346,6 +346,8 @@
 
 .avButtonGroup {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 10px;
 }
@@ -380,6 +382,41 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+.avScanningHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.avTimer {
+    font-size: 14px;
+    font-weight: bold;
+    color: #003c74;
+    background: #eef2fb;
+    padding: 2px 8px;
+    border: 1px solid #aca899;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.avTimerLow {
+    color: #f44336;
+    animation: avTimerPulse 0.5s infinite alternate;
+}
+
+@keyframes avTimerPulse {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
 }
 
 .avGameArea {
@@ -438,4 +475,28 @@
 
 .avProgressBarContainer {
     width: 100%;
+}
+
+.avResultSuccess {
+    margin-top: 10px;
+    color: #2e7d32;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+}
+
+.avResultFailure {
+    margin-top: 10px;
+    color: #c62828;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    background: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
 }

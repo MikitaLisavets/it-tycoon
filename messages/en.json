@@ -441,7 +441,8 @@
         "antivirus_cleaning": "Cleaning threats...",
         "antivirus_game_start": "Identify and click the red virus icons to clean your system!",
         "antivirus_game_complete": "Scan complete! Your system is now clean.",
-        "antivirus_threats_found": "Threats found: {count}"
+        "antivirus_threats_found": "Threats found: {count}",
+        "antivirus_game_failed": "Scan failed!"
     },
     "Notifications": {
         "low_health_title": "Critical Health!",

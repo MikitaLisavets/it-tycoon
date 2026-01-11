@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import { AntivirusIcon } from '../Icons/AppIcons';
 import styles from './SoftwareWindows.module.css';
+import XPButton from '../XPButton/XPButton';
 
 interface SoftwareWindowProps {
     isOpen: boolean;
@@ -232,12 +233,16 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
     const [caughtCount, setCaughtCount] = useState(0);
     const [lastScan, setLastScan] = useState<string | null>(null);
     const [viruses, setViruses] = useState<{ id: number; x: number; y: number }[]>([]);
+    const [timeLeft, setTimeLeft] = useState(20);
+    const [gameStatus, setGameStatus] = useState<'idle' | 'scanning' | 'won' | 'lost'>('idle');
     const totalToCatch = 15;
 
     const handleScan = useCallback(() => {
         setIsScanning(true);
         setCaughtCount(0);
         setViruses([]);
+        setTimeLeft(20);
+        setGameStatus('scanning');
     }, []);
 
     const spawnVirus = useCallback(() => {
@@ -250,11 +255,30 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (isScanning && caughtCount < totalToCatch) {
-            timer = setInterval(spawnVirus, 800);
+        if (isScanning && caughtCount < totalToCatch && timeLeft > 0) {
+            timer = setInterval(spawnVirus, 600); // Slightly faster spawn since we have 10s for 15 bugs
         }
         return () => clearInterval(timer);
-    }, [isScanning, spawnVirus, caughtCount]);
+    }, [isScanning, spawnVirus, caughtCount, timeLeft]);
+
+    // Timer effect
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (isScanning && timeLeft > 0) {
+            timer = setInterval(() => {
+                setTimeLeft(prev => {
+                    if (prev <= 1) {
+                        setGameStatus('lost');
+                        setIsScanning(false);
+                        setViruses([]);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [isScanning, timeLeft]);
 
     const handleCatch = (id: number) => {
         setViruses(prev => prev.filter(v => v.id !== id));
@@ -264,6 +288,7 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
                 setIsScanning(false);
                 setViruses([]);
                 setLastScan(new Date().toLocaleString());
+                setGameStatus('won');
             }
             return next;
         });
@@ -290,25 +315,30 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
                         <AntivirusIcon />
                     </div>
                     <div className={styles.avStatusInfo}>
-                        <h3>{t('Software.antivirus_status')}: {caughtCount >= totalToCatch || !isScanning ? t('Software.antivirus_protected') : t('Software.antivirus_scanning')}</h3>
+                        <h3>{t('Software.antivirus_status')}: {gameStatus === 'won' || (gameStatus === 'idle' && lastScan) ? t('Software.antivirus_protected') : gameStatus === 'scanning' ? t('Software.antivirus_scanning') : t('Software.antivirus_vulnerable')}</h3>
                         <div className={styles.avStatusDetail}>
                             {lastScan ? `${t('Software.antivirus_last_scan')}: ${lastScan}` : t('Software.antivirus_vulnerable')}
                         </div>
                     </div>
                 </div>
                 <div className={styles.avMainActions}>
-                    {!isScanning && (
+                    {gameStatus !== 'scanning' && (
                         <div className={styles.avButtonGroup}>
-                            <button className={styles.avScanButton} onClick={handleScan}>
+                            <XPButton onClick={handleScan}>
                                 {t('Software.antivirus_btn_scan')}
-                            </button>
+                            </XPButton>
                         </div>
                     )}
 
-                    {isScanning && (
+                    {gameStatus === 'scanning' && (
                         <div className={styles.avScanningArea}>
-                            <div className={styles.avScanningText}>
-                                {t('Software.antivirus_game_start')}
+                            <div className={styles.avScanningHeader}>
+                                <div className={styles.avScanningText}>
+                                    {t('Software.antivirus_game_start')}
+                                </div>
+                                <div className={`${styles.avTimer} ${timeLeft <= 3 ? styles.avTimerLow : ''}`}>
+                                    {timeLeft}s
+                                </div>
                             </div>
                             <div className={styles.avGameArea}>
                                 {viruses.map(v => (
@@ -333,9 +363,15 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
                         </div>
                     )}
 
-                    {!isScanning && lastScan && (
-                        <div style={{ marginTop: '10px', color: '#2e7d32', fontSize: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+                    {gameStatus === 'won' && (
+                        <div className={styles.avResultSuccess}>
                             ✓ {t('Software.antivirus_game_complete')}
+                        </div>
+                    )}
+
+                    {gameStatus === 'lost' && (
+                        <div className={styles.avResultFailure}>
+                            ⚠ {t('Software.antivirus_game_failed')}
                         </div>
                     )}
                 </div>
