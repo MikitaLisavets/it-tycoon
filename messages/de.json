@@ -12,6 +12,13 @@
         "load_invalid": "Ungültiger Speicher-Code!",
         "load_error": "Fehler beim Laden des Spielstands."
     },
+    "Dashboard": {
+        "title": "Mein Computer",
+        "panel_achievements": "Erfolge",
+        "todo_list": "ZU-DO LISTE",
+        "no_objectives": "Keine aktuellen Ziele.",
+        "all_goals_completed": "Alle Ziele erreicht! Du bist ein IT-Tycoon!"
+    },
     "free": "Kostenlos",
     "Onboarding": {
         "title": "Spielanleitung",
@@ -75,7 +82,10 @@
             "programs": "System",
             "internet": "Internet",
             "job": "Beruf",
-            "education": "Bildung"
+            "education": "Bildung",
+            "achievements": "Erfolge",
+            "todo_list": "ZU-DO LISTE",
+            "no_objectives": "Keine aktuellen Ziele."
         },
         "groups": {
             "lifestyle": "Lifestyle",
@@ -339,7 +349,57 @@
         "credit_overdue_title": "KREDIT ÜBERFÄLLIG!",
         "credit_overdue": "Deine Kreditzahlung ist überfällig! Zahle sofort zurück oder du gehst bankrott!",
         "virus_title": "Virenalarm!",
-        "virus_description": "Dein Computer wurde mit einem Virus infiziert! Das ist sehr nervig und macht dich traurig."
+        "virus_description": "Dein Computer wurde mit einem Virus infiziert! Das ist sehr nervig und macht dich traurig.",
+        "achievement_unlocked_title": "Erfolg freigeschaltet!",
+        "goal_completed_title": "Ziel erreicht!",
+        "all_goals_completed_title": "Glückwunsch!",
+        "all_goals_completed": "Du hast alle Ziele erreicht! Du bist jetzt ein echter IT-Tycoon!"
+    },
+    "Achievements": {
+        "first_job": {
+            "title": "Erster Gehaltsscheck",
+            "hint": "Bekomme deinen ersten Job"
+        },
+        "hardware_pro": {
+            "title": "Hardware-Profi",
+            "hint": "Rüste deinen Computer auf Stufe 5 auf"
+        },
+        "solitaire_pro": {
+            "title": "Solitär-Profi",
+            "hint": "Gewinne eine Partie Solitär"
+        },
+        "university_grad": {
+            "title": "Höhere Bildung",
+            "hint": "Absolviere die Universität"
+        },
+        "millionaire": {
+            "title": "Millionär",
+            "hint": "Verdiene 1.000.000 €"
+        },
+        "career_master": {
+            "title": "Karriere-Meister",
+            "hint": "Erreiche Stufe 10 im IT-Investor-Job"
+        },
+        "hacker_pro": {
+            "title": "Cyber-Phantom",
+            "hint": "Hacke erfolgreich 5 verschiedene Ziele"
+        },
+        "survivor": {
+            "title": "Der Überlebende",
+            "hint": "Lebe ein volles Spieljahr"
+        }
+    },
+    "Goals": {
+        "get_job": "Finde deinen ersten Job im Jobcenter",
+        "upgrade_pc": "Rüste deine CPU auf Pentium III auf",
+        "internet_access": "Hole dir Internetzugang",
+        "complete_school": "Absolviere die Schule",
+        "get_office_job": "Finde einen Büro- oder professionellen Job",
+        "buy_first_software": "Kaufe deine erste Software oder ein Spiel",
+        "reach_1000": "Spare $1.000",
+        "complete_college": "Absolviere das Kolleg",
+        "become_developer": "Werde Web-Entwickler",
+        "reach_10000": "Erreiche $10.000 Vermögen"
     },
     "Rest": {
         "title": "Ruhe & Entspannung",
@@ -541,6 +601,7 @@
             "description": "Beschreibung",
             "copy": "© 2000 MikiApps Inc.",
             "hero_text": "Verbessern Sie Ihr digitales Leben mit der neuesten Software!",
+            "not_enough_money": "Nicht genug Geld",
             "items": {
                 "winos_95": "WinOS 95",
                 "winos_98": "WinOS 98",

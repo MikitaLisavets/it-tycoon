@@ -68,6 +68,7 @@
     },
     "Values": {
         "none": "None",
+        "yes": "Yes",
         "monitor_basic": "Basic Monitor",
         "warehouse_worker": "Warehouse Worker",
         "courier": "Courier",
@@ -180,12 +181,17 @@
         "btn_hacking": "Hacking",
         "btn_bank": "Bank",
         "btn_applications": "My applications",
-        "panel_personal": "Personal Status",
+        "panel_personal": "Personal",
         "panel_computer": "Computer",
         "panel_life": "My Life",
         "panel_system": "System",
         "panel_internet": "Internet",
-        "panel_education": "Education"
+        "panel_education": "Education",
+        "panel_achievements": "Achievements",
+        "panel_goals": "Goals",
+        "todo_list": "TO-DO LIST",
+        "no_objectives": "No current objectives.",
+        "all_goals_completed": "All goals completed! You're an IT Tycoon!"
     },
     "Onboarding": {
         "title": "How to Play",
@@ -319,7 +325,8 @@
         "hero_text": "Upgrade your digital life with the latest software!",
         "copy": "© 2000 MikiApps Inc.",
         "status_done": "Done",
-        "status_error": "Error on page"
+        "status_error": "Error on page",
+        "not_enough_money": "Not enough money"
     },
     "Hacking": {
         "title": "Terminal Hacking",
@@ -435,7 +442,57 @@
         "credit_overdue_title": "CREDIT OVERDUE!",
         "credit_overdue_msg": "Your credit payment is overdue! Repay immediately or face bankruptcy!",
         "virus_title": "Virus Alert!",
-        "virus_description": "Your computer has been infected with a virus! It's very annoying and makes you sad."
+        "virus_description": "Your computer has been infected with a virus! It's very annoying and makes you sad.",
+        "achievement_unlocked_title": "Achievement Unlocked!",
+        "goal_completed_title": "Objective Complete!",
+        "all_goals_completed_title": "Congratulations!",
+        "all_goals_completed": "You completed all objectives! You're now a true IT Tycoon!"
+    },
+    "Achievements": {
+        "first_job": {
+            "title": "First Paycheck",
+            "hint": "Get your first job"
+        },
+        "hardware_pro": {
+            "title": "Hardware Pro",
+            "hint": "Upgrade your computer to level 5"
+        },
+        "solitaire_pro": {
+            "title": "Solitaire Pro",
+            "hint": "Win a game of Solitaire"
+        },
+        "university_grad": {
+            "title": "Higher Education",
+            "hint": "Graduate from University"
+        },
+        "millionaire": {
+            "title": "Millionaire",
+            "hint": "Earn $1,000,000"
+        },
+        "career_master": {
+            "title": "Career Master",
+            "hint": "Reach level 10 in IT Investor job"
+        },
+        "hacker_pro": {
+            "title": "Cyber Phantom",
+            "hint": "Successfully hack 5 different targets"
+        },
+        "survivor": {
+            "title": "The Survivor",
+            "hint": "Live for one full game year"
+        }
+    },
+    "Goals": {
+        "get_job": "Find your first job at the Job Center",
+        "upgrade_pc": "Upgrade your CPU to Pentium III",
+        "internet_access": "Get internet access",
+        "complete_school": "Graduate from School",
+        "get_office_job": "Get an office or professional job",
+        "buy_first_software": "Buy your first software or game",
+        "reach_1000": "Save $1,000",
+        "complete_college": "Graduate from College",
+        "become_developer": "Become a Web Developer",
+        "reach_10000": "Achieve $10,000 in wealth"
     },
     "GameOver": {
         "title": "Game Over",

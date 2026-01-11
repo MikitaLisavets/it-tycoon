@@ -326,14 +326,40 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
                                             )}
                                         </div>
                                         <div className={styles.buyActionGroup}>
-                                            <XPButton
-                                                className={styles.buyBtn}
-                                                disabled={!canBuy(item) || !!installingItemId}
-                                                onClick={() => handleBuy(item)}
-                                                actionSound="purchase"
-                                            >
-                                                {t('Common.buy')}
-                                            </XPButton>
+                                            {(() => {
+                                                const basePrice = item.cost?.money || 0;
+                                                const dynamicPrice = calculateDynamicPrice(basePrice, state);
+                                                const affordable = state.stats.money >= dynamicPrice;
+                                                const levelReqMet = computerLevel >= (item.requirements?.computerTier || 0);
+
+                                                let osReqMet = true;
+                                                if (item.requirements?.system) {
+                                                    const currentOS = state.software.system;
+                                                    const currentOSLevel = getSoftwareLevel(currentOS, 'system');
+                                                    const requiredOSLevel = getSoftwareLevel(item.requirements.system, 'system');
+                                                    osReqMet = currentOSLevel >= requiredOSLevel;
+                                                }
+
+                                                const techReqsMet = levelReqMet && osReqMet;
+
+                                                return (
+                                                    <>
+                                                        {!affordable && techReqsMet && (
+                                                            <div className={styles.notEnoughMoney}>
+                                                                {t('Internet.not_enough_money')}
+                                                            </div>
+                                                        )}
+                                                        <XPButton
+                                                            className={styles.buyBtn}
+                                                            disabled={!canBuy(item) || !!installingItemId}
+                                                            onClick={() => handleBuy(item)}
+                                                            actionSound="purchase"
+                                                        >
+                                                            {t('Common.buy')}
+                                                        </XPButton>
+                                                    </>
+                                                );
+                                            })()}
                                             {item.duration !== undefined && item.duration > 0 && (
                                                 <div className={styles.durationBadgeWrapper}>
                                                     <StatBadge

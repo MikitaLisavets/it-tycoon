@@ -6,6 +6,7 @@
     margin-bottom: 8px;
     position: relative;
     background-color: transparent;
+    display: flex;
     /* Assuming parent background */
 }
 
@@ -19,6 +20,7 @@
 
 .content {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 2px;
 }

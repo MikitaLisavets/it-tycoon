@@ -72,6 +72,13 @@ export function useActionableItem() {
                 ...state.cooldowns,
                 [item.id]: Date.now()
             };
+
+            if (item.isOneTime) {
+                finalUpdate.purchasedItems = [
+                    ...(state.purchasedItems || []),
+                    item.id
+                ];
+            }
         }
 
         updateState(finalUpdate);
@@ -110,8 +117,8 @@ export function useActionableItem() {
     }, [state.cooldowns]);
 
     const isPurchased = useCallback((item: ActionableItem) => {
-        return !!state.cooldowns?.[item.id];
-    }, [state.cooldowns]);
+        return !!state.purchasedItems?.includes(item.id);
+    }, [state.purchasedItems]);
 
     const canAfford = useCallback((item: ActionableItem) => {
         if (item.isOneTime && isPurchased(item)) return false;

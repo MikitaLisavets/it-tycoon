@@ -38,6 +38,9 @@ import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import { useDesktopWallpaper } from "@/hooks/useDesktopWallpaper";
 import { useDesktopNotifications } from "@/hooks/useDesktopNotifications";
+import { useGoalTracker } from "@/hooks/useGoalTracker";
+import GoalsList from "@/components/GoalsList/GoalsList";
+import Achievements from "@/components/Achievements/Achievements";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -69,6 +72,7 @@ export default function Home() {
         dismissNotification,
         updateState
     );
+    useGoalTracker();
 
     const [hasTriggeredOnboarding, setHasTriggeredOnboarding] = useState(false);
     const [isBooting, setIsBooting] = useState(true);
@@ -270,50 +274,6 @@ export default function Home() {
                                     <StatRow label={t('Stats.education')} value={t(`Values.${state.stats.education}`)} />
                                 </Panel>
 
-                                <Panel label={t('Dashboard.panel_computer')}>
-                                    <StatRow label={t('Stats.monitor')} value={t(`Values.${state.computer.monitor}`)} />
-                                    <StatRow label={t('Stats.cpu')} value={t(`Values.${state.computer.cpu}`)} />
-                                    <StatRow label={t('Stats.hdd')} value={t(`Values.${state.computer.hdd}`)} />
-                                    <StatRow label={t('Stats.ram')} value={t(`Values.${state.computer.ram}`)} />
-                                    <StatRow label={t('Stats.video')} value={t(`Values.${state.computer.video}`)} />
-                                    <StatRow label={t('Stats.modem')} value={t(`Values.${state.computer.modem}`)} />
-                                    <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
-                                    <StatRow
-                                        label={t('Computer.overall_level')}
-                                        value={<LevelBadge level={calculateComputerLevel(state.computer)} text="Level" />}
-                                    />
-                                </Panel>
-
-                                <Panel label={t('Dashboard.panel_life')}>
-                                    <StatRow label={t('Stats.rooms')} value={state.life.rooms.toString()} />
-                                    <StatRow label={t('Stats.furniture')} value={t(`Values.${state.life.furniture}`)} />
-                                    <StatRow label={t('Stats.kitchen')} value={t(`Values.${state.life.kitchen}`)} />
-                                    <StatRow label={t('Stats.bathroom')} value={t(`Values.${state.life.bathroom}`)} />
-                                    <StatRow label={t('Stats.clothes')} value={t(`Values.${state.life.clothes}`)} />
-                                    <StatRow label={t('Stats.car')} value={t(`Values.${state.life.car}`)} />
-                                </Panel>
-
-                                <Panel label={t('Dashboard.panel_system')}>
-                                    <StatRow label={t('Stats.system')} value={t(`Values.${state.software.system}`)} />
-                                    <StatRow
-                                        label={t('Stats.programs')}
-                                        value={state.software.programs.length > 0
-                                            ? state.software.programs.map(p => t(`Values.${p}`)).join(', ')
-                                            : t('Values.none')}
-                                    />
-                                    <StatRow label={t('Stats.antivirus')} value={state.software.antivirus !== 'none' ? t(`Values.${state.software.antivirus}`) : t('Values.none')} />
-                                    <StatRow
-                                        label={t('Stats.games')}
-                                        value={state.software.games.length > 0
-                                            ? state.software.games.map(g => t(`Values.${g}`)).join(', ')
-                                            : t('Values.none')}
-                                    />
-                                </Panel>
-
-                                <Panel label={t('Dashboard.panel_internet')}>
-                                    <StatRow label={t('Stats.access')} value={t(`Values.${state.internet.access}`)} />
-                                </Panel>
-
                                 <Panel label={t('Dashboard.panel_education')}>
                                     <>
                                         <StatRow label={t('Values.school')} value={state.educationProgress.completedTracks.includes('school') ? t('Education.completed') : (state.educationProgress.activeTrackId === 'school' ? `${state.educationProgress.currentPartIndex + 1}/${EDUCATION_TRACKS.find(tr => tr.id === 'school')?.parts.length}` : t('Values.none'))} />
@@ -334,6 +294,56 @@ export default function Home() {
                                         )}
                                     </>
                                 </Panel>
+
+                                <Panel label={t('Dashboard.panel_computer')}>
+                                    <StatRow label={t('Stats.monitor')} value={t(`Values.${state.computer.monitor}`)} />
+                                    <StatRow label={t('Stats.cpu')} value={t(`Values.${state.computer.cpu}`)} />
+                                    <StatRow label={t('Stats.hdd')} value={t(`Values.${state.computer.hdd}`)} />
+                                    <StatRow label={t('Stats.ram')} value={t(`Values.${state.computer.ram}`)} />
+                                    <StatRow label={t('Stats.video')} value={t(`Values.${state.computer.video}`)} />
+                                    <StatRow label={t('Stats.modem')} value={t(`Values.${state.computer.modem}`)} />
+                                    <hr style={{ border: 0, borderTop: '1px solid #ACA899', margin: '2px 0' }} />
+                                    <StatRow
+                                        label={t('Computer.overall_level')}
+                                        value={<LevelBadge level={calculateComputerLevel(state.computer)} text="Level" />}
+                                    />
+                                </Panel>
+
+                                {/* <Panel label={t('Dashboard.panel_life')}>
+                                    <StatRow label={t('Stats.rooms')} value={state.life.rooms.toString()} />
+                                    <StatRow label={t('Stats.furniture')} value={t(`Values.${state.life.furniture}`)} />
+                                    <StatRow label={t('Stats.kitchen')} value={t(`Values.${state.life.kitchen}`)} />
+                                    <StatRow label={t('Stats.bathroom')} value={t(`Values.${state.life.bathroom}`)} />
+                                    <StatRow label={t('Stats.clothes')} value={t(`Values.${state.life.clothes}`)} />
+                                    <StatRow label={t('Stats.car')} value={t(`Values.${state.life.car}`)} />
+                                </Panel> */}
+
+                                <Panel label={t('Dashboard.panel_system')}>
+                                    <StatRow label={t('Stats.access')} value={t(`Values.${state.internet.access}`)} />
+                                    <StatRow label={t('Stats.system')} value={t(`Values.${state.software.system}`)} />
+                                    <StatRow
+                                        label={t('Stats.programs')}
+                                        value={state.software.programs.length > 0
+                                            ? state.software.programs.map(p => t(`Values.${p}`)).join(', ')
+                                            : t('Values.none')}
+                                    />
+                                    <StatRow label={t('Stats.antivirus')} value={state.software.antivirus !== 'none' ? t(`Values.${state.software.antivirus}`) : t('Values.none')} />
+                                    <StatRow
+                                        label={t('Stats.games')}
+                                        value={state.software.games.length > 0
+                                            ? state.software.games.map(g => t(`Values.${g}`)).join(', ')
+                                            : t('Values.none')}
+                                    />
+                                </Panel>
+
+                                <Panel label={t('Dashboard.panel_goals')}>
+                                    <GoalsList />
+                                </Panel>
+
+                                <Panel label={t('Dashboard.panel_achievements')}>
+                                    <Achievements />
+                                </Panel>
+
                             </div>
                         </div>
                     </div>

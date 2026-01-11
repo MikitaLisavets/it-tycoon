@@ -9,7 +9,7 @@ const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-state`;
 
 interface GameStateContextType {
     state: GameState;
-    updateState: (updates: Partial<GameState>) => void;
+    updateState: (updates: Partial<GameState> | ((prev: GameState) => Partial<GameState>)) => void;
     resetState: () => void;
     isInitialized: boolean;
     isPaused: boolean;
@@ -82,6 +82,8 @@ function useGameStateInternal() {
                 const next = { ...prev };
                 next.date = { ...prev.date };
                 next.stats = { ...prev.stats };
+
+                next.internet.access = next.computer.modem !== 'modem_none' ? 'yes' : 'none';
 
                 // Update Time
                 next.date.minute += GAME_CONSTANTS.GAME_MINUTES_PER_TICK;
@@ -181,8 +183,11 @@ function useGameStateInternal() {
         }
     }, [state, isInitialized]);
 
-    const updateState = (updates: Partial<GameState>) => {
-        setState((prev) => ({ ...prev, ...updates }));
+    const updateState = (updates: Partial<GameState> | ((prev: GameState) => Partial<GameState>)) => {
+        setState((prev) => {
+            const nextUpdates = typeof updates === 'function' ? updates(prev) : updates;
+            return { ...prev, ...nextUpdates };
+        });
     };
 
     const resetState = () => {

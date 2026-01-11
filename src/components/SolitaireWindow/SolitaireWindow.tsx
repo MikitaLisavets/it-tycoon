@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import * as logic from './logic';
 import { SolitaireState, Card, Suit, Pile } from '../../lib/game/types';
 import { useGameState } from '../../hooks/useGameState';
+import { useGameLogs } from '../../hooks/useGameLogs';
 import { useAudio } from '../../hooks/useAudio';
 import XPButton from '../XPButton/XPButton';
 
@@ -24,6 +25,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
 }) => {
     const t = useTranslations();
     const { state, updateState } = useGameState();
+    const { logSolitaireWin } = useGameLogs();
     const gameState = state.apps.solitaire;
 
     const [selectedCard, setSelectedCard] = useState<{ card: Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | Suit; cardIndex?: number } | null>(null);
@@ -424,10 +426,12 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
         return success;
     };
 
-    const checkWinCondition = (state: SolitaireState) => {
-        const allDone = Object.values(state.foundation).every(pile => pile.length === 13);
+    const checkWinCondition = (s: SolitaireState) => {
+        const allDone = Object.values(s.foundation).every(pile => pile.length === 13);
         if (allDone) {
-            state.isWon = true;
+            s.isWon = true;
+            // Track win for achievements
+            logSolitaireWin();
         }
     };
 

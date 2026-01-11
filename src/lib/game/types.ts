@@ -10,6 +10,16 @@ export interface GameDate {
     minute: number;
 }
 
+export type LogType = 'solitaire_win' | 'hack_success' | 'game_start' | 'job_apply' | 'achievement_unlock' | 'goal_complete' | 'info' | 'warning' | 'error' | 'success';
+
+export interface LogEntry {
+    id: string;
+    type: LogType;
+    text: string;
+    timestamp: number;
+    data?: any;
+}
+
 export interface CreditRecord {
     id: string;
     amount: number;           // Original amount borrowed
@@ -53,10 +63,6 @@ export interface GameState {
         hdd: string;
         ram: string;
         video: string;
-        printer: string;
-        scanner: string;
-        cd_rom: string;
-        sound: string;
     };
 
     // My Life / Assets
@@ -120,6 +126,11 @@ export interface GameState {
     apps: {
         solitaire: SolitaireState | null;
     };
+
+    purchasedItems: string[];
+    goals: { id: string, text: string, completed: boolean }[];
+    achievements: string[];
+    logs: LogEntry[];
 }
 
 export const INITIAL_STATE: GameState = {
@@ -144,10 +155,6 @@ export const INITIAL_STATE: GameState = {
         hdd: "170mb_hdd",
         ram: "4mb_ram",
         video: "vga_card",
-        printer: "none",
-        scanner: "none",
-        cd_rom: "none",
-        sound: "none",
     },
 
     life: {
@@ -221,7 +228,23 @@ export const INITIAL_STATE: GameState = {
 
     apps: {
         solitaire: null
-    }
+    },
+
+    purchasedItems: [],
+    goals: [
+        { id: 'get_job', text: "Goals.get_job", completed: false },
+        { id: 'upgrade_pc', text: "Goals.upgrade_pc", completed: false },
+        { id: 'internet_access', text: "Goals.internet_access", completed: false },
+        { id: 'complete_school', text: "Goals.complete_school", completed: false },
+        { id: 'get_office_job', text: "Goals.get_office_job", completed: false },
+        { id: 'buy_first_software', text: "Goals.buy_first_software", completed: false },
+        { id: 'reach_1000', text: "Goals.reach_1000", completed: false },
+        { id: 'complete_college', text: "Goals.complete_college", completed: false },
+        { id: 'become_developer', text: "Goals.become_developer", completed: false },
+        { id: 'reach_10000', text: "Goals.reach_10000", completed: false }
+    ],
+    achievements: [],
+    logs: []
 };
 
 // Solitaire Types

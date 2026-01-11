@@ -5,6 +5,7 @@ import WindowFrame from '../WindowFrame/WindowFrame';
 import styles from './HackingWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
+import { useGameLogs } from '@/hooks/useGameLogs';
 import { useAudio } from '@/hooks/useAudio';
 import { HACKING_TARGETS, HackingTarget } from '@/lib/game/constants/hacking';
 import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
@@ -30,6 +31,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
 }) => {
     const t = useTranslations();
     const { state, updateState } = useGameState();
+    const { logSuccessfulHack } = useGameLogs();
     const audio = useAudio();
 
     const [isHacking, setIsHacking] = useState(false);
@@ -111,6 +113,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
                     mood: Math.min(state.stats.maxMood, state.stats.mood + 5)
                 }
             });
+            logSuccessfulHack(target.id);
             audio.playLevelUp();
         } else {
             addLine(t('Hacking.failure_wrap', { text: t('Hacking.failure', { amount: formatNumberWithSuffix(target.fine) }) }));

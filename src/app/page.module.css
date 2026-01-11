@@ -131,6 +131,17 @@
     padding-bottom: 5px;
 }
 
+.widgetsArea {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.bottomArea {
+    margin-top: auto;
+}
+
 /* Stat Row Styles (Shared) */
 .statRow {
     display: flex;
