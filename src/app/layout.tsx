@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"; // Corrected import based 
 import "./globals.css";
 import AppProviders from "@/components/AppProviders";
 import CheatSystem from "@/components/CheatSystem/CheatSystem";
+import Script from "next/script";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -80,6 +81,15 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                <Script id="clarity-script" strategy="afterInteractive">
+                    {`
+                        (function(c,l,a,r,i,t,y){
+                            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                        })(window, document, "clarity", "script", "uzrnhmcxx7");
+                    `}
+                </Script>
                 <AppProviders>
                     {children}
                     <CheatSystem />
