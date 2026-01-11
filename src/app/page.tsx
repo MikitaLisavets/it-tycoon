@@ -46,7 +46,7 @@ export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, updateState, resetState, isInitialized, setIsPaused } = useGameState();
-    const { notification, showNotification, dismissNotification } = useNotification();
+    const { notification, showNotification, dismissNotification, clearNotifications } = useNotification();
     const t = useTranslations();
 
     // Custom Hooks
@@ -155,6 +155,7 @@ export default function Home() {
         setIsResetOpen(false);
         resetWindows();
         setIsHelpOpen(false);
+        clearNotifications();
         resetState();
     };
 

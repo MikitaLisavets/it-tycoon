@@ -7,7 +7,7 @@ export interface NotificationData {
     id: number;
     title: string;
     message: string;
-    type: 'warning' | 'info';
+    type: 'warning' | 'info' | 'error' | 'success';
     badge?: {
         stat: any; // keyof typeof STAT_ICONS
         value: string | number;
@@ -17,8 +17,9 @@ export interface NotificationData {
 
 interface NotificationContextType {
     notification: NotificationData | null;
-    showNotification: (title: string, message: string, type?: 'warning' | 'info', badge?: NotificationData['badge']) => void;
+    showNotification: (title: string, message: string, type?: 'warning' | 'info' | 'error' | 'success', badge?: NotificationData['badge']) => void;
     dismissNotification: () => void;
+    clearNotifications: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
@@ -36,7 +37,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         }
     }, [notification, queue]);
 
-    const showNotification = useCallback((title: string, message: string, type: 'warning' | 'info' = 'info', badge?: NotificationData['badge']) => {
+    const showNotification = useCallback((title: string, message: string, type: 'warning' | 'info' | 'error' | 'success' = 'info', badge?: NotificationData['badge']) => {
         const newNotification: NotificationData = {
             id: Date.now(),
             title,
@@ -44,20 +45,25 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             type,
             badge
         };
-        if (type === 'warning') {
+        if (type === 'warning' || type === 'error') {
             audio.playWarning();
         } else {
             audio.playNotification();
         }
         setQueue(prev => [...prev, newNotification]);
-    }, []);
+    }, [audio]);
 
     const dismissNotification = useCallback(() => {
         setNotification(null);
     }, []);
 
+    const clearNotifications = useCallback(() => {
+        setNotification(null);
+        setQueue([]);
+    }, []);
+
     return (
-        <NotificationContext.Provider value={{ notification, showNotification, dismissNotification }}>
+        <NotificationContext.Provider value={{ notification, showNotification, dismissNotification, clearNotifications }}>
             {children}
         </NotificationContext.Provider>
     );

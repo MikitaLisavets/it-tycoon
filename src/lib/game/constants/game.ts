@@ -11,5 +11,5 @@ export const GAME_CONSTANTS = {
     GAME_OVER_THRESHOLD: 0, // Game over at 0
     CRITICAL_THRESHOLD: 10, // Warning/Red text threshold
     VIRUS_PROBABILITY_PER_TICK: 0.01, // 1% chance per tick
-    VIRUS_MOOD_PENALTY: 10,
+    VIRUS_MOOD_PENALTY: 5,
 };
