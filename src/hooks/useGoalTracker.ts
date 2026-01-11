@@ -14,11 +14,9 @@ export function useGoalTracker() {
     useEffect(() => {
         if (!state.goals) return;
 
-        const newGoals = [...state.goals];
         let changed = false;
-
-        newGoals.forEach(goal => {
-            if (goal.completed) return;
+        const newGoals = state.goals.map(goal => {
+            if (goal.completed) return goal;
 
             let isNowCompleted = false;
 
@@ -45,14 +43,16 @@ export function useGoalTracker() {
             }
 
             if (isNowCompleted) {
-                goal.completed = true;
                 changed = true;
                 showNotification(
                     t('Notifications.goal_completed_title'),
                     t(goal.text),
                     "info"
                 );
+                return { ...goal, completed: true };
             }
+
+            return goal;
         });
 
         // Check if all goals are completed
@@ -70,7 +70,7 @@ export function useGoalTracker() {
         if (changed) {
             updateState({ goals: newGoals });
         }
-    }, [state.stats, state.job, state.computer, state.internet, state.goals, updateState, showNotification]);
+    }, [state.stats, state.job, state.computer, state.internet, state.goals, updateState, showNotification, t]);
 
     useEffect(() => {
         if (!state.achievements) return;

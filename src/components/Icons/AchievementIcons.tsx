@@ -59,10 +59,10 @@ export const CareerMasterIcon = ({ size = 64 }: IconProps) => (
 );
 
 export const HackerProIcon = ({ size = 64 }: IconProps) => (
-    <BadgeBase color="#2b67cfff" size={size}>
-        <rect x="18" y="20" width="28" height="20" rx="2" stroke="#48BB78" strokeWidth="2" />
-        <text x="22" y="32" fontSize="10" fontWeight="bold" fill="#48BB78">&gt;_</text>
-        <path d="M20 40H44L46 44H18L20 40Z" fill="#48BB78" stroke="#48BB78" strokeWidth="1" />
+    <BadgeBase color="#407de6ff" size={size}>
+        <rect x="18" y="20" width="28" height="20" rx="2" stroke="#2D3748" strokeWidth="2" />
+        <text x="22" y="32" fontSize="10" fontWeight="bold" fill="#2D3748">&gt;_</text>
+        <path d="M20 40H44L46 44H18L20 40Z" fill="#2D3748" stroke="#2D3748" strokeWidth="1" />
     </BadgeBase>
 );
 

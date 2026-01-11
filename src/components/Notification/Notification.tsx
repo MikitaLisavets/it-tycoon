@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import styles from './Notification.module.css';
 import StatBadge from '../StatBadge/StatBadge';
+import { InfoIcon, WarningIcon, ErrorIcon } from '../Icons/SystemIcons';
 
 interface NotificationProps {
     title: string;
     message: string;
-    type?: 'info' | 'warning' | 'error';
+    type?: 'info' | 'warning' | 'error' | 'success';
     onClose: () => void;
     duration?: number;
     badge?: {
@@ -16,6 +17,15 @@ interface NotificationProps {
 }
 
 const Notification: React.FC<NotificationProps> = ({ title, message, type = 'info', onClose, duration = 5000, badge }) => {
+
+    const getIcon = () => {
+        switch (type) {
+            case 'warning': return <WarningIcon size={16} />;
+            case 'error': return <ErrorIcon size={16} />;
+            case 'success': return <InfoIcon size={16} style={{ filter: 'hue-rotate(90deg)' }} />; // Greenish info for success
+            default: return <InfoIcon size={16} />;
+        }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -29,7 +39,7 @@ const Notification: React.FC<NotificationProps> = ({ title, message, type = 'inf
         <div className={styles.container}>
             <button className={styles.closeButton} onClick={onClose}>X</button>
             <div className={styles.title}>
-                {type === 'warning' || type === 'error' ? '⚠️' : 'ℹ️'} {title}
+                {getIcon()} {title}
             </div>
             <div className={styles.message}>
                 {message}

@@ -55,6 +55,49 @@ export const WarningIcon: React.FC<IconProps> = ({ size = 24, style, ...props })
     </svg>
 );
 
+export const InfoIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        {/* Blue Circle */}
+        <circle cx="12" cy="12" r="10" fill="#0000FF" stroke="black" strokeWidth="1.5" />
+
+        {/* Lowercase 'i' */}
+        <rect x="11" y="10" width="2" height="7" fill="white" />
+        <rect x="11" y="7" width="2" height="2" fill="white" />
+
+        {/* Shine */}
+        <path d="M7 7C7 7 8 5 12 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+    </svg>
+);
+
+export const ErrorIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        {/* Red Circle */}
+        <circle cx="12" cy="12" r="10" fill="#FF0000" stroke="black" strokeWidth="1.5" />
+
+        {/* White X */}
+        <path d="M8 8L16 16M16 8L8 16" stroke="white" strokeWidth="3" strokeLinecap="round" />
+
+        {/* Shine */}
+        <path d="M7 7C7 7 8 5 12 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+    </svg>
+);
+
 export const ComputerIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
     <svg
         width={size}
