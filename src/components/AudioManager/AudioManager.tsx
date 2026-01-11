@@ -30,7 +30,6 @@ export default function AudioManager({ children }: AudioManagerProps) {
         playCheat: () => cheatAudioRef.current?.play(),
         playWarning: () => warningAudioRef.current?.play(),
         playNotification: () => notificationAudioRef.current?.play(),
-        playBoot: () => bootAudioRef.current?.play(),
         playPurchase: () => purchaseAudioRef.current?.play(),
     };
 

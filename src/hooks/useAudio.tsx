@@ -10,7 +10,6 @@ interface AudioContextType {
     playCheat: () => void;
     playWarning: () => void;
     playNotification: () => void;
-    playBoot: () => void;
     playPurchase: () => void;
 }
 

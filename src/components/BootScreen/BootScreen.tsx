@@ -12,7 +12,6 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
     const [progress, setProgress] = useState(0);
     const [currentMessage, setCurrentMessage] = useState(0);
     const t = useTranslations();
-    const { playBoot } = useAudio();
 
     const bootMessages = [
         t('BootScreen.msg1'),
@@ -34,7 +33,6 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
         }
 
         if (!hasStartedBoot.current) {
-            playBoot();
             hasStartedBoot.current = true;
         }
 
@@ -69,7 +67,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ isBooting, onBootComplete }) =>
             clearInterval(messageInterval);
             clearTimeout(bootTimeout);
         };
-    }, [isBooting, onBootComplete, playBoot, bootMessages.length]);
+    }, [isBooting, onBootComplete, bootMessages.length]);
 
     if (!isBooting) return null;
 
