@@ -21,7 +21,7 @@ const WinampPlayer: React.FC = () => {
     const { state } = useGameState();
 
     // State to hold the resolved audio stream URL
-    const [audioSrc, setAudioSrc] = useState<string>('');
+    const [audioSrc, setAudioSrc] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
     // Stop playing on game over
