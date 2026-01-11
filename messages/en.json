@@ -165,7 +165,18 @@
         "luxury_italian": "Italian Luxury",
         "casual_wear": "Casual Wear",
         "business_suit": "Business Suit",
-        "designer_brand": "Designer Brand"
+        "designer_brand": "Designer Brand",
+        "vitamin_pack": "Vitamin Pack",
+        "medical_insurance": "Medical Insurance",
+        "painkillers": "Painkillers",
+        "bandage": "Bandage",
+        "medical_overview": "Medical Overview",
+        "health_checkup": "Health Checkup",
+        "comic_book": "Comic Book",
+        "mp3_player": "MP3 Player",
+        "smartphone": "Smartphone",
+        "home_renovation": "Home Renovation",
+        "car": "Sport Car"
     },
     "Dashboard": {
         "title": "My Computer",
@@ -206,7 +217,7 @@
     "About": {
         "title": "About Desktop Life",
         "description": "This game was built using simple rules and human logic.",
-        "no_ai": "No Artificial Intelligence.",
+        "no_ai": "No Cryptocurrency.",
         "no_ml": "No Machine Learning.",
         "no_blockchain": "No Blockchain.",
         "inspiration": "Inspired by games and digital aesthetics of the early 2000s.",
@@ -237,8 +248,9 @@
     "Shop": {
         "title": "Supermarket",
         "tab_food": "Food",
-        "tab_furniture": "Furniture",
-        "tab_clothes": "Clothes",
+        "tab_medicine": "Medicine",
+        "tab_lifestyle": "Lifestyle",
+        "tab_performance": "Performance",
         "effect_mood": "Max Happiness +{amount}",
         "effect_health": "Max Health +{amount}",
         "help": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit."
@@ -378,10 +390,11 @@
         "cardio": "Cardio Training",
         "weights": "Weight Lifting",
         "yoga": "Yoga Session",
-        "personal_trainer": "Personal Trainer"
+        "strength_training": "Strength Training"
     },
     "Rest": {
         "title": "Rest & Relax",
+        "drink_coffee": "Drink Coffee",
         "short_break": "Short Break",
         "sleep": "Sleep",
         "resting": "Resting...",

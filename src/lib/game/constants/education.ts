@@ -22,12 +22,6 @@ export interface EducationTrack {
     };
 }
 
-/**
- * Helper to generate quizzes array by loop
- * @param prefix the key prefix (e.g. 'school_part_1')
- * @param answers array of correct answer indexes
- * @param optionsCount optional specific count of options for each question (default 4)
- */
 const generateQuizzes = (prefix: string, answers: number[], optionsCounts?: number[]): Quiz[] => {
     return answers.map((answer, index) => {
         const qNum = index + 1;
@@ -70,7 +64,7 @@ export const EDUCATION_TRACKS: EducationTrack[] = [
                 id: 'school_part_4',
                 title: 'Hardware Basics',
                 cost: 200,
-                duration: 20,
+                duration: 25,
                 quizzes: generateQuizzes('school_part_4', [2, 2, 1, 0, 2, 2, 1, 0, 1, 1])
             },
         ]
@@ -119,7 +113,7 @@ export const EDUCATION_TRACKS: EducationTrack[] = [
                 id: 'college_part_6',
                 title: 'Software Engineering',
                 cost: 5000,
-                duration: 40,
+                duration: 50,
                 quizzes: generateQuizzes('college_part_6', [1, 1, 1, 1, 0, 1, 1, 1, 0, 1])
             },
         ]

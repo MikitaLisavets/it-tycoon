@@ -7,13 +7,13 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     warehouse_worker: {
         id: 'warehouse_worker',
-        income: 2,
+        income: 1,
         cost: { stamina: 1 }
     },
     courier: {
         id: 'courier',
-        income: 5,
-        cost: { health: 1, stamina: 3, mood: 2 },
+        income: 3,
+        cost: { stamina: 2, mood: 1 },
         requirements: {
             previousJob: "warehouse_worker",
             mood: 30
@@ -21,8 +21,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     office_worker: {
         id: 'office_worker',
-        income: 12,
-        cost: { mood: 3, stamina: 4, health: 1 },
+        income: 9,
+        cost: { mood: 1, stamina: 2, health: 1 },
         requirements: {
             previousJob: "courier",
             education: 'school',
@@ -32,8 +32,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     web_dev: {
         id: 'web_dev',
-        income: 25,
-        cost: { mood: 5, stamina: 5, health: 2 },
+        income: 27,
+        cost: { mood: 2, stamina: 3, health: 1 },
         requirements: {
             education: "college",
             previousJob: "office_worker",
@@ -43,8 +43,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     senior_dev: {
         id: 'senior_dev',
-        income: 60,
-        cost: { stamina: 8, mood: 8, health: 3 },
+        income: 81,
+        cost: { stamina: 4, mood: 3, health: 2 },
         requirements: {
             education: "university",
             previousJob: "web_dev",
@@ -54,8 +54,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     startup_founder: {
         id: 'startup_founder',
-        income: 150,
-        cost: { stamina: 15, mood: 12, health: 5 },
+        income: 243,
+        cost: { stamina: 5, mood: 4, health: 3 },
         requirements: {
             education: "university",
             previousJob: "senior_dev",
@@ -65,8 +65,8 @@ export const JOBS: Partial<Record<JobId, Job>> = {
     },
     it_investor: {
         id: 'it_investor',
-        income: 400,
-        cost: { stamina: 25, mood: 20, health: 10 },
+        income: 486,
+        cost: { stamina: 10, mood: 5, health: 5 },
         requirements: {
             education: "university",
             previousJob: "startup_founder",

@@ -52,8 +52,8 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="HEALTH"
-                                value={data.maxHealth}
-                                label={`${t('Common.max')} ${t('Stats.health')}`}
+                                value={`${data.maxHealth} ${t('Common.max')}`}
+                                label={`${t('Stats.health')}`}
                             />
                         </li>
                     ) : null}
@@ -81,8 +81,8 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="STAMINA"
-                                value={data.maxStamina}
-                                label={`${t('Common.max')} ${t('Stats.stamina')}`}
+                                value={`${data.maxStamina} ${t('Common.max')}`}
+                                label={`${t('Stats.stamina')}`}
                             />
                         </li>
                     ) : null}
@@ -110,8 +110,8 @@ const StatList: React.FC<StatListProps> = ({ type, data, title, isFree, freeLabe
                             {!withoutIcon && <Icon className={iconClass} size={12} />}
                             <StatBadge
                                 stat="MOOD"
-                                value={data.maxMood}
-                                label={`${t('Common.max')} ${t('Stats.mood')}`}
+                                value={`${data.maxMood} ${t('Common.max')}`}
+                                label={`${t('Stats.mood')}`}
                             />
                         </li>
                     ) : null}

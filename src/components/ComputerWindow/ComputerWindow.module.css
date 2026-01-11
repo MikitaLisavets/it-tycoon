@@ -30,9 +30,8 @@
 }
 
 .installedRow {
-    background: #0054E3 !important;
-    /* Classic XP Blue floppy body */
-    border: 1px solid #003399 !important;
+    background: var(--xp-blue-gradient-end);
+    border: 1px solid var(--xp-blue-gradient-end);
     border-radius: 4px;
     padding: 12px !important;
     margin-bottom: 8px;

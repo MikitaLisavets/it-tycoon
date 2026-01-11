@@ -23,9 +23,7 @@ interface ActivitiesWindowProps {
 type Tab = 'rest' | 'entertainment' | 'gym';
 
 const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
-    const { state } = useGameState();
     const t = useTranslations();
-    const gt = useTranslations(); // using same hook for everything now, keeping var name to minimize diff but it's redundant
     const [activeTab, setActiveTab] = useState<Tab>('rest');
 
     const {
@@ -57,14 +55,14 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
                                     ...activity.cost,
                                     money: activity.cost?.money ? getDynamicPrice(activity.cost.money) : undefined
                                 }}
-                                title={gt('Common.cost')}
+                                title={t('Common.cost')}
                                 isFree={!activity.cost?.money && !activity.cost?.health && !activity.cost?.stamina && !activity.cost?.mood}
                                 freeLabel={t('Common.free')}
                             />
                             <StatList
                                 type="effect"
                                 data={activity.effect}
-                                title={gt('Common.effects')}
+                                title={t('Common.effects')}
                             />
                         </div>
                     }

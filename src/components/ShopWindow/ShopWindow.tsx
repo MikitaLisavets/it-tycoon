@@ -5,10 +5,9 @@ import HelpModal from '../HelpModal/HelpModal';
 import ListOption from '../ListOption/ListOption';
 import Tabs, { TabContent } from '../Tabs/Tabs';
 import StatList from '../StatList/StatList';
-import { useGameState } from '../../hooks/useGameState';
 import { useActionableItem } from '../../hooks/useActionableItem';
 import styles from './ShopWindow.module.css';
-import { FOOD_ITEMS, FURNITURE_ITEMS, CLOTHES_ITEMS } from '@/lib/game/constants/shop';
+import { FOOD_ITEMS, MEDICINE, LIFESTYLE, PERFORMANCE } from '@/lib/game/constants/shop';
 import { ActionableItem } from '@/lib/game/types';
 
 interface ShopWindowProps {
@@ -19,18 +18,18 @@ interface ShopWindowProps {
     onFocus?: () => void;
 }
 
-type Tab = 'food' | 'furniture' | 'clothes';
+type Tab = 'food' | 'medicine' | 'lifestyle' | 'performance';
 
 const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
-    const { state } = useGameState();
     const t = useTranslations();
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('food');
 
     const tabList = [
         { id: 'food', label: t('Shop.tab_food') },
-        { id: 'furniture', label: t('Shop.tab_furniture') },
-        { id: 'clothes', label: t('Shop.tab_clothes') },
+        { id: 'medicine', label: t('Shop.tab_medicine') },
+        { id: 'lifestyle', label: t('Shop.tab_lifestyle') },
+        { id: 'performance', label: t('Shop.tab_performance') },
     ] as const;
 
     const {
@@ -124,8 +123,9 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
 
                 <TabContent>
                     {activeTab === 'food' && renderList(FOOD_ITEMS)}
-                    {activeTab === 'furniture' && renderList(FURNITURE_ITEMS)}
-                    {activeTab === 'clothes' && renderList(CLOTHES_ITEMS)}
+                    {activeTab === 'medicine' && renderList(MEDICINE)}
+                    {activeTab === 'lifestyle' && renderList(LIFESTYLE)}
+                    {activeTab === 'performance' && renderList(PERFORMANCE)}
                 </TabContent>
             </WindowFrame>
             <HelpModal
