@@ -9,37 +9,37 @@ export interface HackingTarget {
 export const HACKING_TARGETS: HackingTarget[] = [
     {
         id: 'local_shop',
-        reward: 50,
+        reward: 100,
         risk: 0.1,
-        fine: 100,
+        fine: 200,
         duration: 3
     },
     {
         id: 'small_business',
-        reward: 200,
-        risk: 0.25,
-        fine: 500,
+        reward: 500,
+        risk: 0.2,
+        fine: 1500,
         duration: 5
     },
     {
         id: 'regional_bank',
-        reward: 1000,
-        risk: 0.4,
-        fine: 2000,
+        reward: 3000,
+        risk: 0.35,
+        fine: 10000,
         duration: 8
     },
     {
         id: 'government_database',
-        reward: 5000,
-        risk: 0.6,
-        fine: 10000,
+        reward: 15000,
+        risk: 0.5,
+        fine: 50000,
         duration: 12
     },
     {
         id: 'global_stock_exchange',
-        reward: 25000,
-        risk: 0.8,
-        fine: 50000,
+        reward: 100000,
+        risk: 0.7,
+        fine: 300000,
         duration: 20
     }
 ];

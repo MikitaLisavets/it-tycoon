@@ -83,42 +83,42 @@ export const EDUCATION_TRACKS: EducationTrack[] = [
             {
                 id: 'college_part_1',
                 title: 'Algorithms 101',
-                cost: 300,
+                cost: 800,
                 duration: 25,
                 quizzes: generateQuizzes('college_part_1', [3, 0, 2, 0, 1, 1, 0, 1, 1, 3])
             },
             {
                 id: 'college_part_2',
                 title: 'Web Development Basics',
-                cost: 400,
+                cost: 1200,
                 duration: 30,
                 quizzes: generateQuizzes('college_part_2', [1, 0, 1, 2, 0, 2, 1, 0, 2, 0])
             },
             {
                 id: 'college_part_3',
                 title: 'Database Fundamentals',
-                cost: 500,
+                cost: 1800,
                 duration: 35,
                 quizzes: generateQuizzes('college_part_3', [2, 1, 0, 1, 1, 1, 0, 0, 2, 0])
             },
             {
                 id: 'college_part_4',
                 title: 'Networking Essentials',
-                cost: 600,
+                cost: 2500,
                 duration: 40,
                 quizzes: generateQuizzes('college_part_4', [2, 0, 2, 1, 1, 2, 0, 1, 1, 0])
             },
             {
                 id: 'college_part_5',
                 title: 'Operating Systems',
-                cost: 700,
+                cost: 3500,
                 duration: 45,
                 quizzes: generateQuizzes('college_part_5', [2, 1, 0, 1, 0, 0, 0, 1, 0, 1])
             },
             {
                 id: 'college_part_6',
                 title: 'Software Engineering',
-                cost: 800,
+                cost: 5000,
                 duration: 40,
                 quizzes: generateQuizzes('college_part_6', [1, 1, 1, 1, 0, 1, 1, 1, 0, 1])
             },
@@ -132,49 +132,49 @@ export const EDUCATION_TRACKS: EducationTrack[] = [
             {
                 id: 'uni_part_1',
                 title: 'Advanced Data Structures',
-                cost: 1000,
+                cost: 8000,
                 duration: 50,
                 quizzes: generateQuizzes('uni_part_1', [2, 1, 1, 0, 1, 1, 0, 1, 0, 2])
             },
             {
                 id: 'uni_part_2',
                 title: 'Artificial Intelligence',
-                cost: 1200,
+                cost: 12000,
                 duration: 60,
                 quizzes: generateQuizzes('uni_part_2', [2, 1, 1, 0, 0, 1, 0, 1, 0, 1])
             },
             {
                 id: 'uni_part_3',
                 title: 'Compiler Design',
-                cost: 1500,
+                cost: 18000,
                 duration: 70,
                 quizzes: generateQuizzes('uni_part_3', [1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
             },
             {
                 id: 'uni_part_4',
                 title: 'Distributed Systems',
-                cost: 1800,
+                cost: 25000,
                 duration: 80,
                 quizzes: generateQuizzes('uni_part_4', [2, 1, 0, 0, 0, 1, 0, 0, 1, 1])
             },
             {
                 id: 'uni_part_5',
                 title: 'Cybersecurity',
-                cost: 2100,
+                cost: 40000,
                 duration: 90,
                 quizzes: generateQuizzes('uni_part_5', [2, 1, 0, 1, 1, 1, 1, 1, 1, 1])
             },
             {
                 id: 'uni_part_6',
                 title: 'Cloud Computing',
-                cost: 2500,
+                cost: 60000,
                 duration: 100,
                 quizzes: generateQuizzes('uni_part_6', [0, 0, 1, 0, 1, 1, 2, 1, 1, 1])
             },
             {
                 id: 'uni_part_7',
                 title: 'Master Thesis',
-                cost: 3000,
+                cost: 100000,
                 duration: 120,
                 quizzes: generateQuizzes('uni_part_7', [1, 1, 1, 0, 1, 1, 1, 1, 1, 1])
             }
