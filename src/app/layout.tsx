@@ -26,6 +26,17 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
+    icons: {
+        icon: '/favicon.jpg',
+        shortcut: '/favicon.jpg',
+        apple: '/icons/icon-192.jpg',
+        other: [
+            {
+                rel: 'apple-touch-icon-precomposed',
+                url: '/icons/icon-192.jpg',
+            },
+        ],
+    },
     openGraph: {
         title: "Desktop Life | IT Tycoon & Life Simulator",
         description: "Experience the journey from a warehouse worker to an IT Investor. Manage your stats, upgrade your hardware, and master the IT world.",
@@ -33,7 +44,7 @@ export const metadata: Metadata = {
         siteName: "Desktop Life",
         images: [
             {
-                url: "/images/og-preview.png",
+                url: "/images/og-preview.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Desktop Life | IT Tycoon & Life Simulator",
@@ -46,7 +57,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "Desktop Life | IT Tycoon & Life Simulator",
         description: "Experience the journey from a warehouse worker to an IT Investor. Manage your stats and upgrade your hardware.",
-        images: ["/images/og-preview.png"],
+        images: ["/images/og-preview.jpg"],
     },
     robots: {
         index: true,
