@@ -641,8 +641,8 @@
         "Software": {
             "antivirus_title": "Dr. Antivirus",
             "antivirus_status": "Systemstatus",
-            "antivirus_protected": "System geschützt",
-            "antivirus_vulnerable": "System gefährdet",
+            "antivirus_protected": "Geschützt",
+            "antivirus_vulnerable": "Gefährdet",
             "antivirus_last_scan": "Letzter Scan",
             "antivirus_btn_scan": "Jetzt scannen",
             "antivirus_scanning": "System wird gescannt...",

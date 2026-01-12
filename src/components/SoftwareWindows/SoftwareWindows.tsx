@@ -11,6 +11,8 @@ interface SoftwareWindowProps {
     onClose: () => void;
     isFocused?: boolean;
     onFocus?: () => void;
+    onWin?: () => void;
+    isProtected?: boolean;
 }
 
 export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
@@ -227,7 +229,7 @@ export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose,
     );
 };
 
-export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
+export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus, onWin, isProtected }) => {
     const t = useTranslations();
     const [isScanning, setIsScanning] = useState(false);
     const [caughtCount, setCaughtCount] = useState(0);
@@ -280,18 +282,20 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
         return () => clearInterval(timer);
     }, [isScanning, timeLeft]);
 
+    // Win condition effect
+    useEffect(() => {
+        if (isScanning && caughtCount >= totalToCatch) {
+            setIsScanning(false);
+            setViruses([]);
+            setLastScan(new Date().toLocaleString());
+            setGameStatus('won');
+            onWin?.();
+        }
+    }, [isScanning, caughtCount, totalToCatch, onWin]);
+
     const handleCatch = (id: number) => {
         setViruses(prev => prev.filter(v => v.id !== id));
-        setCaughtCount(prev => {
-            const next = prev + 1;
-            if (next >= totalToCatch) {
-                setIsScanning(false);
-                setViruses([]);
-                setLastScan(new Date().toLocaleString());
-                setGameStatus('won');
-            }
-            return next;
-        });
+        setCaughtCount(prev => prev + 1);
     };
 
     if (!isOpen) return null;
@@ -315,9 +319,9 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
                         <AntivirusIcon />
                     </div>
                     <div className={styles.avStatusInfo}>
-                        <h3>{t('Software.antivirus_status')}: {gameStatus === 'won' || (gameStatus === 'idle' && lastScan) ? t('Software.antivirus_protected') : gameStatus === 'scanning' ? t('Software.antivirus_scanning') : t('Software.antivirus_vulnerable')}</h3>
+                        <h3>{t('Software.antivirus_status')}: {isProtected || gameStatus === 'won' ? t('Software.antivirus_protected') : gameStatus === 'scanning' ? t('Software.antivirus_scanning') : t('Software.antivirus_vulnerable')}</h3>
                         <div className={styles.avStatusDetail}>
-                            {lastScan ? `${t('Software.antivirus_last_scan')}: ${lastScan}` : t('Software.antivirus_vulnerable')}
+                            {isProtected ? t('Software.antivirus_protected') : lastScan ? `${t('Software.antivirus_last_scan')}: ${lastScan}` : t('Software.antivirus_vulnerable')}
                         </div>
                     </div>
                 </div>

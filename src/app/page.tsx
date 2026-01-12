@@ -168,6 +168,9 @@ export default function Home() {
         setIsBooting(false);
     }, []);
 
+    const currentDays = state.date.year * 360 + state.date.month * 30 + state.date.day;
+    const isAntivirusProtected = state.software.antivirus !== 'none' && (state.software.protectionUntilDay || 0) > currentDays;
+
     if (!isInitialized) {
         return null; // or a loading screen
     }
@@ -333,7 +336,14 @@ export default function Home() {
                                             ? state.software.programs.map(p => t(`Values.${p}`)).join(', ')
                                             : t('Values.none')}
                                     />
-                                    <StatRow label={t('Stats.antivirus')} value={state.software.antivirus !== 'none' ? t(`Values.${state.software.antivirus}`) : t('Values.none')} />
+                                    <StatRow
+                                        label={t('Stats.antivirus')}
+                                        value={state.software.antivirus !== 'none'
+                                            ? (isAntivirusProtected
+                                                ? <span style={{ color: '#28a745', fontWeight: 'bold' }}>{t('Software.antivirus_protected')}</span>
+                                                : <span style={{ color: '#f44336', fontWeight: 'bold' }}>{t('Software.antivirus_vulnerable')}</span>)
+                                            : t('Values.none')}
+                                    />
                                     <StatRow
                                         label={t('Stats.games')}
                                         value={state.software.games.length > 0
@@ -349,7 +359,6 @@ export default function Home() {
                                 <Panel label={t('Dashboard.panel_achievements')}>
                                     <Achievements />
                                 </Panel>
-
                             </div>
                         </div>
                     </div>
@@ -470,6 +479,16 @@ export default function Home() {
                     onClose={() => closeWindow('software_antivirus')}
                     isFocused={focusedWindow === 'software_antivirus'}
                     onFocus={() => setFocusedWindow('software_antivirus')}
+                    isProtected={isAntivirusProtected}
+                    onWin={() => {
+                        const currentDays = state.date.year * 360 + state.date.month * 30 + state.date.day;
+                        updateState({
+                            software: {
+                                ...state.software,
+                                protectionUntilDay: currentDays + GAME_CONSTANTS.ANTI_VIRUS_PROTECTION_DAYS
+                            }
+                        });
+                    }}
                 />
             </div >
             <Taskbar

@@ -82,6 +82,7 @@ export interface GameState {
         antivirus: string;
         games: string[];
         programs: string[];
+        protectionUntilDay?: number;
     };
 
     // Internet
@@ -172,6 +173,7 @@ export const INITIAL_STATE: GameState = {
         games: [],
         programs: [],
         antivirus: "none",
+        protectionUntilDay: 0,
     },
 
     internet: {

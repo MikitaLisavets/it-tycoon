@@ -70,9 +70,13 @@ export function useDesktopNotifications(
     // Random Virus Event Logic
     useEffect(() => {
         if (!isInitialized || state.gameOver) return;
-        if (state.computer.modem === 'modem_none' || state.software.antivirus !== 'none') return;
 
-        // Condition: modem owned, no antivirus. Trigger on date change (every tick)
+        const currentDays = state.date.year * 360 + state.date.month * 30 + state.date.day;
+        const isProtected = state.software.antivirus !== 'none' && (state.software.protectionUntilDay || 0) > currentDays;
+
+        if (state.computer.modem === 'modem_none' || isProtected) return;
+
+        // Condition: modem owned, no antivirus or expired. Trigger on date change (every tick)
         const roll = Math.random();
         if (roll < GAME_CONSTANTS.VIRUS_PROBABILITY_PER_TICK) {
             showNotification(
@@ -88,7 +92,7 @@ export function useDesktopNotifications(
                 }
             });
         }
-    }, [state.date, state.computer.modem, state.software.antivirus, state.gameOver, isInitialized, showNotification, tNotification, updateState]);
+    }, [state.date, state.computer.modem, state.software.antivirus, state.software.protectionUntilDay, state.gameOver, isInitialized, showNotification, tNotification, updateState]);
 
     // Dismiss notifications on game over
     useEffect(() => {
