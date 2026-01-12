@@ -334,12 +334,12 @@ const BankWindow: React.FC<BankWindowProps> = ({ isOpen, onClose, onReset, isFoc
                                                 <div className={styles.optionInfo}>
                                                     <div className={styles.optionTitle}>{t(`Bank.${option.id}`)}</div>
                                                     <div className={styles.optionDetails}>
-                                                        <span className={styles.optionDetail}>
+                                                        <div className={styles.optionDetail}>
                                                             <span>{t('Bank.min')}:</span> ${option.minAmount}
-                                                        </span>
-                                                        <span className={styles.optionDetail}>
+                                                        </div>
+                                                        <div className={styles.optionDetail}>
                                                             <span>{t('Bank.monthly_interest')}:</span> {option.interestRate}%
-                                                        </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles.depositInput}>

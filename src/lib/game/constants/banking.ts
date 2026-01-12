@@ -11,14 +11,13 @@ export interface DepositOption {
     id: string;
     minAmount: number;
     interestRate: number; // Monthly percentage
-    name: string;
 }
 
 export const CREDIT_OPTIONS: CreditOption[] = [
     {
         id: 'small_credit',
-        amount: 100,
-        termDays: 1,
+        amount: 500,
+        termDays: 2,
         interestRate: 10,
     },
     {
@@ -38,13 +37,11 @@ export const CREDIT_OPTIONS: CreditOption[] = [
 export const DEPOSIT_OPTIONS: DepositOption[] = [
     {
         id: 'savings',
-        name: 'Savings Account',
         minAmount: 100,
         interestRate: 2, // 2% monthly
     },
     {
         id: 'term_deposit',
-        name: 'Term Deposit',
         minAmount: 500,
         interestRate: 5, // 5% monthly
     },
