@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
 import XPButton from '../XPButton/XPButton';
-import styles from './HelpModal.module.css';
 
 interface HelpModalProps {
     isOpen: boolean;

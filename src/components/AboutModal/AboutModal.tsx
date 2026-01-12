@@ -22,21 +22,6 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
             footer={<XPButton onClick={onClose}>{t('Common.ok')}</XPButton>}
         >
             <div className={styles.body}>
-                <p>{t('About.description')}</p>
-                <br />
-                <div className={styles.list}>
-                    <div>• {t('About.no_ai')}</div>
-                    <div>• {t('About.no_ml')}</div>
-                    <div>• {t('About.no_blockchain')}</div>
-                </div>
-
-                <div className={styles.stampContainer}>
-                    <div className={styles.stamp}>
-                        {t('About.stamp')}
-                    </div>
-                </div>
-
-                <br />
                 <p>{t('About.inspiration')}</p>
 
                 <br />

@@ -207,24 +207,19 @@
     "Onboarding": {
         "title": "How to Play",
         "welcome": "Welcome to Desktop Life!",
-        "intro": "Start your journey from a newbie to an IT mogul. Manage your money, status, and happiness.",
-        "section_work": "Work: Earn money but lose energy.",
+        "intro": "Start your journey from a newbie to pro. Manage your money, status, and happiness.",
+        "section_work": "Work: Find a job and earn money.",
         "section_hack": "Hack: High risk, high reward.",
         "section_learn": "Learn: Improve your skills to get better jobs.",
-        "section_shop": "Shop: Buy better equipment and furniture.",
-        "good_luck": "Good luck!"
+        "section_shop": "Shop: Buy items to improve your lifestyle.",
+        "good_luck": "And many more! Good luck!"
     },
     "About": {
         "title": "About Desktop Life",
-        "description": "This game was built using simple rules and human logic.",
-        "no_ai": "No Cryptocurrency.",
-        "no_ml": "No Machine Learning.",
-        "no_blockchain": "No Blockchain.",
         "inspiration": "Inspired by games and digital aesthetics of the early 2000s.",
         "dev_by": "Developed by",
         "more_apps": "More applications:",
-        "support": "Support development:",
-        "stamp": "AI Free ✓"
+        "support": "Support development:"
     },
     "Job": {
         "title": "Job Center",

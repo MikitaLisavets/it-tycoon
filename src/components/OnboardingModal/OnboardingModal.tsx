@@ -28,10 +28,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                     {t('Onboarding.intro')}
                 </p>
                 <ul style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <li><strong>{t('Onboarding.section_work')}</strong> {t('Onboarding.section_work')}</li>
-                    <li><strong>{t('Onboarding.section_hack')}</strong> {t('Onboarding.section_hack')}</li>
-                    <li><strong>{t('Onboarding.section_learn')}</strong> {t('Onboarding.section_learn')}</li>
-                    <li><strong>{t('Onboarding.section_shop')}</strong> {t('Onboarding.section_shop')}</li>
+                    <li>{t('Onboarding.section_work')}</li>
+                    <li>{t('Onboarding.section_hack')}</li>
+                    <li>{t('Onboarding.section_learn')}</li>
+                    <li>{t('Onboarding.section_shop')}</li>
                 </ul>
                 <p>
                     {t('Onboarding.good_luck')}
