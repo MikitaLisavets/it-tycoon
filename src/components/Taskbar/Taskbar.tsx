@@ -47,19 +47,19 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
 
     const getStartButtonStyle = () => {
         const sys = state.software.system;
-        if (sys === 'winos_95' || sys === 'winos_98') return styles.start95;
-        if (sys === 'winos_xp') return styles.startXP;
-        if (sys === 'winos_7') return styles.start7;
-        if (sys === 'winos_10' || sys === 'winos_11') return styles.start10;
+        if (sys === 'os_95' || sys === 'os_98') return styles.start95;
+        if (sys === 'os_xp') return styles.startXP;
+        if (sys === 'os_7') return styles.start7;
+        if (sys === 'os_10' || sys === 'os_11') return styles.start10;
         return styles.start95;
     };
 
     const getTaskbarClass = () => {
         const sys = state.software.system;
-        if (sys === 'winos_95' || sys === 'winos_98') return styles.taskbar95;
-        if (sys === 'winos_xp') return styles.taskbarXP;
-        if (sys === 'winos_7') return styles.taskbar7;
-        if (sys === 'winos_10' || sys === 'winos_11') return styles.taskbar10;
+        if (sys === 'os_95' || sys === 'os_98') return styles.taskbar95;
+        if (sys === 'os_xp') return styles.taskbarXP;
+        if (sys === 'os_7') return styles.taskbar7;
+        if (sys === 'os_10' || sys === 'os_11') return styles.taskbar10;
         return styles.taskbarXP;
     };
 

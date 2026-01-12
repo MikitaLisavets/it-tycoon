@@ -168,8 +168,8 @@ export const INITIAL_STATE: GameState = {
     },
 
     software: {
-        system: "winos_95",
-        ownedSystems: ["winos_95"],
+        system: "os_95",
+        ownedSystems: ["os_95"],
         games: [],
         programs: [],
         antivirus: "none",
