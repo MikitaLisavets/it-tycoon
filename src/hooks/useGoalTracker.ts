@@ -22,7 +22,7 @@ export function useGoalTracker() {
 
             if (goal.id === 'get_job' && state.job.id !== 'none') {
                 isNowCompleted = true;
-            } else if (goal.id === 'upgrade_pc' && state.computer.cpu !== 'intel_386') {
+            } else if (goal.id === 'upgrade_pc' && calculateComputerLevel(state.computer) >= 1) {
                 isNowCompleted = true;
             } else if (goal.id === 'internet_access' && state.internet.access !== 'none') {
                 isNowCompleted = true;
@@ -39,6 +39,12 @@ export function useGoalTracker() {
             } else if (goal.id === 'become_developer' && (state.job.id === 'web_dev' || state.job.id === 'senior_dev' || state.job.id === 'startup_founder' || state.job.id === 'it_investor')) {
                 isNowCompleted = true;
             } else if (goal.id === 'reach_10000' && state.stats.money >= 10000) {
+                isNowCompleted = true;
+            } else if (goal.id === 'play_solitaire' && state.logs.some(l => l.type === 'solitaire_play')) {
+                isNowCompleted = true;
+            } else if (goal.id === 'deposit' && state.banking.deposits.length > 0) {
+                isNowCompleted = true;
+            } else if (goal.id === 'hack' && state.logs.some(l => l.type === 'hack_success')) {
                 isNowCompleted = true;
             }
 

@@ -30,10 +30,10 @@ const GoalsList: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.tape} />
-            <div className={styles.title}>{t('Dashboard.todo_list') || 'TO-DO LIST'}</div>
+            <div className={styles.title}>{t('Dashboard.todo_list')}</div>
             <div className={styles.content}>
                 {allGoals.length === 0 && (
-                    <div className={styles.empty}>{t('Dashboard.no_objectives') || 'No current objectives.'}</div>
+                    <div className={styles.empty}>{t('Dashboard.no_objectives')}</div>
                 )}
 
                 {isAllGloballyCompleted && allGoals.length > 0 && (

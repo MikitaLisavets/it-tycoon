@@ -10,7 +10,7 @@ export interface GameDate {
     minute: number;
 }
 
-export type LogType = 'solitaire_win' | 'hack_success' | 'game_start' | 'job_apply' | 'achievement_unlock' | 'goal_complete' | 'info' | 'warning' | 'error' | 'success';
+export type LogType = 'solitaire_win' | 'solitaire_play' | 'hack_success' | 'game_start' | 'job_apply' | 'achievement_unlock' | 'goal_complete' | 'info' | 'warning' | 'error' | 'success';
 
 export interface LogEntry {
     id: string;
@@ -241,9 +241,12 @@ export const INITIAL_STATE: GameState = {
         { id: 'get_office_job', text: "Goals.get_office_job", completed: false },
         { id: 'buy_first_software', text: "Goals.buy_first_software", completed: false },
         { id: 'reach_1000', text: "Goals.reach_1000", completed: false },
+        { id: 'play_solitaire', text: "Goals.play_solitaire", completed: false },
         { id: 'complete_college', text: "Goals.complete_college", completed: false },
+        { id: 'deposit', text: "Goals.deposit", completed: false },
         { id: 'become_developer', text: "Goals.become_developer", completed: false },
-        { id: 'reach_10000', text: "Goals.reach_10000", completed: false }
+        { id: 'hack', text: "Goals.hack", completed: false },
+        { id: 'reach_10000', text: "Goals.reach_10000", completed: false },
     ],
     achievements: [],
     logs: []

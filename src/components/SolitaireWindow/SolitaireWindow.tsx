@@ -25,7 +25,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
 }) => {
     const t = useTranslations();
     const { state, updateState } = useGameState();
-    const { logSolitaireWin } = useGameLogs();
+    const { logSolitaireWin, logSolitairePlay } = useGameLogs();
     const gameState = state.apps.solitaire;
 
     const [selectedCard, setSelectedCard] = useState<{ card: Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | Suit; cardIndex?: number } | null>(null);
@@ -84,8 +84,9 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     useEffect(() => {
         if (isOpen && !gameState) {
             startNewGame();
+            logSolitairePlay();
         }
-    }, [isOpen, gameState, startNewGame]);
+    }, [isOpen, gameState, startNewGame, logSolitairePlay]);
 
     const runWinAnimation = useCallback(() => {
         const canvas = canvasRef.current;

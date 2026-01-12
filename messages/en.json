@@ -504,15 +504,18 @@
     },
     "Goals": {
         "get_job": "Find your first job at the Job Center",
-        "upgrade_pc": "Upgrade your CPU to Pentium III",
-        "internet_access": "Get internet access",
+        "internet_access": "Buy any modem to get internet access",
         "complete_school": "Graduate from School",
+        "upgrade_pc": "Upgrade your computer to level 1",
         "get_office_job": "Get an office or professional job",
         "buy_first_software": "Buy your first software or game",
-        "reach_1000": "Save $1,000",
+        "reach_1000": "Get $1,000",
         "complete_college": "Graduate from College",
         "become_developer": "Become a Web Developer",
-        "reach_10000": "Achieve $10,000 in wealth"
+        "reach_10000": "Achieve $10,000 in wealth",
+        "play_solitaire": "Play a game of Solitaire",
+        "deposit": "Deposit any amount in the bank",
+        "hack": "Hack any target"
     },
     "GameOver": {
         "title": "Game Over",

@@ -28,6 +28,10 @@ export function useGameLogs() {
         addLog('solitaire_win', text);
     }, [addLog]);
 
+    const logSolitairePlay = useCallback((text: string = "Started a game of Solitaire") => {
+        addLog('solitaire_play', text);
+    }, [addLog]);
+
     const logSuccessfulHack = useCallback((targetId: string, text: string = `Successfully hacked ${targetId}`) => {
         addLog('hack_success', text, { targetId });
     }, [addLog]);
@@ -39,6 +43,7 @@ export function useGameLogs() {
     return {
         logs: state.logs,
         logSolitaireWin,
+        logSolitairePlay,
         logSuccessfulHack,
         logEvent
     };
