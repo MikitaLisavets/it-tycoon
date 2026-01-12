@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google"; // Corrected import based on usage in previous file
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/AppProviders";
 import CheatSystem from "@/components/CheatSystem/CheatSystem";
 import Script from "next/script";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
+const outfit = Outfit({
+    variable: "--font-outfit",
     subsets: ["latin"],
 });
 
@@ -80,7 +75,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <body className={outfit.variable}>
                 <Script id="clarity-script" strategy="afterInteractive">
                     {`
                         (function(c,l,a,r,i,t,y){

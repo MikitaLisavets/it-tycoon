@@ -72,6 +72,6 @@
     word-wrap: break-word;
     line-height: 1.2;
     user-select: none;
-    font-family: 'Tahoma', 'Segoe UI', sans-serif;
+    user-select: none;
     padding: 0 2px;
 }

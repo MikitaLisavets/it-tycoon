@@ -30,7 +30,7 @@
     text-transform: uppercase;
     transform: rotate(-12deg);
     user-select: none;
-    font-family: 'Courier New', Courier, monospace;
+    user-select: none;
     opacity: 0.7;
     border-radius: 4px;
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);

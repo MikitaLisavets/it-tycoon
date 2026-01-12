@@ -318,15 +318,6 @@ export default function Home() {
                                     />
                                 </Panel>
 
-                                {/* <Panel label={t('Dashboard.panel_life')}>
-                                    <StatRow label={t('Stats.rooms')} value={state.life.rooms.toString()} />
-                                    <StatRow label={t('Stats.furniture')} value={t(`Values.${state.life.furniture}`)} />
-                                    <StatRow label={t('Stats.kitchen')} value={t(`Values.${state.life.kitchen}`)} />
-                                    <StatRow label={t('Stats.bathroom')} value={t(`Values.${state.life.bathroom}`)} />
-                                    <StatRow label={t('Stats.clothes')} value={t(`Values.${state.life.clothes}`)} />
-                                    <StatRow label={t('Stats.car')} value={t(`Values.${state.life.car}`)} />
-                                </Panel> */}
-
                                 <Panel label={t('Dashboard.panel_system')}>
                                     <StatRow label={t('Stats.access')} value={t(`Values.${state.internet.access}`)} />
                                     <StatRow label={t('Stats.system')} value={t(`Values.${state.software.system}`)} />

@@ -6,7 +6,7 @@
     flex: 1;
     /* Ensure content fits */
     padding: 10px;
-    font-family: 'Courier New', monospace;
+    padding: 10px;
     border: 2px solid #555;
     border-top-color: #777;
     border-left-color: #777;
@@ -176,7 +176,6 @@
 }
 
 .branding {
-    font-family: Arial, sans-serif;
     font-style: italic;
     font-weight: bold;
     color: #666;

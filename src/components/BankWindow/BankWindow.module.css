@@ -25,7 +25,6 @@
     flex: 1;
     padding: 15px;
     overflow-y: auto;
-    font-family: 'Courier New', monospace;
     color: #44ff44;
     text-shadow: 0 0 4px rgba(68, 255, 68, 0.6);
     position: relative;
@@ -152,8 +151,6 @@
     border-right-width: 2px;
     border-radius: 4px;
     color: #333;
-    font-family: sans-serif;
-    /* Physical buttons usually aren't monospace */
     font-weight: bold;
     font-size: 12px;
     padding: 8px 16px;
@@ -225,7 +222,6 @@
     background: #002200;
     border: 1px solid #44ff44;
     color: #44ff44;
-    font-family: inherit;
     padding: 6px;
     flex: 1;
     font-size: 14px;
@@ -263,7 +259,6 @@
     border: 1px solid #005500;
     color: #44ff44;
     padding: 8px 16px;
-    font-family: 'Courier New', monospace;
     font-size: 14px;
     cursor: pointer;
     text-transform: uppercase;
@@ -379,7 +374,6 @@
     border: 1px solid #00ff00;
     color: #00ff00;
     padding: 6px 14px;
-    font-family: 'Courier New', monospace;
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
@@ -464,7 +458,6 @@
     border: 1px solid #00aa00;
     color: #00ff00;
     padding: 6px 10px;
-    font-family: 'Courier New', monospace;
     font-size: 12px;
 }
 
@@ -497,7 +490,6 @@
     color: #00ff00;
     font-size: 18px;
     font-weight: bold;
-    font-family: 'Courier New', monospace;
     text-shadow: 0 0 5px #00ff00;
 }
 
@@ -507,7 +499,6 @@
     border: 1px solid #ffaa00;
     color: #ffcc00;
     padding: 4px 10px;
-    font-family: 'Courier New', monospace;
     font-size: 11px;
     cursor: pointer;
 }

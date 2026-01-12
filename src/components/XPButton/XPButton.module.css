@@ -4,7 +4,7 @@
     border-radius: 3px;
     color: var(--xp-text);
     padding: 4px 12px;
-    font-family: var(--font-tahoma);
+    padding: 4px 12px;
     font-size: 11px;
     cursor: pointer;
     min-width: 80px;
