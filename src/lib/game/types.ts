@@ -126,6 +126,7 @@ export interface GameState {
     // Apps State
     apps: {
         solitaire: SolitaireState | null;
+        minesweeper: MinesweeperState | null;
     };
 
     purchasedItems: string[];
@@ -229,7 +230,8 @@ export const INITIAL_STATE: GameState = {
     },
 
     apps: {
-        solitaire: null
+        solitaire: null,
+        minesweeper: null
     },
 
     purchasedItems: [],
@@ -271,6 +273,25 @@ export interface SolitaireState {
     foundation: Record<Suit, Pile>;
     tableau: Pile[];
     isWon: boolean;
+}
+
+// Minesweeper Types
+export interface MinesweeperCell {
+    isMine: boolean;
+    isRevealed: boolean;
+    isFlagged: boolean;
+    neighborMines: number;
+    id: string; // row-col
+}
+
+export interface MinesweeperState {
+    grid: MinesweeperCell[][];
+    isWon: boolean;
+    isLost: boolean;
+    startTime: number | null;
+    flagsPlaced: number;
+    totalMines: number;
+    difficulty: 'beginner' | 'intermediate' | 'expert';
 }
 
 export interface JobRequirements {

@@ -26,12 +26,13 @@ import ApplicationWindow from "@/components/ApplicationWindow/ApplicationWindow"
 import InternetWindow from "@/components/InternetWindow/InternetWindow";
 import LevelBadge from "@/components/LevelBadge/LevelBadge";
 import SolitaireWindow from "@/components/SolitaireWindow/SolitaireWindow";
+import MinesweeperWindow from "@/components/MinesweeperWindow/MinesweeperWindow";
 import HackingWindow from "@/components/HackingWindow/HackingWindow";
 import { useGameState } from "@/hooks/useGameState";
 import { useNotification } from "@/hooks/useNotification";
 import { STAT_ICONS, GAME_CONSTANTS } from "@/lib/game/constants/index";
 import { EDUCATION_TRACKS } from "@/lib/game/constants/education";
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from "@/components/Icons/AppIcons";
+import { SolitaireIcon, MinesweeperIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from "@/components/Icons/AppIcons";
 import { NotepadWindow, OfficeWindow, CodeEditorWindow, WebWalletWindow, InvestorWindow, AntivirusWindow } from "@/components/SoftwareWindows/SoftwareWindows";
 import { calculateComputerLevel } from "@/lib/game/utils/hardware";
 import { formatNumberWithSuffix } from "@/lib/game/utils/number-formatter";
@@ -98,6 +99,11 @@ export default function Home() {
             id: 'solitaire',
             label: t('Values.solitaire'),
             icon: <SolitaireIcon />
+        }] : []),
+        ...(state.software.games.includes('minesweeper') ? [{
+            id: 'minesweeper',
+            label: t('Values.minesweeper'),
+            icon: <MinesweeperIcon />
         }] : []),
         ...(state.software.programs.includes('software_office') ? [{
             id: 'software_office',
@@ -198,6 +204,8 @@ export default function Home() {
                                 toggleWindow('winamp');
                             } else if (id === 'solitaire') {
                                 toggleWindow('solitaire');
+                            } else if (id === 'minesweeper') {
+                                toggleWindow('minesweeper');
                             } else if (id.startsWith('software_')) {
                                 toggleWindow(id);
                             }
@@ -420,6 +428,12 @@ export default function Home() {
                     onClose={() => closeWindow('solitaire')}
                     isFocused={focusedWindow === 'solitaire'}
                     onFocus={() => setFocusedWindow('solitaire')}
+                />
+                <MinesweeperWindow
+                    isOpen={openWindows.includes('minesweeper')}
+                    onClose={() => closeWindow('minesweeper')}
+                    isFocused={focusedWindow === 'minesweeper'}
+                    onFocus={() => setFocusedWindow('minesweeper')}
                 />
                 <InternetWindow
                     isOpen={openWindows.includes('internet')}

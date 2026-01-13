@@ -37,6 +37,7 @@ export const SOFTWARES: Record<SoftwareType, SoftwareItem[]> = {
     ],
     games: [
         { id: "solitaire", cost: { money: 50 }, category: 'games', duration: 2 },
+        { id: "minesweeper", cost: { money: 100 }, category: 'games', duration: 3 },
     ]
 };
 

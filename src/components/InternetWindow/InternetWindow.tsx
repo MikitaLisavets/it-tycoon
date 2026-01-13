@@ -13,6 +13,7 @@ import { calculateDynamicPrice } from '@/lib/game/utils/economy';
 import StatList from '../StatList/StatList';
 import {
     SolitaireIcon,
+    MinesweeperIcon,
     NotepadIcon,
     OfficeIcon,
     CodeEditorIcon,
@@ -227,6 +228,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
 
         switch (id) {
             case 'solitaire': return <SolitaireIcon />;
+            case 'minesweeper': return <MinesweeperIcon />;
             case 'software_notepad': return <NotepadIcon />;
             case 'software_office': return <OfficeIcon />;
             case 'software_code_editor': return <CodeEditorIcon />;

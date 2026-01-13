@@ -83,3 +83,18 @@ export const OSIcon: React.FC = () => (
         <rect x="12" y="15" width="4" height="4" rx="0.5" fill="#1565C0" opacity="0.2" />
     </svg>
 );
+
+export const MinesweeperIcon: React.FC = () => (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="24" height="24" rx="2" fill="#c0c0c0" stroke="#808080" strokeWidth="1.5" />
+        {/* Mine Spikes */}
+        <path d="M16 8L16 24" stroke="black" strokeWidth="2" strokeLinecap="round" />
+        <path d="M8 16L24 16" stroke="black" strokeWidth="2" strokeLinecap="round" />
+        <path d="M10.34 10.34L21.66 21.66" stroke="black" strokeWidth="2" strokeLinecap="round" />
+        <path d="M21.66 10.34L10.34 21.66" stroke="black" strokeWidth="2" strokeLinecap="round" />
+        {/* Main Body */}
+        <circle cx="16" cy="16" r="6" fill="black" />
+        {/* Shine */}
+        <circle cx="14" cy="14" r="1.5" fill="white" opacity="0.5" />
+    </svg>
+);

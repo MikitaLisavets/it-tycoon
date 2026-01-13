@@ -4,7 +4,7 @@ import DesktopShortcut from '../DesktopShortcut/DesktopShortcut';
 import styles from './ApplicationWindow.module.css';
 import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
-import { SolitaireIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from '../Icons/AppIcons';
+import { SolitaireIcon, MinesweeperIcon, NotepadIcon, OfficeIcon, CodeEditorIcon, WebWalletIcon, InvestorIcon, WinampIcon, AntivirusIcon } from '../Icons/AppIcons';
 import HelpModal from '../HelpModal/HelpModal';
 
 interface ApplicationWindowProps {
@@ -27,6 +27,7 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
     const [isHelpOpen, setIsHelpOpen] = React.useState(false);
 
     const isSolitaireOwned = state.software.games.includes('solitaire');
+    const isMinesweeperOwned = state.software.games.includes('minesweeper');
 
     if (!isOpen) return null;
 
@@ -53,6 +54,14 @@ const ApplicationWindow: React.FC<ApplicationWindowProps> = ({
                             id="solitaire"
                             label={t('Values.solitaire')}
                             icon={<SolitaireIcon />}
+                            onDoubleClick={onOpenApp}
+                        />
+                    )}
+                    {isMinesweeperOwned && (
+                        <DesktopShortcut
+                            id="minesweeper"
+                            label={t('Values.minesweeper')}
+                            icon={<MinesweeperIcon />}
                             onDoubleClick={onOpenApp}
                         />
                     )}

@@ -18,9 +18,10 @@ interface SoftwareWindowProps {
 
 export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
     if (!isOpen) return null;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame
@@ -349,11 +350,13 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
         setCaughtCount(prev => prev + 1);
     };
 
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+
     if (!isOpen) return null;
 
     const progress = (caughtCount / totalToCatch) * 100;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame

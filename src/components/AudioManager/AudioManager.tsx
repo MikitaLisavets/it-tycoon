@@ -43,7 +43,6 @@ export default function AudioManager({ children }: AudioManagerProps) {
             <GameAudio ref={cheatAudioRef} src="/sfx/cheat.mp3" baseVolume={0.5} />
             <GameAudio ref={warningAudioRef} src="/sfx/warning.mp3" baseVolume={0.5} />
             <GameAudio ref={notificationAudioRef} src="/sfx/notification.mp3" baseVolume={0.5} />
-            <GameAudio ref={bootAudioRef} src="/sfx/boot.mp3" baseVolume={0.5} />
             <GameAudio ref={purchaseAudioRef} src="/sfx/purchase.mp3" baseVolume={0.5} />
         </AudioContext.Provider>
     );
