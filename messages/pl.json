@@ -415,6 +415,9 @@
         "controls_volume": "Objętość",
         "help_content": "Odtwarzaj swoje ulubione utwory retro!"
     },
+    "Minesweeper": {
+        "help_content": "Oczyść pole minowe nie detonując żadnej miny. Lewy przycisk odsłania, prawy oznacza flagą. Liczby wskazują ilość min w sąsiedztwie."
+    },
     "Solitaire": {
         "new_game": "Nowa gra",
         "victory": "Gratulacje! Wygrałeś!",

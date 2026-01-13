@@ -415,6 +415,9 @@
         "controls_volume": "Volume",
         "help_content": "Play your favorite retro tunes!"
     },
+    "Minesweeper": {
+        "help_content": "Clear the minefield without detonating any mines. Left-click to reveal a cell, Right-click to flag a mine. Numbers indicate how many mines are adjacent to the cell."
+    },
     "Solitaire": {
         "new_game": "New Game",
         "victory": "Congratulations! You won!",

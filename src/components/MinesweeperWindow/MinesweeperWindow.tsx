@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import WindowFrame from '../WindowFrame/WindowFrame';
+import HelpModal from '../HelpModal/HelpModal';
 import styles from './MinesweeperWindow.module.css';
 import * as logic from './logic';
 import { useGameState } from '../../hooks/useGameState';
@@ -23,12 +24,13 @@ const MinesweeperWindow: React.FC<MinesweeperWindowProps> = ({
 }) => {
     const t = useTranslations();
     const { state, updateState } = useGameState();
-    // const { logGamePlay } = useGameLogs(); // Assuming we might want logs later
+    const { logMinesweeperPlay } = useGameLogs(); // Assuming we might want logs later
     const audio = useAudio();
     const gameState = state.apps.minesweeper;
 
     const boardRef = React.useRef<HTMLDivElement>(null);
     const [gridStyle, setGridStyle] = useState<React.CSSProperties>({});
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
 
     useEffect(() => {
         if (!boardRef.current || !gameState) return;
@@ -73,7 +75,8 @@ const MinesweeperWindow: React.FC<MinesweeperWindowProps> = ({
         const newState = logic.initializeGame();
         updateMinesweeperState(newState);
         setTimer(0);
-    }, [updateMinesweeperState]);
+        logMinesweeperPlay();
+    }, [updateMinesweeperState, logMinesweeperPlay]);
 
     useEffect(() => {
         if (isOpen && !gameState) {
@@ -184,41 +187,50 @@ const MinesweeperWindow: React.FC<MinesweeperWindowProps> = ({
     };
 
     return (
-        <WindowFrame
-            id="minesweeper_window"
-            title={t('Values.minesweeper')}
-            onCloseClick={onClose}
-            width="auto"
-            height="auto"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <div className={styles.counter}>{Math.max(0, gameState.totalMines - gameState.flagsPlaced).toString().padStart(3, '0')}</div>
-                    <div className={styles.faceButton} onClick={handleFaceClick}>
-                        {gameState.isWon ? '😎' : gameState.isLost ? '😵' : '🙂'}
+        <>
+            <WindowFrame
+                id="minesweeper_window"
+                title={t('Values.minesweeper')}
+                onCloseClick={onClose}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="auto"
+                height="auto"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <div className={styles.container}>
+                    <div className={styles.header}>
+                        <div className={styles.counter}>{Math.max(0, gameState.totalMines - gameState.flagsPlaced).toString().padStart(3, '0')}</div>
+                        <div className={styles.faceButton} onClick={handleFaceClick}>
+                            {gameState.isWon ? '😎' : gameState.isLost ? '😵' : '🙂'}
+                        </div>
+                        <div className={styles.counter}>{timer.toString().padStart(3, '0')}</div>
                     </div>
-                    <div className={styles.counter}>{timer.toString().padStart(3, '0')}</div>
-                </div>
 
-                <div className={styles.board} ref={boardRef}>
-                    <div
-                        className={styles.gridLayer}
-                        style={{
-                            aspectRatio: `${gameState.grid[0].length} / ${gameState.grid.length}`,
-                            ...gridStyle
-                        }}
-                    >
-                        {gameState.grid.map((rowV, r) => (
-                            <div key={r} className={styles.row}>
-                                {rowV.map((_, c) => renderCell(r, c))}
-                            </div>
-                        ))}
+                    <div className={styles.board} ref={boardRef}>
+                        <div
+                            className={styles.gridLayer}
+                            style={{
+                                aspectRatio: `${gameState.grid[0].length} / ${gameState.grid.length}`,
+                                ...gridStyle
+                            }}
+                        >
+                            {gameState.grid.map((rowV, r) => (
+                                <div key={r} className={styles.row}>
+                                    {rowV.map((_, c) => renderCell(r, c))}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </WindowFrame>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Values.minesweeper')}
+                content={t('Minesweeper.help_content')}
+            />
+        </>
     );
 };
 

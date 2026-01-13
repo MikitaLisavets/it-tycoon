@@ -415,6 +415,9 @@
         "controls_volume": "Volumen",
         "help_content": "¡Toca tus canciones retro favoritas!"
     },
+    "Minesweeper": {
+        "help_content": "Despeja el campo de minas sin detonar ninguna. Click izquierdo para revelar, click derecho para marcar. Los números indican cuántas minas hay adyacentes."
+    },
     "Solitaire": {
         "new_game": "Nuevo juego",
         "victory": "¡Felicidades! ¡Has ganado!",

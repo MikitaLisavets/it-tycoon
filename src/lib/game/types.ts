@@ -10,7 +10,7 @@ export interface GameDate {
     minute: number;
 }
 
-export type LogType = 'solitaire_win' | 'solitaire_play' | 'hack_success' | 'game_start' | 'job_apply' | 'achievement_unlock' | 'goal_complete' | 'info' | 'warning' | 'error' | 'success';
+export type LogType = 'solitaire_win' | 'solitaire_play' | 'hack_success' | 'game_start' | 'job_apply' | 'achievement_unlock' | 'goal_complete' | 'info' | 'warning' | 'error' | 'success' | 'minesweeper_play' | 'minesweeper_win';
 
 export interface LogEntry {
     id: string;

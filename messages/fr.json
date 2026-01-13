@@ -415,6 +415,9 @@
         "controls_volume": "Volume",
         "help_content": "Jouez vos morceaux rétro préférés !"
     },
+    "Minesweeper": {
+        "help_content": "Déminez le terrain sans faire exploser de mines. Clic gauche pour révéler, clic droit pour marquer. Les chiffres indiquent le nombre de mines adjacentes."
+    },
     "Solitaire": {
         "new_game": "Nouveau jeu",
         "victory": "Félicitations ! Vous avez gagné !",

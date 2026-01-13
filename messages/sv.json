@@ -415,6 +415,9 @@
         "controls_volume": "Volym",
         "help_content": "Spela dina favoritmelodier i retrostil!"
     },
+    "Minesweeper": {
+        "help_content": "Röj minfältet utan att detonera några minor. Vänsterklick för att avslöja, högerklick för att flagga. Siffrorna visar hur många minor som finns intill."
+    },
     "Solitaire": {
         "new_game": "Nytt spel",
         "victory": "Gratulerar, gratulerar! Du har vunnit!",

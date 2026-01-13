@@ -32,6 +32,10 @@ export function useGameLogs() {
         addLog('solitaire_play', text);
     }, [addLog]);
 
+    const logMinesweeperPlay = useCallback((text: string = "Started a game of Minesweeper") => {
+        addLog('minesweeper_play', text);
+    }, [addLog]);
+
     const logSuccessfulHack = useCallback((targetId: string, text: string = `Successfully hacked ${targetId}`) => {
         addLog('hack_success', text, { targetId });
     }, [addLog]);
@@ -44,6 +48,7 @@ export function useGameLogs() {
         logs: state.logs,
         logSolitaireWin,
         logSolitairePlay,
+        logMinesweeperPlay,
         logSuccessfulHack,
         logEvent
     };
