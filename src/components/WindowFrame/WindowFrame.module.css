@@ -8,8 +8,9 @@
     overflow: hidden;
     position: relative;
     max-height: 700px;
-    /* Hint browser to prepare GPU layer for transforms */
-    will-change: transform;
+    /* Prevent sub-pixel rendering artifacts */
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .window.dragging {

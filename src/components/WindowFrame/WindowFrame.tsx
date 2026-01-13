@@ -90,8 +90,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
             }
 
             // Default: Initial center
-            const initialX = (window.innerWidth - offsetWidth) / 2;
-            const initialY = (window.innerHeight - 28 - offsetHeight) / 2;
+            const initialX = Math.round((window.innerWidth - offsetWidth) / 2);
+            const initialY = Math.round((window.innerHeight - 28 - offsetHeight) / 2);
             return { x: Math.max(0, initialX), y: Math.max(0, initialY) };
           } else {
             // Adjust if out of bounds (e.g. on resize)
@@ -178,8 +178,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
         const maxY = window.innerHeight - 28 - windowHeight; // 28px is taskbar height
 
         setPosition({
-          x: Math.max(0, Math.min(newX, maxX)),
-          y: Math.max(0, Math.min(newY, maxY))
+          x: Math.round(Math.max(0, Math.min(newX, maxX))),
+          y: Math.round(Math.max(0, Math.min(newY, maxY)))
         });
       });
     };
@@ -191,8 +191,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       const deltaY = e.clientY - resizeStartRef.current.y;
 
       setSize({
-        width: Math.max(200, resizeStartRef.current.w + deltaX),
-        height: Math.max(150, resizeStartRef.current.h + deltaY)
+        width: Math.round(Math.max(200, resizeStartRef.current.w + deltaX)),
+        height: Math.round(Math.max(150, resizeStartRef.current.h + deltaY))
       });
     };
 
