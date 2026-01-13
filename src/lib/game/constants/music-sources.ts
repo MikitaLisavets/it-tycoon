@@ -1,11 +1,7 @@
 export const MUSIC_SOURCES = [
     {
-        name: 'Radio Noughties',
-        url: 'https://sa46.scastream.com.au/live/7noughties_128.stream/playlist.m3u8',
-    },
-    {
-        name: 'Radio Heart',
-        url: 'https://sa46.scastream.com.au/live/2heart_128.stream/playlist.m3u8',
+        name: 'Radio Heart 00s',
+        url: 'https://ice-sov.musicradio.com/Heart00sMP3',
     },
     {
         name: 'Radio Top 2000s',
@@ -18,6 +14,10 @@ export const MUSIC_SOURCES = [
     {
         name: 'Radio Totally',
         url: 'https://23203.live.streamtheworld.com/T_RAD_00S_S01AAC_SC?dist=triton-widget&pname=tdwidgets'
+    },
+    {
+        name: 'Radio Noughties',
+        url: 'https://sa46.scastream.com.au/live/7noughties_128.stream/playlist.m3u8',
     },
 ];
 

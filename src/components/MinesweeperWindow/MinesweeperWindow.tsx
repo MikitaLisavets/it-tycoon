@@ -29,15 +29,21 @@ const MinesweeperWindow: React.FC<MinesweeperWindowProps> = ({
     const gameState = state.apps.minesweeper;
 
     const boardRef = React.useRef<HTMLDivElement>(null);
-    const [gridStyle, setGridStyle] = useState<React.CSSProperties>({});
+    const [gridStyle, setGridStyle] = useState<React.CSSProperties>({
+        width: '100%',
+        height: 'auto'
+    });
     const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-    useEffect(() => {
+    React.useLayoutEffect(() => {
         if (!boardRef.current || !gameState) return;
 
         const observer = new ResizeObserver((entries) => {
             const entry = entries[0];
             const boardRect = entry.contentRect;
+
+            if (boardRect.width === 0 || boardRect.height === 0) return;
+
             const boardRatio = boardRect.width / boardRect.height;
             const gridRatio = gameState.grid[0].length / gameState.grid.length;
 
@@ -193,8 +199,8 @@ const MinesweeperWindow: React.FC<MinesweeperWindowProps> = ({
                 title={t('Values.minesweeper')}
                 onCloseClick={onClose}
                 onHelpClick={() => setIsHelpOpen(true)}
-                width="auto"
-                height="auto"
+                width="250px"
+                height="350px"
                 isFocused={isFocused}
                 onFocus={onFocus}
             >

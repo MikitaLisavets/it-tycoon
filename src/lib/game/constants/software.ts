@@ -33,7 +33,7 @@ export const SOFTWARES: Record<SoftwareType, SoftwareItem[]> = {
         { id: "software_investor", cost: { money: 15000 }, category: 'programs', requirements: { system: 'os_11' }, duration: 2 },
     ],
     antivirus: [
-        { id: "software_antivirus", cost: { money: 300 }, category: 'antivirus', duration: 10 },
+        { id: "software_antivirus", cost: { money: 100 }, category: 'antivirus', duration: 10 },
     ],
     games: [
         { id: "solitaire", cost: { money: 50 }, category: 'games', duration: 2 },

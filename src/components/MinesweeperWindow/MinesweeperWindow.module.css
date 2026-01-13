@@ -66,6 +66,8 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .row {

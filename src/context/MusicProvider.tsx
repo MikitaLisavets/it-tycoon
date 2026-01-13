@@ -26,21 +26,20 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
             setIsPlaying(false);
         }
     }, [state.gameOver, isPlaying]);
-
     useEffect(() => {
         const resolveStream = async () => {
             setIsLoading(true);
             setCurrentTime('00:00');
 
-            if (MUSIC_SOURCES[currentSourceIndex].url.toLowerCase().endsWith('.m3u') || MUSIC_SOURCES[currentSourceIndex].url.includes('.m3u')) {
-                const parsedUrl = await parseM3U(MUSIC_SOURCES[currentSourceIndex].url);
-                if (parsedUrl) {
-                    setAudioSrc(parsedUrl);
-                } else {
-                    setAudioSrc(MUSIC_SOURCES[currentSourceIndex].url);
-                }
+            const url = MUSIC_SOURCES[currentSourceIndex].url;
+            const lowercaseUrl = url.toLowerCase();
+
+            // Only parse if it's strictly .m3u, avoid .m3u8 as it's HLS and needs a different player
+            if (lowercaseUrl.endsWith('.m3u') && !lowercaseUrl.endsWith('.m3u8')) {
+                const parsedUrl = await parseM3U(url);
+                setAudioSrc(parsedUrl || url);
             } else {
-                setAudioSrc(MUSIC_SOURCES[currentSourceIndex].url);
+                setAudioSrc(url);
             }
             setIsLoading(false);
         };
@@ -52,6 +51,8 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
         if (!audioRef.current || !audioSrc) return;
 
         if (isPlaying) {
+            // Use load() to force the audio element to reload the new src
+            audioRef.current.load();
             const playPromise = audioRef.current.play();
             if (playPromise !== undefined) {
                 playPromise.catch(e => {
@@ -65,6 +66,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
             audioRef.current.pause();
         }
     }, [isPlaying, audioSrc]);
+
 
     useEffect(() => {
         if (audioRef.current) {

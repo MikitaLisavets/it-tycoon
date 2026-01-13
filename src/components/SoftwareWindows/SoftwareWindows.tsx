@@ -6,6 +6,7 @@ import ProgressBar from '../ProgressBar/ProgressBar';
 import { AntivirusIcon } from '../Icons/AppIcons';
 import styles from './SoftwareWindows.module.css';
 import XPButton from '../XPButton/XPButton';
+import { useAudio } from '../../hooks/useAudio';
 
 interface SoftwareWindowProps {
     isOpen: boolean;
@@ -283,6 +284,7 @@ export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose,
 
 export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus, onWin, isProtected }) => {
     const t = useTranslations();
+    const audio = useAudio();
     const [isScanning, setIsScanning] = useState(false);
     const [caughtCount, setCaughtCount] = useState(0);
     const [lastScan, setLastScan] = useState<string | null>(null);
@@ -346,6 +348,7 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
     }, [isScanning, caughtCount, totalToCatch, onWin]);
 
     const handleCatch = (id: number) => {
+        audio.playClick();
         setViruses(prev => prev.filter(v => v.id !== id));
         setCaughtCount(prev => prev + 1);
     };

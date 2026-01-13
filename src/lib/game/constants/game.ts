@@ -12,5 +12,5 @@ export const GAME_CONSTANTS = {
     CRITICAL_THRESHOLD: 10, // Warning/Red text threshold
     VIRUS_PROBABILITY_PER_TICK: 0.01, // 1% chance per tick
     VIRUS_MOOD_PENALTY: 5,
-    ANTI_VIRUS_PROTECTION_DAYS: 5,
+    ANTI_VIRUS_PROTECTION_DAYS: 7,
 };
