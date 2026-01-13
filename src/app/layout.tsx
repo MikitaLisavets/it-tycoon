@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/AppProviders";
 import CheatSystem from "@/components/CheatSystem/CheatSystem";
+import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 
 const roboto = Roboto({
@@ -90,6 +91,7 @@ export default function RootLayout({
                 <AppProviders>
                     {children}
                     <CheatSystem />
+                    <Analytics />
                 </AppProviders>
             </body>
         </html>
