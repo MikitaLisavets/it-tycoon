@@ -191,7 +191,11 @@ function useGameStateInternal() {
     };
 
     const resetState = () => {
+        const currentLocale = state.locale;
+        const currentVolume = state.volume;
         const freshState = JSON.parse(JSON.stringify(INITIAL_STATE));
+        freshState.locale = currentLocale;
+        freshState.volume = currentVolume;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(freshState));
         setState(freshState);
     };
