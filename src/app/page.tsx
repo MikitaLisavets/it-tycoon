@@ -42,12 +42,15 @@ import { useDesktopNotifications } from "@/hooks/useDesktopNotifications";
 import { useGoalTracker } from "@/hooks/useGoalTracker";
 import GoalsList from "@/components/GoalsList/GoalsList";
 import Achievements from "@/components/Achievements/Achievements";
+import AboutModal from "@/components/AboutModal/AboutModal";
+import { useUIContext } from "@/context/UIContext";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
     const { state, updateState, resetState, isInitialized, setIsPaused } = useGameState();
     const { notification, showNotification, dismissNotification, clearNotifications } = useNotification();
+    const { isAboutModalOpen, closeAboutModal } = useUIContext();
     const t = useTranslations();
 
     // Custom Hooks
@@ -535,6 +538,7 @@ export default function Home() {
                     />
                 )
             }
+            <AboutModal isOpen={isAboutModalOpen} onClose={closeAboutModal} />
         </div >
     );
 }

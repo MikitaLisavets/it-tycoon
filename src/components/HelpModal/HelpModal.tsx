@@ -1,24 +1,23 @@
 import React from 'react';
-import Modal from '../Modal/Modal';
-import XPButton from '../XPButton/XPButton';
+import InfoModal from '../InfoModal/InfoModal';
 
 interface HelpModalProps {
     isOpen: boolean;
     onClose: () => void;
     title: string;
-    content: string;
+    content: React.ReactNode;
+    hideHelpSuffix?: boolean;
 }
 
-const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, title, content }) => {
+const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, title, content, hideHelpSuffix }) => {
     return (
-        <Modal
+        <InfoModal
             isOpen={isOpen}
             onClose={onClose}
-            title={`${title} - Help`}
-            footer={<XPButton onClick={onClose}>OK</XPButton>}
+            title={hideHelpSuffix ? title : `${title} - Help`}
         >
-            <p>{content}</p>
-        </Modal>
+            {typeof content === 'string' ? <p>{content}</p> : content}
+        </InfoModal>
     );
 };
 

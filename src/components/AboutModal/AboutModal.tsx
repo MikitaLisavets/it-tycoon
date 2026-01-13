@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Modal from '../Modal/Modal';
-import XPButton from '../XPButton/XPButton';
+import InfoModal from '../InfoModal/InfoModal';
 import styles from './AboutModal.module.css';
 
 interface AboutModalProps {
@@ -13,13 +12,12 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
     const t = useTranslations();
 
     return (
-        <Modal
+        <InfoModal
             isOpen={isOpen}
             onClose={onClose}
             title={t('About.title')}
             zIndex={10000}
             width="400px"
-            footer={<XPButton onClick={onClose}>{t('Common.ok')}</XPButton>}
         >
             <div className={styles.body}>
                 <p>{t('About.inspiration')}</p>
@@ -35,7 +33,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                     {t('About.support')} <a href="https://ko-fi.com/mikiapps" target="_blank" rel="noopener noreferrer" className={styles.link}>https://ko-fi.com/mikiapps</a>
                 </p>
             </div>
-        </Modal>
+        </InfoModal>
     );
 };
 

@@ -66,16 +66,20 @@ function LanguageProvider({ children }: { children: ReactNode }) {
     );
 }
 
+import { UIProvider } from "@/context/UIContext";
+
 export default function AppProviders({ children }: { children: ReactNode }) {
     return (
-        <GameStateProvider>
-            <LanguageProvider>
-                <AudioManager>
-                    <NotificationProvider>
-                        {children}
-                    </NotificationProvider>
-                </AudioManager>
-            </LanguageProvider>
-        </GameStateProvider>
+        <UIProvider>
+            <GameStateProvider>
+                <LanguageProvider>
+                    <AudioManager>
+                        <NotificationProvider>
+                            {children}
+                        </NotificationProvider>
+                    </AudioManager>
+                </LanguageProvider>
+            </GameStateProvider>
+        </UIProvider>
     );
 }

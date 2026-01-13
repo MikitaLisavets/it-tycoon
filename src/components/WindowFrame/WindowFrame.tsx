@@ -3,9 +3,9 @@ import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import { GAME_CONSTANTS } from '@/lib/game/constants/index';
-import AboutModal from '../AboutModal/AboutModal';
 import styles from './WindowFrame.module.css';
 import { ComputerIcon } from '../Icons/SystemIcons';
+import { useUIContext } from '@/context/UIContext';
 
 interface WindowFrameProps {
   id?: string;
@@ -53,8 +53,8 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
   const [isResizing, setIsResizing] = React.useState(false);
   const resizeStartRef = React.useRef<{ x: number; y: number; w: number; h: number } | null>(null);
 
-  // About modal state
-  const [isAboutOpen, setIsAboutOpen] = React.useState(false);
+  // About modal context
+  const { openAboutModal } = useUIContext();
 
   const windowRef = React.useRef<HTMLDivElement>(null);
 
@@ -394,7 +394,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
           )}
         </div>
         <span className={styles.menuItem} onClick={() => { playClick(); onHelpClick?.(); }}>{t('Common.help')}</span>
-        <span className={styles.menuItem} onClick={() => { playClick(); setIsAboutOpen(true); }}>{t('Common.about')}</span>
+        <span className={styles.menuItem} onClick={() => { playClick(); openAboutModal(); }}>{t('Common.about')}</span>
       </div>
       <div className={styles.content}>
         {children}
@@ -402,7 +402,6 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
       {!isMaximized && !isMobile && (
         <div className={styles.resizeHandle} onMouseDown={handleResizeMouseDown} />
       )}
-      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };
