@@ -208,3 +208,63 @@ export const DiscIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) =>
         <path d="M6 16L8 18" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
     </svg>
 );
+
+export const HelpIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.757 7.52152 14.1200 8.0313C14.4830 8.54109 14.5000 9.16709 14.16 9.75C13.82 10.333 13 10.75 12 11.25V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+);
+
+export const MaximizeIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        <rect x="5" y="5" width="14" height="14" rx="1" stroke="currentColor" strokeWidth="2" />
+        <line x1="5" y1="9" x2="19" y2="9" stroke="currentColor" strokeWidth="2" />
+    </svg>
+);
+
+export const RestoreIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        <rect x="8" y="4" width="12" height="12" rx="1" stroke="currentColor" strokeWidth="2" />
+        <path d="M4 8V19C4 19.5523 4.44772 20 5 20H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <line x1="8" y1="8" x2="20" y2="8" stroke="currentColor" strokeWidth="2" />
+    </svg>
+);
+
+export const CloseIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);

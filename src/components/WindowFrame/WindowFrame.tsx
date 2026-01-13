@@ -4,7 +4,7 @@ import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import { GAME_CONSTANTS } from '@/lib/game/constants/index';
 import styles from './WindowFrame.module.css';
-import { ComputerIcon } from '../Icons/SystemIcons';
+import { ComputerIcon, HelpIcon, MaximizeIcon, RestoreIcon, CloseIcon } from '../Icons/SystemIcons';
 import { useUIContext } from '@/context/UIContext';
 
 interface WindowFrameProps {
@@ -352,11 +352,17 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
         </div>
         <div className={styles.controls}>
           {/* Visual only buttons */}
-          <button className={`${styles.controlBtn} ${styles.help}`} onClick={() => { playClick(); onHelpClick?.(); }}>?</button>
+          <button className={`${styles.controlBtn} ${styles.help}`} onClick={() => { playClick(); onHelpClick?.(); }}>
+            <HelpIcon size={16} />
+          </button>
           {!isMobile && (
-            <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>□</button>
+            <button className={`${styles.controlBtn} ${styles.maximize}`} onClick={toggleMaximize}>
+              {isMaximized ? <RestoreIcon size={12} /> : <MaximizeIcon size={12} />}
+            </button>
           )}
-          <button className={`${styles.controlBtn} ${styles.close}`} onClick={() => { playClick(); onCloseClick?.(); }}>X</button>
+          <button className={`${styles.controlBtn} ${styles.close}`} onClick={() => { playClick(); onCloseClick?.(); }}>
+            <CloseIcon size={12} />
+          </button>
         </div>
       </div>
       <div className={styles.menuBar}>
