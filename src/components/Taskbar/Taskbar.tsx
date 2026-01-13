@@ -3,12 +3,14 @@ import { useTranslations } from 'next-intl';
 import { useGameState } from '@/hooks/useGameState';
 import { useAudio } from '@/hooks/useAudio';
 import styles from './Taskbar.module.css';
-import { WorldIcon, HeartIcon, SpeakerIcon } from '../Icons/SystemIcons';
+import { WorldIcon, HeartIcon, SpeakerIcon, DiscIcon } from '../Icons/SystemIcons';
 
 interface TaskbarProps {
     date: string;
     time: string;
 }
+
+import { MusicContext } from '@/context/MusicContext';
 
 const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const [isLangOpen, setIsLangOpen] = React.useState(false);
@@ -18,6 +20,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
     const { state, updateState } = useGameState();
     const { playClick } = useAudio();
     const t = useTranslations();
+    const music = React.useContext(MusicContext);
 
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -142,6 +145,13 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 <div className={styles.volumeControl} ref={volumeRef}>
                     {isVolumeOpen && (
                         <div className={styles.volumeDropdown}>
+                            {music && music.isPlaying && (
+                                <div className={styles.musicInfo}>
+                                    <div className={styles.musicLabel}>
+                                        <DiscIcon size={14} />
+                                    </div>
+                                </div>
+                            )}
                             <input
                                 type="range"
                                 min="0"
@@ -150,13 +160,13 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                                 onChange={(e) => updateState({ volume: parseInt(e.target.value) })}
                                 className={styles.volumeSlider}
                             />
-                            <div className={styles.volumeLabel}>{state.volume}%</div>
+                            <div className={styles.volumeLabel}>{state.volume}%                            </div>
                         </div>
                     )}
                     <button
                         onClick={() => { playClick(); setIsVolumeOpen(!isVolumeOpen); }}
-                        className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''}`}
-                        title="Volume"
+                        className={`${styles.trayIcon} ${isVolumeOpen ? styles.trayIconActive : ''} ${music && music.isPlaying ? styles.trayIconPlaying : ''}`}
+                        title={music && music.isPlaying ? `${t('Winamp.title')}: ${music.currentSourceName}` : "Volume"}
                     >
                         <SpeakerIcon size={16} muted={state.volume === 0} />
                     </button>

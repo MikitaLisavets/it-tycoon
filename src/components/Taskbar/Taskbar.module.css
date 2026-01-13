@@ -342,9 +342,54 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-.trayIconActive {
-    background-color: var(--xp-taskbar-blue-dark);
-    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
+.trayIconPlaying {
+    animation: trayPulse 2s infinite ease-in-out;
+    color: #4CAF50 !important;
+    /* Greenish tint for playing music */
+}
+
+@keyframes trayPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.musicInfo {
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100px;
+    padding: 0 5px;
+}
+
+.musicLabel {
+    font-size: 9px;
+    font-weight: bold;
+    color: #000080;
+    text-transform: uppercase;
+}
+
+.musicSource {
+    font-size: 10px;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 2px 0;
+}
+
+.musicDivider {
+    border: 0;
+    border-top: 1px solid #ACA899;
+    margin: 4px 0;
+    width: 100%;
 }
 
 .volumeDropdown {

@@ -189,3 +189,22 @@ export const SpeakerIcon: React.FC<IconProps> = ({ size = 24, style, muted, ...p
         )}
     </svg>
 );
+
+export const DiscIcon: React.FC<IconProps> = ({ size = 24, style, ...props }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ verticalAlign: 'middle', ...style }}
+        {...props}
+    >
+        {/* CD Base */}
+        <circle cx="12" cy="12" r="10" fill="#E0E0E0" stroke="black" strokeWidth="1" />
+        <circle cx="12" cy="12" r="3" fill="#A0A0A0" stroke="black" strokeWidth="1" />
+        {/* Shine */}
+        <path d="M16 8L18 6" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
+        <path d="M6 16L8 18" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
+    </svg>
+);
