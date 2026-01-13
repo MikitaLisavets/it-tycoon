@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useGameState } from './useGameState';
 import { useNotification } from './useNotification';
 import { useTranslations } from 'next-intl';
+import { fireRoundConfetti, fireAllGoalsConfetti } from '@/lib/game/utils/confetti';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
 
 export function useGoalTracker() {
@@ -65,18 +66,39 @@ export function useGoalTracker() {
         const allCompleted = newGoals.every(g => g.completed);
         const wasAllCompleted = state.goals.every(g => g.completed);
 
+        // Check if a "round" (batch of 3) was completed
+        const batchSize = 3;
+        const getCompletedBatches = (goals: { completed: boolean }[]) => {
+            let count = 0;
+            for (let i = 0; i < goals.length; i += batchSize) {
+                const batch = goals.slice(i, i + batchSize);
+                if (batch.length > 0 && batch.every(g => g.completed)) {
+                    count++;
+                }
+            }
+            return count;
+        };
+
+        const oldBatches = getCompletedBatches(state.goals);
+        const newBatches = getCompletedBatches(newGoals);
+
         if (allCompleted && !wasAllCompleted) {
             showNotification(
                 t('Notifications.all_goals_completed_title'),
                 t('Notifications.all_goals_completed'),
                 "info"
             );
+            fireAllGoalsConfetti();
+        } else if (newBatches > oldBatches) {
+            // Only fire round confetti if we didn't just fire all-goals confetti
+            fireRoundConfetti();
         }
 
         if (changed) {
             updateState({ goals: newGoals });
         }
-    }, [state.stats, state.job, state.computer, state.internet, state.goals, updateState, showNotification, t]);
+    }, [state.stats, state.job, state.computer, state.internet, state.goals, updateState, showNotification, t, state.educationProgress.completedTracks, state.logs, state.software.programs, state.software.games, state.banking.deposits]);
+
 
     useEffect(() => {
         if (!state.achievements) return;

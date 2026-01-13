@@ -11,12 +11,14 @@
   "dependencies": {
     "@sentry/nextjs": "^10.33.0",
     "@vercel/analytics": "^1.6.1",
+    "canvas-confetti": "^1.9.4",
     "next": "16.1.1",
     "next-intl": "^4.6.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
