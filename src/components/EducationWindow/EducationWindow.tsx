@@ -11,6 +11,7 @@ import { calculateDynamicPrice } from '../../lib/game/utils/economy';
 import EducationTrackItem from './components/EducationTrackItem';
 import { useAudio } from '../../hooks/useAudio';
 import GameAudio from '../GameAudio/GameAudio';
+import HelpModal from '../HelpModal/HelpModal';
 
 interface EducationWindowProps {
     isOpen: boolean;
@@ -24,6 +25,7 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     const { state, updateState } = useGameState();
     const t = useTranslations();
 
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [progress, setProgress] = useState(0);
     const [expandedTracks, setExpandedTracks] = useState<Set<string>>(new Set());
     const [quizResult, setQuizResult] = useState<{ type: 'success' | 'failure', onContinue: () => void } | null>(null);
@@ -205,43 +207,52 @@ const EducationWindow: React.FC<EducationWindowProps> = ({ isOpen, onClose, onRe
     if (!isOpen) return null;
 
     return (
-        <WindowFrame
-            id="education_window"
-            title={t('Education.title')}
-            onCloseClick={onClose}
-            onResetClick={onReset}
-            width="500px"
-            height="600px"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <div className={styles.container}>
-                {EDUCATION_TRACKS.map(track => {
-                    const isCompleted = completedTracks.includes(track.id as EducationId);
-                    const isTrackActive = activeTrackId === track.id;
+        <>
+            <WindowFrame
+                id="education_window"
+                title={t('Education.title')}
+                onCloseClick={onClose}
+                onResetClick={onReset}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="500px"
+                height="600px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <div className={styles.container}>
+                    {EDUCATION_TRACKS.map(track => {
+                        const isCompleted = completedTracks.includes(track.id as EducationId);
+                        const isTrackActive = activeTrackId === track.id;
 
-                    return (
-                        <EducationTrackItem
-                            key={track.id}
-                            track={track}
-                            isExpanded={expandedTracks.has(track.id)}
-                            isCompleted={isCompleted}
-                            isActive={isTrackActive}
-                            completedTracks={completedTracks}
-                            state={state}
-                            currentPartIndex={currentPartIndex}
-                            status={status}
-                            progress={progress}
-                            currentQuizIndex={currentQuizIndex}
-                            quizResult={quizResult}
-                            onToggle={toggleTrack}
-                            onStart={handleStartPart}
-                            onQuizAnswer={handleQuizAnswer}
-                        />
-                    );
-                })}
-            </div>
-        </WindowFrame>
+                        return (
+                            <EducationTrackItem
+                                key={track.id}
+                                track={track}
+                                isExpanded={expandedTracks.has(track.id)}
+                                isCompleted={isCompleted}
+                                isActive={isTrackActive}
+                                completedTracks={completedTracks}
+                                state={state}
+                                currentPartIndex={currentPartIndex}
+                                status={status}
+                                progress={progress}
+                                currentQuizIndex={currentQuizIndex}
+                                quizResult={quizResult}
+                                onToggle={toggleTrack}
+                                onStart={handleStartPart}
+                                onQuizAnswer={handleQuizAnswer}
+                            />
+                        );
+                    })}
+                </div>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Education.title')}
+                content={t('Education.help_content')}
+            />
+        </>
     );
 };
 

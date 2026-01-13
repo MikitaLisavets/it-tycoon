@@ -8,6 +8,7 @@ import { useGameState } from '../../hooks/useGameState';
 import { useGameLogs } from '../../hooks/useGameLogs';
 import { useAudio } from '../../hooks/useAudio';
 import XPButton from '../XPButton/XPButton';
+import HelpModal from '../HelpModal/HelpModal';
 
 
 interface SolitaireWindowProps {
@@ -28,6 +29,7 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
     const { logSolitaireWin, logSolitairePlay } = useGameLogs();
     const gameState = state.apps.solitaire;
 
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState<{ card: Card; pileType: 'waste' | 'tableau' | 'foundation'; pileIndex?: number | Suit; cardIndex?: number } | null>(null);
     const audio = useAudio();
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -502,73 +504,82 @@ const SolitaireWindow: React.FC<SolitaireWindowProps> = ({
 
 
     return (
-        <WindowFrame
-            id="solitaire_window"
-            title={t('Values.solitaire')}
-            onCloseClick={onClose}
-            width="min(800px, 95vw)"
-            height="min(600px, 80vh)"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <div className={styles.container}>
-                <div className={styles.controls}>
-                    <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
-                    {/* {process.env.NODE_ENV === 'development' && (
+        <>
+            <WindowFrame
+                id="solitaire_window"
+                title={t('Values.solitaire')}
+                onCloseClick={onClose}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="min(800px, 95vw)"
+                height="min(600px, 80vh)"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <div className={styles.container}>
+                    <div className={styles.controls}>
+                        <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
+                        {/* {process.env.NODE_ENV === 'development' && (
                         <XPButton onClick={cheatWin}>Win (Debug)</XPButton>
                     )} */}
-                </div>
-                <div className={styles.board}>
-                    <div className={styles.topRow}>
-                        <div className={styles.stockWaste}>
-                            <div className={`${styles.pile} ${gameState.stock.length === 0 ? styles.emptyPile : styles.cardBack}`} onClick={handleStockClick}>
-                                {gameState.stock.length > 0 && <div className={styles.cardBack} style={{ width: '100%', height: '100%' }} />}
+                    </div>
+                    <div className={styles.board}>
+                        <div className={styles.topRow}>
+                            <div className={styles.stockWaste}>
+                                <div className={`${styles.pile} ${gameState.stock.length === 0 ? styles.emptyPile : styles.cardBack}`} onClick={handleStockClick}>
+                                    {gameState.stock.length > 0 && <div className={styles.cardBack} style={{ width: '100%', height: '100%' }} />}
+                                </div>
+                                <div className={styles.pile}>
+                                    {gameState.waste.length > 0 && renderCard(gameState.waste[gameState.waste.length - 1], 'waste')}
+                                </div>
                             </div>
-                            <div className={styles.pile}>
-                                {gameState.waste.length > 0 && renderCard(gameState.waste[gameState.waste.length - 1], 'waste')}
+                            <div className={styles.foundations}>
+                                {(['spades', 'hearts', 'diamonds', 'clubs'] as Suit[]).map((suit, idx) => (
+                                    <div
+                                        key={suit}
+                                        ref={el => { foundationsRef.current[idx] = el; }}
+                                        className={`${styles.pile} ${gameState.foundation[suit].length === 0 ? styles.emptyPile : ''}`}
+                                        onClick={() => handleEmptyPileClick('foundation', suit)}
+                                        onDragOver={handleDragOver}
+                                        onDrop={(e) => handleDrop(e, 'foundation', suit)}
+                                    >
+                                        {gameState.foundation[suit].length > 0 ?
+                                            renderCard(gameState.foundation[suit][gameState.foundation[suit].length - 1], 'foundation', suit) :
+                                            <div style={{ opacity: 0.2, fontSize: '40px', textAlign: 'center' }}>{{ spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' }[suit]}</div>
+                                        }
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <div className={styles.foundations}>
-                            {(['spades', 'hearts', 'diamonds', 'clubs'] as Suit[]).map((suit, idx) => (
+                        <div className={styles.tableau}>
+                            {gameState.tableau.map((pile, pIdx) => (
                                 <div
-                                    key={suit}
-                                    ref={el => { foundationsRef.current[idx] = el; }}
-                                    className={`${styles.pile} ${gameState.foundation[suit].length === 0 ? styles.emptyPile : ''}`}
-                                    onClick={() => handleEmptyPileClick('foundation', suit)}
+                                    key={pIdx}
+                                    className={styles.pile}
+                                    onClick={() => handleEmptyPileClick('tableau', pIdx)}
                                     onDragOver={handleDragOver}
-                                    onDrop={(e) => handleDrop(e, 'foundation', suit)}
+                                    onDrop={(e) => handleDrop(e, 'tableau', pIdx)}
                                 >
-                                    {gameState.foundation[suit].length > 0 ?
-                                        renderCard(gameState.foundation[suit][gameState.foundation[suit].length - 1], 'foundation', suit) :
-                                        <div style={{ opacity: 0.2, fontSize: '40px', textAlign: 'center' }}>{{ spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' }[suit]}</div>
-                                    }
+                                    {renderTableauStack(pile, pIdx, 0)}
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <div className={styles.tableau}>
-                        {gameState.tableau.map((pile, pIdx) => (
-                            <div
-                                key={pIdx}
-                                className={styles.pile}
-                                onClick={() => handleEmptyPileClick('tableau', pIdx)}
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, 'tableau', pIdx)}
-                            >
-                                {renderTableauStack(pile, pIdx, 0)}
-                            </div>
-                        ))}
-                    </div>
+                    {gameState.isWon && <canvas ref={canvasRef} className={styles.animationCanvas} />}
+                    {gameState.isWon && (
+                        <div className={styles.winMessage}>
+                            <h2>{t('Solitaire.victory')}</h2>
+                            <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
+                        </div>
+                    )}
                 </div>
-                {gameState.isWon && <canvas ref={canvasRef} className={styles.animationCanvas} />}
-                {gameState.isWon && (
-                    <div className={styles.winMessage}>
-                        <h2>{t('Solitaire.victory')}</h2>
-                        <XPButton onClick={startNewGame}>{t('Solitaire.new_game')}</XPButton>
-                    </div>
-                )}
-            </div>
-        </WindowFrame>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Values.solitaire')}
+                content={t('Solitaire.help_content')}
+            />
+        </>
     );
 };
 

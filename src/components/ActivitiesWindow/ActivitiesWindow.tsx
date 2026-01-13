@@ -12,6 +12,8 @@ import { REST_ACTIVITIES, FUN_ITEMS, GYM_ACTIVITIES } from '../../lib/game/const
 import styles from './ActivitiesWindow.module.css';
 import { ActionableItem } from '@/lib/game/types';
 
+import HelpModal from '../HelpModal/HelpModal';
+
 interface ActivitiesWindowProps {
     isOpen: boolean;
     onClose: () => void;
@@ -24,6 +26,7 @@ type Tab = 'rest' | 'entertainment' | 'gym';
 
 const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, onReset, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<Tab>('rest');
 
     const {
@@ -98,43 +101,52 @@ const ActivitiesWindow: React.FC<ActivitiesWindowProps> = ({ isOpen, onClose, on
     if (!isOpen) return null;
 
     return (
-        <WindowFrame
-            id="activities_window"
-            title={t('Activities.title')}
-            onCloseClick={onClose}
-            onResetClick={onReset}
-            width="480px"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <Tabs
-                tabs={tabList}
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
+        <>
+            <WindowFrame
+                id="activities_window"
+                title={t('Activities.title')}
+                onCloseClick={onClose}
+                onResetClick={onReset}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="480px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <Tabs
+                    tabs={tabList}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
+
+                <TabContent>
+
+                    {activeTab === 'rest' && (
+                        <>
+                            {renderActivityList(REST_ACTIVITIES, 'Rest')}
+                        </>
+                    )}
+
+                    {activeTab === 'entertainment' && (
+                        <>
+                            {renderActivityList(FUN_ITEMS, 'Entertainment')}
+                        </>
+                    )}
+
+                    {activeTab === 'gym' && (
+                        <>
+                            {renderActivityList(GYM_ACTIVITIES, 'Gym')}
+                        </>
+                    )}
+
+                </TabContent>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Activities.title')}
+                content={t('Activities.help_content')}
             />
-
-            <TabContent>
-
-                {activeTab === 'rest' && (
-                    <>
-                        {renderActivityList(REST_ACTIVITIES, 'Rest')}
-                    </>
-                )}
-
-                {activeTab === 'entertainment' && (
-                    <>
-                        {renderActivityList(FUN_ITEMS, 'Entertainment')}
-                    </>
-                )}
-
-                {activeTab === 'gym' && (
-                    <>
-                        {renderActivityList(GYM_ACTIVITIES, 'Gym')}
-                    </>
-                )}
-
-            </TabContent>
-        </WindowFrame>
+        </>
     );
 };
 

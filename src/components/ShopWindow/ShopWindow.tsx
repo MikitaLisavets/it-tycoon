@@ -132,7 +132,7 @@ const ShopWindow: React.FC<ShopWindowProps> = ({ isOpen, onClose, onReset, isFoc
                 isOpen={isHelpOpen}
                 onClose={() => setIsHelpOpen(false)}
                 title={t('Shop.title')}
-                content={t('Shop.help')}
+                content={t('Shop.help_content')}
             />
         </>
     );

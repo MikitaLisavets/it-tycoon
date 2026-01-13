@@ -10,6 +10,7 @@ import styles from './ComputerWindow.module.css';
 import { HARDWARE_COMPONENTS } from '@/lib/game/constants/hardware';
 import { calculateComputerLevel } from '@/lib/game/utils/hardware';
 import { calculateDynamicPrice } from '@/lib/game/utils/economy';
+import HelpModal from '../HelpModal/HelpModal';
 import LevelBadge from '../LevelBadge/LevelBadge';
 
 interface ComputerWindowProps {
@@ -26,6 +27,7 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     const { state, updateState } = useGameState();
     const t = useTranslations();
     const { playClick } = useAudio();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<Category>('cpu');
 
     const handleTabChange = (id: string) => {
@@ -118,32 +120,42 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
     };
 
     return (
-        <WindowFrame
-            id="computer_window"
-            title={t('Computer.title')}
-            onCloseClick={onClose}
-            onResetClick={onReset}
-            width="520px"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <Tabs
-                tabs={tabList}
-                activeTab={activeTab}
-                onTabChange={handleTabChange}
-            />
+        <>
+            <WindowFrame
+                id="computer_window"
+                title={t('Computer.title')}
+                onCloseClick={onClose}
+                onResetClick={onReset}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="520px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <Tabs
+                    tabs={tabList}
+                    activeTab={activeTab}
+                    onTabChange={handleTabChange}
+                />
 
-            <div className={styles.content}>
-                <div className={styles.summary}>
-                    <div className={styles.summaryRow}>
-                        <span>{t('Computer.overall_level')}:</span>
-                        <LevelBadge level={currentLevel} text="Level" />
+                <div className={styles.content}>
+                    <div className={styles.summary}>
+                        <div className={styles.summaryRow}>
+                            <span>{t('Computer.overall_level')}:</span>
+                            <LevelBadge level={currentLevel} text="Level" />
+                        </div>
                     </div>
-                </div>
 
-                {renderParts()}
-            </div>
-        </WindowFrame>
+                    {renderParts()}
+                </div>
+            </WindowFrame>
+            );
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Computer.title')}
+                content={t('Computer.help_content')}
+            />
+        </>
     );
 };
 

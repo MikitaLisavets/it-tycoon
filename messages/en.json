@@ -176,7 +176,11 @@
         "mp3_player": "MP3 Player",
         "smartphone": "Smartphone",
         "home_renovation": "Home Renovation",
-        "car": "Sport Car"
+        "car": "Sport Car",
+        "dumbbell": "Dumbbell",
+        "gym_membership": "Gym Membership",
+        "treadmill": "Treadmill",
+        "personal_trainer": "Personal Trainer"
     },
     "Dashboard": {
         "title": "My Computer",
@@ -248,7 +252,7 @@
         "tab_performance": "Performance",
         "effect_mood": "Max Happiness +{amount}",
         "effect_health": "Max Health +{amount}",
-        "help": "Here you can buy food and other items to improve your health. Each item has a different cost and health benefit."
+        "help_content": "Here you can buy food and other items to improve your stats. Each item has a different cost."
     },
     "Education": {
         "title": "Education Center",
@@ -264,7 +268,8 @@
         "exam_failed_title": "Exam Failed",
         "class": "Class",
         "insufficient_funds": "Not enough money",
-        "complete_previous_first": "Complete previous class first"
+        "complete_previous_first": "Complete previous class first",
+        "help_content": "Education is key to better jobs. Complete courses to earn qualifications."
     },
     "Bank": {
         "title": "Online Banking",
@@ -308,7 +313,8 @@
         "cat_hdd": "HDD",
         "cat_storage": "Storage",
         "cat_monitor": "Monitor",
-        "cat_modem": "Modem"
+        "cat_modem": "Modem",
+        "help_content": "Upgrade your computer parts to access better software."
     },
     "Internet": {
         "title": "Internet Explorer",
@@ -333,7 +339,8 @@
         "copy": "© 2000 MikiApps Inc.",
         "status_done": "Done",
         "status_error": "Error on page",
-        "not_enough_money": "Not enough money"
+        "not_enough_money": "Not enough money",
+        "help_content": "Browse the web to download software and buy OS and games."
     },
     "Hacking": {
         "title": "Terminal Hacking",
@@ -363,13 +370,15 @@
         "targets_small_business": "Small Business Mainframe",
         "targets_regional_bank": "Regional Bank Database",
         "targets_government_database": "Government Secure Database",
-        "targets_global_stock_exchange": "Global Stock Exchange"
+        "targets_global_stock_exchange": "Global Stock Exchange",
+        "help_content": "Hack into vulnerable systems to steal money. Watch out for the detection risk!"
     },
     "Activities": {
         "title": "Activities",
         "tab_rest": "Rest",
         "tab_entertainment": "Entertainment",
-        "tab_gym": "Gym"
+        "tab_gym": "Gym",
+        "help_content": "Participate in various activities to improve your health, happiness, and stamina."
     },
     "Entertainment": {
         "title": "Entertainment",
@@ -377,8 +386,7 @@
         "tv": "Watch TV",
         "cinema": "Go to Cinema",
         "restaurant": "Fine Dining",
-        "concert": "Concert",
-        "help": "Keep your happiness high by participating in various activities."
+        "concert": "Concert"
     },
     "Gym": {
         "title": "Fitness Center",
@@ -394,8 +402,7 @@
         "sleep": "Sleep",
         "resting": "Resting...",
         "cooldown": "Cooldown: {time}s",
-        "effect_stamina": "+{amount} Stamina",
-        "help": "Recover your stamina by resting."
+        "effect_stamina": "+{amount} Stamina"
     },
     "Winamp": {
         "title": "Music Player",
@@ -405,16 +412,19 @@
         "controls_pause": "Pause",
         "controls_stop": "Stop",
         "controls_next": "Next",
-        "controls_volume": "Volume"
+        "controls_volume": "Volume",
+        "help_content": "Play your favorite retro tunes!"
     },
     "Solitaire": {
         "new_game": "New Game",
         "victory": "Congratulations! You won!",
         "score": "Score: {score}",
-        "time": "Time: {time}"
+        "time": "Time: {time}",
+        "help_content": "Classic Solitaire. Stack cards by alternating colors in descending order. Move aces to foundation."
     },
     "Applications": {
-        "title": "Applications"
+        "title": "Applications",
+        "help_content": "Launch your installed programs and games from here."
     },
     "Software": {
         "notepad_title": "Notepad",
@@ -450,7 +460,13 @@
         "antivirus_game_start": "Identify and click the red virus icons to clean your system!",
         "antivirus_game_complete": "Scan complete! Your system is now clean.",
         "antivirus_threats_found": "Threats found: {count}",
-        "antivirus_game_failed": "Scan failed!"
+        "antivirus_game_failed": "Scan failed!",
+        "notepad_help_content": "Simple text editor for your notes.",
+        "office_help_content": "Create reports and documents to simulate productivity.",
+        "code_editor_help_content": "Write and edit code to build your software projects.",
+        "web_wallet_help_content": "Manage your cryptocurrency and online finances.",
+        "investor_help_content": "Track stock markets and manage your investment portfolio.",
+        "antivirus_help_content": "Scan your system for viruses and remove threats to protect your data."
     },
     "Notifications": {
         "low_health_title": "Critical Health!",

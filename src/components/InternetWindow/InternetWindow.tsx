@@ -22,6 +22,7 @@ import {
     AntivirusIcon,
     OSIcon
 } from '../Icons/AppIcons';
+import HelpModal from '../HelpModal/HelpModal';
 
 interface InternetWindowProps {
     isOpen: boolean;
@@ -42,6 +43,7 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     const [currentCategory, setCurrentCategory] = useState<SoftwareCategory>('home');
     const [installingItemId, setInstallingItemId] = useState<string | null>(null);
     const [installProgress, setInstallProgress] = useState(0);
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const audio = useAudio();
 
     const handleClick = (category: SoftwareCategory) => {
@@ -380,94 +382,102 @@ const InternetWindow: React.FC<InternetWindowProps> = ({
     };
 
     return (
-        <WindowFrame
-            id="internet"
-            title={t('Internet.title')}
-            onCloseClick={onClose}
-            onHelpClick={() => { }}
-            width="700px"
-            height="600px"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <div className={styles.browserContainer}>
-                <div className={styles.toolbar}>
-                    <div className={styles.addressBar}>
-                        <span className={styles.addressLabel}>{t('Internet.address')}:</span>
-                        <div className={styles.addressInputContainer}>
-                            <input
-                                type="text"
-                                className={styles.addressInput}
-                                value="http://www.mikiapps.com"
-                                readOnly
-                            />
-                            <button className={styles.goButton}>{t('Internet.go')}</button>
+        <>
+            <WindowFrame
+                id="internet"
+                title={t('Internet.title')}
+                onCloseClick={onClose}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="700px"
+                height="600px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <div className={styles.browserContainer}>
+                    <div className={styles.toolbar}>
+                        <div className={styles.addressBar}>
+                            <span className={styles.addressLabel}>{t('Internet.address')}:</span>
+                            <div className={styles.addressInputContainer}>
+                                <input
+                                    type="text"
+                                    className={styles.addressInput}
+                                    value="http://www.mikiapps.com"
+                                    readOnly
+                                />
+                                <button className={styles.goButton}>{t('Internet.go')}</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className={styles.contentArea}>
-                    {!hasModem ? (
-                        <div className={styles.errorPage}>
-                            <h1 className={styles.errorTitle}>{t('Internet.error_title')}</h1>
-                            <div className={styles.errorContent}>
-                                <p>{t('Internet.error_desc')}</p>
-                                <hr className={styles.errorDivider} />
-                                <p className={styles.errorSuggestion}>{t('Internet.error_modem')}</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={styles.shopContainer}>
-                            {/* Header */}
-                            <div className={styles.shopHeader}>
-                                <div className={styles.logo}>{t('Internet.store_title')}</div>
-                                <div className={styles.marqueeContainer}>
-                                    <div className={styles.marqueeContent}>{t('Internet.store_subtitle')}</div>
+                    <div className={styles.contentArea}>
+                        {!hasModem ? (
+                            <div className={styles.errorPage}>
+                                <h1 className={styles.errorTitle}>{t('Internet.error_title')}</h1>
+                                <div className={styles.errorContent}>
+                                    <p>{t('Internet.error_desc')}</p>
+                                    <hr className={styles.errorDivider} />
+                                    <p className={styles.errorSuggestion}>{t('Internet.error_modem')}</p>
                                 </div>
                             </div>
-
-                            <div className={styles.shopBody}>
-                                {/* Sidebar */}
-                                <div className={styles.shopSidebar}>
-                                    <ul className={styles.sidebarLinks}>
-                                        <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('Internet.home')}</li>
-                                        <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('Internet.cat_system')}</li>
-                                        <li className={currentCategory === 'programs' ? styles.activeLink : ''} onClick={() => handleClick('programs')}>{t('Internet.cat_software')}</li>
-                                        <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('Internet.cat_security')}</li>
-                                        <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('Internet.cat_games')}</li>
-                                    </ul>
+                        ) : (
+                            <div className={styles.shopContainer}>
+                                {/* Header */}
+                                <div className={styles.shopHeader}>
+                                    <div className={styles.logo}>{t('Internet.store_title')}</div>
+                                    <div className={styles.marqueeContainer}>
+                                        <div className={styles.marqueeContent}>{t('Internet.store_subtitle')}</div>
+                                    </div>
                                 </div>
 
-                                {/* Main Content */}
-                                <div className={styles.shopMain}>
-                                    {currentCategory === 'home' && (
-                                        <div className={styles.homePage}>
-                                            <h2>{t('Internet.welcome')}</h2>
-                                            <p>{t('Internet.hero_text')}</p>
-                                            <div className={styles.heroImage}>
-                                                💿
+                                <div className={styles.shopBody}>
+                                    {/* Sidebar */}
+                                    <div className={styles.shopSidebar}>
+                                        <ul className={styles.sidebarLinks}>
+                                            <li className={currentCategory === 'home' ? styles.activeLink : ''} onClick={() => handleClick('home')}>{t('Internet.home')}</li>
+                                            <li className={currentCategory === 'system' ? styles.activeLink : ''} onClick={() => handleClick('system')}>{t('Internet.cat_system')}</li>
+                                            <li className={currentCategory === 'programs' ? styles.activeLink : ''} onClick={() => handleClick('programs')}>{t('Internet.cat_software')}</li>
+                                            <li className={currentCategory === 'antivirus' ? styles.activeLink : ''} onClick={() => handleClick('antivirus')}>{t('Internet.cat_security')}</li>
+                                            <li className={currentCategory === 'games' ? styles.activeLink : ''} onClick={() => handleClick('games')}>{t('Internet.cat_games')}</li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Main Content */}
+                                    <div className={styles.shopMain}>
+                                        {currentCategory === 'home' && (
+                                            <div className={styles.homePage}>
+                                                <h2>{t('Internet.welcome')}</h2>
+                                                <p>{t('Internet.hero_text')}</p>
+                                                <div className={styles.heroImage}>
+                                                    💿
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                    {currentCategory === 'system' && renderSoftwareGrid('system')}
-                                    {currentCategory === 'programs' && renderSoftwareGrid('programs')}
-                                    {currentCategory === 'antivirus' && renderSoftwareGrid('antivirus')}
-                                    {currentCategory === 'games' && renderSoftwareGrid('games')}
+                                        )}
+                                        {currentCategory === 'system' && renderSoftwareGrid('system')}
+                                        {currentCategory === 'programs' && renderSoftwareGrid('programs')}
+                                        {currentCategory === 'antivirus' && renderSoftwareGrid('antivirus')}
+                                        {currentCategory === 'games' && renderSoftwareGrid('games')}
+                                    </div>
+                                </div>
+
+                                {/* Footer */}
+                                <div className={styles.shopFooter}>
+                                    {t('Internet.copy')}
                                 </div>
                             </div>
-
-                            {/* Footer */}
-                            <div className={styles.shopFooter}>
-                                {t('Internet.copy')}
-                            </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                    <div className={styles.statusBar}>
+                        <span>{hasModem ? t('Internet.status_done') : t('Internet.status_error')}</span>
+                    </div>
                 </div>
-                <div className={styles.statusBar}>
-                    <span>{hasModem ? t('Internet.status_done') : t('Internet.status_error')}</span>
-                </div>
-            </div>
-        </WindowFrame>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Internet.title')}
+                content={t('Internet.help_content')}
+            />
+        </>
     );
 };
 

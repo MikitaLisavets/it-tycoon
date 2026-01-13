@@ -11,6 +11,7 @@ import { HACKING_TARGETS, HackingTarget } from '@/lib/game/constants/hacking';
 import { formatNumberWithSuffix } from '@/lib/game/utils/number-formatter';
 import { calculateDynamicPrice } from '@/lib/game/utils/economy';
 import StatBadge from '../StatBadge/StatBadge';
+import HelpModal from '../HelpModal/HelpModal';
 
 interface HackingWindowProps {
     isOpen: boolean;
@@ -34,6 +35,7 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
     const { logSuccessfulHack } = useGameLogs();
     const audio = useAudio();
 
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isHacking, setIsHacking] = useState(false);
     const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -133,70 +135,79 @@ const HackingWindow: React.FC<HackingWindowProps> = ({
     if (!isOpen) return null;
 
     return (
-        <WindowFrame
-            id="hacking"
-            title={t('Hacking.title')}
-            onCloseClick={onClose}
-            width="600px"
-            height="600px"
-            isFocused={isFocused}
-            onFocus={onFocus}
-        >
-            <div className={styles.container} onClick={onFocus}>
-                <div className={styles.terminalOutput} ref={terminalRef}>
-                    {lines.map((line, i) => (
-                        <div key={i} className={`${styles.line} ${line.includes('SUCCESS') ? styles.success : ''} ${line.includes('TRACE') ? styles.failure : ''}`}>
-                            <span className={styles.prompt}>{line.startsWith(t('Hacking.prompt')) ? '' : t('Hacking.prompt')}</span>
-                            {line}
-                        </div>
-                    ))}
-                    {isHacking && <div className={styles.line}>{t('Hacking.running')}</div>}
-                </div>
-
-                {!isHacking && state.computer.modem !== 'modem_none' && (
-                    <div className={styles.inputArea}>
-                        <div className={styles.targetGrid}>
-                            {dynamicTargets.map(target => (
-                                <div
-                                    key={target.id}
-                                    className={`${styles.targetCard} ${state.stats.money < target.fine || state.computer.modem === 'modem_none' ? 'striped-disabled-overlay' : ''}`}
-                                    onClick={() => handleExecute(target)}
-                                >
-                                    <div className={styles.targetName}>{t(`Hacking.targets_${target.id}`)}</div>
-                                    <div className={styles.targetStats}>
-                                        <div className={styles.statRow}>
-                                            <span className={styles.statLabel}>{t('Hacking.risk')}:</span>
-                                            <span className={styles.statValue}>{(target.risk * 100).toFixed(0)}%</span>
-                                        </div>
-                                        <div className={styles.statRow}>
-                                            <span className={styles.statLabel}>{t('Hacking.reward')}:</span>
-                                            <StatBadge stat="MONEY" value={formatNumberWithSuffix(target.reward)} />
-                                        </div>
-                                        <div className={`${styles.statRow} ${state.stats.money < target.fine ? styles.insufficient : ''}`}>
-                                            <span className={styles.statLabel}>{t('Hacking.fine')}:</span>
-                                            <StatBadge
-                                                stat="MONEY"
-                                                value={formatNumberWithSuffix(target.fine)}
-                                                className={state.stats.money < target.fine ? styles.insufficientValue : ''}
-                                            />
-                                        </div>
-                                        <div className={styles.statRow}>
-                                            <span className={styles.statLabel}>{t('Hacking.duration')}:</span>
-                                            <StatBadge stat="TIME" value={`${target.duration}s`} />
-                                        </div>
-                                    </div>
-                                    {state.stats.money < target.fine && (
-                                        <div className={styles.insufficientFundsLabel}>
-                                            {t('Hacking.insufficient_funds')}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+        <>
+            <WindowFrame
+                id="hacking"
+                title={t('Hacking.title')}
+                onCloseClick={onClose}
+                onHelpClick={() => setIsHelpOpen(true)}
+                width="600px"
+                height="600px"
+                isFocused={isFocused}
+                onFocus={onFocus}
+            >
+                <div className={styles.container} onClick={onFocus}>
+                    <div className={styles.terminalOutput} ref={terminalRef}>
+                        {lines.map((line, i) => (
+                            <div key={i} className={`${styles.line} ${line.includes('SUCCESS') ? styles.success : ''} ${line.includes('TRACE') ? styles.failure : ''}`}>
+                                <span className={styles.prompt}>{line.startsWith(t('Hacking.prompt')) ? '' : t('Hacking.prompt')}</span>
+                                {line}
+                            </div>
+                        ))}
+                        {isHacking && <div className={styles.line}>{t('Hacking.running')}</div>}
                     </div>
-                )}
-            </div>
-        </WindowFrame>
+
+                    {!isHacking && state.computer.modem !== 'modem_none' && (
+                        <div className={styles.inputArea}>
+                            <div className={styles.targetGrid}>
+                                {dynamicTargets.map(target => (
+                                    <div
+                                        key={target.id}
+                                        className={`${styles.targetCard} ${state.stats.money < target.fine || state.computer.modem === 'modem_none' ? 'striped-disabled-overlay' : ''}`}
+                                        onClick={() => handleExecute(target)}
+                                    >
+                                        <div className={styles.targetName}>{t(`Hacking.targets_${target.id}`)}</div>
+                                        <div className={styles.targetStats}>
+                                            <div className={styles.statRow}>
+                                                <span className={styles.statLabel}>{t('Hacking.risk')}:</span>
+                                                <span className={styles.statValue}>{(target.risk * 100).toFixed(0)}%</span>
+                                            </div>
+                                            <div className={styles.statRow}>
+                                                <span className={styles.statLabel}>{t('Hacking.reward')}:</span>
+                                                <StatBadge stat="MONEY" value={formatNumberWithSuffix(target.reward)} />
+                                            </div>
+                                            <div className={`${styles.statRow} ${state.stats.money < target.fine ? styles.insufficient : ''}`}>
+                                                <span className={styles.statLabel}>{t('Hacking.fine')}:</span>
+                                                <StatBadge
+                                                    stat="MONEY"
+                                                    value={formatNumberWithSuffix(target.fine)}
+                                                    className={state.stats.money < target.fine ? styles.insufficientValue : ''}
+                                                />
+                                            </div>
+                                            <div className={styles.statRow}>
+                                                <span className={styles.statLabel}>{t('Hacking.duration')}:</span>
+                                                <StatBadge stat="TIME" value={`${target.duration}s`} />
+                                            </div>
+                                        </div>
+                                        {state.stats.money < target.fine && (
+                                            <div className={styles.insufficientFundsLabel}>
+                                                {t('Hacking.insufficient_funds')}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </WindowFrame>
+            <HelpModal
+                isOpen={isHelpOpen}
+                onClose={() => setIsHelpOpen(false)}
+                title={t('Hacking.title')}
+                content={t('Hacking.help_content')}
+            />
+        </>
     );
 };
 

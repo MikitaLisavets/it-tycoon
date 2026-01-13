@@ -422,7 +422,8 @@
             "rest": "Ruhe",
             "entertainment": "Spaß",
             "gym": "Hobby"
-        }
+        },
+        "help_content": "Nehmen Sie an verschiedenen Aktivitäten teil, um Ihre Gesundheit, Zufriedenheit und Ausdauer zu verbessern."
     },
     "BootScreen": {
         "title": "IT Tycoon",
@@ -559,7 +560,8 @@
         }
     },
     "Applications": {
-        "title": "Anwendungen"
+        "title": "Anwendungen",
+        "help_content": "Starten Sie Ihre installierten Programme und Spiele von hier aus."
     },
     "Internet": {
         "title": "Internet Explorer",
@@ -571,6 +573,7 @@
         "favorites": "Favoriten",
         "tools": "Extras",
         "help": "Hilfe",
+        "help_content": "Surfen Sie im Internet, um Software herunterzuladen und Spiele zu kaufen. Erfordert ein Modem und einen Internetzugang.",
         "error_title": "Die Seite kann nicht angezeigt werden",
         "error_desc": "Die gesuchte Seite ist zurzeit nicht verfügbar. Die Website hat möglicherweise technische Schwierigkeiten oder Sie müssen Ihre Browsereinstellungen anpassen.",
         "error_suggestion": "Netzwerkfehler: Kein gültiges Modem erkannt.",
@@ -639,6 +642,34 @@
             }
         },
         "Software": {
+            "notepad_title": "Notepad",
+            "notepad_content": "Liebes Tagebuch, heute habe ich einen neuen Computer gekauft...",
+            "office_title": "EasyOffice 2000",
+            "office_report": "QUARTALSBERICHT",
+            "office_content": "Der Gewinn ist um 200% gestiegen. Alles läuft großartig. Unser Marktanteil wächst rasant in allen Sektoren.",
+            "code_editor_title": "Code Editor Pro",
+            "code_editor_comment": "// Mache Fortschritte",
+            "web_wallet_title": "Web Wallet",
+            "web_wallet_balance": "Gesamtguthaben",
+            "web_wallet_recent": "Letzte Transaktionen",
+            "web_wallet_ad_revenue": "Werbeeinnahmen",
+            "web_wallet_transfer": "Externe Überweisung",
+            "web_wallet_fee": "Servicegebühr",
+            "web_wallet_today": "Heute",
+            "web_wallet_yesterday": "Gestern",
+            "investor_title": "Investor Dashboard",
+            "investor_portfolio": "Portfoliowert",
+            "investor_period": "Letzte 30 Tage",
+            "investor_sp500": "S&P 500",
+            "investor_nasdaq": "Nasdaq",
+            "investor_tech": "Tech Aktien",
+            "office_font": "Times New Roman",
+            "notepad_help_content": "Einfacher Texteditor für Ihre Notizen.",
+            "office_help_content": "Erstellen Sie Berichte und Dokumente, um Produktivität zu simulieren.",
+            "code_editor_help_content": "Schreiben und bearbeiten Sie Code, um Ihre Softwareprojekte zu erstellen.",
+            "web_wallet_help_content": "Verwalten Sie Ihre Kryptowährung und Online-Finanzen.",
+            "investor_help_content": "Verfolgen Sie Aktienmärkte und verwalten Sie Ihr Anlageportfolio.",
+            "antivirus_help_content": "Scannen Sie Ihr System auf Viren und entfernen Sie Bedrohungen, um Ihre Daten zu schützen.",
             "antivirus_title": "Dr. Antivirus",
             "antivirus_status": "Systemstatus",
             "antivirus_protected": "Geschützt",
