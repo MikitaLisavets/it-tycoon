@@ -51,7 +51,7 @@ export interface PlayerStats {
 
 export interface GameState {
     version: number;
-    locale: 'en' | 'de';
+    locale: 'en' | 'de' | 'fr' | 'es' | 'ru' | 'sv' | 'pl';
     volume: number;
     stats: PlayerStats;
 

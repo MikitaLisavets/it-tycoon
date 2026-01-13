@@ -39,7 +39,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
         };
     }, []);
 
-    const changeLanguage = (lang: 'en' | 'de') => {
+    const changeLanguage = (lang: 'en' | 'de' | 'ru' | 'sv' | 'pl' | 'fr' | 'es') => {
         playClick();
         updateState({ locale: lang });
         setIsLangOpen(false);
@@ -96,6 +96,36 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                             className={styles.langOption}
                         >
                             Deutsch
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('ru')}
+                            className={styles.langOption}
+                        >
+                            Русский
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('sv')}
+                            className={styles.langOption}
+                        >
+                            Svenska
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('pl')}
+                            className={styles.langOption}
+                        >
+                            Polski
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('fr')}
+                            className={styles.langOption}
+                        >
+                            Français
+                        </button>
+                        <button
+                            onClick={() => changeLanguage('es')}
+                            className={styles.langOption}
+                        >
+                            Español
                         </button>
                     </div>
                 )}
