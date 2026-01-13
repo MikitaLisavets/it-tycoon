@@ -25,7 +25,7 @@
   --xp-close-grad: radial-gradient(circle at center, #ff9e9e 0%, #e04040 100%);
   --xp-help-grad: radial-gradient(circle at center, #fff 0%, #2b50d6 100%);
 
-  --font-outfit: var(--font-outfit), 'Tahoma', 'Verdana', sans-serif;
+  --font-roboto: var(--font-roboto), 'Tahoma', 'Verdana', sans-serif;
 
   /* Text Colors */
   --color-text-primary: #000000;
@@ -102,7 +102,7 @@ html,
 body {
   max-width: 100vw;
   overflow: hidden;
-  font-family: var(--font-outfit) !important;
+  font-family: var(--font-roboto) !important;
   background-color: #536F96;
   /* Classic XP Desktop Blue */
   background-image: linear-gradient(to bottom, #7496EA 0%, #536F96 100%);

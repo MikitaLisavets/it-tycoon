@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/AppProviders";
 import CheatSystem from "@/components/CheatSystem/CheatSystem";
 import Script from "next/script";
 
-const outfit = Outfit({
-    variable: "--font-outfit",
-    subsets: ["latin"],
+const roboto = Roboto({
+    variable: "--font-roboto",
+    subsets: ["latin", "cyrillic"],
+    weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -75,7 +76,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={outfit.variable}>
+            <body className={roboto.variable}>
                 <Script id="clarity-script" strategy="afterInteractive">
                     {`
                         (function(c,l,a,r,i,t,y){
