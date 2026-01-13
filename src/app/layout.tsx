@@ -12,6 +12,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://desktop.mikiapps.com"),
     title: "Desktop Life | IT Tycoon & Life Simulator",
     description: "Experience the journey from a warehouse worker to an IT Investor. Manage your stats, upgrade your hardware, and master the IT world in this retro-styled tycoon simulator.",
     keywords: ["IT Tycoon", "Life Simulator", "Retro Game", "Programming Game", "Hacking Simulator", "Career Management", "Desktop Simulator", "Tycoon Game"],
