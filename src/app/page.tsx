@@ -219,11 +219,14 @@ export default function Home() {
                 </div>
 
                 <WindowFrame
+                    id="dashboard"
                     title={t('Dashboard.title')}
                     width="800px"
                     onHelpClick={() => setIsHelpOpen(true)}
                     onCloseClick={() => setIsResetOpen(true)}
                     onResetClick={() => setIsResetOpen(true)}
+                    isFocused={focusedWindow === 'dashboard'}
+                    onFocus={() => setFocusedWindow('dashboard')}
                 >
                     <div className={styles.mainContent}>
                         {/* XP Sidebar (Left) */}

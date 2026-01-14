@@ -6,8 +6,8 @@ import { GAME_CONSTANTS } from '../lib/game/constants/index';
 const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
 
 export function useWindowManager(isInitialized: boolean, gameOver: boolean) {
-    const [openWindows, setOpenWindows] = useState<string[]>([]);
-    const [focusedWindow, setFocusedWindow] = useState<string | null>(null);
+    const [openWindows, setOpenWindows] = useState<string[]>(['dashboard']);
+    const [focusedWindow, setFocusedWindow] = useState<string | null>('dashboard');
 
     // Load from localStorage
     useEffect(() => {
@@ -15,7 +15,12 @@ export function useWindowManager(isInitialized: boolean, gameOver: boolean) {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
-                    setOpenWindows(JSON.parse(saved));
+                    const parsed = JSON.parse(saved);
+                    // Ensure dashboard is always present
+                    if (Array.isArray(parsed) && !parsed.includes('dashboard')) {
+                        parsed.push('dashboard');
+                    }
+                    setOpenWindows(parsed);
                 }
             } catch (e) {
                 console.error('Failed to load open windows:', e);
@@ -55,8 +60,8 @@ export function useWindowManager(isInitialized: boolean, gameOver: boolean) {
     };
 
     const resetWindows = () => {
-        setOpenWindows([]);
-        setFocusedWindow(null);
+        setOpenWindows(['dashboard']);
+        setFocusedWindow('dashboard');
     };
 
     return {
