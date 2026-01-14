@@ -44,6 +44,7 @@ import GoalsList from "@/components/GoalsList/GoalsList";
 import Achievements from "@/components/Achievements/Achievements";
 import AboutModal from "@/components/AboutModal/AboutModal";
 import { useUIContext } from "@/context/UIContext";
+import { cheatManager } from "@/lib/game/cheats";
 
 export default function Home() {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -170,6 +171,7 @@ export default function Home() {
         resetWindows();
         setIsHelpOpen(false);
         clearNotifications();
+        cheatManager.reset();
         resetState();
     };
 

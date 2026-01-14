@@ -19,6 +19,10 @@ class CheatManager {
         return this.activeCheats.has(cheat);
     }
 
+    reset() {
+        this.activeCheats.clear();
+    }
+
     onToggle(listener: (cheat: string, active: boolean) => void) {
         this.listeners.push(listener);
         return () => {
