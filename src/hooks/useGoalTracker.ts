@@ -15,9 +15,29 @@ export function useGoalTracker() {
     useEffect(() => {
         if (!state.goals) return;
 
+        const batchSize = 3;
+        const getStartIndex = (goals: { completed: boolean }[]) => {
+            let index = 0;
+            for (let i = 0; i < goals.length; i += batchSize) {
+                const batch = goals.slice(i, i + batchSize);
+                if (!batch.every(g => g.completed)) {
+                    return i;
+                }
+                index = i + batchSize;
+            }
+            return index;
+        };
+
+        const activeStartIndex = getStartIndex(state.goals);
+
         let changed = false;
-        const newGoals = state.goals.map(goal => {
+        const newGoals = state.goals.map((goal, idx) => {
             if (goal.completed) return goal;
+
+            // Only allow completion of goals that are on the active "page" (visible batch)
+            if (idx >= activeStartIndex + batchSize) {
+                return goal;
+            }
 
             let isNowCompleted = false;
 
@@ -66,21 +86,8 @@ export function useGoalTracker() {
         const allCompleted = newGoals.every(g => g.completed);
         const wasAllCompleted = state.goals.every(g => g.completed);
 
-        // Check if a "round" (batch of 3) was completed
-        const batchSize = 3;
-        const getCompletedBatches = (goals: { completed: boolean }[]) => {
-            let count = 0;
-            for (let i = 0; i < goals.length; i += batchSize) {
-                const batch = goals.slice(i, i + batchSize);
-                if (batch.length > 0 && batch.every(g => g.completed)) {
-                    count++;
-                }
-            }
-            return count;
-        };
-
-        const oldBatches = getCompletedBatches(state.goals);
-        const newBatches = getCompletedBatches(newGoals);
+        const oldStartIndex = activeStartIndex;
+        const newStartIndex = getStartIndex(newGoals);
 
         if (allCompleted && !wasAllCompleted) {
             showNotification(
@@ -89,8 +96,9 @@ export function useGoalTracker() {
                 "info"
             );
             fireAllGoalsConfetti();
-        } else if (newBatches > oldBatches) {
+        } else if (newStartIndex > oldStartIndex && newStartIndex < newGoals.length) {
             // Only fire round confetti if we didn't just fire all-goals confetti
+            // and we actually moved to a new (not empty) batch
             fireRoundConfetti();
         }
 
