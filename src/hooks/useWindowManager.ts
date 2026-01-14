@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GAME_CONSTANTS } from '../lib/game/constants/index';
 
 const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
@@ -8,10 +8,11 @@ const STORAGE_KEY = `${GAME_CONSTANTS.GAME_NAME}-open-windows`;
 export function useWindowManager(isInitialized: boolean, gameOver: boolean) {
     const [openWindows, setOpenWindows] = useState<string[]>(['dashboard']);
     const [focusedWindow, setFocusedWindow] = useState<string | null>('dashboard');
+    const hasLoadedFromStorage = useRef(false);
 
     // Load from localStorage
     useEffect(() => {
-        if (isInitialized) {
+        if (isInitialized && !hasLoadedFromStorage.current) {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
@@ -25,12 +26,13 @@ export function useWindowManager(isInitialized: boolean, gameOver: boolean) {
             } catch (e) {
                 console.error('Failed to load open windows:', e);
             }
+            hasLoadedFromStorage.current = true;
         }
     }, [isInitialized]);
 
     // Save to localStorage
     useEffect(() => {
-        if (isInitialized) {
+        if (isInitialized && hasLoadedFromStorage.current) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(openWindows));
         }
     }, [openWindows, isInitialized]);

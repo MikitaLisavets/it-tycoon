@@ -148,7 +148,6 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                     {renderParts()}
                 </div>
             </WindowFrame>
-            );
             <HelpModal
                 isOpen={isHelpOpen}
                 onClose={() => setIsHelpOpen(false)}
