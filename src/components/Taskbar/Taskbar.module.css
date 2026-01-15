@@ -8,7 +8,6 @@
     display: flex;
     align-items: center;
     padding: 0;
-    margin-bottom: env(safe-area-inset-bottom);
     user-select: none;
     z-index: 10000;
 }
