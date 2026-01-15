@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './DesktopShortcut.module.css';
 import { useAudio } from '@/hooks/useAudio';
 
@@ -9,10 +9,21 @@ interface DesktopShortcutProps {
     onDoubleClick: (id: string) => void;
 }
 
+// Detect if device has touch support
+const isTouchDevice = () => {
+    if (typeof window === 'undefined') return false;
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
 const DesktopShortcut: React.FC<DesktopShortcutProps> = ({ id, label, icon, onDoubleClick }) => {
     const { playClick } = useAudio();
     const [isSelected, setIsSelected] = useState(false);
+    const [hasTouchSupport, setHasTouchSupport] = useState(false);
     const lastClickTime = useRef<number>(0);
+
+    useEffect(() => {
+        setHasTouchSupport(isTouchDevice());
+    }, []);
 
     const handleShortCutClick = (e: React.MouseEvent | React.TouchEvent) => {
         const currentTime = Date.now();
@@ -21,13 +32,20 @@ const DesktopShortcut: React.FC<DesktopShortcutProps> = ({ id, label, icon, onDo
 
         playClick();
 
-        if (timeDiff < 300) {
-            // Double click detected
+        // On touch devices, open on single tap
+        if (hasTouchSupport) {
             onDoubleClick(id);
             setIsSelected(false);
         } else {
-            // Single click - select
-            setIsSelected(true);
+            // On desktop, use double-click
+            if (timeDiff < 300) {
+                // Double click detected
+                onDoubleClick(id);
+                setIsSelected(false);
+            } else {
+                // Single click - select
+                setIsSelected(true);
+            }
         }
     };
 
