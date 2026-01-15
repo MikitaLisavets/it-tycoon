@@ -15,7 +15,6 @@
     flex: 1;
     position: relative;
     width: 100%;
-    /* Minus taskbar height */
 }
 
 /* Window Content Layout */

@@ -414,12 +414,6 @@ export default function Home() {
                     isFocused={focusedWindow === 'computer'}
                     onFocus={() => setFocusedWindow('computer')}
                 />
-                <WinampWindow
-                    isOpen={openWindows.includes('winamp')}
-                    onClose={() => closeWindow('winamp')}
-                    isFocused={focusedWindow === 'winamp'}
-                    onFocus={() => setFocusedWindow('winamp')}
-                />
                 <ApplicationWindow
                     isOpen={openWindows.includes('applications')}
                     onClose={() => closeWindow('applications')}
@@ -430,6 +424,12 @@ export default function Home() {
                         if (id === 'solitaire') toggleWindow('solitaire');
                         if (id.startsWith('software_')) toggleWindow(id);
                     }}
+                />
+                <WinampWindow
+                    isOpen={openWindows.includes('winamp')}
+                    onClose={() => closeWindow('winamp')}
+                    isFocused={focusedWindow === 'winamp'}
+                    onFocus={() => setFocusedWindow('winamp')}
                 />
                 <SolitaireWindow
                     isOpen={openWindows.includes('solitaire')}

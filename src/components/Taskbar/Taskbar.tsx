@@ -82,7 +82,7 @@ const Taskbar: React.FC<TaskbarProps> = ({ date, time }) => {
                 onClick={() => window.open('https://mikiapps.com', '_blank')}
             >
                 <WorldIcon size={16} className={styles.windowIcon} />
-                <span className={styles.windowTitle}>More apps at MikiApps</span>
+                <span className={styles.windowTitle}>www.MikiApps.com</span>
             </button>
 
             <div className={styles.langSwitcher} ref={langRef}>

@@ -25,6 +25,11 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
+    viewport: {
+        width: "device-width",
+        initialScale: 1,
+        viewportFit: "cover",
+    },
     icons: {
         icon: '/favicon.jpg',
         shortcut: '/favicon.jpg',
