@@ -40,16 +40,25 @@ const GameAudio = forwardRef<GameAudioHandle, GameAudioProps>(({ src, baseVolume
         if (!isIOS() || isAudioUnlocked) return;
 
         const unlockAudio = () => {
-            if (audioRef.current && !isAudioUnlocked) {
+            if (audioRef.current) {
                 const audio = audioRef.current;
+
+                // Mute audio to unlock silently (more reliable than volume = 0)
+                audio.muted = true;
 
                 // Attempt to play and immediately pause to "unlock" audio on iOS
                 audio.play().then(() => {
                     audio.pause();
                     audio.currentTime = 0;
-                    isAudioUnlocked = true;
-                    console.log('[GameAudio] iOS audio unlocked');
+                    audio.muted = false; // Unmute
+
+                    // Set flag after first successful unlock to prevent NEW elements from adding listeners
+                    if (!isAudioUnlocked) {
+                        isAudioUnlocked = true;
+                        console.log('[GameAudio] iOS audio unlocked');
+                    }
                 }).catch(err => {
+                    audio.muted = false; // Unmute even on error
                     console.warn('[GameAudio] iOS audio unlock failed:', err);
                 });
             }
