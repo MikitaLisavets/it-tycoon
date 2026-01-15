@@ -56,9 +56,10 @@ export const NotepadWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, 
 
 export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
     if (!isOpen) return null;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame
@@ -106,9 +107,10 @@ export const OfficeWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, i
 
 export const CodeEditorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
     if (!isOpen) return null;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame
@@ -151,9 +153,10 @@ export const CodeEditorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClos
 
 export const WebWalletWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
     if (!isOpen) return null;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame
@@ -215,9 +218,10 @@ export const WebWalletWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
 
 export const InvestorWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose, isFocused, onFocus }) => {
     const t = useTranslations();
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
     if (!isOpen) return null;
 
-    const [isHelpOpen, setIsHelpOpen] = useState(false);
     return (
         <>
             <WindowFrame
