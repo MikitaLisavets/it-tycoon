@@ -316,7 +316,7 @@ export const AntivirusWindow: React.FC<SoftwareWindowProps> = ({ isOpen, onClose
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (isScanning && caughtCount < totalToCatch && timeLeft > 0) {
-            timer = setInterval(spawnVirus, 600); // Slightly faster spawn since we have 10s for 15 bugs
+            timer = setInterval(spawnVirus, 400); // Slightly faster spawn since we have 10s for 15 bugs
         }
         return () => clearInterval(timer);
     }, [isScanning, spawnVirus, caughtCount, timeLeft]);
