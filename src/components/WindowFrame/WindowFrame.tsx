@@ -348,7 +348,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({
         <div className={styles.title}>
           {/* Default generic icon if none provided */}
           <ComputerIcon size={16} />
-          {title}
+          <span className={styles.titleText}>{title}</span>
         </div>
         <div className={styles.controls}>
           {/* Visual only buttons */}

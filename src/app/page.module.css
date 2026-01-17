@@ -158,12 +158,18 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .statValue {
     color: var(--color-text-primary);
     font-weight: bold;
     text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .examPending {

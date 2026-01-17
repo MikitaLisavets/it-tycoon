@@ -558,7 +558,7 @@
         "restart": "Tryck på valfri tangent för att starta om spelet"
     },
     "BootScreen": {
-        "title": "Skrivbordsliv",
+        "title": "Desktop Life",
         "subtitle": "Professionell utgåva",
         "loading": "Initialisering av skrivbordsliv...",
         "msg1": "Laddar operativsystemet...",

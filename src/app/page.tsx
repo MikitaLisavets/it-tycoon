@@ -237,10 +237,10 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('Dashboard.group_lifestyle')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('job')}>{t('Dashboard.btn_job')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('activities')}>{t('Dashboard.btn_activities')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('shop')}>{t('Dashboard.btn_shop')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('education')}>{t('Dashboard.btn_education')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('job')} title={t('Dashboard.btn_job')}>{t('Dashboard.btn_job')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('activities')} title={t('Dashboard.btn_activities')}>{t('Dashboard.btn_activities')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('shop')} title={t('Dashboard.btn_shop')}>{t('Dashboard.btn_shop')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('education')} title={t('Dashboard.btn_education')}>{t('Dashboard.btn_education')}</XPButton>
                                 </div>
                             </div>
 
@@ -250,10 +250,10 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('Dashboard.group_system')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('computer')}>{t('Dashboard.btn_computer')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('applications')}>{t('Dashboard.btn_applications')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('internet')}>{t('Dashboard.btn_internet')}</XPButton>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('hacking')}>{t('Dashboard.btn_hacking')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('computer')} title={t('Dashboard.btn_computer')}>{t('Dashboard.btn_computer')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('applications')} title={t('Dashboard.btn_applications')}>{t('Dashboard.btn_applications')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('internet')} title={t('Dashboard.btn_internet')}>{t('Dashboard.btn_internet')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('hacking')} title={t('Dashboard.btn_hacking')}>{t('Dashboard.btn_hacking')}</XPButton>
                                 </div>
                             </div>
 
@@ -263,7 +263,7 @@ export default function Home() {
                                     <span className={styles.taskLabel}>{t('Dashboard.group_services')}</span>
                                 </div>
                                 <div className={styles.taskContent}>
-                                    <XPButton variant="primary" onClick={() => toggleWindow('bank')}>{t('Dashboard.btn_bank')}</XPButton>
+                                    <XPButton variant="primary" onClick={() => toggleWindow('bank')} title={t('Dashboard.btn_bank')}>{t('Dashboard.btn_bank')}</XPButton>
                                 </div>
                             </div>
                         </div>

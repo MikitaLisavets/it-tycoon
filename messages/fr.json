@@ -558,7 +558,7 @@
         "restart": "Appuyer sur n'importe quelle touche pour redémarrer le jeu"
     },
     "BootScreen": {
-        "title": "La vie de bureau",
+        "title": "Desktop Life",
         "subtitle": "Édition professionnelle",
         "loading": "Initialisation de Desktop Life...",
         "msg1": "Chargement du système d'exploitation...",
