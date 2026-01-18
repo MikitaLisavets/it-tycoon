@@ -28,7 +28,7 @@ export const CREDIT_OPTIONS: CreditOption[] = [
     },
     {
         id: 'large_credit',
-        amount: 10000,
+        amount: 5000,
         termDays: 7,
         interestRate: 20,
     },
