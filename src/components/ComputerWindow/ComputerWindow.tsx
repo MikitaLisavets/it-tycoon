@@ -108,8 +108,8 @@ const ComputerWindow: React.FC<ComputerWindowProps> = ({ isOpen, onClose, onRese
                             actionSound={(!isOwned && !isFree && part.level >= currentLevel) ? 'purchase' : 'click'}
                             actionDisabled={(isOwned || isFree || !canAfford) && part.level >= currentLevel}
                             actionContent={isOwned && (
-                                <div className={styles.checkmarkIcon}>
-                                    <div className={styles.checkmark} />
+                                <div className={styles.ownedBadge}>
+                                    {t('Computer.mounted')}
                                 </div>
                             )}
                         />
