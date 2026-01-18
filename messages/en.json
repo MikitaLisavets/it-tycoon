@@ -231,7 +231,7 @@
         "type": "Type: {type}",
         "income": "Income: ${income}",
         "per_click": "(per click)",
-        "work_now": "Work Now",
+        "work_now": "Work",
         "available_jobs": "Available Jobs",
         "apply": "Apply",
         "requirements": "Requirements",

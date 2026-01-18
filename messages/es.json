@@ -231,7 +231,7 @@
         "type": "Tipo: {type}",
         "income": "Ingresos: ${income}",
         "per_click": "(por clic)",
-        "work_now": "Trabajar ahora",
+        "work_now": "Trabajar",
         "available_jobs": "Puestos disponibles",
         "apply": "Solicitar",
         "requirements": "Requisitos",
